@@ -6,3 +6,10 @@
 meteor-platform
 autopublish
 insecure
+coffeescript
+waitingkuo:jade
+less
+cfs:filesystem
+cfs:standard-packages
+cfs:graphicsmagick
+
