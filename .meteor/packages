@@ -12,4 +12,6 @@ less
 cfs:filesystem
 cfs:standard-packages
 cfs:graphicsmagick
+jnoble:multi-styl
+vasaka:livescript-compiler
 
