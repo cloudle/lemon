@@ -4,14 +4,23 @@
 # but you can also edit it by hand.
 
 meteor-platform
+accounts-password
+mizzao:user-status
+iron:router
+mrt:iron-router-progress
+zimme:iron-router-active
+
+meteorhacks:zones
+meteorhacks:fast-render
+
 autopublish
 insecure
+
+vasaka:livescript-compiler
 coffeescript
+jnoble:multi-styl
 waitingkuo:jade
-less
+
 cfs:filesystem
 cfs:standard-packages
 cfs:graphicsmagick
-jnoble:multi-styl
-vasaka:livescript-compiler
-
