@@ -16,7 +16,6 @@ meteorhacks:fast-render
 autopublish
 insecure
 
-vasaka:livescript-compiler
 coffeescript
 jnoble:multi-styl
 waitingkuo:jade
@@ -24,3 +23,4 @@ waitingkuo:jade
 cfs:filesystem
 cfs:standard-packages
 cfs:graphicsmagick
+

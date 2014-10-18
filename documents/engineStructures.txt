@@ -1,0 +1,6 @@
+Engine tree:
+    client
+        components*
+    lib
+        component*
+        core*
