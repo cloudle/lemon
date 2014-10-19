@@ -4,6 +4,7 @@
 # but you can also edit it by hand.
 
 meteor-platform
+lemon
 accounts-password
 mizzao:user-status
 iron:router

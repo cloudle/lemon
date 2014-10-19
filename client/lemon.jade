@@ -7,6 +7,7 @@ body
 
 template(name="hello")
   button Click Me
+  input(type="checkbox" binding="switch" name="sw")
   p You've pressed the button {{counter}} times.
   each avatarImages
     img.lemon-img(src="{{this.url}}")
