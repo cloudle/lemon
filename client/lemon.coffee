@@ -1,5 +1,6 @@
 Session.setDefault("counter", 0)
 
+
 lemon.defineApp Template.hello,
   counter: -> Session.get("counter")
   avatarImages: -> AvatarImages.find()

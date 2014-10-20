@@ -35,17 +35,22 @@ Package.onUse(function(api) {
     'core/component/app.coffee',
 
     //Database operations
-    'db/seeds.coffee',
-    'db/migrate.coffee',
+    'system/seeds.coffee',
+    'system/migrate.coffee',
 
     //System collections & model
     'system/schema/migration.coffee',
     'system/schema/system.coffee',
     'system/system.coffee',
 
+    //Profiles, Roles & Permissions
+    'system/schema/user.profile.coffee',
+    'system/schema/role.coffee',
+    'system/role.coffee',
+
     //Kaizen collections & model
-    'kaizen/schema/kaizen.coffee',
-    'kaizen/kaizen.coffee',
+    'system/schema/kaizen.coffee',
+    'system/kaizen.coffee',
 
     //Messenger
     'messenger/schema/message.coffee',
