@@ -19,3 +19,8 @@ generateModel = (name, extensionObj) ->
 Schema.add = (name, extensionObj = undefined) ->
   generateSchema(name, extensionObj)
   generateModel(name, extensionObj) if extensionObj
+
+Schema.list = ->
+  i = 1
+  (console.log "#{i}. #{name}"; i++) for name, value of Schema when value instanceof Mongo.Collection
+  return

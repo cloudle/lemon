@@ -1,0 +1,26 @@
+lemon
+  defineApp: (source, destination) ->
+  defineWidget: (source, destination) ->
+
+System
+  upgrade: (step = 0.1) ->
+  @checkUpdates: ->
+
+db
+  seed: ->
+  clean: ->
+  setup: -> #equal seed(); clean()
+  migrate: -> #implementing..
+
+Schema
+  list: -> Show available schemas
+  add: (name, extensionObj = undefined) ->
+
+Kaizen: ->
+  #...
+
+Messenger
+  say: (message, receiver) ->
+  read: (messageId) ->
+
+simpleSchema

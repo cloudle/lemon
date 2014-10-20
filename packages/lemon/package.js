@@ -45,7 +45,11 @@ Package.onUse(function(api) {
 
     //Kaizen collections & model
     'kaizen/schema/kaizen.coffee',
-    'kaizen/kaizen.coffee'
+    'kaizen/kaizen.coffee',
+
+    //Messenger
+    'messenger/schema/message.coffee',
+    'messenger/messenger.coffee'
     ], ['client', 'server']);
 
   //api.addFiles([
