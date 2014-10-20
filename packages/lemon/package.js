@@ -16,9 +16,9 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'core/lemon.coffee',
-    'component/core.coffee',
-    'component/widget.coffee',
-    'component/app.coffee'
+    'core/component/core.coffee',
+    'core/component/widget.coffee',
+    'core/component/app.coffee'
     ] , 'client');
 
   api.addFiles([
