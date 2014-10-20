@@ -3,6 +3,7 @@ Session.setDefault("counter", 0)
 lemon.defineApp Template.hello,
   counter: -> Session.get("counter")
   avatarImages: -> AvatarImages.find()
+  dumpRecords: -> Schema.dumpCollections.find({})
 
   events:
     "click button": ->  Session.set("counter", Session.get("counter") + 1)

@@ -1,2 +1,2 @@
-#Router.map ->
-#  @route 'home'
+Router.map ->
+  @route 'home', {path: '/'}

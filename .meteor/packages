@@ -11,6 +11,7 @@ iron:router
 mrt:iron-router-progress
 zimme:iron-router-active
 
+mike:mocha
 meteorhacks:zones
 meteorhacks:fast-render
 
@@ -24,4 +25,5 @@ waitingkuo:jade
 cfs:filesystem
 cfs:standard-packages
 cfs:graphicsmagick
-
+dburles:collection-helpers
+aldeed:collection2
