@@ -49,5 +49,3 @@ simpleSchema.kaizens = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'tasks', class Task
-  @new: ()->
