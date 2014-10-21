@@ -7,11 +7,13 @@ loginErrors = [
 lemon.defineWidget Template.homeHeader,
   loginValid: -> Session.get('loginValid')
   authenticated: -> Meteor.userId() isnt null
+  languages: -> i18n.languages
 
   created: -> Session.setDefault('loginValid', 'invalid')
   rendered: -> $(@find("#authAlias")).val($.cookie('lastAuthAlias'))
 
   events:
+    "click .languages li": -> i18n.setLanguage @key
     "click #authButton.valid": (event, template)->
       $login    = $(template.find("#authAlias"))
       $password = $(template.find("#authSecret"))

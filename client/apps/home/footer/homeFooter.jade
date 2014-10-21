@@ -2,21 +2,21 @@ template(name="homeFooter")
   .home-wrapper
     .footer-content.row
       .col-md-3
-        h3.icon-location LIÊN HỆ
+        h3.icon-location {{i18n 'home.contact'}}
         .details
-          span.icon-flag-circled 109 Cộng Hòa, Tân Bình, Tp.HCM. <br/>
+          span.icon-flag-circled {{i18n 'home.address'}} <br/>
           span.icon-mail-circled thienban@gmail.com <br/>
           span.icon-phone-circled +84 838-<b>111</b>-766 <br/>
           span.icon-skype thienban.eds
       .col-md-6.comment-section
-        h3.icon-comment BÌNH LUẬN
+        h3.icon-comment {{i18n 'comment'}}
         .details
           +merchantTestimonials
       .col-md-3
-        h3.icon-award GIẢI THƯỞNG
-        .details Đang cập nhật..
+        h3.icon-award {{i18n 'home.award'}}
+        .details {{i18n 'commingSoon'}}
 
   .home-wrapper
     .sub-footer.row
-      .col-md-6 Enterprise Dual Strategy System 2013 - 2014, Bản quyền thuộc về công ty TNHH Công Nghệ Thiên Ban.
+      .col-md-6 {{i18n 'home.copyWriting'}}
       .col-md-6

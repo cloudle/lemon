@@ -3,18 +3,22 @@ template(name="homeHeader")
     .home-branding
       .logo-text
         .caption eds
-        .slogan hệ thống chiến lược đồng bộ
+        .slogan {{i18n 'slogan'}}
       .logo-image
         img(src="images/gera-small.png")
-      .languages TIẾNG VIỆT
+      .languages {{i18n 'language'}}
+        ul
+          each languages
+            li {{display}}
+
 
       .login-section
         if authenticated
           #gotoMerchantButton.btn.icon-shop
           #logoutButton.btn.icon-power.background-pumpkin
         else
-          input.login-field#authAlias(type="text" placeholder="tài khoản" maxlength="50")
-          input.login-field#authSecret(type="password" placeholder="mật khẩu" maxlength="30")
+          input.login-field#authAlias(type="text" placeholder="{{i18n 'form.userAccount'}}" maxlength="50")
+          input.login-field#authSecret(type="password" placeholder="{{i18n 'form.password'}}" maxlength="30")
           #authButton.btn.icon-key-1(class="{{loginValid}}")
 
       .social

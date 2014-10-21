@@ -1,3 +1,4 @@
+@import 'nib'
 @import "../../../styles/lib.import.styl"
 
 #homeHeader
@@ -72,6 +73,16 @@
       float left
       margin 35px 0 0 25px
       text-transform uppercase
+      position relative
+      ul
+        margin 0; padding 0
+        list-style none
+        border 1px solid #eaeced
+        position absolute
+        $box-shadow(4px 4px 0 rgba(0, 0, 0, 0.1))
+        li
+          cursor pointer
+          position relative
 
     .social
       position relative

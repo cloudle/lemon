@@ -7,20 +7,20 @@ template(name="homeTopPanel")
 
         .content-inner
           .registeration-section
-            .sky-field
-              input#companyName(type="text" placeholder="tên doanh nghiệp")
-            .sky-field
-              input#companyPhone(type="text" placeholder="điện thoại liên lạc" maxlength="11")
-            .sky-field
-              input#account(type="text" placeholder="email *")
-            .sky-field.group
-              .col.col-sm-6: input#secret(type="password" placeholder="mật khẩu  *")
+            .lemon-field
+              input#companyName(type="text" placeholder="{{i18n 'form.companyName'}}")
+            .lemon-field
+              input#companyPhone(type="text" placeholder="{{i18n 'form.contactPhone'}}" maxlength="11")
+            .lemon-field
+              input#account(type="text" placeholder="{{i18n 'form.userAccount'}} *")
+            .lemon-field.group.row
+              .col.col-sm-6: input#secret(type="password" placeholder="{{i18n 'form.password'}}  *")
               .col.col-sm-6: input#secretConfirm(type="password" placeholder="xác nhận *")
 
             | (*) Phần bắt buộc
             #merchantRegister.btn.pull-right(class="{{registerValid}}") ĐĂNG KÝ
 
           .eula-section
-            .title.icon-award Điều khoản sử dụng
+            .title.icon-award {{i18n 'home.term'}}
             .details Đây là chi tiết điều khoản sử dụng...
             .post-script Tôi đồng ý với tất cả những điều khoản trên.

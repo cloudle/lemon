@@ -1,8 +1,18 @@
 i18n.map 'vi',
   eds: 'eds'
+  language: 'Ngôn ngữ'
+  slogan: 'hệ thống chiến lược đồng bộ'
+  commingSoon: 'Đang cập nhật..'
+  comment: 'Bình luận'
+
+  form:
+    userAccount: 'tài khoản'
+    password: 'mật khẩu'
+    companyName: 'tên doanh nghiệp'
+    contactPhone: 'điện thoại liên hệ'
+    confirm: 'xác nhận'
 
   home:
-    slogan: 'hệ thống chiến lược đồng bộ'
     news: 'Cập nhật'
     subNews: 'Tin tức mới nhất'
     support: 'Hỗ trợ'
@@ -17,7 +27,9 @@ i18n.map 'vi',
     subContact: 'Tuyển dụng'
     comment: 'Khách hàng nhận xét'
     award: 'Giải thưởng'
+    address: '109 Cộng Hòa, Tân Bình, Tp.HCM.'
     copyWriting: 'Enterprise Dual Strategy System 2013 - 2014, Bản quyền thuộc về công ty TNHH Công Nghệ Thiên Ban.'
+    term: 'Điều khoản sử dụng'
 
   menu:
     role: 'phân quyền'
