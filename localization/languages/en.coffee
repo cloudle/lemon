@@ -4,6 +4,7 @@ i18n.map 'en',
   slogan: 'centralized strategy system'
   commingSoon: 'Comming soon..'
   comment: 'Comment'
+  register: 'Register'
 
   form:
     userAccount: 'user account'

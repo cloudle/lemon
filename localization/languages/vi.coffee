@@ -4,6 +4,7 @@ i18n.map 'vi',
   slogan: 'hệ thống chiến lược đồng bộ'
   commingSoon: 'Đang cập nhật..'
   comment: 'Bình luận'
+  register: 'Đăng ký'
 
   form:
     userAccount: 'tài khoản'

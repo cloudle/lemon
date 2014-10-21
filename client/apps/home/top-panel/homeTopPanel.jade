@@ -15,10 +15,10 @@ template(name="homeTopPanel")
               input#account(type="text" placeholder="{{i18n 'form.userAccount'}} *")
             .lemon-field.group.row
               .col.col-sm-6: input#secret(type="password" placeholder="{{i18n 'form.password'}}  *")
-              .col.col-sm-6: input#secretConfirm(type="password" placeholder="xác nhận *")
+              .col.col-sm-6: input#secretConfirm(type="password" placeholder="{{i18n 'form.confirm'}} *")
 
             | (*) Phần bắt buộc
-            #merchantRegister.btn.pull-right(class="{{registerValid}}") ĐĂNG KÝ
+            #merchantRegister.btn.pull-right(class="{{registerValid}}") {{i18n 'register'}}
 
           .eula-section
             .title.icon-award {{i18n 'home.term'}}
