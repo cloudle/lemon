@@ -1,0 +1,27 @@
+template(name="homeHeader")
+  .header-content
+    .home-branding
+      .logo-text
+        .caption eds
+        .slogan hệ thống chiến lược đồng bộ
+      .logo-image
+        img(src="images/gera-small.png")
+      .languages TIẾNG VIỆT
+
+      .login-section
+        if authenticated
+          #gotoMerchantButton.btn.icon-shop
+          #logoutButton.btn.icon-power.background-pumpkin
+        else
+          input.login-field#authAlias(type="text" placeholder="tài khoản" maxlength="50")
+          input.login-field#authSecret(type="password" placeholder="mật khẩu" maxlength="30")
+          #authButton.btn.icon-key-1(class="{{loginValid}}")
+
+      .social
+        a.icon-facebook-rect
+        a.icon-twitter-bird
+        a.icon-googleplus-rect
+        a.icon-linkedin-rect
+      .phone
+        i.icon-mobile
+        |+84 838-<b>111</b>-766

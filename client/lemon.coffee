@@ -1,6 +1,5 @@
 Session.setDefault("counter", 0)
 
-
 lemon.defineApp Template.hello,
   counter: -> Session.get("counter")
   avatarImages: -> AvatarImages.find()
@@ -13,4 +12,4 @@ lemon.defineApp Template.hello,
       files = event.target.files
       if files.length > 0
         AvatarImages.insert files[0], (error, fileObj) ->
-          console.log 'uploaded', fileObj
+          console.log 'uploaded', fileObjs

@@ -1,0 +1,26 @@
+template(name="homeTopPanel")
+  .top-panel(class="{{minimizeClass}}")
+    .home-wrapper
+      .top-panel-content
+        if showRegisterToggle
+          span.top-panel-toggle: i.icon(class="{{toggleIcon}}")
+
+        .content-inner
+          .registeration-section
+            .sky-field
+              input#companyName(type="text" placeholder="tên doanh nghiệp")
+            .sky-field
+              input#companyPhone(type="text" placeholder="điện thoại liên lạc" maxlength="11")
+            .sky-field
+              input#account(type="text" placeholder="email *")
+            .sky-field.group
+              .col.col-sm-6: input#secret(type="password" placeholder="mật khẩu  *")
+              .col.col-sm-6: input#secretConfirm(type="password" placeholder="xác nhận *")
+
+            | (*) Phần bắt buộc
+            #merchantRegister.btn.pull-right(class="{{registerValid}}") ĐĂNG KÝ
+
+          .eula-section
+            .title.icon-award Điều khoản sử dụng
+            .details Đây là chi tiết điều khoản sử dụng...
+            .post-script Tôi đồng ý với tất cả những điều khoản trên.

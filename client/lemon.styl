@@ -1,6 +1,13 @@
-/* CSS declarations go here */
-@import 'nib'
-@import 'jeet'
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic&subset=latin,vietnamese")
+@require 'nib'
+@require 'jeet'
+@require 'styles/lib.import.styl'
+
+body
+  background-image url('images/light-noise.png')
 
 .lemon-img
-  border-radius: top 10px
+  border-radius top 10px
+  for currentColor in colors
+    &.{currentColor[0]}
+      color currentColor[1]

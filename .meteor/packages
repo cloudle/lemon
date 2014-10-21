@@ -5,6 +5,7 @@
 
 meteor-platform
 lemon
+lemon-icon
 accounts-password
 mizzao:user-status
 iron:router
@@ -28,4 +29,3 @@ cfs:graphicsmagick
 dburles:collection-helpers
 aldeed:collection2
 anti:i18n
-

@@ -1,0 +1,14 @@
+placeholder($color = #999)
+  &::-moz-placeholder
+    color $color
+    opacity 1
+  &:-ms-input-placeholder
+    color $color
+  &::-webkit-input-placeholder
+    color $color
+
+rotate-by($degrees)
+  -webkit-transform rotate($degrees)
+  -ms-transform rotate($degrees)
+  -o-transform rotate($degrees)
+  transform rotate($degrees)

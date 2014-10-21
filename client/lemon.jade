@@ -1,18 +1,23 @@
 head
-  title lemon
-
+  title EDS - Enterprise Dual Strategy
+  link(rel="icon" type="image/png" href="images/favicon.png")
 body
-  h1 {{i18n "home.slogan"}}
-  +hello
 
-template(name="hello")
-  button Click Me
-  input(type="checkbox" binding="switch" name="sw")
-  p You've pressed the button {{counter}} times.
-  each dumpRecords
-    h1 {{dumpField}}
-  each avatarImages
-    img.lemon-img(src="{{this.url}}")
-
-  input.uploader(type="file")
-  | hi
+//head
+//  title lemon
+//
+//body
+//  h1 {{i18n "home.slogan"}}
+//  +hello
+//
+//template(name="hello")
+//  button Click Me
+//  input(type="checkbox" binding="switch" name="sw")
+//  p You've pressed the button {{counter}} times.
+//  each dumpRecords
+//    h1 {{dumpField}}
+//  each avatarImages
+//    img.lemon-img(src="{{this.url}}")
+//
+//  input.uploader(type="file")
+//  | hi
