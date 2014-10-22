@@ -7,20 +7,10 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('METEOR@0.9.1.1');
 
-  //Client Only - third party libraries
   api.addFiles([
-    '3rds/animate.css',
-    '3rds/moment.js',
-    '3rds/switchery.css',
-    '3rds/switchery.js'
-    ], 'client');
+    'core/templateHelpers.coffee'
+  ], 'client');
 
-  //Global - Third party libraries
-  api.addFiles([
-    '3rds/accounting.js'
-  ], ['client', 'server']);
-
-  //Core libs
   api.addFiles([
     'namespace.coffee',
 
@@ -33,6 +23,11 @@ Package.onUse(function(api) {
     'core/component/core.coffee',
     'core/component/widget.coffee',
     'core/component/app.coffee',
+
+    //Routing system
+    'core/router.coffee',
+    'core/validation.coffee',
+    'core/command.coffee',
 
     //Database operations
     'system/seeds.coffee',
@@ -65,5 +60,5 @@ Package.onUse(function(api) {
   //, ['client', 'server']);
 
   api.use(['coffeescript', 'underscore', 'aldeed:collection2'], ['client', 'server']);
-  api.use(['jquery'], 'client');
+  api.use(['jquery', 'templating'], 'client');
 });

@@ -12,7 +12,6 @@ iron:router
 mrt:iron-router-progress
 zimme:iron-router-active
 
-mike:mocha
 meteorhacks:zones
 meteorhacks:fast-render
 

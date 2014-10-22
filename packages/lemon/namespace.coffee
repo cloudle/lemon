@@ -2,4 +2,8 @@
 @simpleSchema = {}
 @Schema = {}
 @db = {}
-@db.seedScripts = []
+@logics = {}
+
+@modulus = {}
+@modulus.seedScripts = []
+@modulus.routes = []

@@ -12,6 +12,10 @@ i18n.map 'vi',
     companyName: 'tên doanh nghiệp'
     contactPhone: 'điện thoại liên hệ'
     confirm: 'xác nhận'
+  messages:
+    userNotFound: 'tài khoản không tồn tại'
+    incorrectPassword: 'mật khẩu chưa chính xác'
+    matchFailed: 'đăng nhập thất bại'
 
   home:
     news: 'Cập nhật'

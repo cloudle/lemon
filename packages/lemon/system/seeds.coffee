@@ -15,7 +15,7 @@ db.clean = ->
 db.seed = ->
   zone.run ->
     i = 0
-    (script(); i++) for script in db.seedScripts
+    (script(); i++) for script in modulus.seedScripts
     console.log "Seeding complete, there are #{i} scripts executed!"
 
 db.setup = -> db.clean(); db.seed()

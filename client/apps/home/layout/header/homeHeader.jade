@@ -19,7 +19,7 @@ template(name="homeHeader")
         else
           input.login-field#authAlias(type="text" placeholder="{{i18n 'form.userAccount'}}" maxlength="50")
           input.login-field#authSecret(type="password" placeholder="{{i18n 'form.password'}}" maxlength="30")
-          #authButton.btn.icon-key-1(class="{{loginValid}}")
+          #authButton.btn.icon-key-1(class="{{sessionGet 'loginValid'}}")
 
       .social
         a.icon-facebook-rect
