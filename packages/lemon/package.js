@@ -14,6 +14,11 @@ Package.onUse(function(api) {
   api.addFiles([
     'namespace.coffee',
 
+    'core/core.coffee',
+    'core/router.coffee',
+    'core/validation.coffee',
+    'core/command.coffee',
+
     //Schema system
     'core/schema/model.coffee',
     'core/schema/core.coffee',
@@ -23,11 +28,6 @@ Package.onUse(function(api) {
     'core/component/core.coffee',
     'core/component/widget.coffee',
     'core/component/app.coffee',
-
-    //Routing system
-    'core/router.coffee',
-    'core/validation.coffee',
-    'core/command.coffee',
 
     //Database operations
     'system/seeds.coffee',

@@ -14,9 +14,7 @@ zimme:iron-router-active
 
 meteorhacks:zones
 meteorhacks:fast-render
-
-autopublish
-insecure
+meteorhacks:subs-manager
 
 coffeescript
 jnoble:multi-styl
@@ -29,4 +27,5 @@ dburles:collection-helpers
 aldeed:collection2
 anti:i18n
 mizzao:bootstrap-3
+
 

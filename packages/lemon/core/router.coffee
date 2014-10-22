@@ -5,16 +5,15 @@
     modulus.routes.push routes
 
 @lemon.buildRoutes = (context) ->
-  zone.run =>
-    for route in modulus.routes
-      template = undefined
+  for route in modulus.routes
+    template = undefined
 
-      if route.template and route.path
-        template = route.template; delete route.template
-      else if route.template
-        template = route.template; delete route.template
-        route.path = "/#{template}"
-      else if route.path
-        template = route.path.substring(1)
+    if route.template and route.path
+      template = route.template; delete route.template
+    else if route.template
+      template = route.template; delete route.template
+      route.path = "/#{template}"
+    else if route.path
+      template = route.path.substring(1)
 
-      context.route template, route if template
+    context.route template, route if template

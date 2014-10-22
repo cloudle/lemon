@@ -1,1 +1,0 @@
-Router.map -> lemon.buildRoutes(@)

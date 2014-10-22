@@ -1,7 +1,7 @@
 i18n.map 'vi',
   eds: 'eds'
   language: 'Ngôn ngữ'
-  slogan: 'hệ thống chiến lược đồng bộ'
+  slogan: 'mạng quản lý kinh doanh'
   commingSoon: 'Đang cập nhật..'
   comment: 'Bình luận'
   register: 'Đăng ký'

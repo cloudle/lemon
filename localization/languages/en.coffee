@@ -1,7 +1,7 @@
 i18n.map 'en',
   eds: 'eds'
   language: 'Language'
-  slogan: 'centralized strategy system'
+  slogan: 'business management network'
   commingSoon: 'Comming soon..'
   comment: 'Comment'
   register: 'Register'
