@@ -6,4 +6,4 @@ Merchant.Controller = RouteController.extend
     lemon.log 'waiting...'
 #    Merchant.Subscriber.subscribe('fakeWaiter')
   data: ->
-    lemon.log 'filtering data...'
+    lemon.log 'filtering data from controller...'

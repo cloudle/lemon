@@ -16,6 +16,7 @@ Package.onUse(function(api) {
 
     'core/core.coffee',
     'core/router.coffee',
+    'core/dependency.coffee',
     'core/validation.coffee',
     'core/command.coffee',
 

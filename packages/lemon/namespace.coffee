@@ -5,5 +5,5 @@
 @logics = {}
 
 @modulus = {}
-@modulus.seedScripts = []
-@modulus.routes = []
+modulus.seedScripts = []
+modulus.routes = []

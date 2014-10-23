@@ -1,10 +1,24 @@
 lemon
   defineApp: (source, destination) ->
   defineWidget: (source, destination) ->
+  log: ->
+  sleep: (milliseconds) -> Pause in milliseconds
+  cleanSession: ->
+  logOut: ->
+  addRoute: ([routes...]) ->
+  buildRoutes: ->
+
+lemon.dependencies
+  add: ('name', [dependencies...]) ->
+  resolve: ('name') ->
+  list: ->
 
 System
   upgrade: (step = 0.1) ->
   @checkUpdates: ->
+
+Validation
+  isEmail: (email) ->
 
 db
   seed: ->
@@ -13,8 +27,8 @@ db
   migrate: -> #implementing..
 
 Schema
-  list: -> Show available schemas
   add: (name, extensionObj = undefined) ->
+  list: ->
 
 Kaizen: ->
   #...
@@ -22,5 +36,11 @@ Kaizen: ->
 Messenger
   say: (message, receiver) ->
   read: (messageId) ->
+
+Role
+  addRolesFor: (profileId, roles) ->
+  isInRole: (userId, name) ->
+  hasPermission: (profileId, name) ->
+  permissionsOf: (profile) ->
 
 simpleSchema
