@@ -11,7 +11,7 @@ lemon
 lemon.dependencies
   add: ('name', [dependencies...]) ->
   resolve: ('name') ->
-  list: ->
+  list: (dependency) -> #List all dependencies or a dependency's resolved depends.
 
 System
   upgrade: (step = 0.1) ->

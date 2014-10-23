@@ -3,8 +3,11 @@ lemon.dependencies = {}
 lemon.dependencies.add = (name, deps) ->
   lemon.dependencies[name] = deps
 
-lemon.dependencies.list = ->
-  console.log name, value for name, value of lemon.dependencies when Array.isArray(value)
+lemon.dependencies.list = (dep = undefined ) ->
+  if dep and lemon.dependencies[dep]
+    console.log recursiveResolve(lemon.dependencies[dep])
+  else
+    console.log name, value for name, value of lemon.dependencies when Array.isArray(value)
   return
 
 lemon.dependencies.resolve = (name) ->

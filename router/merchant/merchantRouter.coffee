@@ -1,3 +1,7 @@
 lemon.addRoute [
-  template: 'merchantDev', controller: Merchant.Controller
+  template: 'merchantDev',
+  waitOn: -> lemon.dependencies.resolve('dep1')
+  data: -> {
+
+  }
 ]
