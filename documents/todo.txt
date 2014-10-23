@@ -1,0 +1,1 @@
+Lấy attribute con của session từ {{sessionGet 'name'}} kiểu như {{someSession.attr}}

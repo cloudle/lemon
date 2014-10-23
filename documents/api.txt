@@ -44,3 +44,7 @@ Role
   permissionsOf: (profile) ->
 
 simpleSchema
+
+globalTemplateHelpers
+  {{sessionGet 'name'}}
+  {{authenticated}} => Boolean

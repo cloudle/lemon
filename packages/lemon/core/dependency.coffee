@@ -34,15 +34,15 @@ recursiveResolve = (nextDep, currentDeps = []) ->
 
   currentDeps
 
-lemon.dependencies.add('essentials', ['myMetaData', 'messages'])
-lemon.dependencies.add('chat', ['essentials', 'users', 'messages'])
-lemon.dependencies.add('sales', ['chat', 'users', 'customers', 'sellers', 'products', 'bills', 'systems'])
-lemon.dependencies.add('warehouse', [['product', 1], 'productDetails', 'users'])
-
-lemon.dependencies.add('dep1', ['warehouse', 'chat', 'sales'])
-lemon.dependencies.add('dep2', ['chat', 'sales', 'history'])
-lemon.dependencies.add('dep3', ['chat', 'warehouse'])
-lemon.dependencies.add('dep4', ['chat'])
-lemon.dependencies.add('dep5', ['dep1', 'dep2', 'new'])
-lemon.dependencies.add('dep6', ['dep2', 'new'])
-lemon.dependencies.add('dep7', ['dep3', 'sales', 'dep1', 'chat'])
+#lemon.dependencies.add('essentials', ['myMetaData', 'messages'])
+#lemon.dependencies.add('chat', ['essentials', 'users', 'messages'])
+#lemon.dependencies.add('sales', ['chat', 'users', 'customers', 'sellers', 'products', 'bills', 'systems'])
+#lemon.dependencies.add('warehouse', [['product', 1], 'productDetails', 'users'])
+#
+#lemon.dependencies.add('dep1', ['warehouse', 'chat', 'sales'])
+#lemon.dependencies.add('dep2', ['chat', 'sales', 'history'])
+#lemon.dependencies.add('dep3', ['chat', 'warehouse'])
+#lemon.dependencies.add('dep4', ['chat'])
+#lemon.dependencies.add('dep5', ['dep1', 'dep2', 'new'])
+#lemon.dependencies.add('dep6', ['dep2', 'new'])
+#lemon.dependencies.add('dep7', ['dep3', 'sales', 'dep1', 'chat'])
