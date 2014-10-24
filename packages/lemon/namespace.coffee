@@ -8,3 +8,7 @@
 @modulus = {}
 modulus.seedScripts = []
 modulus.routes = []
+
+@Apps = {}
+Apps.Merchant = {}
+

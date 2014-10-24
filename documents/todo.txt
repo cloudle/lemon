@@ -1,1 +1,25 @@
 Lấy attribute con của session từ {{sessionGet 'name'}} kiểu như {{someSession.attr}}
+
+Ghi chú của Lộc:
+
+Bán Hàng:
+    Phần bán dùm nhân viên khác (phần nâng cao) sẽ là tùy chọn của Merchant or User :
+        Mặc định: dc bán dùm cho tất cả nhân viên(ko kiểm tra phân quyền)
+
+        + Bán dùm All (có thể bán dùm cho toàn nhân viên có phân quyền bán hàng)
+         theo toàn bộ, chi nhánh, nhóm nhân viên.
+        + Bán dùm custom (User tùy chỉnh) có 2 dạng:
+            Cho mọi người được bán dùm mình.
+            Chỉ định 1 số người bán dùm.
+        + Không bán dùm.
+
+    Sản phẩn bán hàng (phần nâng cao) chỉ định bán một số hàng hóa nhất định:
+        + giới hạn một số mặt hàng ở các chi nhánh, nhân viên.
+        + giới hạn số lượng bán ở các chi nhánh, nhân viên.
+
+
+
+
+
+
+

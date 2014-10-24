@@ -3,6 +3,13 @@ Schema.add 'roles', class Role
     Schema.userProfiles.update profileId, {$set: {roles: roles}}
 
   @isInRole: (userId, name) ->
+
+  @rolesOf: (permissions)->
+    roles = []
+    for role in @schema.find({permissions: {$elemMatch: {$in:[permissions, Sky.system.merchantPermissions.su.key]}}}).fetch()
+      roles.push role.name
+    roles
+
   @permissionsOf: (profile) ->
     if typeof profile isnt 'string'
       currentProfile = profile
