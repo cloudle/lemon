@@ -1,4 +1,5 @@
 @lemon = {}
+@Apps = {}
 @simpleSchema = {}
 @Schema = {}
 @db = {}
