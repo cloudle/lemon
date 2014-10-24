@@ -1,0 +1,8 @@
+template(name="notificationDetails")
+  .dropdown-menu(role="menu")
+    .header-caption NHẮC NHỞ CHUNG
+    ul.details
+      each notifications
+        li
+          +avatarImageComponent(avatar=requestSenderAvatar alias=requestSenderAlias)
+          .content {{message}}

@@ -1,3 +1,8 @@
+@require 'nib'
+
+collapse-transition
+  transition(all 0.15s ease)
+
 placeholder($color = #999)
   &::-moz-placeholder
     color $color
@@ -20,4 +25,3 @@ $box-shadow(shadow)
 
 $noise-material(material='light')
   background-image: url("/images/" + material + "-noise.png");
-

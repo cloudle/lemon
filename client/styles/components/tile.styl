@@ -1,0 +1,94 @@
+@require '../lib.import.styl'
+tile-size = 115px
+tile-space = 5px
+tile-group-space = 0
+tile-radius = 2px
+tile-radius-phone = 1px
+tile-caption-padding = 5px
+tile-double-size = tile-size * 2 + tile-space
+
+tile-background($color)
+  background-color $color
+  &:hover
+    background-color darken($color, 5)
+
+.tile
+  cursor pointer
+  position relative; float left
+  height tile-size; width tile-size
+  margin 0 tile-space tile-space 0
+  background-color #eeeeee
+  color #ffffff
+
+  for $color in colors
+    &.{$color[0]}
+      tile-background($color[1])
+
+  &:hover
+    outline rgba(255, 255, 255, 0.1) solid 2px
+
+  &.double
+    width tile-double-size
+  &.quatro
+    width tile-double-size
+    height tile-double-size
+  &.menu
+    margin 0 !important
+    box-shadow none
+    width 100% !important
+    display table
+
+  .caption
+    margin auto
+    position absolute
+    width 100%
+
+  .top
+    top 0; margin-top tile-caption-padding
+  .center
+    bottom 0
+    height 100%
+    margin 35% 0 0 0
+    display table
+  .table
+    display table-cell
+    vertical-align middle
+  .bottom
+    bottom 0
+    height auto
+    margin-bottom tile-caption-padding !important
+  .left
+    text-align left
+    margin-left tile-caption-padding
+  .middle
+    left 0; right 0
+    text-align center
+  .right
+    left auto; right tile-caption-padding !important
+    text-align right
+
+  h1, h2, h3, h4, h5, h6
+    color #fff
+    margin 0
+    tiny { font-size: 30%; }
+    tiny4 { font-size: 40%; }
+    tiny5 { font-size: 50%; }
+    tiny6 { font-size: 60%; }
+    tiny7 { font-size: 70%; }
+
+.tile.locked, .tile:not([data-app])
+  background-color gray !important
+  &:hover
+    * { opacity: 0.2; }
+    &:before
+      font-family 'lemon'
+      content '\E81C'
+      font-size 25px; color #cccccc
+      absolute left 50% top 50%
+      margin-left -10px; margin-right -20px
+    * { color: #B4B4B4; }
+
+for size in (1..6)
+  .tile-group-{size}
+    float left
+    width (tile-size * size) + (tile-space * size)

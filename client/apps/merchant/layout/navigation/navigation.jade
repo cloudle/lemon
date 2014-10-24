@@ -1,0 +1,36 @@
+template(name="navigation")
+  nav(role="navigation").navbar.main.navbar-fixed-top
+    .wrapper
+      a.branding
+        span.logo EDS
+        span.version {{currentSystemVersion}}
+        //form.navbar-form.navbar-left
+        //  input.form-control(type="text" maxlength="30" placeholder="tìm kiếm nhanh")
+
+      ul.nav.navbar-nav.navbar-right.notifications
+        li.inav
+          +messageNotifications
+          .notification-counts(class="{{messageClass}}") {{unreadMessageCount}}
+          span.dropdown-toggle(data-toggle="dropdown"): i.icon-chat-6
+        li.inav
+          +notificationDetails
+          .notification-counts(class="{{notificationClass}}") {{unreadNotificationCount}}
+          span.dropdown-toggle(data-toggle="dropdown"): i.icon-globe-6
+        li.inav
+          +requestDetails
+          .notification-counts(class="{{requestClass}}") {{unreadRequestCount}}
+          span.dropdown-toggle(data-toggle="dropdown"): i.icon-share-3
+        li.inav.collapse-toggle: span: i.collapse.fa.fa-th-list
+
+      ul.nav.navbar-nav
+        li.inav: span#logoutButton: i.icon-off-1
+        li.home(class="{{isActiveRoute 'metroHome'}}"): a(href="{{pathFor 'metroHome'}}"): i.icon-home-4
+        li.inav(class="{{isActiveRoute 'taskManager'}}")
+          a(href="{{pathFor 'taskManager'}}"): i.icon-clipboard-2
+        li.inav(class="{{isActiveRoute 'warehouse'}}")
+          a(href="{{pathFor 'warehouse'}}"): i.icon-cubes
+        each subMenus
+          li.inav(class="{{isActiveRoute route}}")
+            a(href="{{pathFor route}}"): i.fa(class="{{icon}}")
+
+  //+unreadMessagePopover

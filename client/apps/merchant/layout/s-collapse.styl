@@ -1,0 +1,10 @@
+@import "../../../styles/lib.import.styl"
+
+.application
+  collapse-transition()
+  nav.main
+    collapse-transition()
+  &.collapsed
+    margin-right left-pane-collapse-size - left-pane-size
+    nav.main { margin-right: left-pane-collapse-size - left-pane-size; }
+    #sidebar { right: left-pane-collapse-size - left-pane-size; }

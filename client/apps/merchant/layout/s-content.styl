@@ -1,0 +1,124 @@
+@import "../../../styles/lib.import.styl"
+editor-font-size = 12px
+
+#container
+  width 100%; height 100%
+  padding 43px left-pane-size 0 0
+
+  #header
+    background-color #fff
+    .caption-row
+      clearfix()
+      padding-top 10px
+      padding-bottom 5px
+      .title
+        float left
+        font-size 20px
+        font-weight lighter
+        margin-left 5px
+        text-transform uppercase
+        color #707070
+      .filter
+        float right
+        margin-right 5px
+    .commands
+      float right
+      margin-right 10px
+    .switches
+      float right
+      padding-bottom 5px
+      margin-right 5px
+
+  #content
+    height 100%
+    background-color #fff
+    overflow-y scroll
+    margin 3px 0 1px 0
+  #footer
+    background-color #fff
+    padding-top 5px
+    min-height 5px
+    .extra
+      display none
+      border-bottom solid 1px #dfdfdf
+      margin-bottom 10px
+
+
+  .editor-row
+    clearfix()
+    font-size editor-font-size
+
+  .editor-row .editor-wrapper
+    float left
+    position relative
+    padding-left 5px
+    padding-top 5px
+    &.right { float: right; padding-right: 5px; padding-left: 0; }
+
+    .field
+      width 100%; margin 5px 0
+
+    .ilabel
+      absolute left 15px top 0; z-index 10
+      padding 0 4px; line-height 10px
+      font-size 10px
+      text-align center
+      color #fff; background-color #F35112
+      border-radius top 2px
+      &.optional
+        background-color: lime;
+      &.center
+        left: 50%;
+        /*transform translate(-50%, 0)*/
+      &.right
+        left: auto; right: 15px
+    .btn
+      margin 5px 0; padding 4px 12px
+      border-radius 3px
+    > input
+      outline: none
+      border 1px solid #DFDFDF
+      width 100%; margin 5px 0
+      padding 0 7px; line-height 28px
+      border-radius 3px
+      font-size: editor-font-size
+      &:disabled
+        background-color #fff
+
+    .bootstrap-touchspin
+      .input-group-addon, .bootstrap-touchspin-up, .bootstrap-touchspin-down
+        margin-top 5px
+        padding 4px 10px
+        border-color #DFDFDF
+      .bootstrap-touchspin-up
+        border-color #DFDFDF
+        border-left-color transparent
+        border-radius left 0
+      .bootstrap-touchspin-down
+        border-right-color transparent
+        border-radius right 0
+      input
+        height 30px; margin 5px 0
+        text-align center
+        border-radius 0
+
+
+  .detail-grid
+    margin 0; padding 4px 2px 0 2px
+    min-height 104px
+    .col
+      float: left; padding 0 2px
+      width 33%
+    .tile
+      border-radius 2px
+      padding 5px
+      .title
+        font-size 22px
+        overflow ellipsis
+      .summary
+        absolute bottom 5px
+        font-size 20px
+        &.left
+          left 10px; margin 0
+        &.right
+          right 10px
