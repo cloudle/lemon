@@ -41,6 +41,8 @@ Package.onUse(function(api) {
 
     //Profiles, Roles & Permissions
     'system/schema/user.profile.coffee',
+    'system/schema/user.option.coffee',
+    'system/schema/user.session.coffee',
     'system/schema/role.coffee',
     'system/role.coffee',
 

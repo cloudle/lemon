@@ -25,4 +25,4 @@ simpleSchema.roles = new SimpleSchema
     type: [String]
     optional: true
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }

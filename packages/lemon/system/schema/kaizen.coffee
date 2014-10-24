@@ -47,5 +47,5 @@ simpleSchema.kaizens = new SimpleSchema
   status:
     type: String
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 
