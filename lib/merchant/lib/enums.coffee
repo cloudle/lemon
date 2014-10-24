@@ -6,7 +6,7 @@ Apps.Merchant.PaymentMethods = [
   display: 'GHI NỢ'
 ]
 
-Apps.Merchant.DeliveryTypes: [
+Apps.Merchant.DeliveryTypes = [
   _id: 0
   display: 'TRỰC TIẾP'
 ,
@@ -14,7 +14,7 @@ Apps.Merchant.DeliveryTypes: [
   display: 'GIAO HÀNG'
 ]
 
-Apps.Merchant.DiscountTypes: [
+Apps.Merchant.DiscountTypes = [
   _id: false
   display: 'GIẢM GIÁ TÙY CHỌN'
 ,

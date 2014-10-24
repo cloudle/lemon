@@ -14,4 +14,3 @@ Helpers.RemoveVnSigns = (source) ->
   str = str.replace /-+-/g, "-" #thay thế 2- thành 1-
   str = str.replace /^\-+|\-+$/g, "" #cắt bỏ ký tự - ở đầu và cuối chuỗi
   str
-

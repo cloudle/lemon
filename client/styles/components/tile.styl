@@ -38,11 +38,15 @@ tile-background($color)
     width 100% !important
     display table
 
+  .ico        { font-size: 28px; }
+  .ico.small  { font-size: 14px; }
+  .ico.large  { font-size: 35px; }
+  .ico.huge   { font-size: 50px; }
+
   .caption
     margin auto
     position absolute
     width 100%
-
   .top
     top 0; margin-top tile-caption-padding
   .center
@@ -77,7 +81,7 @@ tile-background($color)
     tiny7 { font-size: 70%; }
 
 .tile.locked, .tile:not([data-app])
-  background-color gray !important
+  background-color #808080 !important
   &:hover
     * { opacity: 0.2; }
     &:before
@@ -85,7 +89,7 @@ tile-background($color)
       content '\E81C'
       font-size 25px; color #cccccc
       absolute left 50% top 50%
-      margin-left -10px; margin-right -20px
+      margin-left -10px; margin-top -20px
     * { color: #B4B4B4; }
 
 for size in (1..6)

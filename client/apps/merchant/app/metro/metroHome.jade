@@ -3,60 +3,59 @@ template(name="metroHome")
     .tile-group-1
       .tile.lime.app-navigator(class="{{metroUnLocker Summary.data.staffCount}}"
       data-app='roleManager')
-        span.center.middle.caption: span.table: i.icon-key-3
+        span.center.middle.caption: span.table: i.ico.icon-eye-off-1
         span.bottom.middle.caption PHÂN QUYỀN
       .tile.pumpkin.app-navigator(class="{{metroUnLocker Summary.data.staffCount}}"
       data-app='staffManager')
         span.s7.top.middle.caption TÀI KHOẢN
-        span.center.middle.caption: span.table: i.fa.fa-share-alt.fa-2x
-        span.bottom.middle.caption {{Summary.data.staffCountAll}}<br />NHÂN VIÊN
+        span.center.middle.caption: span.table: i.ico.icon-share-3
+        span.bottom.middle.caption {{formatNumber Summary.data.staffCountAll}}<br />NHÂN VIÊN
       .tile.amethyst.app-navigator(class="{{metroUnLocker Summary.data.staffCount}}"
       data-app='customerManager')
         span.s7.top.middle.caption HỒ SƠ MACKAY
-        span.center.middle.caption: span.table: i.fa.fa-heart.fa-2x
-        span.bottom.middle.caption {{Summary.data.customerCountAll}}<br />KHÁCH HÀNG
+        span.center.middle.caption: span.table: i.ico.icon-heart-8
+        span.bottom.middle.caption {{formatNumber Summary.data.customerCountAll}}<br />KHÁCH HÀNG
       .tile.blue
 
     .tile-group-3
       .tile.quatro.lime.app-navigator(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='sales')
         span.top.right.caption BÁN HÀNG
-        span.center.middle.caption: span.table: i.fa.fa-tags.fa-4x
-        span.bottom.left.caption: h3 {{Summary.data.saleProductCount}} <tiny5>SẢN PHẨM ĐÃ BÁN</tiny5>
+        span.center.middle.caption: span.table: i.ico.huge.icon-tags-2
+        span.bottom.left.caption: h3 {{formatNumber Summary.data.saleProductCount}} <tiny5>SẢN PHẨM ĐÃ BÁN</tiny5>
       .tile.pumpkin.app-navigator(class="{{metroUnLocker Summary.data.saleCount}}"
       data-app='returns' )
-        span.center.middle.caption: span.table: i.fa.fa-reply-all.fa-2x
-        span.bottom.middle.caption  {{Summary.data.returnCount}} TRẢ HÀNG
+        span.center.middle.caption: span.table: i.ico.icon-reply-all-1
+        span.bottom.middle.caption  {{formatNumber Summary.data.returnCount}} TRẢ HÀNG
       .tile.amethyst.app-navigator(class="{{metroUnLocker Summary.data.saleCount}}"
       data-app='billManager')
-        span.center.middle.caption: span.table: i.fa.fa-file-text-o.fa-2x
-        span.bottom.middle.caption {{Summary.data.saleCount}} ĐƠN HÀNG
+        span.center.middle.caption: span.table: i.ico.icon-clipboard-2
+        span.bottom.middle.caption {{formatNumber Summary.data.saleCount}} ĐƠN HÀNG
       .tile.double.orange.app-navigator(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='transactionManager')
-        span.top.left.caption: h3 {{Summary.data.saleDebitCash}} $ <tiny5>PHẢI THU</tiny5>
-        span.center.left.caption: span.table: i.fa.fa-credit-card.fa-2x
+        span.top.left.caption: h3 {{formatNumber Summary.data.saleDebitCash}} VNĐ <tiny5>PHẢI THU</tiny5>
+        span.center.left.caption: span.table: i.ico.icon-money
         span.bottom.left.caption CÔNG NỢ
       .tile.teal.app-navigator(class="{{metroUnLocker Summary.data.deliveryCount}}"
       data-app='delivery')
-        span.center.middle.caption: span.table: i.fa.fa-truck.fa-2x
-        span.bottom.middle.caption {{Summary.data.deliveryCount}} GIAO HÀNG
+        span.center.middle.caption: span.table: i.ico.icon-truck-1
+        span.bottom.middle.caption {{formatNumber Summary.data.deliveryCount}} GIAO HÀNG
       .tile.sun-flower.app-navigator(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='accountingManager')
-        span.center.middle.caption: span.table: i.fa.fa-truck.fa-2x
+        span.center.middle.caption: span.table: i.ico.icon-truck-1
         span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> THU TIỀN
       .tile.sun-flower
       .tile.sun-flower
 
-
     .tile-group-3
       .tile.sun-flower.app-navigator(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='billExport')
-        span.center.middle.caption: span.table: i.fa.fa-share-square-o.fa-2x
+        span.center.middle.caption: span.table: i.ico.icon-forward-4
         span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> XUẤT NHẬP KHO
       .tile.pumpkin.double.double-vertical.app-navigator(class="{{metroUnLocker Summary.data.warehouseCount}}"
       data-app='import')
-        span.center.left.caption: span.table: i.fa.fa-cubes.fa-2x
-        span.bottom.left.caption {{Summary.data.importCount}} NHẬP KHO
+        span.center.left.caption: span.table: i.ico.icon-cubes
+        span.bottom.left.caption {{formatNumber Summary.data.importCount}} NHẬP KHO
         span.top.left.caption
           h3 <tiny5>TỔNG NHẬP {{Summary.data.importProductCount}}</tiny5>
         span.bottom.right.caption
@@ -64,62 +63,59 @@ template(name="metroHome")
       .tile.peter-river.app-navigator(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='stockManager')
         span.s7.top.middle.caption ĐIỀU CHỈNH GIÁ BÁN
-        span.center.middle.caption: span.table: i.fa.fa-eye.fa-2x
+        span.center.middle.caption: span.table: i.ico.icon-eye-7
         span.bottom.middle.caption XEM TỒN KHO
       .tile.turquoise.app-navigator(class="{{metroUnLocker Summary.data.inventoryCount}}"
       data-app='inventoryHistory')
-        span.center.middle.caption: span.table: i.fa.fa-eye.fa-2x
+        span.center.middle.caption: span.table: i.ico.icon-eye-7
         span.bottom.middle.caption <span class="s7">CHI TIẾT</span><br /> KIỂM KHO
       .tile.sun-flower.app-navigator(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='inventory')
-        span.center.middle.caption: span.table: i.fa.fa-history.fa-2x
-        span.bottom.middle.caption {{Summary.data.inventoryCount}}<br />KIỂM KHO
+        span.center.middle.caption: span.table: i.ico.icon-history
+        span.bottom.middle.caption {{formatNumber Summary.data.inventoryCount}}<br />KIỂM KHO
       .tile.double.lime
         span.center.left.caption: span.table
-          i.fa.fa-area-chart.fa-1x
-          i.fa.fa-line-chart.fa-2x
-          i.fa.fa-pie-chart.fa-3x
-          i.fa.fa-bar-chart.fa-2x
+          i.ico.large.icon-chart-pie-2
         span.bottom.left.caption BÁO CÁO DOANH SỐ
       .tile.carrot.app-navigator(class="{{metroUnLocker Summary.data.inventoryCount}}"
       data-app='inventoryReview')
-        span.center.middle.caption: span.table: i.fa.fa-eye.fa-2x
+        span.center.middle.caption: span.table: i.ico.icon-eye-7
         span.bottom.middle.caption <span class="s7">LỊCH SỬ</span><br /> KIỂM KHO
       .tile.magenta.app-navigator(class="{{metroUnLocker Summary.data.inventoryCount}}"
       data-app='inventoryIssue')
         span.center.middle.caption: span.table
-          i.fa.fa-cubes.fa-2x
-          i.fa.fa-wrench.fa-1x
+          i.ico.icon-cubes
+          i.ico.small.icon-camera
         span.bottom.middle.caption XỬ LÝ MẤT
       .tile.belize-hole.app-navigator(class="{{metroUnLocker Summary.data.saleCount}}"
       data-app='export')
         span.center.middle.caption: span.table
-          i.fa.fa-cubes.fa-2x
-          i.fa.fa-wrench.fa-1x
+          i.ico.icon-cubes
+          i.ico.small.icon-calendar
         span.bottom.middle.caption CHUYỂN KHO
       .tile.lime.app-navigator(class="{{metroUnLocker Summary.data.saleCount}}"
       data-app='export')
         span.center.middle.caption: span.table
-          i.fa.fa-cubes.fa-2x
-          i.fa.fa-wrench.fa-1x
+          i.ico.icon-cubes
+          i.ico.small.icon-calendar
         span.bottom.middle.caption <span class="s7">LỊCH SỬ</span><br /> CHUYỂN KHO
     .tile-group-1
       .tile.belize-hole.app-navigator(class="{{metroUnLocker Summary.data.merchantCount}}"
       data-app='branchManager')
         span.center.middle.caption: span.table
-          i.fa.fa-home.fa-1x
-          i.fa.fa-home.fa-2x
-          i.fa.fa-home.fa-1x
-        span.bottom.middle.caption {{Summary.data.merchantCount}}<br />CHI NHÁNH
+          i.ico.small.icon-home-6
+          i.ico.icon-home-6
+          i.ico.small.icon-home-6
+        span.bottom.middle.caption {{formatNumber Summary.data.merchantCount}}<br />CHI NHÁNH
       .tile.lime.app-navigator(class="{{metroUnLocker Summary.data.warehouseCount}}"
       data-app='warehouseManager')
         span.center.middle.caption: span.table
-          i.fa.fa-building.fa-1x
-          i.fa.fa-building-o.fa-2x
-          i.fa.fa-building-o.fa-1x
-        span.bottom.middle.caption {{Summary.data.warehouseCount}}<br />KHO HÀNG
-      .tile.asbestos.app-navigator(class="{{metroUnLocker Summary.data.merchantCount}}"
+          i.ico.small.icon-building-filled
+          i.ico.icon-building
+          i.ico.small.icon-building
+        span.bottom.middle.caption {{formatNumber Summary.data.warehouseCount}}<br />KHO HÀNG
+      .tile.wisteria.app-navigator(class="{{metroUnLocker Summary.data.merchantCount}}"
       data-app='tracker')
-        span.center.middle.caption: span.table: i.fa.fa-newspaper-o.fa-2x
+        span.center.middle.caption: span.table: i.ico.icon-video-alt
         span.bottom.middle.caption NHẬT KÝ
-      .tile.sun-flower
+      .tile.sun-flowers
