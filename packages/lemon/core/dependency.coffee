@@ -19,8 +19,6 @@ lemon.dependencies.resolve = (name) ->
       Meteor.subscribe.call(null, dep)
     else if Array.isArray(dep)
       Meteor.subscribe.apply(null, dep)
-
-  console.log dependencies
   return
 
 #Helpers -------------------------------------------------------------->

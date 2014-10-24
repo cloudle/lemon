@@ -1,7 +1,7 @@
 merchantDevRoute =
   template: 'merchantDev',
-  waitOn: -> lemon.dependencies.resolve('dep1')
-  data: -> { }
+  waitOn: -> lemon.dependencies.resolve('essentials')
+  data: -> { System: System.findOne({}) }
 
 metroSummaryRoute =
   layoutTemplate: 'merchantLayout',
