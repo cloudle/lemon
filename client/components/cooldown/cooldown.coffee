@@ -1,4 +1,4 @@
-Sky.template.extends Template.iCooldown,
+lemon.defineWidget Template.iCooldown,
   ui:
     iCooldown: ".iCooldown"
 

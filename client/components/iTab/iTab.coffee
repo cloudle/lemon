@@ -22,7 +22,7 @@ generateActiveClass = (context, instance) ->
   currentSource = Session.get(context.data.options.currentSource)
   if !currentSource || instance[key] isnt currentSource[key] then '' else 'active'
 
-Sky.template.extends Template.iTab,
+lemon.defineWidget Template.iTab,
   sources: -> Session.get(@options.source)
   getCaption: -> @[UI._templateInstance().data.options.caption ? 'caption']
   activeClass: -> generateActiveClass(UI._templateInstance(), @)

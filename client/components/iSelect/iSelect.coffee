@@ -26,19 +26,10 @@ setSelection = ($element, context) ->
   else
     $element.select2('val', val) if val
 
-#makeSlimScroll = ($element, context) ->
-#  maxResultHeight = context.data.maxResultHeight ? 200
-#  $element.on 'select2-open', (e) ->
-#    $results = $("#select2-drop ul.select2-results")
-#    realResultHeight = if $results.height() > maxResultHeight then maxResultHeight else $results.height()
-#    console.log realResultHeight
-#    $results.slimScroll({height: realResultHeight})
-#    $(@).off('select2-open')
-
 destroySelection = ($element, context) -> $element.select2('destroy')
 stopTrackingValue = (context) -> context.valueTracker.stop()
 
-Sky.template.extends Template.iSelect,
+lemon.defineWidget Template.iSelect,
   events:
     "click .select2component": ->
   ui:
@@ -51,7 +42,6 @@ Sky.template.extends Template.iSelect,
     registerSelection $element, @
     registerHotkey $element, @
     startTrackingValue $element, @
-#    makeSlimScroll $element, @
     setSelection $element, @
 
   destroyed: ->

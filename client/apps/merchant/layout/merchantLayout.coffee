@@ -1,6 +1,6 @@
-toggleCollapse = -> Session.set 'collapse', if Template.merchantLayout.collapse() then '' else 'collapsed'
+toggleCollapse = -> Session.set 'collapse', if Session.get('collapse') is 'collapsed' then '' else 'collapsed'
 
 lemon.defineWidget Template.merchantLayout,
-  collapse: -> Session.get('collapse') ? 'collapsed'
+  collapse: -> Session.get('collapse') ? ''
   events:
     "click .collapse-toggle": -> toggleCollapse()

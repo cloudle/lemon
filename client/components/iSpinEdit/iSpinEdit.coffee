@@ -27,8 +27,7 @@ startTrackingValue = ($element, context) ->
 isValueValid = (context, value) ->
     value >= context.data.options.reactiveMin() &&
     value <= context.data.options.reactiveMax()
-
-Sky.template.extends Template.iSpinEdit,
+lemon.defineWidget Template.iSpinEdit,
   reactiveValue: -> UI._templateInstance().data.options.reactiveValue()
   ui:
     component: "input"

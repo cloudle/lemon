@@ -5,7 +5,7 @@ merchantDevRoute =
 
 metroSummaryRoute =
   layoutTemplate: 'merchantLayout',
-  template: 'metroHome',
+  template: 'merchantHome',
   fastRender: true,
   waitOn: -> lemon.dependencies.resolve('metroHome')
   data: -> {Summary: MetroSummary.findOne({})}
@@ -16,6 +16,5 @@ saleRoute =
   fastRender: true,
   waitOn: -> lemon.dependencies.resolve('metroHome')
   data: -> {Summary: MetroSummary.findOne({})}
-
 
 lemon.addRoute [merchantDevRoute, metroSummaryRoute]
