@@ -50,6 +50,10 @@ Package.onUse(function(api) {
     'system/schema/kaizen.coffee',
     'system/kaizen.coffee',
 
+    //Notification
+    'notification/schema/notification.coffee',
+    'notification/notification.coffee',
+
     //Messenger
     'messenger/schema/message.coffee',
     'messenger/messenger.coffee'

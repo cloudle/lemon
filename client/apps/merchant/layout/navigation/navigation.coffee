@@ -1,19 +1,10 @@
 lemon.defineApp Template.navigation,
-  unreadMessageCount: -> Sky.global.notification.unreadMessages.count()
-  messageClass: -> if Sky.global.notification.unreadMessages.count() > 0 then 'active' else ''
-
-  unreadNotificationCount: -> Sky.global.notification.unreadNotifications.count()
-  notificationClass: -> if Sky.global.notification.unreadNotifications.count() > 0 then 'active' else ''
-
-  unreadRequestCount: -> Sky.global.notification.unreadRequests.count()
-  requestClass: -> if Sky.global.notification.unreadRequests.count() > 0 then 'active' else ''
+  unreadMessageCount: -> logics.merchantNotification.unreadMessages.count()
+  unreadNotifiesCount: -> logics.merchantNotification.unreadNotifies.count()
+  unreadRequestCount: -> logics.merchantNotification.unreadRequests.count()
   collapseClass: -> if Session.get('collapse') then 'icon-angle-double-left' else 'icon-angle-double-right'
   subMenus: -> Session.get('subMenus')
-  currentSystemVersion: -> Schema.systems.findOne()?.version ? ''
 
   events:
-    "click #logoutButton": (event, template) ->
-      Meteor.logout()
-      Router.go('/')
-      Session.set("currentProfile")
+    "click #logoutButton": (event, template) -> lemon.logout('/')
     "click a.branding": -> Session.set('autoNatigateDashboardOff', true); Router.go('/')

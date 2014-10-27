@@ -1,0 +1,49 @@
+@import "../../../../../styles/lib.import.styl"
+
+.notifications .dropdown-menu
+  padding 0
+  margin 3px 0 !important
+  right -10px
+
+  &:after, &:before
+    z-index 15
+    content ""
+    absolute bottom 100% right 20px
+    width 0; height 0
+    border-left 10px solid transparent
+    border-right 10px solid transparent
+    border-bottom 12px solid #f2f2f2
+  &:after
+    border-bottom-color #999
+    z-index 14
+
+  .header-caption
+    font-size 14px
+    padding 5px
+
+  ul.details
+    padding-left 0
+    max-height 424px
+    overflow-y scroll
+    li
+      clearfix()
+      list-style none
+      border-top solid 1px #dedede
+      .avatar-img
+        float left
+        width 50px; height 50px
+        margin 1px
+      .avatar-letter
+        background-color #BEBEBE
+        float left
+        width 50px; height 50px
+        margin 1px
+        line-height 50px; text-align center
+        font-size 25px
+        font-weight bolder
+        padding 0
+      .content
+        width 300px
+        padding-left 55px
+        height 50px
+        font-size 12px

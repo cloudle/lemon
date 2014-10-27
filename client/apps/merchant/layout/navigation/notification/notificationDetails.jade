@@ -2,7 +2,7 @@ template(name="notificationDetails")
   .dropdown-menu(role="menu")
     .header-caption NHẮC NHỞ CHUNG
     ul.details
-      each notifications
+      each notifies
         li
-          +avatarImageComponent(avatar=requestSenderAvatar alias=requestSenderAlias)
+          +avatarImageComponent(avatar=notificationSenderAvatar alias=notificationSenderAlias)
           .content {{message}}

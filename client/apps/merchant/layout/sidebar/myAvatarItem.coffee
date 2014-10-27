@@ -1,13 +1,5 @@
 lemon.defineWidget Template.myAvatarItem,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
-  onlineStatus: ->
-    currentUser = Meteor.users.findOne(@user)
-    if currentUser?.status?.online
-      return 'online'
-    else if currentUser?.status?.idle
-      return 'idle'
-    else
-      return 'offline'
 
   events:
     "click": (event, template) -> console.log template.find('.avatarFileSelector').click()

@@ -2,7 +2,7 @@ template(name="messageNotifications")
   .dropdown-menu(role="menu")
     .header-caption TIN NHẮN
     ul.details
-      each top10messages
+      each topMessages
         li
-          +avatarImageComponent(avatar=requestSenderAvatar alias=requestSenderAlias)
+          +avatarImageComponent(avatar=notificationSenderAvatar alias=notificationSenderAlias)
           .content {{message}}

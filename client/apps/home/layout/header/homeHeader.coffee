@@ -7,7 +7,7 @@ lemon.defineWidget Template.homeHeader,
     "click .languages li": -> i18n.setLanguage @key
     "click #authButton.valid": (event, template) -> logics.homeHeader.login(event, template)
     "click #logoutButton": -> lemon.logout()
-    "click #gotoMerchantButton": -> Router.go('/dashboard')
+    "click #gotoMerchantButton": -> Router.go('/merchant')
     "click .logo-text": -> Router.go('/dashboard') if Meteor.userId() isnt null
 
     "keypress .login-field": (event, template) ->

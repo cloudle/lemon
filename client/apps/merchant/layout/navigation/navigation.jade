@@ -3,22 +3,20 @@ template(name="navigation")
     .wrapper
       a.branding
         span.logo EDS
-        span.version {{currentSystemVersion}}
-        //form.navbar-form.navbar-left
-        //  input.form-control(type="text" maxlength="30" placeholder="tìm kiếm nhanh")
+        span.version {{systemVersion}}
 
       ul.nav.navbar-nav.navbar-right.notifications
         li.inav
           +messageNotifications
-          .notification-counts(class="{{messageClass}}") {{unreadMessageCount}}
+          .notification-counts(class="{{activeClassByCount unreadMessageCount}}") {{unreadMessageCount}}
           span.dropdown-toggle(data-toggle="dropdown"): i.icon-chat-6
         li.inav
           +notificationDetails
-          .notification-counts(class="{{notificationClass}}") {{unreadNotificationCount}}
+          .notification-counts(class="{{activeClassByCount unreadNotifiesCount}}") {{unreadNotifiesCount}}
           span.dropdown-toggle(data-toggle="dropdown"): i.icon-globe-6
         li.inav
           +requestDetails
-          .notification-counts(class="{{requestClass}}") {{unreadRequestCount}}
+          .notification-counts(class="{{activeClassByCount unreadRequestCount}}") {{unreadRequestCount}}
           span.dropdown-toggle(data-toggle="dropdown"): i.icon-share-3
         li.inav.collapse-toggle: span: i(class="{{collapseClass}}")
 
