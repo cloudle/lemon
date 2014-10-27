@@ -1,0 +1,9 @@
+template(name="iTab")
+	ul.sky-tab
+		li.new-button
+			.title &nbsp;
+			span.fa.fa-plus
+		each sources
+			li(class="#{activeClass}")
+				.title #{getCaption}
+				span.fa.fa-times-circle

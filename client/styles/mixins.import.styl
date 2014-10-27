@@ -12,6 +12,13 @@ placeholder($color = #999)
   &::-webkit-input-placeholder
     color $color
 
+user-select($select)
+  -webkit-user-select $select
+  -moz-user-select $select
+  -ms-user-select $select
+  -o-user-select $select
+  user-select $select
+
 $rotate($degrees)
   -webkit-transform rotate($degrees)
   -ms-transform rotate($degrees)

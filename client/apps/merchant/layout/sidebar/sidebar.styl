@@ -1,0 +1,112 @@
+@import "../../../../styles/lib.import.styl"
+
+#sidebar
+  collapse-transition()
+  margin-top 40px
+  fixed right 0
+  width left-pane-size
+  min-height 100%
+  background-color left-pane-background-color
+  padding-top nav-bottom-border-size
+  border-left 5px solid #1A1A1A
+  z-index 9999
+
+  ul.sidebar-nav
+    clearfix()
+    list-style none
+    margin 0; padding 0
+    a > i { color: #4D4748; }
+
+    li
+      float left
+      margin-bottom -1px
+      a
+        line-height 51px
+        padding 0 27px
+        i { font-size: 16px; }
+
+      &.active
+        background-color caption-background-color
+        border-left solid 1px #1D1D1D
+        border-right solid 1px #1D1D1D
+        a > i { color: #fff; }
+
+  .sidebar-caption
+    overflow ellipsis
+    height 50px
+    background-color caption-background-color
+    border-top solid 1px #2C2C2C
+    border-bottom solid 1px #070707
+    color #fff
+    font-size 20px; font-weight 300
+    text-transform uppercase
+    line-height 50px
+    padding 0 10px
+    text-align center
+
+  ul.messenger-list
+    padding 0; margin 0
+    color #fff
+
+  .chat-avatar
+    user-select(none)
+    list-style: none;
+    position: relative;
+    cursor: pointer;
+    &.me { input[type="file"] { display: none; } }
+
+    &:after
+      font-family 'lemon'
+      content '\E848'
+      absolute bottom -7px left 26px
+      font-size 10px
+      color #999999
+
+    .online-status-orb
+      width 10px; height 10px
+      absolute top 6px right 6px
+      border-radius 50%
+      background-color gray
+      &.online
+        background-color lime
+      &.idle
+        background-color carrot
+
+
+    .has-message-status
+      absolute top 7px right 5px
+      line-height 5px
+      font-size 8px
+      visibility hidden
+      &.active
+        visibility visible
+
+    .alias
+      pointer-events none
+      transition(left 0.15s ease)
+      absolute top 37px left 36px
+      padding 0 2px; width 54px
+      font-size 9px
+      overflow ellipsis
+      text-transform capitalize
+      transform rotate(90deg)
+      color #5C5C5C
+
+    img
+      width 60px; height 60px
+      border-radius 50%
+      padding 5px
+
+    &.me img
+       width 78px; height 78px
+
+    span
+      display block
+      width 60px; height 60px
+      font-size 14px; padding 5px
+      line-height 60px
+      color #ffffff
+      border-radius 50%
+      text-align center
+      font-weight bolder
+      text-transform uppercase

@@ -1,3 +1,10 @@
 template(name="merchantLayout")
-  h1 This is merchant layout
-  +yield
+  +watermark
+  .application(class="#{collapse}")
+    +navigation
+    +sidebar
+    #container
+      +yield
+
+template(name="watermark")
+  .watermark THIEN BAN<br />TECHNOLOGY COMPANY

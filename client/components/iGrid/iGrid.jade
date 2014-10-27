@@ -1,0 +1,11 @@
+template(name="iGrid")
+  .igrid(class="#{options.wrapperClasses}")
+    if classicalHeader
+      .igrid-header(class="#{classicalHeader.class}")
+        +UI.dynamic(template=itemTemplate data=classicalHeader.columns)
+    each dataSource
+      +UI.dynamic(template=itemTemplate data=this)
+
+template(name="testDyn")
+  | #{name}, #{price}
+  a.btn.btn-default Cloud

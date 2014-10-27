@@ -7,7 +7,7 @@ lemon.defineApp Template.navigation,
 
   unreadRequestCount: -> Sky.global.notification.unreadRequests.count()
   requestClass: -> if Sky.global.notification.unreadRequests.count() > 0 then 'active' else ''
-
+  collapseClass: -> if Session.get('collapse') then 'icon-angle-double-left' else 'icon-angle-double-right'
   subMenus: -> Session.get('subMenus')
   currentSystemVersion: -> Schema.systems.findOne()?.version ? ''
 

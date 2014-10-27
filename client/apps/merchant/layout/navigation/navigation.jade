@@ -20,7 +20,7 @@ template(name="navigation")
           +requestDetails
           .notification-counts(class="{{requestClass}}") {{unreadRequestCount}}
           span.dropdown-toggle(data-toggle="dropdown"): i.icon-share-3
-        li.inav.collapse-toggle: span: i.collapse.fa.fa-th-list
+        li.inav.collapse-toggle: span: i(class="{{collapseClass}}")
 
       ul.nav.navbar-nav
         li.inav: span#logoutButton: i.icon-off-1
@@ -32,5 +32,3 @@ template(name="navigation")
         each subMenus
           li.inav(class="{{isActiveRoute route}}")
             a(href="{{pathFor route}}"): i.fa(class="{{icon}}")
-
-  //+unreadMessagePopover

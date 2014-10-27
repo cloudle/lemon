@@ -1,0 +1,120 @@
+@import "../../../../styles/lib.import.styl"
+
+nav.main
+  background-color #fff
+  min-height 40px
+  border none
+  border-bottom solid nav-bottom-border-size #f0f0f0
+  z-index 999
+
+  .branding
+    width left-pane-size
+    background-color left-pane-background-color
+    position relative
+    float right
+    height 40px
+    text-align center
+    border-left 5px solid #1A1A1A
+
+    .logo
+      margin 11px 0
+      font-weight bold
+      color #FF5C00
+      font-size 16px
+      display block
+
+    .version
+      absolute right 5px top 2px
+      color #ffffff
+      font-size 8px
+      font-weight bolder
+
+    .navbar-form
+      margin-top 10px
+      input[type="text"]
+        width: 235px;
+        height: 25px;
+        placeholder(#dedede)
+        border-radius 0
+
+
+    .collapse-toggle
+      absolute right 0
+      font-size 18px
+      color left-pane-foreground-color
+      padding 12px 14px
+      &:hover
+        color lighten(left-pane-foreground-color, 10)
+
+  .navbar-header
+    width left-pane-size
+
+  .notifications > li
+    border-left solid 1px #F0F0F0
+    border-right none
+    i { font-size: 15px; }
+
+  li
+    border-right solid 1px #F0F0F0
+    &.collapse-toggle
+      &:before
+        content ''
+        background-color #ffffff
+        width 6px; height 6px
+        transform rotate(45deg)
+        position absolute
+        right -3px; top 16px
+
+    &.home a
+      font-size 20px; padding 10px 10px
+
+    a { color: #696969; padding: 10px 15px; }
+    a:hover
+      background-color #f2f2f2 !important
+
+    &.active
+      &:after
+        content: ''
+        background-color: #f0f0f0
+        width: 6px; height: 6px
+        top: 16px;
+        transform rotate(45deg)
+      a
+        color #333
+        background-color #f0f0f0
+        &:hover
+          background-color #f0f0f0 !important
+
+    &.inav
+      cursor pointer
+      span
+        color #888888
+        line-height 40px
+        padding 12px 15px
+
+      .notification-counts
+        pointer-events none
+        absolute right 10px top 2px
+        font-size 11px
+        padding 0 3px
+        height 17px; line-height 15px
+        text-align center
+        border-radius 3px
+        background-color #F35112
+        border solid 1px #ECECEC
+        color #ffffff
+        z-index 10
+        visibility hidden
+        font-weight bold
+
+        &.active
+          visibility visible
+
+ul.iconic
+  margin-left 6px
+
+nav.secondary
+  margin-left left-pane-size
+  margin-top 51px
+  background-color #149FBE
+  z-index 998
