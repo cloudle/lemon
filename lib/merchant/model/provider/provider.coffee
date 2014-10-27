@@ -1,2 +1,2 @@
 Schema.add 'providers', class Provider
-  @createBySale: (saleId)->
+  @insideMerchant: (merchantId) -> @schema.find({parentMerchant: merchantId})

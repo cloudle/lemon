@@ -34,25 +34,7 @@
 ##
 #  metroSummary = Schema.metroSummaries.findOne({merchant: imports.merchant})
 #  Schema.metroSummaries.update metroSummary._id, $inc: option, $set: setOption
-#
-#
-#createTransactionAndDetailByImport = (importId)->
-#  warehouseImport = Schema.imports.findOne(importId)
-#  transaction = Transaction.newByImport(warehouseImport)
-#  transactionDetail = TransactionDetail.newByTransaction(transaction)
-#
-#removeOrderAndOrderDetailAfterCreateSale= (orderId)->
-#  allTabs = Schema.orders.find({creator: Meteor.userId()}).fetch()
-#  currentSource = _.findWhere(allTabs, {_id: orderId})
-#  currentIndex = allTabs.indexOf(currentSource)
-#  currentLength = allTabs.length
-#  if currentLength == 1
-#    Order.createOrderAndSelect()
-#    Order.removeAllOrderDetail(orderId)
-#  if currentLength > 1
-#    UserProfile.update {currentOrder: allTabs[currentIndex-1]._id}
-#    Order.removeAllOrderDetail(orderId)
-#
+
 #Sky.global.reCalculateImport = (importId)->
 #  if !warehouseImport = Schema.imports.findOne(importId) then console.log('Sai Import'); return
 #  if !importDetails = Schema.importDetails.find({import: importId}).fetch() then console.log('Sai Import'); return
@@ -63,20 +45,9 @@
 #    Schema.imports.update importId, $set: {totalPrice: totalPrice, deposit: totalPrice, debit: 0}
 #  else
 #    Schema.imports.update importId, $set: {totalPrice: 0, deposit: 0, debit: 0}
-#
+
 Schema.add 'imports', class Import
-  @removeAll: (importId)->
-##    return ('Chua Dang Nhap') if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-#    return ("Phiếu nhập kho không tồn tại") if !imports = Schema.imports.findOne({_id: importId, finish: false})
-#    return ("Phiếu nhập kho đã duyệt, không thể xóa") if imports.submitted == true
-#    return ("Phiếu nhập kho đang chờ duyệt, không thể xóa") if imports.finish == true
-#
-#    for importDetail in Schema.importDetails.find({import: imports._id}).fetch()
-#      Schema.importDetails.remove(importDetail._id)
-#    Schema.imports.remove(imports._id)
-#    return ("Đã xóa thành công phiếu nhập kho")
-#
-#  @createdByWarehouseAndSelect: (warehouseId, option)->
+  @createdByWarehouseAndSelect: (warehouseId, option)->
 #    return ('Kho không chính xác') if !warehouse = Schema.warehouses.findOne(warehouseId)
 #    return ('Mô Tả Không Được Đễ Trống') if !option.description
 #    option.merchant   = warehouse.merchant
@@ -92,56 +63,69 @@ Schema.add 'imports', class Import
 #    UserProfile.update {currentImport: option._id}
 #    option
 #
-#  @finishImport: (importId)->
-#    return('Bạn chưa đăng nhập') if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-#    return('Phiếu nhập kho không tồn tại') if !imports = Schema.imports.findOne({_id: importId})
-#    return ("Phiếu nhập kho đã duyệt, không thể chờ duyệt") if imports.submitted == true && imports.finish == true
-#    return ("Phiếu nhập kho đã đang chờ duyệt") if imports.submitted == false && imports.finish == true
-#    importDetails = Schema.importDetails.find({import: importId}).fetch()
-#    return('Phiếu nhập kho rỗng, hay thêm sản phẩm') if importDetails.length < 1
+#  @new: (option)->
+#    userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+#    option.merchant   = userProfile.currentMerchant
+#    option.warehouse  = userProfile.currentWarehouse
+#    option.creator    = userProfile.user
+#    option.finish     = false
+#    option.submitted  = false
+#    option.totalPrice = 0
+#    option.deposit    = 0
+#    option.debit      = 0
+#    option.emailCreator = Meteor.user().emails[0].address
+#    option
 #
-#    if imports.finish == false && imports.submitted == false
+#
+#
+#  reCalculate: ->
+#    importDetails = Schema.importDetails.find({import: @id}).fetch()
+#    totalPrice = 0
+#    if importDetails.length > 0
+#      for detail in importDetails
+#        totalPrice += (detail.importQuality * detail.importPrice)
+#        option = {totalPrice: totalPrice, deposit: totalPrice, debit: 0}
+#    else option = {totalPrice: 0, deposit: 0, debit: 0}
+#
+#    Schema.imports.update @id, $set: option
+#
+#  removeAll: ->
+#    for importDetail in Schema.importDetails.find({import: @id}).fetch()
+#      Schema.importDetails.remove(importDetail._id)
+#    Schema.imports.remove(@id)
+#    console.log("Đã xóa thành công phiếu nhập kho")
+#
+#  finish: ->
+#    importDetails = Schema.importDetails.find({import: @id}).fetch()
+#    if @data.finish == @data.submitted == false && importDetails.length < 1
 #      for importDetail in importDetails
 #        Schema.importDetails.update importDetail._id, $set: {finish: true}
-#      Schema.imports.update importId, $set:{finish: true}
-#      return ('Phiếu nhập kho đang chờ duyệt')
+#      Schema.imports.update @id, $set:{finish: true}
+#      console.log('Phiếu nhập kho đang chờ duyệt')
 #    else
-#      return ('Đã có lỗi trong quá trình xác nhận')
+#      console.log('Đã có lỗi trong quá trình xác nhận')
 #
-#  @editImport: (importId)->
-#    return('Bạn chưa đăng nhập') if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-#    return('Phiếu nhập kho không tồn tại') if !imports = Schema.imports.findOne({_id: importId})
-#    return ("Phiếu nhập kho đã duyệt, không thể chỉnh sửa") if imports.submitted == true && imports.finish == true
-#    return ("Phiếu nhập kho đang có thể chỉnh sửa") if imports.finish == false && imports.submitted == false
-#    importDetails = Schema.importDetails.find({import: importId}).fetch()
-#    return ('Phiếu nhập kho rỗng, hay thêm sản phẩm') if importDetails.length < 1
-#
-#    if imports.finish == true && imports.submitted == false
+#  enabledEdit: ->
+#    if @data.finish == true && @data.submitted == false
+#      importDetails = Schema.importDetails.findOne({import: @id})
 #      for importDetail in importDetails
 #        Schema.importDetails.update importDetail._id, $set: {finish: false}
-#      Schema.imports.update importId, $set:{finish: false}
-#      return ('Phiếu nhập kho đã có thể chỉnh sửa')
+#      Schema.imports.update @id, $set:{finish: false}
+#      console.log('Phiếu nhập kho đã có thể chỉnh sửa')
 #    else
-#      return ('Đã có lỗi trong quá trình xác nhận')
+#      console.log('Đã có lỗi trong quá trình xác nhận')
 #
-#  @submittedImport: (importId)->
-#    return('Bạn chưa đăng nhập') if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-#    return('Phiếu nhập kho không tồn tại') if !imports = Schema.imports.findOne({_id: importId})
-#    return ("Phiếu nhập kho đã duyệt, không thể duyệt lần thứ nữa") if imports.submitted == true && imports.finish == true
-#    return ("Phiếu nhập kho chưa chờ duyệt") if imports.finish == false && imports.submitted == false
-#
-#    importDetails = Schema.importDetails.find({import: importId, finish: true}).fetch()
-#    return ('Phiếu nhập kho rỗng, hay thêm sản phẩm') if importDetails.length < 1
-#
-#    if imports.finish == true && imports.submitted == false
+#  submit: ->
+#    if @data.finish == true && @data.submitted == false
+#      importDetails = Schema.importDetails.find({import: @id}).fetch()
 #      for importDetail in importDetails
 #        product = Schema.products.findOne importDetail.product
-#        return ('Không tìm thấy sản phẩm id:'+ importDetail.product) if !product
+#        return console.log('Không tìm thấy sản phẩm id:'+ importDetail.product) if !product
 #
 #      for importDetail in importDetails
-#        productDetail= ProductDetail.newProductDetail(imports, importDetail)
+#        productDetail= ProductDetail.newProductDetail(@data, importDetail)
 #        Schema.productDetails.insert productDetail, (error, result) ->
-#          if error then return 'Sai thông tin sản phẩm nhập kho'
+#          if error then return console.log('Sai thông tin sản phẩm nhập kho')
 #
 #        product = Schema.products.findOne importDetail.product
 #        option1=
@@ -155,12 +139,13 @@ Schema.add 'imports', class Import
 #        option2.price = importDetail.salePrice if importDetail.salePrice
 #
 #        Schema.products.update product._id, $inc: option1, $set: option2, (error, result) ->
-#          if error then return 'Sai thông tin sản phẩm nhập kho'
+#          if error then return console.log('Sai thông tin sản phẩm nhập kho')
 #
-#      Schema.imports.update importId, $set:{finish: true, submitted: true}
-#      createTransactionAndDetailByImport(importId)
-#      MetroSummary.updateMetroSummaryByImport(importId)
+#      Schema.imports.update @id, $set:{finish: true, submitted: true}
+#      warehouseImport = Schema.imports.findOne(importId)
+#      transaction = Transaction.newByImport(warehouseImport)
+#      transactionDetail = TransactionDetail.newByTransaction(transaction)
+#      MetroSummary.updateMetroSummaryByImport(@id)
 #      return ('Phiếu nhập kho đã được duyệt')
 #    else
 #      return ('Đã có lỗi trong quá trình xác nhận')
-#

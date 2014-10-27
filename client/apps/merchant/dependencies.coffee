@@ -6,3 +6,5 @@ lemon.dependencies.add 'merchantNotification', ['unreadNotifications']
 lemon.dependencies.add 'merchantEssential', ['essentials', 'merchantMessenger', 'merchantNotification']
 
 lemon.dependencies.add 'merchantHome', ['merchantEssential', 'myMetroSummaries']
+
+lemon.dependencies.add 'order', ['essentials', 'sales', 'productSales', 'skulls', 'providers', 'customers', 'orders']

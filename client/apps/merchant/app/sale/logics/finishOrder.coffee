@@ -51,24 +51,16 @@ removeOrderAndOrderDetailAfterCreateSale = (orderId)->
     Order.removeAllOrderDetail(orderId)
 
 
-calculateAndFinishOrder = (order, orderDetails)->
-  result = logics.sales.validation.checkProductInStockQuality(order, orderDetails)
-  if result.error then console.log result.error
-
-  saleId = createSaleAndSaleOrder(order, orderDetails)
-  removeOrderAndOrderDetailAfterCreateSale(order._id)
-#  Notification.newSaleDefault(saleId)
-
-checkingPaymentsDelivery = (event, template)->
-  if Sky.global.currentOrder.data.paymentsDelivery is 1
-    expire = template.ui.$deliveryDate.data('datepicker').dates[0]
-    Sky.global.currentOrder.updateDeliveryDate(expire)
-
-
-logics.sales.finishOrder = (event, template) ->
+logics.sales.finishOrder = (orderId) ->
   zone.run =>
-    currentOrder        = Order.findOne(Sky.global.currentOrder.id).data
-    currentOrderDetails = OrderDetail.find({order: Sky.global.currentOrder.id}).data.fetch()
+    currentOrder = Order.findOne(orderId).data
+    return console.log('Không tìm thấy Order') if !currentOrder
+    currentOrderDetails = OrderDetail.find({order: orderId}).data.fetch()
+    return console.log('Order rỗng') if currentOrderDetails.length < 1
 
-    checkingPaymentsDelivery(event, template)
-    calculateAndFinishOrder(currentOrder, currentOrderDetails)
+    result = logics.sales.validation.checkProductInStockQuality(currentOrder, currentOrderDetails)
+    if result.error then console.log result.error
+
+    saleId = createSaleAndSaleOrder(currentOrder, currentOrderDetails)
+    removeOrderAndOrderDetailAfterCreateSale(orderId)
+  #  Notification.newSaleDefault(saleId)

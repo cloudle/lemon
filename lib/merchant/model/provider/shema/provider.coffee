@@ -1,4 +1,7 @@
 simpleSchema.providers = new SimpleSchema
+  parentMerchant:
+    type: String
+
   merchant:
     type: String
 

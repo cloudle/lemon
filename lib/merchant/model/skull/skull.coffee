@@ -1,3 +1,3 @@
 Schema.add 'skulls', class Skull
-  print: -> console.log @schema
-  update: (option, callback = {}) -> @schema.update @id, option, callback
+  @insideMerchant: (merchantId) -> @schema.find({parentMerchant: merchantId})
+  @insideBranch: (branchId) -> @schema.find({merchant: branchId})

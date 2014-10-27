@@ -1,17 +1,17 @@
 logics.sales.validation = {}
 
-logics.sales.validation.orderDetail = (order)->
-  unless product = Schema.products.findOne(order.currentProduct)
-    console.log 'Chưa chọn sản phẩm'
+logics.sales.validation.orderDetail = (productId, quality, price, discountCash)->
+  unless product = Schema.products.findOne(productId)
+    console.log 'Chưa chọn sản phẩm.'
     return false
-  else if order.currentQuality == 0
-    console.log 'Số lượng phải lớn hơn 0'
+  else if quality < 1
+    console.log 'Số lượng nhỏ nhất là 1.'
     return false
-  else if order.currentPrice == 0
-    console.log 'Giá sản phẩm phải lớn hơn 0'
+  else if price < product.price
+    console.log 'Giá sản phẩm không thể nhỏ hơn giá bán.'
     return false
-  else if order.currentPrice < product.price
-    console.log 'Giá sản phẩm phải lớn hơn giá nhập'
+  else if discountCash > price*quality
+    console.log 'Giảm giá lớn hơn số tiền hiện có.'
     return false
   else
     return true

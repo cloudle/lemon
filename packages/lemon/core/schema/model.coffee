@@ -6,5 +6,10 @@ class @modelBase
     return new @(found) if found
     return undefined
 
+  @find: (option) ->
+    found = @schema.find option
+    return new @(found) if found
+    return undefined
+
   @remove: (option) -> @schema.remove option
-  @update: (option) -> @schema.update option
+  @update: (id, option) -> @schema.update(id, option)

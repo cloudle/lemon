@@ -18,9 +18,32 @@ metroSummaryRoute =
 _.extend(metroSummaryRoute, merchantRouteBase)
 
 saleRoute =
-  template: 'sales'
-  waitOn: -> lemon.dependencies.resolve('metroHome')
-  data: -> {Summary: MetroSummary.findOne({})}
+  layoutTemplate: 'merchantLayout',
+  template: 'sales',
+  fastRender: true,
+  waitOn: -> lemon.dependencies.resolve('order')
+  data: ->
+    logics.sales.syncMyProfile()
+    logics.sales.syncMyOption()
+    logics.sales.syncMySession()
+
+    logics.sales.syncCurrentWarehouseProducts()
+    logics.sales.syncCurrentAllSkulls()
+    logics.sales.syncCurrentAllProviders()
+    logics.sales.syncCurrentOrderHistory()
+    logics.sales.syncCurrentOrder()
+    logics.sales.syncCurrentOrderBuyer()
+    logics.sales.syncCurrentBranchStaff()
+    logics.sales.syncCurrentOrderSeller()
+
+    return {
+      myProfile: logics.sales.myProfile
+      myOption : logics.sales.myOption
+      mySession: logics.sales.mySession
+
+      currentOrder: logics.sales.currentOrder
+      orderHistory: logics.sales.currentOrderHistory
+    }
 _.extend(saleRoute, merchantRouteBase)
 
-lemon.addRoute [merchantDevRoute, metroSummaryRoute]
+lemon.addRoute [merchantDevRoute, metroSummaryRoute, saleRoute]
