@@ -17,4 +17,4 @@ simpleSchema.exportDetails = new SimpleSchema
   quality:
     type: Number
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }

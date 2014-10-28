@@ -11,4 +11,4 @@ simpleSchema.customerQuotes = new SimpleSchema
   comment:
     type: String
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }

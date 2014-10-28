@@ -49,7 +49,7 @@ simpleSchema.products = new SimpleSchema
     type: Number
     defaultValue: 0
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 
   provider:
     type: String

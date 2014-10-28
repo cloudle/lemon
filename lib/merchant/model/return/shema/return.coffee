@@ -47,6 +47,6 @@ simpleSchema.returns = new SimpleSchema
   status:
     type: Number
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 
 

@@ -1,10 +1,10 @@
 formatPaymentMethodSearch = (item) -> "#{item.display}" if item
 
-logics.sales.paymentsDeliverySelectOptions = ->
+logics.sales.paymentsDeliverySelectOptions =
   query: (query) -> query.callback
-    results: Sky.system.paymentsDeliveries
+    results: Apps.Merchant.DeliveryTypes
     text: 'id'
-  initSelection: (element, callback) -> callback _.findWhere(Sky.system.paymentsDeliveries, {_id: logics.sales.currentOrder?.paymentsDelivery})
+  initSelection: (element, callback) -> callback _.findWhere(Apps.Merchant.DeliveryTypes, {_id: logics.sales.currentOrder?.paymentsDelivery})
   formatSelection: formatPaymentMethodSearch
   formatResult: formatPaymentMethodSearch
   placeholder: 'CHỌN SẢN PTGD'
@@ -20,8 +20,8 @@ logics.sales.paymentsDeliverySelectOptions = ->
         option.comment         = 'Giao trong ngày'
         option.deliveryDate    = new Date
 
-        $("[name=deliveryDate]").datepicker('setDate', option.deliveryDate)
+#        $("[name=deliveryDate]").datepicker('setDate', option.deliveryDate)
       else
         console.log 'Sai customer'; return
     Schema.orders.update(logics.sales.currentOrder._id, {$set: option})
-  reactiveValueGetter: -> _.findWhere(Sky.system.paymentsDeliveries, {_id: logics.sales.currentOrder?.paymentsDelivery})
+  reactiveValueGetter: -> _.findWhere(Apps.Merchant.DeliveryTypes, {_id: logics.sales.currentOrder?.paymentsDelivery})

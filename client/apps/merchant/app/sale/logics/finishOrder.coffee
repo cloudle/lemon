@@ -24,31 +24,25 @@ createSaleAndSaleOrder = (order, orderDetails)->
   option = {status: true}
   if currentSale.data.paymentsDelivery == 1
     option.delivery = Delivery.insertBySale(order, currentSale.data)
-  Schema.sales.update currentSale.id, $set: option, (error, result) ->
+  Sale.update currentSale.id, $set: option, (error, result) ->
     if error then console.log error
   currentSale.id
 
 removeOrderAndOrderDetailAfterCreateSale = (orderId)->
   userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-  allTabs = Schema.orders.find(
-    {
-      creator   : userProfile.user
-      merchant  : userProfile.currentMerchant
-      warehouse : userProfile.currentWarehouse
-    }).fetch()
+  allTabs = logics.sales.currentOrderHistory.fetch()
   currentSource = _.findWhere(allTabs, {_id: userProfile.currentOrder})
   currentIndex = allTabs.indexOf(currentSource)
   currentLength = allTabs.length
   if currentLength > 1
     if currentLength is currentIndex+1
-#      UserProfile.update {currentOrder: allTabs[currentIndex-1]._id}
+      logics.sales.selectOrder(allTabs[currentIndex-1]._id)
     else
-      console.log allTabs[currentIndex+1]
-#      UserProfile.update {currentOrder: allTabs[currentIndex+1]._id}
-    Order.removeAllOrderDetail(orderId)
+      logics.sales.selectOrder(allTabs[currentIndex+1]._id)
+    logics.sales.removeOrderAndOrderDetail(orderId)
   else
-    Order.createOrderAndSelect()
-    Order.removeAllOrderDetail(orderId)
+    logics.sales.createNewOrderAndSelected()
+    logics.sales.removeOrderAndOrderDetail(orderId)
 
 
 logics.sales.finishOrder = (orderId) ->

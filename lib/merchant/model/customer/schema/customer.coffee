@@ -39,6 +39,6 @@ simpleSchema.customers = new SimpleSchema
     type: Boolean
     optional: true
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 
 

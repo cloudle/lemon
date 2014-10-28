@@ -20,9 +20,9 @@ createSaleCode= ->
     if 99 < code < 999 then code = "0#{code}"
     if 9 < code < 100 then code = "00#{code}"
     if code < 10 then code = "000#{code}"
-    orderCode = "#{Sky.helpers.formatDate()}-#{code}"
+    orderCode = "#{Helpers.FormatDate}-#{code}"
   else
-    orderCode = "#{Sky.helpers.formatDate()}-0001"
+    orderCode = "#{Helpers.FormatDate}-0001"
   orderCode
 
 

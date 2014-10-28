@@ -1,4 +1,7 @@
 Schema.add 'orderDetails', class OrderDetail
+  @findBy: (orderId)-> @schema.find({order: orderId})
+
+
   @newByOrder: (order)->
     option =
       order           : order._id

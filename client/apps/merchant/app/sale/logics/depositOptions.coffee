@@ -1,4 +1,6 @@
-logics.sales.depositOptions = ->
+
+
+logics.sales.depositOptions =
   reactiveSetter: (val) ->
     if val >= logics.sales.currentOrder.finalPrice
       option=

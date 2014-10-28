@@ -33,5 +33,5 @@ simpleSchema.inventories = new SimpleSchema
   success:
     type: Boolean
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 

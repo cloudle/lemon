@@ -1,4 +1,4 @@
-logics.sales.saleDetailOptions = ->
+logics.sales.saleDetailOptions =
   itemTemplate: 'saleProductThumbnail'
-  reactiveSourceGetter: -> Session.get('currentOrderDetails')
+  reactiveSourceGetter: -> logics.sales.currentOrderDetails?.fetch() ? []
   wrapperClasses: 'detail-grid row'

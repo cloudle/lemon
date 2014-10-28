@@ -1,20 +1,19 @@
 formatPaymentMethodSearch = (item) -> "#{item.display}" if item
 
-logics.sales.billDiscountSelectOptions = (event, template) ->
+logics.sales.billDiscountSelectOptions =
   query: (query) -> query.callback
-    results: Sky.system.billDiscounts
+    results: Apps.Merchant.DiscountTypes
     text: 'id'
-  initSelection: (element, callback) -> callback _.findWhere(Sky.system.billDiscounts, {_id: logics.sales.currentOrder?.billDiscount})
+  initSelection: (element, callback) -> callback _.findWhere(Apps.Merchant.DiscountTypes, {_id: logics.sales.currentOrder?.billDiscount})
   formatSelection: formatPaymentMethodSearch
   formatResult: formatPaymentMethodSearch
   placeholder: 'CHỌN SẢN PTGD'
   minimumResultsForSearch: -1
   changeAction: (e) ->
-    order = Order.findOne(logics.sales.currentOrder._id)
     option = {billDiscount: e.added._id}
     option.discountCash = 0 if option.billDiscount
     option.discountPercent = 0 if option.billDiscount
-    Schema.orders.update(logics.sales.currentOrder._id, {$set: option})
-    Sky.global.reCalculateOrder(logics.sales.currentOrder._id)
+    Order.update(logics.sales.currentOrder._id, {$set: option})
+    logics.sales.reCalculateOrder(logics.sales.currentOrder._id)
 
-  reactiveValueGetter: -> _.findWhere(Sky.system.billDiscounts, {_id: logics.sales.currentOrder?.billDiscount})
+  reactiveValueGetter: -> _.findWhere(Apps.Merchant.DiscountTypes, {_id: logics.sales.currentOrder?.billDiscount})

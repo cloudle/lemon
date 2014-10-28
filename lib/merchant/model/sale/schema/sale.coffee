@@ -103,5 +103,5 @@ simpleSchema.sales = new SimpleSchema
 
 #----------------------------------------
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 

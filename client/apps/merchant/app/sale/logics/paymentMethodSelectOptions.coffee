@@ -1,10 +1,10 @@
 formatPaymentMethodSearch = (item) -> "#{item.display}" if item
 
-logics.sales.paymentMethodSelectOptions = ->
+logics.sales.paymentMethodSelectOptions =
   query: (query) -> query.callback
-    results: Sky.system.paymentMethods
+    results: Apps.Merchant.PaymentMethods
     text: 'id'
-  initSelection: (element, callback) -> callback _.findWhere(Sky.system.paymentMethods, {_id: logics.sales.currentOrder?.paymentMethod})
+  initSelection: (element, callback) -> callback _.findWhere(Apps.Merchant.PaymentMethods, {_id: logics.sales.currentOrder?.paymentMethod})
   formatSelection: formatPaymentMethodSearch
   formatResult: formatPaymentMethodSearch
   placeholder: 'CHỌN SẢN PTGD'
@@ -22,6 +22,6 @@ logics.sales.paymentMethodSelectOptions = ->
         currentDeposit : 0
         deposit        : 0
         debit          : logics.sales.currentOrder.finalPrice
-    Schema.orders.update(logics.sales.currentOrder._id, {$set: option})
-  reactiveValueGetter: -> _.findWhere(Sky.system.paymentMethods, {_id: logics.sales.currentOrder?.paymentMethod})
+    Order.update(logics.sales.currentOrder._id, {$set: option})
+  reactiveValueGetter: -> _.findWhere(Apps.Merchant.PaymentMethods, {_id: logics.sales.currentOrder?.paymentMethod})
 

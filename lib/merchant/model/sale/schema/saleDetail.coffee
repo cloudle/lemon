@@ -55,5 +55,5 @@ simpleSchema.saleDetails = new SimpleSchema
   status:
     type: Boolean
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 

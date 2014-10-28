@@ -26,5 +26,5 @@ simpleSchema.productLosts = new SimpleSchema
   lostQuality:
     type: Number
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 

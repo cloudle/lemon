@@ -44,5 +44,5 @@ simpleSchema.importDetails = new SimpleSchema
     type: Boolean
 
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 

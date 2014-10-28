@@ -1,8 +1,8 @@
 formatSellerSearch = (item) -> "#{item.emails[0].address}" if item
 
-logics.sales.sellerSelectOptions = ->
+logics.sales.sellerSelectOptions =
   query: (query) -> query.callback
-  results: _.filter Session.get("availableStaffSale"), (item) ->
+  results: _.filter logics.sales.currentBranchStaff?.fetch(), (item) ->
     result = false
     for email in item.emails
       if email.address.indexOf(query.term) > -1 then (result = true; break)

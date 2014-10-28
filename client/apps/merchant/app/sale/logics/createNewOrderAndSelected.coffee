@@ -15,4 +15,8 @@ logics.sales.createNewOrderAndSelected = ->
     buyer = Schema.customers.findOne({parentMerchant: logics.sales.myProfile.parentMerchant})
     newOrder = createNewOrder(logics.sales.myProfile, buyer)
     logics.sales.selectOrder(newOrder._id)
+    newOrder._id
+  else logics.sales.currentOrder._id
+
+
 

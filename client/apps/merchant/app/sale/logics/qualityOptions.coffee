@@ -1,3 +1,9 @@
+maxQuality = ->
+  qualityProduct = logics.sales.currentProduct?.availableQuality
+  qualityOrderDetail = _.findWhere(logics.sales.currentOrderDetails?.fetch(), {product: logics.sales.currentOrder?.currentProduct})?.quality ? 0
+  max = qualityProduct - qualityOrderDetail
+  max
+
 calculateProductDiscount = (val)->
   option = {}
   option.currentQuality = val
@@ -9,11 +15,12 @@ calculateProductDiscount = (val)->
 
   Schema.orders.update(logics.sales.currentOrder._id, {$set: option}) if logics.sales.currentOrder
 
+logics.sales.maxQuality = 100
 logics.sales.qualityOptions =
   reactiveSetter: (val) -> calculateProductDiscount(val)
   reactiveValue: -> logics.sales.currentOrder?.currentQuality ? 0
-#  reactiveMax: -> Session.get('currentProductMaxQuality') ? 1
-  reactiveMax: -> 10
+  reactiveMax: -> logics.sales.maxQuality ? 1
+#  reactiveMax: -> maxQuality ? 1
   reactiveMin: -> 0
   reactiveStep: -> 1
 

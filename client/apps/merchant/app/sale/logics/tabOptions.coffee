@@ -9,4 +9,3 @@ logics.sales.tabOptions =
   createAction: -> logics.sales.createNewOrderAndSelected()
   destroyAction: (instance) -> logics.sales.removeOrderAndOrderDetail(instance._id)
   navigateAction: (instance) -> logics.sales.selectOrder(instance._id)
-

@@ -90,4 +90,4 @@ simpleSchema.merchantPackages = new SimpleSchema
     defaultValue: 0
 
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }

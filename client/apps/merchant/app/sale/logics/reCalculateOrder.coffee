@@ -66,7 +66,7 @@ updateOrderByOrderDetailEmpty = (currentOrder)->
 
 logics.sales.reCalculateOrder = (orderId) ->
   zone.run =>
-    currentOrder = Order.findOne(orderId)
+    currentOrder = Order.findOne(orderId).data
     if currentOrder
       orderDetails = Schema.orderDetails.find({order: orderId}).fetch()
       if orderDetails.length > 0

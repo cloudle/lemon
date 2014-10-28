@@ -1,10 +1,11 @@
 Schema.add 'orders', class Order
-  @currentOrder: (orderId, merchantId, warehouseId)->
+  @findBy: (orderId, merchantId = null, warehouseId = null)->
+    if !merchantId && !warehouseId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
     @schema.findOne({
       _id      : orderId
-      creator  : Meteor.userId()
-      merchant : merchantId
-      warehouse: warehouseId
+      creator  : myProfile.user
+      merchant : merchantId ? myProfile.currentMerchant
+      warehouse: warehouseId ? myProfile.currentWarehouse
     })
 
   @history: (merchantId, warehouseId)->

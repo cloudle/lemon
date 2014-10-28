@@ -2,15 +2,15 @@ template(name="saleProductThumbnail")
   .col
     .thumbnails(class="#{styles}")
       .right-caption {{name}}
-      .avatar(style="background-image: url('images/missing.jpg')")
+      // .avatar(style="background-image: url('images/missing.jpg')")
       .short-desc.quality {{pad quality}}
-      .full-desc.price {{formatNumber finalPrice}} <small>VNĐ</small>
-      .discount
-        if false
-          span.s4 -{{round discountPercent}}<span class="h5">%</span>
-
-      .single-price {{formatNumber price}} VNĐ
-      .full-desc.trash: a(href="#"): i.fa.fa-trash-o
+    //  .full-desc.price {{formatNumber finalPrice}} <small>VNĐ</small>
+    //  .discount
+    //    if false
+    //      span.s4 -{{round discountPercent}}<span class="h5">%</span>
+    //
+    //  .single-price {{formatNumber price}} VNĐ
+    //  .full-desc.trash: a(href="#"): i.fa.fa-trash-o
     //.top #{name}
     //.main
     //  span.h2.pull-right {{pad quality}}

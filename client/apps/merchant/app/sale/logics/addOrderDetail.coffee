@@ -1,4 +1,4 @@
-newOrderDetail = (productId, quality, price, discountCash, currentOrder)->
+optionOrderDetail = (productId, quality, price, discountCash, currentOrder)->
   totalPrice      = quality * price
   discountPercent = discountCash/(totalPrice)*100
   option =
@@ -10,6 +10,7 @@ newOrderDetail = (productId, quality, price, discountCash, currentOrder)->
     discountPercent : discountPercent
     totalPrice      : totalPrice
     finalPrice      : totalPrice - discountCash
+  option
 
 reUpdateQualityOfOrderDetail = (newOrderDetail, oldOrderDetail) ->
   option={}
@@ -19,19 +20,23 @@ reUpdateQualityOfOrderDetail = (newOrderDetail, oldOrderDetail) ->
   option.finalPrice   = option.totalPrice - option.discountCash
   OrderDetail.update oldOrderDetail._id, $set: option
 
-insertNewOrderDetail = (orderDetail)-> OrderDetail.insert orderDetail
+insertNewOrderDetail = (orderDetail)-> OrderDetail.create orderDetail
 
-checkingAddOrderDetail= (orderDetail, orderDetails)->
+checkingAddOrderDetail= (newOrderDetail, orderDetails)->
+  console.log newOrderDetail
+  console.log orderDetails
+
   findOldOrderDetail =_.findWhere(orderDetails,
     {
-      product         : orderDetail.product
-      price           : orderDetail.price
-      discountPercent : orderDetail.discountPercent
+      product         : newOrderDetail.product
+      price           : newOrderDetail.price
+      discountPercent : newOrderDetail.discountPercent
     })
-  if findOldOrderDetail(orderDetail, orderDetails)
-    reUpdateQualityOfOrderDetail(orderDetail, findOldOrderDetail)
+
+  if findOldOrderDetail
+    reUpdateQualityOfOrderDetail(newOrderDetail, findOldOrderDetail)
   else
-    insertNewOrderDetail(orderDetail)
+    insertNewOrderDetail(newOrderDetail)
 
 logics.sales.addOrderDetail = (productId, quality, price = null, discountCash = null)->
   zone.run =>
@@ -42,7 +47,7 @@ logics.sales.addOrderDetail = (productId, quality, price = null, discountCash = 
 
     if logics.sales.validation.orderDetail(productId, quality, price, discountCash, product)
       orderDetails = Schema.orderDetails.find({order: currentOrder._id}).fetch()
-      newOrderDetail = newOrderDetail(productId, quality, price, discountCash, currentOrder)
+      newOrderDetail = optionOrderDetail(productId, quality, price, discountCash, currentOrder)
 
       #kiem tra orderDetail co ton tai hay ko, neu co cong so luong, tinh gia tong , ko thi them moi
       checkingAddOrderDetail(newOrderDetail, orderDetails)

@@ -59,5 +59,5 @@ simpleSchema.imports = new SimpleSchema
     optional: true
 #----------------------------------
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 

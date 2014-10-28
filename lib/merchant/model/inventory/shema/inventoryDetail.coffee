@@ -65,5 +65,5 @@ simpleSchema.inventoryDetails = new SimpleSchema
   status:
     type: Boolean
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 

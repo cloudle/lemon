@@ -24,5 +24,5 @@ simpleSchema.warehouses = new SimpleSchema
     optional: true
 
   location: { type: Schema.Location, optional: true }
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 

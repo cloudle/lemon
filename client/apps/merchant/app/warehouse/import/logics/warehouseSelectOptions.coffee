@@ -1,8 +1,8 @@
 logics.imports.warehouseSelectOptions = ->
   query: (query) -> query.callback
     results: _.filter Session.get('availableWarehouses'), (item) ->
-      unsignedTerm = Sky.helpers.removeVnSigns query.term
-      unsignedName = Sky.helpers.removeVnSigns item.name
+      unsignedTerm = Helpers.RemoveVnSigns query.term
+      unsignedName = Helpers.RemoveVnSigns item.name
       unsignedName.indexOf(unsignedTerm) > -1
   initSelection: (element, callback) -> callback(Session.get('currentWarehouse') ? 'skyReset')
   formatSelection: formatWarehouseSearch

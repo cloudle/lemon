@@ -87,5 +87,5 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
 
 
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
 

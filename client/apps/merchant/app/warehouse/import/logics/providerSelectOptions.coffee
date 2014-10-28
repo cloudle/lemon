@@ -1,8 +1,8 @@
 logics.imports.providerSelectOptions = ->
   query: (query) -> query.callback
     results: _.filter Session.get('availableProviders'), (item) ->
-      unsignedTerm = Sky.helpers.removeVnSigns query.term
-      unsignedName = Sky.helpers.removeVnSigns item.name
+      unsignedTerm = Helpers.RemoveVnSigns query.term
+      unsignedName = Helpers.RemoveVnSigns item.name
       unsignedName.indexOf(unsignedTerm) > -1
     text: 'name'
   initSelection: (element, callback) -> callback(Schema.providers.findOne(Session.get('currentImport')?.currentProvider) ? 'skyReset')

@@ -29,4 +29,4 @@ simpleSchema.providers = new SimpleSchema
 
 
   location: { type: Schema.Location, optional: true }
-  version: { type: Schema.Version }
+  version: { type: simpleSchema.Version }
