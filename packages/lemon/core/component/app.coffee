@@ -8,4 +8,5 @@ lemon.defineApp = (source, destination) ->
   source.rendered = ->
     helpers.customBinding(destination.ui, @) if destination.ui
     helpers.autoBinding(@)
+    helpers.arrangeAppLayout()
     helpers.invokeIfNeccessary(destination.rendered, @)

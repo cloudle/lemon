@@ -1,21 +1,15 @@
-merchantRouteBase =
-  layoutTemplate: 'merchantLayout'
-  fastRender: true
-  onAfterAction: ->
-    Helpers.animateUsing("#container", "bounceInDown")
-
 merchantDevRoute =
   template: 'merchantDev',
   waitOn: -> lemon.dependencies.resolve('essentials')
   data: -> { System: System.findOne({}) }
-_.extend(merchantDevRoute, merchantRouteBase)
+_.extend(merchantDevRoute, Merchant.merchantRouteBase)
 
 metroSummaryRoute =
   template: 'merchantHome'
   path: 'merchant'
   waitOn: -> lemon.dependencies.resolve('merchantHome', Merchant.Subscriber)
   data: -> {Summary: MetroSummary.findOne({})}
-_.extend(metroSummaryRoute, merchantRouteBase)
+_.extend(metroSummaryRoute, Merchant.merchantRouteBase)
 
 saleRoute =
   layoutTemplate: 'merchantLayout',
@@ -53,6 +47,6 @@ saleRoute =
 
       customerSelectOptions: logics.sales.customerSelectOptions
     }
-_.extend(saleRoute, merchantRouteBase)
+_.extend(saleRoute, Merchant.merchantRouteBase)
 
 lemon.addRoute [merchantDevRoute, metroSummaryRoute, saleRoute]

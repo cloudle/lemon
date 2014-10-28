@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'lemon';
-    src: url('/packages/lemon-icon/font/lemon.eot?98294640');
-    src: url('/packages/lemon-icon/font/lemon.eot?98294640#iefix') format('embedded-opentype'),
-         url('/packages/lemon-icon/font/lemon.woff?98294640') format('woff'),
-         url('/packages/lemon-icon/font/lemon.ttf?98294640') format('truetype'),
-         url('/packages/lemon-icon/font/lemon.svg?98294640#lemon') format('svg');
+    src: url('/packages/lemon-icon/font/lemon.eot?1100188');
+    src: url('/packages/lemon-icon/font/lemon.eot?1100188#iefix') format('embedded-opentype'),
+         url('/packages/lemon-icon/font/lemon.woff?1100188') format('woff'),
+         url('/packages/lemon-icon/font/lemon.ttf?1100188') format('truetype'),
+         url('/packages/lemon-icon/font/lemon.svg?1100188#lemon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
