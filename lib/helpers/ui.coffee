@@ -3,3 +3,5 @@ Helpers.animateUsing = (selector, animationType) ->
   $element.removeClass()
   .addClass("animated #{animationType}")
   .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', -> $element.removeClass())
+
+Helpers.arrangeAppLayout = Component.helpers.arrangeAppLayout
