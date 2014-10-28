@@ -1,4 +1,4 @@
-logics.sales.qualityOptions = ->
+logics.sales.qualityOptions =
   reactiveSetter: (val) ->
 #    option = {}
 #    option.currentQuality = val
