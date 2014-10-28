@@ -30,8 +30,6 @@ destroySelection = ($element, context) -> $element.select2('destroy')
 stopTrackingValue = (context) -> context.valueTracker.stop()
 
 lemon.defineWidget Template.iSelect,
-  events:
-    "click .select2component": ->
   ui:
     component: ".select2component"
   rendered: ->
