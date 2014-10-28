@@ -1,5 +1,5 @@
 formatWarehouseSearch = (item) -> "#{item.name}" if item
-logics.sales.warehouseSelectOptions = ->
+logics.sales.warehouseSelectOptions =
   query: (query) -> query.callback
     results: _.filter Session.get('availableWarehouses'), (item) ->
       unsignedTerm = Sky.helpers.removeVnSigns query.term

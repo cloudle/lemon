@@ -44,6 +44,7 @@ saleRoute =
 
       currentOrder: logics.sales.currentOrder
       orderHistory: logics.sales.currentOrderHistory
+      productSelectOptions: logics.sales.productSelectOptions
     }
 _.extend(saleRoute, merchantRouteBase)
 

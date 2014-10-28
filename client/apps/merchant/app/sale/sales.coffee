@@ -96,7 +96,7 @@ maxQuality = ->
 #      else
 #        logics.sales.templateInstance.ui.extras.toggleExtra 'delivery'
 
-lemon.defineApp Template.sales,
+lemon.defineWidget Template.sales,
   deliveryDetail: -> loadDeliverDetail(logics.sales.currentOrder) if logics.sales.currentOrder
   currentFinalPrice: -> calculateCurrentFinalPrice(logics.sales.currentOrder) if logics.sales.currentOrder
   currentDebit: ->  calculateCurrentDebit(logics.sales.currentOrder) if logics.sales.currentOrder
@@ -111,12 +111,12 @@ lemon.defineApp Template.sales,
 
   rendered: ->
     logics.sales.templateInstance = @
-#    @ui.$deliveryDate.datepicker
-#      language: "vi"
+    @ui.$deliveryDate.datepicker
+      language: "vi"
 
   events:
-#    "change [name='advancedMode']": (event, template) ->
-#      logics.sales.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
+    "change [name='advancedMode']": (event, template) ->
+      logics.sales.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
 
     'blur .contactName': (event, template)->
       logics.sales.updateDeliveryContactName(template.find(".contactName").value)
@@ -139,9 +139,9 @@ lemon.defineApp Template.sales,
       )
 
     'click .finish': (event, template)->
-#      if Sky.global.currentOrder.data.paymentsDelivery is 1
-#        expire = template.ui.$deliveryDate.data('datepicker').dates[0]
-#        Sky.global.currentOrder.updateDeliveryDate(expire)
+      if Sky.global.currentOrder.data.paymentsDelivery is 1
+        expire = template.ui.$deliveryDate.data('datepicker').dates[0]
+        Sky.global.currentOrder.updateDeliveryDate(expire)
 
       logics.sales.finishOrder(logics.sales.currentOrder._id)
 
@@ -170,17 +170,7 @@ lemon.defineApp Template.sales,
 #  billPercentDiscountOptions    : logics.sales.billPercentDiscountOptions()
 
 
-  currentProductSelectOptions:
-    query: (query) -> query.callback
-      results: [{_id: 1, name: 'sang'}, {_id: 2, name: 'loc'}, {_id: 3, name: 'ky'}]
-      text: 'id'
-    initSelection: (element, callback) -> callback {_id: 1, name: 'sang'}
-    formatSelection: formatPaymentMethodSearch
-    formatResult: formatPaymentMethodSearch
-    placeholder: 'CHỌN SẢN PTGD'
-    minimumResultsForSearch: -1
-    changeAction: (e) ->
-    reactiveValueGetter: -> {_id: 1, name: 'sang'}
+#  currentProductQualityOptions  : logics.sales.qualityOptions()
 
   currentProductQualityOptions:
     reactiveSetter: (val) ->

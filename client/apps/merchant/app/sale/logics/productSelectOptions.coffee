@@ -1,6 +1,6 @@
 formatProductSearch = (item) -> "#{item.name} [#{item.skulls}]" if item
 
-logics.sales.productSelectOptions = (event, template) ->
+logics.sales.productSelectOptions =
   query: (query) -> query.callback
   results: _.filter Session.get('availableSaleProducts'), (item) ->
     unsignedTerm = Helpers.RemoveVnSigns query.term
