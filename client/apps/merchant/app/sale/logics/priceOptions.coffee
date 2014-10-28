@@ -1,4 +1,4 @@
-logics.sales.priceOptions = ->
+logics.sales.priceOptions =
   reactiveSetter: (val)->
     Schema.orders.update(logics.sales.currentOrder._id, {$set: {currentPrice: val}}) if logics.sales.currentOrder
   reactiveValue: -> logics.sales.currentOrder?.currentPrice ? 0

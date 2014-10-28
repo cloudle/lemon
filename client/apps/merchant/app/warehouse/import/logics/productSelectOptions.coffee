@@ -1,8 +1,8 @@
 logics.imports.productSelectOptions = ->
   query: (query) -> query.callback
     results: _.filter Session.get('availableProducts'), (item) ->
-      unsignedTerm = Sky.helpers.removeVnSigns query.term
-      unsignedName = Sky.helpers.removeVnSigns item.name
+      unsignedTerm = Helpers.RemoveVnSigns query.term
+      unsignedName = Helpers.RemoveVnSigns item.name
 
       unsignedName.indexOf(unsignedTerm) > -1 || item.productCode.indexOf(unsignedTerm) > -1
     text: 'name'

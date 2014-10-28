@@ -20,9 +20,7 @@ calculateCurrentDebit = (currentOrder)->
     when 0 then currentOrder.currentDeposit - currentOrder.finalPrice
     when 1 then 0
 
-calculateCurrentFinalPrice = (currentOrder)->
-  totalPrice = logics.sales.currentOrder?.currentPrice * logics.sales.currentOrder?.currentQuality
-  totalPrice - logics.sales.currentOrder?.currentDiscountCash
+
 
 #---------------Tracker Autorun------------------------------>
 calculateTotalPrice = -> logics.sales.currentOrder?.currentPrice * logics.sales.currentOrder?.currentQuality
@@ -96,9 +94,8 @@ maxQuality = ->
 #      else
 #        logics.sales.templateInstance.ui.extras.toggleExtra 'delivery'
 
-lemon.defineWidget Template.sales,
+lemon.defineApp Template.sales,
   deliveryDetail: -> loadDeliverDetail(logics.sales.currentOrder) if logics.sales.currentOrder
-  currentFinalPrice: -> calculateCurrentFinalPrice(logics.sales.currentOrder) if logics.sales.currentOrder
   currentDebit: ->  calculateCurrentDebit(logics.sales.currentOrder) if logics.sales.currentOrder
 
 #  currentOrderPercentDiscount: -> calculateCurrentOrderPercentDiscount(logics.sales.currentOrder) if logics.sales.currentOrder
@@ -111,8 +108,8 @@ lemon.defineWidget Template.sales,
 
   rendered: ->
     logics.sales.templateInstance = @
-    @ui.$deliveryDate.datepicker
-      language: "vi"
+#    @ui.$deliveryDate.datepicker
+#      language: "vi"
 
   events:
     "change [name='advancedMode']": (event, template) ->
@@ -139,9 +136,9 @@ lemon.defineWidget Template.sales,
       )
 
     'click .finish': (event, template)->
-      if Sky.global.currentOrder.data.paymentsDelivery is 1
-        expire = template.ui.$deliveryDate.data('datepicker').dates[0]
-        Sky.global.currentOrder.updateDeliveryDate(expire)
+#      if Sky.global.currentOrder.data.paymentsDelivery is 1
+#        expire = template.ui.$deliveryDate.data('datepicker').dates[0]
+#        Sky.global.currentOrder.updateDeliveryDate(expire)
 
       logics.sales.finishOrder(logics.sales.currentOrder._id)
 
@@ -171,11 +168,3 @@ lemon.defineWidget Template.sales,
 
 
 #  currentProductQualityOptions  : logics.sales.qualityOptions()
-
-  currentProductQualityOptions:
-    reactiveSetter: (val) ->
-    reactiveValue: -> 1
-    reactiveMax: -> 10
-    reactiveMin: -> 0
-    reactiveStep: -> 1
-

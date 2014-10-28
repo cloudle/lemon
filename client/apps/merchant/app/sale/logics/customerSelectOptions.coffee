@@ -1,7 +1,8 @@
 formatCustomerSearch = (item) -> "#{item.name}" if item
-logics.sales.customerSelectOptions = ->
+
+logics.sales.customerSelectOptions =
   query: (query) -> query.callback
-    results: _.filter Session.get("availableCustomerSale"), (item) ->
+    results: _.filter logics.sales.currentAllCustomers.fetch(), (item) ->
       unsignedTerm = Sky.helpers.removeVnSigns query.term
       unsignedName = Sky.helpers.removeVnSigns item.name
 
@@ -30,4 +31,5 @@ logics.sales.customerSelectOptions = ->
     else
       console.log 'Sai customer'; return
     Schema.orders.update(logics.sales.currentOrder._id, {$set: option})
+
   reactiveValueGetter: -> logics.sales.currentOrder?.buyer

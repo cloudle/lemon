@@ -12,44 +12,32 @@ logics.sales.syncCurrentBranchStaff  = ->
 
 logics.sales.syncCurrentOrderSeller = ->
   if logics.sales.currentOrder
-    logics.sales.currentOrderSelle = Meteor.users.find(logics.sales.currentOrder.seller)
+    logics.sales.currentOrderSeller = Meteor.users.findOne(logics.sales.currentOrder.seller)
 
-logics.sales.syncCurrentAllCustomers  = ->
-  if logics.sales.myProfile
-    logics.sales.currentAllCustomers = Customer.insideMerchant(logics.sales.myProfile.parentMerchant)
-
-logics.sales.syncCurrentWarehouseProducts = ->
-  if logics.sales.myProfile
-    logics.sales.currentWarehouseProducts = Product.insideWarehouse(logics.sales.myProfile.currentWarehouse)
-
-logics.sales.syncCurrentAllSkulls = ->
-  if logics.sales.myProfile
-    logics.sales.currentAllSkulls = Skull.insideMerchant(logics.sales.myProfile.parentMerchant)
-
-logics.sales.syncCurrentAllProviders = ->
-  if logics.sales.myProfile
-    logics.sales.currentAllProviders = Provider.insideMerchant(logics.sales.myProfile.parentMerchant)
-
-logics.sales.syncCurrentOrderHistory = ->
-  if logics.sales.myProfile
-    logics.sales.currentOrderHistory = Order.history(
-      logics.sales.myProfile.currentMerchant,
-      logics.sales.myProfile.currentWarehouse
-    )
 
 logics.sales.syncCurrentOrder = ->
-#  if logics.sales.mySession && logics.sales.myProfile
-  if logics.sales.myProfile
+  if logics.sales.mySession && logics.sales.myProfile
     logics.sales.currentOrder = Order.currentOrder(
-#      logics.sales.mySession.currentOrder
-      logics.sales.myProfile.currentOrder
+      logics.sales.mySession.currentOrder
       logics.sales.myProfile.currentMerchant,
       logics.sales.myProfile.currentWarehouse
     )
 
-logics.sales.syncCurrentOrderDetails = ->
+logics.sales.syncCurrentProduct = ->
   if logics.sales.currentOrder
-    logics.sales.currentOrderDetails = OrderDetail.find({order: logics.sales.currentOrder._id})
+    logics.sales.currentProduct = Schema.products.findOne(logics.sales.currentOrder.currentProduct)
+
+logics.sales.syncSale = ->
+  if logics.sales.myProfile
+    logics.sales.currentWarehouseProducts = Product.insideWarehouse(logics.sales.myProfile.currentWarehouse)
+    logics.sales.currentAllCustomers      = Customer.insideMerchant(logics.sales.myProfile.parentMerchant)
+    logics.sales.currentAllSkulls         = Skull.insideMerchant(logics.sales.myProfile.parentMerchant)
+    logics.sales.currentBranchProviders   = Provider.insideBranch(logics.sales.myProfile.currentMerchant)
+  #    logics.sales.currentAllProviders = Provider.insideMerchant(logics.sales.myProfile.parentMerchant)
+    logics.sales.currentOrderHistory      = Order.history(logics.sales.myProfile.currentMerchant,
+                                                  logics.sales.myProfile.currentWarehouse)
+
+#logics.sales.currentOrderDetails = OrderDetail.find({order: logics.sales.currentOrder._id})
 
 logics.sales.syncCurrentOrderBuyer = ->
   logics.sales.currentOrderBuyer =

@@ -18,6 +18,7 @@ simpleSchema.orders = new SimpleSchema
 
   tabDisplay:
     type: String
+    defaultValue: 'New Order'
     optional: true
 
   orderCode:
@@ -26,86 +27,103 @@ simpleSchema.orders = new SimpleSchema
 
   productCount:
     type: Number
+    defaultValue: 0
     optional: true
 
   saleCount:
     type: Number
+    defaultValue: 0
     optional: true
 
   paymentsDelivery:
     type: Number
+    defaultValue: 0
+    optional: true
+
+  paymentMethod:
+    type: Number
+    defaultValue: 0
+    optional: true
+
+  billDiscount:
+    type: Boolean
+    defaultValue: false
+    optional: true
+
+  discountCash:
+    type: Number
+    defaultValue: 0
+    optional: true
+
+  discountPercent:
+    type: Number
+    decimal: true
+    defaultValue: 0
+    optional: true
+
+  totalPrice:
+    type: Number
+    defaultValue: 0
+    optional: true
+
+  finalPrice:
+    type: Number
+    defaultValue: 0
+    optional: true
+
+  deposit:
+    type: Number
+    defaultValue: 0
+    optional: true
+
+  debit:
+    type: Number
+    defaultValue: 0
+    optional: true
+
+  status:
+    type: Number
+    defaultValue: 0
     optional: true
 
   delivery:
     type: String
     optional: true
 
-  paymentMethod:
-    type: Number
-    optional: true
-
-  billDiscount:
-    type: Boolean
-    optional: true
-
-  discountCash:
-    type: Number
-    optional: true
-
-  discountPercent:
-    type: Number
-    decimal: true
-    optional: true
-
-  totalPrice:
-    type: Number
-    optional: true
-
-  finalPrice:
-    type: Number
-    optional: true
-
-  deposit:
-    type: Number
-    optional: true
-
-  debit:
-    type: Number
-    optional: true
-
-  status:
-    type: Number
-
-  version: { type: Schema.Version }
+#  version: { type: Schema.Version }
 
 #----------------------
-
   currentProduct:
     type: String
+    defaultValue: "null"
     optional: true
 
   currentQuality:
     type: Number
+    defaultValue: 0
     optional: true
 
   currentPrice:
     type: Number
+    defaultValue: 0
     optional: true
 
   currentDiscountCash:
     type: Number
+    defaultValue: 0
     optional: true
 
   currentDiscountPercent:
     type: Number
     decimal: true
+    defaultValue: 0
     optional: true
 
   currentDeposit:
     type: Number
+    defaultValue: 0
     optional: true
 #----------------------
-
   contactName:
     type: String
     optional: true

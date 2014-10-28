@@ -27,15 +27,9 @@ saleRoute =
     logics.sales.syncMyOption()
     logics.sales.syncMySession()
 
-    logics.sales.syncCurrentWarehouseProducts()
-    logics.sales.syncCurrentAllSkulls()
-    logics.sales.syncCurrentAllProviders()
-    logics.sales.syncCurrentOrderHistory()
+    logics.sales.syncSale()
     logics.sales.syncCurrentOrder()
-    logics.sales.syncCurrentOrderDetails()
-    logics.sales.syncCurrentOrderBuyer()
-    logics.sales.syncCurrentBranchStaff()
-    logics.sales.syncCurrentOrderSeller()
+    logics.sales.syncCurrentProduct()
 
     return {
       myProfile: logics.sales.myProfile
@@ -44,8 +38,20 @@ saleRoute =
 
       currentOrder: logics.sales.currentOrder
       orderHistory: logics.sales.currentOrderHistory
+
+      currentFinalPrice: logics.sales.finalPrice()
+
+      tabOptions: logics.sales.tabOptions
+
       productSelectOptions: logics.sales.productSelectOptions
-      qualityOptions: logics.sales.qualityOptions
+
+      productQualityOptions        : logics.sales.qualityOptions
+      productPriceOptions          : logics.sales.priceOptions
+      productDiscountCashOptions   : logics.sales.discountCashOptions
+      productDiscountPercentOptions: logics.sales.discountPercentOptions
+
+
+      customerSelectOptions: logics.sales.customerSelectOptions
     }
 _.extend(saleRoute, merchantRouteBase)
 

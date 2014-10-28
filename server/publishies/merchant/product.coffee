@@ -3,6 +3,8 @@ Meteor.publish 'productSales', ->
   return [] if !myProfile
   Schema.products.find({warehouse: myProfile.currentWarehouse, availableQuality: {$gt: 0}},
     {fields: {
+      merchant: 1
+      warehouse: 1,
       availableQuality: 1,
       name: 1,
       productCode: 1,
