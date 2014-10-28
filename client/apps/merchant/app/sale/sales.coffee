@@ -139,9 +139,9 @@ lemon.defineApp Template.sales,
       )
 
     'click .finish': (event, template)->
-      if Sky.global.currentOrder.data.paymentsDelivery is 1
-        expire = template.ui.$deliveryDate.data('datepicker').dates[0]
-        Sky.global.currentOrder.updateDeliveryDate(expire)
+#      if Sky.global.currentOrder.data.paymentsDelivery is 1
+#        expire = template.ui.$deliveryDate.data('datepicker').dates[0]
+#        Sky.global.currentOrder.updateDeliveryDate(expire)
 
       logics.sales.finishOrder(logics.sales.currentOrder._id)
 
@@ -160,7 +160,7 @@ lemon.defineApp Template.sales,
 #
 #  customerSelectOptions         : logics.sales.customerSelectOptions()
 #  sellerSelectOptions           : logics.sales.sellerSelectOptions()
-  paymentMethodSelectOptions    : logics.sales.paymentMethodSelectOptions()
+#  paymentMethodSelectOptions    : logics.sales.paymentMethodSelectOptions()
 #  paymentsDeliverySelectOptions : logics.sales.paymentsDeliverySelectOptions()
 #  billDiscountSelectOptions     : logics.sales.billDiscountSelectOptions()
 #  depositOptions                : logics.sales.depositOptions()
