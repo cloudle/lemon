@@ -1,0 +1,6 @@
+lemon.defineWidget Template.roleDetailThumbnail,
+  permissionDesc: ->
+    return 'CHƯA PHÂN QUYỀN' if !@roles
+    Schema.roles.findOne({name: @roles[0]})?.description ? 'KHÔNG TÌM THẤY'
+  email: ->
+    Meteor.users.findOne(@user).emails[0].address
