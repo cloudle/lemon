@@ -1,4 +1,7 @@
 logics.sales.tabOptions =
+#  source: logics.sales.currentOrderHistory.fetch()
+#  currentSource: logics.sales.currentOrder
+
   source: 'orderHistory'
   currentSource: 'currentOrder'
   caption: 'tabDisplay'
