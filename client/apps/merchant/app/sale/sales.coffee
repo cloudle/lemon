@@ -1,10 +1,4 @@
-#--------------Format option-------------------------------------------->
-formatProductSearch = (item) -> "#{item.name} [#{item.skulls}]" if item
-formatSellerSearch = (item) -> "#{item.emails[0].address}" if item
-formatCustomerSearch = (item) -> "#{item.name}" if item
-formatPaymentMethodSearch = (item) -> "#{item.display}" if item
-formatWarehouseSearch = (item) -> "#{item.name}" if item
-
+formatPaymentMethodSearch = (item) -> "#{item.name}" if item
 #--------------Helper-------------------------------------------->
 calculateCurrentOrderPercentDiscount= (currentOrder)->
   if currentOrder.discountCash is 0 then 0
@@ -102,7 +96,7 @@ maxQuality = ->
 #      else
 #        logics.sales.templateInstance.ui.extras.toggleExtra 'delivery'
 
-lemon.defineWidget Template.sales,
+lemon.defineApp Template.sales,
   deliveryDetail: -> loadDeliverDetail(logics.sales.currentOrder) if logics.sales.currentOrder
   currentFinalPrice: -> calculateCurrentFinalPrice(logics.sales.currentOrder) if logics.sales.currentOrder
   currentDebit: ->  calculateCurrentDebit(logics.sales.currentOrder) if logics.sales.currentOrder
@@ -117,12 +111,12 @@ lemon.defineWidget Template.sales,
 
   rendered: ->
     logics.sales.templateInstance = @
-    @ui.$deliveryDate.datepicker
-      language: "vi"
+#    @ui.$deliveryDate.datepicker
+#      language: "vi"
 
   events:
-    "change [name='advancedMode']": (event, template) ->
-      logics.sales.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
+#    "change [name='advancedMode']": (event, template) ->
+#      logics.sales.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
 
     'blur .contactName': (event, template)->
       logics.sales.updateDeliveryContactName(template.find(".contactName").value)
@@ -166,7 +160,7 @@ lemon.defineWidget Template.sales,
 #
 #  customerSelectOptions         : logics.sales.customerSelectOptions()
 #  sellerSelectOptions           : logics.sales.sellerSelectOptions()
-#  paymentMethodSelectOptions    : logics.sales.paymentMethodSelectOptions()
+  paymentMethodSelectOptions    : logics.sales.paymentMethodSelectOptions()
 #  paymentsDeliverySelectOptions : logics.sales.paymentsDeliverySelectOptions()
 #  billDiscountSelectOptions     : logics.sales.billDiscountSelectOptions()
 #  depositOptions                : logics.sales.depositOptions()
@@ -176,7 +170,17 @@ lemon.defineWidget Template.sales,
 #  billPercentDiscountOptions    : logics.sales.billPercentDiscountOptions()
 
 
-#  currentProductQualityOptions  : logics.sales.qualityOptions()
+  currentProductSelectOptions:
+    query: (query) -> query.callback
+      results: [{_id: 1, name: 'sang'}, {_id: 2, name: 'loc'}, {_id: 3, name: 'ky'}]
+      text: 'id'
+    initSelection: (element, callback) -> callback {_id: 1, name: 'sang'}
+    formatSelection: formatPaymentMethodSearch
+    formatResult: formatPaymentMethodSearch
+    placeholder: 'CHỌN SẢN PTGD'
+    minimumResultsForSearch: -1
+    changeAction: (e) ->
+    reactiveValueGetter: -> {_id: 1, name: 'sang'}
 
   currentProductQualityOptions:
     reactiveSetter: (val) ->

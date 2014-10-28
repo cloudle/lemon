@@ -1,10 +1,7 @@
 logics.sales.validation = {}
 
-logics.sales.validation.orderDetail = (productId, quality, price, discountCash)->
-  unless product = Schema.products.findOne(productId)
-    console.log 'Chưa chọn sản phẩm.'
-    return false
-  else if quality < 1
+logics.sales.validation.orderDetail = (product, quality, price, discountCash)->
+  if quality < 1
     console.log 'Số lượng nhỏ nhất là 1.'
     return false
   else if price < product.price

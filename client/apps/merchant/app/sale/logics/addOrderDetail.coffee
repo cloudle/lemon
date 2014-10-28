@@ -33,10 +33,14 @@ checkingAddOrderDetail= (orderDetail, orderDetails)->
   else
     insertNewOrderDetail(orderDetail)
 
-logics.sales.addOrderDetail = (productId, quality, price, discountCash)->
+logics.sales.addOrderDetail = (productId, quality, price = null, discountCash = null)->
   zone.run =>
     currentOrder = logics.sales.currentOrder
-    if logics.sales.validation.orderDetail(productId, quality, price, discountCash)
+    if !product = Schema.products.findOne(productId) then return console.log('productId không tồn tại.')
+    if price is null then price = product.price
+    if discountCash is null then discountCash = 0
+
+    if logics.sales.validation.orderDetail(productId, quality, price, discountCash, product)
       orderDetails = Schema.orderDetails.find({order: currentOrder._id}).fetch()
       newOrderDetail = newOrderDetail(productId, quality, price, discountCash, currentOrder)
 

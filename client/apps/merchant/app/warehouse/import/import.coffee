@@ -48,7 +48,7 @@ runInitImportTracker = (context) ->
       if currentProduct = Schema.products.findOne(currentProductId)
         Session.setDefault 'currentProductInstance', currentProduct
 
-Sky.appTemplate.extends Template.import,
+lemon.defineApp Template.import,
   warehouseImport: -> Session.get 'currentImport'
   hideAddImportDetail: -> return "display: none" if Session.get('currentImport')?.finish == true
   hidePrice: -> return "display: none" unless Session.get('currentImport')?.currentPrice >= 0

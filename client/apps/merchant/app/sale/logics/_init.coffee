@@ -47,6 +47,10 @@ logics.sales.syncCurrentOrder = ->
       logics.sales.myProfile.currentWarehouse
     )
 
+logics.sales.syncCurrentOrderDetails = ->
+  if logics.sales.currentOrder
+    logics.sales.currentOrderDetails = OrderDetail.find({order: logics.sales.currentOrder._id})
+
 logics.sales.syncCurrentOrderBuyer = ->
   logics.sales.currentOrderBuyer =
     if logics.sales.currentOrder?.buyer

@@ -32,6 +32,7 @@ saleRoute =
     logics.sales.syncCurrentAllProviders()
     logics.sales.syncCurrentOrderHistory()
     logics.sales.syncCurrentOrder()
+    logics.sales.syncCurrentOrderDetails()
     logics.sales.syncCurrentOrderBuyer()
     logics.sales.syncCurrentBranchStaff()
     logics.sales.syncCurrentOrderSeller()
