@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'lemon';
-  src: url('../font/lemon.eot?81475866');
-  src: url('../font/lemon.eot?81475866#iefix') format('embedded-opentype'),
-       url('../font/lemon.woff?81475866') format('woff'),
-       url('../font/lemon.ttf?81475866') format('truetype'),
-       url('../font/lemon.svg?81475866#lemon') format('svg');
+  src: url('../font/lemon.eot?1100188');
+  src: url('../font/lemon.eot?1100188#iefix') format('embedded-opentype'),
+       url('../font/lemon.woff?1100188') format('woff'),
+       url('../font/lemon.ttf?1100188') format('truetype'),
+       url('../font/lemon.svg?1100188#lemon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'lemon';
-    src: url('../font/lemon.svg?81475866#lemon') format('svg');
+    src: url('../font/lemon.svg?1100188#lemon') format('svg');
   }
 }
 */
@@ -226,6 +226,8 @@
 .icon-eye-7:before { content: '\e8ad'; } /* '' */
 .icon-eye-off-1:before { content: '\e8ae'; } /* '' */
 .icon-bullseye:before { content: '\e8af'; } /* '' */
+.icon-angle-right:before { content: '\e8b0'; } /* '' */
+.icon-angle-left:before { content: '\e8b1'; } /* '' */
 .icon-emo-happy:before { content: '\f027'; } /* '' */
 .icon-emo-wink:before { content: '\f028'; } /* '' */
 .icon-emo-wink2:before { content: '\f029'; } /* '' */

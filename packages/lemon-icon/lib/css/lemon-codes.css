@@ -175,6 +175,8 @@
 .icon-eye-7:before { content: '\e8ad'; } /* '' */
 .icon-eye-off-1:before { content: '\e8ae'; } /* '' */
 .icon-bullseye:before { content: '\e8af'; } /* '' */
+.icon-angle-right:before { content: '\e8b0'; } /* '' */
+.icon-angle-left:before { content: '\e8b1'; } /* '' */
 .icon-emo-happy:before { content: '\f027'; } /* '' */
 .icon-emo-wink:before { content: '\f028'; } /* '' */
 .icon-emo-wink2:before { content: '\f029'; } /* '' */

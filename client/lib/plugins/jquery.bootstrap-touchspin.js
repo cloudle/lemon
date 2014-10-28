@@ -61,8 +61,8 @@
       mousewheel: true,
       buttondown_class: 'btn btn-default',
       buttonup_class: 'btn btn-default',
-	  buttondown_txt: "<i class='fa fa-angle-left'></i>",
-	  buttonup_txt: "<i class='fa fa-angle-right'></i>"
+      buttondown_txt: "<i class='icon-angle-left'></i>",
+      buttonup_txt: "<i class='icon-angle-right'></i>"
     };
 
     var attributeMap = {

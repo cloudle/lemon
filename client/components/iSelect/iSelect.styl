@@ -1,0 +1,46 @@
+@import "../../styles/lib.import.styl"
+
+.select2-results
+  padding 0 !important
+  margin 0 !important
+  > li:not(:first-child) { border-top: solid 1px #eee !important; }
+  li { font-size: 13px; }
+  .select2-highlighted { background: #7eac10 !important; }
+
+.select2-search
+  padding-left 0
+  padding-right 0
+  > input
+    border none
+    border-bottom solid 1px #eeeeee
+
+.select2-drop-active
+  border 1px solid #B8BABD !important
+
+.select2-container-active .select2-choice, .select2-container-active .select2-choices
+  border 1px solid #B8BABD !important
+  box-shadow none !important
+
+.select2-container-multi .select2-choices .select2-search-field input
+  padding 0 5px; line-height 26px
+
+.editor-wrapper .select2-container-multi .select2-choices
+  border solid 1px #DFDFDF
+  border-radius 3px
+
+  .select2-search-choice
+    margin 0 0 0 -1px
+    border-radius 0
+    padding 0 5px 0 15px
+    border-top none
+    border-bottom none
+    border-color #dfdfdf
+    line-height 28px
+
+    div
+      max-width 100px
+      overflow ellipsis
+
+
+.select2-container-multi .select2-search-choice-close
+  top: 8px
