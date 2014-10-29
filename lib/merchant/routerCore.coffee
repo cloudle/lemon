@@ -1,4 +1,4 @@
-Merchant.merchantRouteBase =
+Apps.Merchant.RouterBase =
   layoutTemplate: 'merchantLayout'
   fastRender: true
   onAfterAction: ->

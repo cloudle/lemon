@@ -10,3 +10,12 @@ Schema.systems.allow
   insert: -> true
   update: -> true
   remove: -> true
+
+
+
+
+AvatarImages.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+  download: -> true

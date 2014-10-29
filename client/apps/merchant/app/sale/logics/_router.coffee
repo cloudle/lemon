@@ -1,8 +1,7 @@
 saleRoute =
-  layoutTemplate: 'merchantLayout',
   template: 'sales',
   fastRender: true,
-  waitOn: -> lemon.dependencies.resolve('saleOrder')
+  waitOn: -> lemon.dependencies.resolve('saleOrder', Apps.MerchantSubscriber)
   data: ->
     logics.sales.syncMyProfile()
     logics.sales.syncMyOption()
@@ -47,6 +46,6 @@ saleRoute =
       paymentMethodSelectOption    : logics.sales.paymentMethodSelectOptions
     }
 
-_.extend(saleRoute, Merchant.merchantRouteBase)
+_.extend(saleRoute, Apps.Merchant.RouterBase)
 
 lemon.addRoute [saleRoute]

@@ -23,10 +23,11 @@ waitingkuo:jade
 cfs:filesystem
 cfs:standard-packages
 cfs:graphicsmagick
+
 dburles:collection-helpers
 aldeed:collection2
 anti:i18n
 mizzao:bootstrap-3
 select2
-
+reywood:publish-composite
 

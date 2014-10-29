@@ -2,20 +2,19 @@ merchantDevRoute =
   template: 'merchantDev',
   waitOn: -> lemon.dependencies.resolve('essentials')
   data: -> { System: System.findOne({}) }
-_.extend(merchantDevRoute, Merchant.merchantRouteBase)
+_.extend(merchantDevRoute, Apps.Merchant.RouterBase)
 
 metroSummaryRoute =
   template: 'merchantHome'
   path: 'merchant'
-  waitOn: -> lemon.dependencies.resolve('merchantHome', Merchant.Subscriber)
+  waitOn: -> lemon.dependencies.resolve('merchantHome', Apps.MerchantSubscriber)
   data: -> {Summary: MetroSummary.findOne({})}
-_.extend(metroSummaryRoute, Merchant.merchantRouteBase)
+_.extend(metroSummaryRoute, Apps.Merchant.RouterBase)
 
 importRoute =
-  layoutTemplate: 'merchantLayout',
   template: 'import',
   fastRender: true,
-  waitOn: -> lemon.dependencies.resolve('warehouseImport')
+  waitOn: -> lemon.dependencies.resolve('warehouseImport', Apps.MerchantSubscriber)
   data: ->
     logics.sales.syncMyProfile()
     logics.sales.syncMyOption()
@@ -35,8 +34,6 @@ importRoute =
     qualityOptions: logics.import.qualityOptions
 
     }
-_.extend(importRoute, Merchant.merchantRouteBase)
-
-
+_.extend(importRoute, Apps.Merchant.RouterBase)
 
 lemon.addRoute [merchantDevRoute, metroSummaryRoute, importRoute]

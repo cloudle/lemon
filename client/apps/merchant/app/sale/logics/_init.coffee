@@ -32,9 +32,3 @@ logics.sales.syncSale = ->
 
   logics.sales.currentBranchStaff              = Meteor.users.find({})
   return
-
-
-
-
-
-
