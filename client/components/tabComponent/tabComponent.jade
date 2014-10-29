@@ -1,0 +1,7 @@
+template(name="tabComponent")
+  ul.tab-component
+    li.new-button.icon-plus-6
+    each options.source
+      li(class="{{activeClass}}")
+        .title {{dynamicCaption}}
+        span.icon-cancel-circled-4

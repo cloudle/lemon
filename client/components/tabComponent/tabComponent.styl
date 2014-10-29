@@ -1,0 +1,53 @@
+@import "../../styles/lib.import.styl"
+
+ul.tab-component
+  clearfix()
+  margin: 0; padding: 0
+  border-top solid 1px #D3D3D3
+  padding-bottom 5px
+  background-color #F1F1F1
+
+  li
+    unselectable()
+    background-color #DFDFDF
+    max-width 150px
+    display inline; float:left
+    position relative
+    border solid 1px #D3D3D3
+    border-right none
+    margin-top -1px
+    &:last-child { border-right: solid 1px #d3d3d3; }
+    &.active
+      background-color #fff
+      border-top-color transparent
+
+    &:not(.active):hover { background-color: #e6e6e6; }
+    .title
+      cursor pointer
+      padding 8px 35px 5px 12px
+      display block
+      color #333333
+      overflow ellipsis
+      text-transform uppercase
+
+    span
+      cursor pointer
+      position absolute !important
+      right 0; top 9px
+      margin 0 12px
+      padding 1px 2px 2px 2px
+      color #ccc
+      &:hover
+        color pumpkin
+
+  .new-button
+    cursor pointer
+    color #ccc; background-color #fff
+    border solid 1px #D1D1D1
+    border-top solid 1px #E6E6E6
+    margin 0 5px 0 10px
+    padding 7px 9px 6px 9px
+    top -1px
+    &:hover
+      color lime
+      background-color #fff !important

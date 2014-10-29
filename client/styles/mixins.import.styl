@@ -12,6 +12,13 @@ placeholder($color = #999)
   &::-webkit-input-placeholder
     color $color
 
+unselectable()
+  -moz-user-select -moz-none
+  -khtml-user-select none
+  -webkit-user-select none
+  -ms-user-select none
+  user-select none
+
 user-select($select)
   -webkit-user-select $select
   -moz-user-select $select

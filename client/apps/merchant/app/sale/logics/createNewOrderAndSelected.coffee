@@ -11,12 +11,10 @@ createNewOrder = (myProfile, buyer)->
   option
 
 logics.sales.createNewOrderAndSelected = ->
-  if !logics.sales.currentOrder
-    buyer = Schema.customers.findOne({parentMerchant: logics.sales.myProfile.parentMerchant})
-    newOrder = createNewOrder(logics.sales.myProfile, buyer)
-    logics.sales.selectOrder(newOrder._id)
-    newOrder._id
-  else logics.sales.currentOrder._id
+  buyer = Schema.customers.findOne({parentMerchant: logics.sales.myProfile.parentMerchant})
+  newOrder = createNewOrder(logics.sales.myProfile, buyer)
+  logics.sales.selectOrder(newOrder._id)
+  newOrder._id
 
 
 

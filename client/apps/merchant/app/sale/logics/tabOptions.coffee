@@ -2,7 +2,7 @@ logics.sales.tabOptions =
 #  source: logics.sales.currentOrderHistory.fetch()
 #  currentSource: logics.sales.currentOrder
 
-  source: 'orderHistory'
+  source: Schema.orders.find({creator: Meteor.userId()})
   currentSource: 'currentOrder'
   caption: 'tabDisplay'
   key: '_id'
