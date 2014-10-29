@@ -22,11 +22,9 @@ template(name="navigation")
 
       ul.nav.navbar-nav
         li.inav: span#logoutButton: i.icon-off-1
-        li.home(class="{{isActiveRoute 'merchantHome'}}"): a(href="{{pathFor 'merchantHome'}}"): i.icon-home-4
-        li.inav(class="{{isActiveRoute 'taskManager'}}")
+        li.home(class="{{isActiveRoute regex='merchantHome'}}"): a(href="{{pathFor 'merchantHome'}}"): i.icon-home-4
+        //li.inav(class="{{isActiveRoute regex='taskManager'}}")
           a(href="{{pathFor 'taskManager'}}"): i.icon-clipboard-2
-        li.inav(class="{{isActiveRoute 'warehouse'}}")
-          a(href="{{pathFor 'warehouse'}}"): i.icon-cubes
         each subMenus
-          li.inav(class="{{isActiveRoute route}}")
+          li.inav(class="{{isActiveRoute regex=route}}")
             a(href="{{pathFor route}}"): i.fa(class="{{icon}}")

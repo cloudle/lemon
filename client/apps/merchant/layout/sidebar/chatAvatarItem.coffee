@@ -1,8 +1,5 @@
 lemon.defineWidget Template.chatAvatarItem,
-  shortAlias: ->
-    fullAlias = @fullName ? Meteor.users.findOne(@user)?.emails[0].address
-    Sky.helpers.shortName(fullAlias)
-
+  shortAlias: -> Helpers.shortName(@fullName ? Meteor.users.findOne(@user)?.emails[0].address)
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
 
   hasUnreadMessage: ->
