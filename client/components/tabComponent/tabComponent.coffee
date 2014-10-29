@@ -1,18 +1,19 @@
 destroyTab = (context, instance) ->
-  allTabs = context.data.options.source.fetch()
+  options = context.data.options
+  allTabs = options.source.fetch()
   currentSource = _.findWhere(allTabs, {_id: instance._id})
   currentIndex = allTabs.indexOf(currentSource)
-  latestLength = context.options.destroyAction(instance)
+  latestLength = options.destroyAction?(instance)
 
   if latestLength > 0
     nextIndex = currentIndex + 1
     nextIndex = currentIndex - 1 if currentIndex is latestLength #last tab was deleted
-    Session.set(context.options.currentSource, allTabs[nextIndex])
-    context.options.navigateAction?(allTabs[nextIndex])
+    Session.set(options.currentSource, allTabs[nextIndex])
+    options.navigateAction?(allTabs[nextIndex])
   else if latestLength is 0
-    newTab = context.options.createAction()
-    Session.set(context.options.currentSource, newTab)
-    context.options.navigateAction?(newTab)
+    newTab = options.createAction()
+    Session.set(options.currentSource, newTab)
+    options.navigateAction?(newTab)
 
 generateActiveClass = (context, instance) ->
   key = context.data.options.key
@@ -29,5 +30,5 @@ lemon.defineWidget Template.tabComponent,
       template.data.options.navigateAction?(@)
     "click li.new-button": (event, template) ->
       Session.set(template.data.options.currentSource, template.data.options.createAction())
-    "dblclick span.fa": (event, template) ->
-      destroyTab(template.data, @); event.stopPropagation()
+    "dblclick span.delete-button": (event, template) ->
+      destroyTab(template, @); event.stopPropagation()
