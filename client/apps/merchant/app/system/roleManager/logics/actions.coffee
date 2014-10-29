@@ -1,4 +1,4 @@
-logics.roleManagelogics.roleManager.createNewRole = (event, template) ->
+logics.roleManager.createNewRole = (event, template) ->
   newRole = Schema.roles.insert
     group: 'merchant'
     name: template.ui.$newGroupName.val()

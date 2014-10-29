@@ -1,4 +1,4 @@
-Meteor.publish 'productSales', ->
+Meteor.publish 'products', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
   Schema.products.find({warehouse: myProfile.currentWarehouse, availableQuality: {$gt: 0}},
