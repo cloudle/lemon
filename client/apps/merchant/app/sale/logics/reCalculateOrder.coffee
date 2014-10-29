@@ -1,11 +1,7 @@
 calculateDepositAndDebitByProduct = (currentOrder, orderUpdate)->
-  if currentOrder.currentDeposit == currentOrder.finalPrice
-    orderUpdate.currentDeposit = orderUpdate.finalPrice
-
   if currentOrder.currentDeposit > orderUpdate.finalPrice
     orderUpdate.currentDeposit = currentOrder.currentDeposit
-
-  if currentOrder.currentDeposit < orderUpdate.finalPrice
+  else
     orderUpdate.currentDeposit = orderUpdate.finalPrice
 
   orderUpdate.deposit = orderUpdate.finalPrice

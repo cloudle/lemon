@@ -1,6 +1,6 @@
 formatCustomerSearch = (item) -> "#{item.name}" if item
 
-selectedCustomer = (customerId)->
+changedActionSelectCustomer = (customerId, currentOrder)->
   if customer = Schema.customers.findOne(customerId)
     option =
       contactName: null
@@ -9,7 +9,7 @@ selectedCustomer = (customerId)->
       deliveryDate: null
       comment: null
 
-    if logics.sales.currentOrder.paymentsDelivery == 1
+    if currentOrder.paymentsDelivery == 1
       option.contactName     = customer.name ? null
       option.contactPhone    = customer.phone ? null
       option.deliveryAddress = customer.address ? null
@@ -19,7 +19,7 @@ selectedCustomer = (customerId)->
     option.tabDisplay = Helpers.respectName(customer.name, customer.gender)
   else
     console.log 'Sai customer'; return
-  Order.update(logics.sales.currentOrder._id, {$set: option})
+  Order.update(currentOrder._id, {$set: option})
 
 
 
@@ -36,5 +36,5 @@ logics.sales.customerSelectOptions =
   formatResult: formatCustomerSearch
   id: '_id'
   placeholder: 'CHỌN NGƯỜI MUA'
-  changeAction: (e) -> selectedCustomer(e.added._id)
+  changeAction: (e) -> changedActionSelectCustomer(e.added._id, logics.sales.currentOrder)
   reactiveValueGetter: -> logics.sales.currentOrderBuyer

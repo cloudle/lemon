@@ -23,9 +23,6 @@ reUpdateQualityOfOrderDetail = (newOrderDetail, oldOrderDetail) ->
 insertNewOrderDetail = (orderDetail)-> OrderDetail.create orderDetail
 
 checkingAddOrderDetail= (newOrderDetail, orderDetails)->
-  console.log newOrderDetail
-  console.log orderDetails
-
   findOldOrderDetail =_.findWhere(orderDetails,
     {
       product         : newOrderDetail.product

@@ -23,7 +23,10 @@ logics.sales.productSelectOptions =
   placeholder: 'CHỌN SẢN PHẨM'
   minimumResultsForSearch: -1
   changeAction: (e) ->
-    orderId = logics.sales.createNewOrderAndSelected()
+    if logics.sales.currentOrder
+      orderId = logics.sales.currentOrder._id
+    else
+      orderId = logics.sales.createNewOrderAndSelected()
     updateSelectNewProduct(e.added, orderId)
     Session.set('allowAllOrderDetail', true) unless Session.get('allowAllOrderDetail')
   reactiveValueGetter: -> logics.sales.currentProduct

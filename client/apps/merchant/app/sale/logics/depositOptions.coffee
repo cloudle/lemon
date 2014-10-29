@@ -1,22 +1,21 @@
+calculateDepositAndDebit = (deposit, currentOrder)->
+  if val >= currentOrder.finalPrice
+    option=
+      currentDeposit  : val
+      paymentMethod   : 0
+      deposit         : currentOrder.finalPrice
+      debit           : 0
+  else
+    option=
+      currentDeposit  : val
+      paymentMethod   : 1
+      deposit         : val
+      debit           : currentOrder.finalPrice - val
+  Order.update(currentOrder._id, {$set: option})
 
 
 logics.sales.depositOptions =
-  reactiveSetter: (val) ->
-    if val >= logics.sales.currentOrder.finalPrice
-      option=
-        currentDeposit  : val
-        paymentMethod   : 0
-        deposit         : logics.sales.currentOrder.finalPrice
-        debit           : 0
-
-      Schema.orders.update(logics.sales.currentOrder._id, {$set: option}) if logics.sales.currentOrder
-    else
-      option=
-        currentDeposit  : val
-        paymentMethod   : 1
-        deposit         : val
-        debit           : logics.sales.currentOrder.finalPrice - val
-      Schema.orders.update(logics.sales.currentOrder._id, {$set: option}) if logics.sales.currentOrder
+  reactiveSetter: (val) -> calculateDepositAndDebit(val, logics.sales.currentOrder)
   reactiveValue: -> logics.sales.currentOrder?.currentDeposit ? 0
   reactiveMax: -> 99999999999
   reactiveMin: -> 0

@@ -4,7 +4,7 @@ maxQuality = ->
   max = qualityProduct - qualityOrderDetail
   max
 
-calculateProductDiscount = (val)->
+calculateDiscountCashAndDiscountPercent  = (val)->
   option = {}
   option.currentQuality = val
   if val > 0 && logics.sales.currentOrder.currentPrice > 0
@@ -17,7 +17,7 @@ calculateProductDiscount = (val)->
 
 logics.sales.maxQuality = 100
 logics.sales.qualityOptions =
-  reactiveSetter: (val) -> calculateProductDiscount(val)
+  reactiveSetter: (val) -> calculateDiscountCashAndDiscountPercent(val)
   reactiveValue: -> logics.sales.currentOrder?.currentQuality ? 0
   reactiveMax: -> logics.sales.maxQuality ? 1
 #  reactiveMax: -> maxQuality ? 1

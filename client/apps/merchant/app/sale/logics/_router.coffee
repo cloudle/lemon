@@ -13,6 +13,11 @@ saleRoute =
     logics.sales.syncProductAndSellerAndBuyer()
 
     Session.set('currentOrder', logics.sales.currentOrder)
+    if logics.sales.templateInstance
+      if logics.sales.currentOrder?.paymentsDelivery is 0
+        logics.sales.templateInstance.ui.extras.toggleExtra('delivery', false)
+      else
+        logics.sales.templateInstance.ui.extras.toggleExtra('delivery', true)
 
     return {
       myProfile: logics.sales.myProfile

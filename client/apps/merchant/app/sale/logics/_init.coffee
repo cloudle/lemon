@@ -8,17 +8,19 @@ logics.sales.syncMySession = ->
 
 
 logics.sales.syncCurrentOrder = ->
-  logics.sales.currentOrder = Order.findBy(mySession.currentOrder) if mySession = logics.sales.mySession
+  if mySession = logics.sales.mySession
+    logics.sales.currentOrder = Order.findBy(mySession.currentOrder)
+    Meteor.subscribe('orderDetails', mySession.currentOrder)
 
 logics.sales.syncCurrentOrderDetails = ->
   logics.sales.currentOrderDetails = OrderDetail.findBy(logics.sales.currentOrder._id) if logics.sales.currentOrder
+
 
 logics.sales.syncProductAndSellerAndBuyer = ->
   if logics.sales.currentOrder
     logics.sales.currentProduct     = Schema.products.findOne(logics.sales.currentOrder.currentProduct)
     logics.sales.currentOrderBuyer  = Schema.customers.findOne(logics.sales.currentOrder.buyer)
     logics.sales.currentOrderSeller = Meteor.users.findOne(logics.sales.currentOrder.seller)
-
 
 #load moi thong tin can thiet cho ban hang
 logics.sales.syncSale = ->

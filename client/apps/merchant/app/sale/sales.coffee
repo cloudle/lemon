@@ -61,3 +61,4 @@ lemon.defineApp Template.sales,
 #        Sky.global.currentOrder.updateDeliveryDate(expire)
 
       logics.sales.finishOrder(logics.sales.currentOrder._id)
+#      Meteor.call "finishOrder", logics.sales.currentOrder._id, (error, result) -> console.log error.error if error

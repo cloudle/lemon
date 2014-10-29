@@ -15,5 +15,5 @@ logics.sales.sellerSelectOptions =
   formatResult: formatSellerSearch
   id: '_id'
   placeholder: 'CHỌN NGƯỜI BÁN'
-  changeAction: (e) -> Schema.orders.update(logics.sales.currentOrder._id, {$set: {seller: e.added._id}})
+  changeAction: (e) -> Order.update(logics.sales.currentOrder._id, {$set: {seller: e.added._id}})
   reactiveValueGetter: -> logics.sales.currentOrder?.seller

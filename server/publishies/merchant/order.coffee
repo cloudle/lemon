@@ -7,9 +7,23 @@ Meteor.publish 'myOrderHistoryAndDetail', ->
     warehouse : myProfile.currentWarehouse
   })
 
-  historyOrderDetails = Schema.orderDetails.find({order: {$in:_.pluck(historyOrders.fetch(), '_id')}})
+#  historyOrderDetails = Schema.orderDetails.find({order: {$in:_.pluck(historyOrders.fetch(), '_id')}})
+#  [historyOrders, historyOrderDetails]
 
-  [historyOrders, historyOrderDetails]
+#Meteor.publishComposite 'orderAndDetails', (orderId) ->
+#  userId = @userId
+#  find: ->
+#    currentOrder = Schema.orders.findOne(orderId)
+#    return [] if !userId or currentOrder?.creator isnt userId
+#    Schema.orders.find { _id: orderId }
+#  children: [
+#    find: (order) -> Schema.orderDetails.find {order: order._id}
+#  ]
+
+Meteor.publish 'orderDetails', (orderId) ->
+  currentOrder = Schema.orders.findOne(orderId)
+  return [] if !@userId or currentOrder?.creator isnt @userId
+  Schema.orderDetails.find {order: orderId}
 
 Schema.orders.allow
   insert: -> true
