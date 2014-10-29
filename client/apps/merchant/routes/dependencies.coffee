@@ -1,6 +1,13 @@
 lemon.dependencies.add 'userInfo', ['myOption', 'myProfile', 'mySession']
 lemon.dependencies.add 'essentials', ['systems', 'userInfo']
 
+lemon.dependencies.add 'customerInfo', ['customers']
+lemon.dependencies.add 'productInWarehouseInfo', ['products' ,'skulls', 'providers']
+lemon.dependencies.add 'productDetailInWarehouse', ['productDetails', 'skulls', 'providers']
+lemon.dependencies.add 'mySaleInfo', []
+lemon.dependencies.add 'myOrderInfo', []
+
+
 lemon.dependencies.add 'merchantMessenger', ['currentMerchantContacts', 'unreadMessages']
 lemon.dependencies.add 'merchantNotification', ['unreadNotifications']
 lemon.dependencies.add 'merchantEssential', ['essentials', 'merchantMessenger', 'merchantNotification']
@@ -9,4 +16,5 @@ lemon.dependencies.add 'merchantHome', ['merchantEssential', 'myMetroSummaries']
 lemon.dependencies.add 'roleManager', ['merchantEssential', 'currentMerchantRoles']
 lemon.dependencies.add 'staffManager', ['merchantEssential', 'currentMerchantRoles']
 
-lemon.dependencies.add 'order', ['essentials', 'sales', 'productSales', 'skulls', 'providers', 'customers', 'orders', 'orderDetails']
+lemon.dependencies.add 'saleOrder', ['merchantEssential', 'myOrderHistoryAndDetail', 'mySaleAndDetail', 'productInWarehouseInfo']
+lemon.dependencies.add 'warehouseImport', ['merchantEssential']

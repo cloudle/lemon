@@ -5,6 +5,14 @@ reUpdateImportDetail = (newImportDetail, oldImportDetail) ->
 
 
 Schema.add 'importDetails', class ImportDetail
+  @findBy: (importId, merchantId = null, warehouseId = null)->
+    if !merchantId && !warehouseId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
+    @schema.find({
+      import   : importId
+      merchant : merchantId ? myProfile.currentMerchant
+      warehouse: warehouseId ? myProfile.currentWarehouse
+    })
+
   @newImportDetail: (imports, product)->
     option=
       import        : imports._id

@@ -47,6 +47,16 @@
 #    Schema.imports.update importId, $set: {totalPrice: 0, deposit: 0, debit: 0}
 
 Schema.add 'imports', class Import
+  @findBy: (importId, merchantId = null, warehouseId = null)->
+    if !merchantId && !warehouseId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
+    @schema.findOne({
+      _id      : importId
+      merchant : merchantId ? myProfile.currentMerchant
+      warehouse: warehouseId ? myProfile.currentWarehouse
+    })
+
+
+
   @createdByWarehouseAndSelect: (warehouseId, option)->
 #    return ('Kho không chính xác') if !warehouse = Schema.warehouses.findOne(warehouseId)
 #    return ('Mô Tả Không Được Đễ Trống') if !option.description

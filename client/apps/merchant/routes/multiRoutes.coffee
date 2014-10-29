@@ -15,7 +15,7 @@ saleRoute =
   layoutTemplate: 'merchantLayout',
   template: 'sales',
   fastRender: true,
-  waitOn: -> lemon.dependencies.resolve('order')
+  waitOn: -> lemon.dependencies.resolve('saleOrder')
   data: ->
     logics.sales.syncMyProfile()
     logics.sales.syncMyOption()
@@ -57,10 +57,24 @@ saleRoute =
       sellerSelectOptions          : logics.sales.sellerSelectOptions
       paymentsDeliverySelectOption : logics.sales.paymentsDeliverySelectOptions
       paymentMethodSelectOption    : logics.sales.paymentMethodSelectOptions
-
-
-
     }
 _.extend(saleRoute, Merchant.merchantRouteBase)
+
+#importRoute =
+#  layoutTemplate: 'merchantLayout',
+#  template: 'import',
+#  fastRender: true,
+#  waitOn: -> lemon.dependencies.resolve('import')
+#  data: ->
+#    logics.sales.syncMyProfile()
+#    logics.sales.syncMyOption()
+#    logics.sales.syncMySession()
+#
+#    return{
+#
+#    }
+#_.extend(saleRoute, Merchant.merchantRouteBase)
+
+
 
 lemon.addRoute [merchantDevRoute, metroSummaryRoute, saleRoute]

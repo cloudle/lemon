@@ -16,3 +16,20 @@ simpleSchema.Version = new SimpleSchema
       return
     denyInsert: true
     optional: true
+
+
+simpleSchema.Location = new SimpleSchema
+  address:
+    type: [String]
+    optional: true
+
+  areas:
+    type: [String]
+    optional: true
+
+simpleSchema.ChildProduct = new SimpleSchema
+  product:
+    type: String
+
+  quality:
+    type: Number

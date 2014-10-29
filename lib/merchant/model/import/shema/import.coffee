@@ -1,15 +1,11 @@
 simpleSchema.imports = new SimpleSchema
-  creator:
-    type: String
-
-  emailCreator:
-    type: String
-    optional: true
-
   merchant:
     type: String
 
   warehouse:
+    type: String
+
+  creator:
     type: String
 
   description:
@@ -33,6 +29,13 @@ simpleSchema.imports = new SimpleSchema
   systemTransaction:
     type: String
     optional: true
+
+  status:
+    type: String
+    optional: true
+
+  version: { type: simpleSchema.Version }
+
 #----------------------------------
   currentProduct:
     type: String
@@ -57,7 +60,3 @@ simpleSchema.imports = new SimpleSchema
   currentExpire:
     type: Date
     optional: true
-#----------------------------------
-
-  version: { type: simpleSchema.Version }
-

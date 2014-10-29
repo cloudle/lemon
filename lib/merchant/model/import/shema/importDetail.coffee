@@ -1,4 +1,10 @@
 simpleSchema.importDetails = new SimpleSchema
+  merchant:
+    type: String
+
+  warehouse:
+    type: String
+
   import:
     type: String
 

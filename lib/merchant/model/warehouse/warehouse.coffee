@@ -1,4 +1,12 @@
 Schema.add 'warehouses', class Warehouse
+  @findBy: (warehouseId, merchantId = null)->
+    if !merchantId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
+    @schema.findOne({
+      _id      : warehouseId
+      merchant : merchantId ? myProfile.currentMerchant
+    })
+
+
   @newDefault: (context)->
     merchant = Schema.merchants.findOne(context.merchantId)
     warehouse = Schema.warehouses.find({merchant: context.merchantId}).count()
