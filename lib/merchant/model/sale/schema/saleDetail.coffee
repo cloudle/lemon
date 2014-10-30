@@ -8,14 +8,6 @@ simpleSchema.saleDetails = new SimpleSchema
   productDetail:
     type: String
 
-  name:
-    type: String
-    optional: true
-
-  skulls:
-    type: [String]
-    optional: true
-
   color:
     type: String
     optional: true

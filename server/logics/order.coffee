@@ -36,7 +36,9 @@ subtractQualityOnSales = (stockingItems, sellingItem , currentSale) ->
 
 
 createSaleAndSaleOrder = (order, orderDetails)->
-  unless currentSale = Sale.findOne(Sale.insertByOrder(order)) then return null
+  currentSale = Sale.findOne(Sale.insertByOrder(order))
+  if !currentSale then throw new Meteor.Error("Create sale fail.")
+
   for currentOrderDetail in orderDetails
     productDetails = Schema.productDetails.find({product: currentOrderDetail.product}).fetch()
     subtractQualityOnSales(productDetails, currentOrderDetail, currentSale.data)
@@ -44,25 +46,27 @@ createSaleAndSaleOrder = (order, orderDetails)->
   option = {status: true}
   if currentSale.data.paymentsDelivery == 1
     option.delivery = Delivery.insertBySale(order, currentSale.data)
-  Sale.update currentSale.id, $set: option, (error, result) ->
-    if error then console.log error
-  currentSale.id
+  Sale.update currentSale.id, $set: option, (error, result) -> if error then console.log error
 
-removeOrderAndOrderDetailAfterCreateSale = (orderId)->
-  userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-  allTabs = logics.sales.currentOrderHistory.fetch()
+  currentSale
+
+
+removeOrderAndOrderDetail = (order, userProfile)->
+  allTabs = Order.myHistory(userProfile.user, userProfile.currentWarehouse, userProfile.currentMerchant).fetch()
   currentSource = _.findWhere(allTabs, {_id: userProfile.currentOrder})
   currentIndex = allTabs.indexOf(currentSource)
   currentLength = allTabs.length
+
   if currentLength > 1
-    if currentLength is currentIndex+1
-      logics.sales.selectOrder(allTabs[currentIndex-1]._id)
-    else
-      logics.sales.selectOrder(allTabs[currentIndex+1]._id)
-    logics.sales.removeOrderAndOrderDetail(orderId)
+    nextIndex = if currentIndex == currentLength - 1 then currentIndex - 1 else currentIndex + 1
+    UserSession.set('currentOrder', allTabs[nextIndex]._id)
   else
-    logics.sales.createNewOrderAndSelected()
-    logics.sales.removeOrderAndOrderDetail(orderId)
+    buyer = Customer.findOne(order.buyer).data
+    UserSession.set('currentOrder', Order.createdNewBy(buyer, userProfile))
+  Order.remove(order._id)
+  OrderDetail.remove({order: order._id})
+
+
 
 
 Meteor.methods
@@ -77,18 +81,17 @@ Meteor.methods
       warehouse : userProfile.currentWarehouse})
     if !currentOrder then throw new Meteor.Error("Order không tồn tại.")
 
-    currentOrderDetails = Schema.orderDetails.find({order: currentOrder._id}).fetch()
-    if currentOrderDetails.length < 1 then throw new Meteor.Error("Order rỗng.")
+    orderDetails = Schema.orderDetails.find({order: currentOrder._id}).fetch()
+    if orderDetails.length < 1 then throw new Meteor.Error("Order rỗng.")
 
-    product_ids = _.union(_.pluck(currentOrderDetails, 'product'))
+    product_ids = _.union(_.pluck(orderDetails, 'product'))
     products = Schema.products.find({_id: {$in: product_ids}}).fetch()
-    result = checkProductInStockQuality(currentOrderDetails, products)
+    result = checkProductInStockQuality(orderDetails, products)
     if result.error then throw new Meteor.Error(result.error)
 
-    saleId = createSaleAndSaleOrder(currentOrder, currentOrderDetails)
-    removeOrderAndOrderDetailAfterCreateSale(orderId)
+    sale = createSaleAndSaleOrder(currentOrder, orderDetails)
+    if sale then removeOrderAndOrderDetail(currentOrder, userProfile)
 
-    return @userId
 
 
 

@@ -22,6 +22,13 @@ logics.sales.syncProductAndSellerAndBuyer = ->
     logics.sales.currentOrderBuyer  = Schema.customers.findOne(logics.sales.currentOrder.buyer)
     logics.sales.currentOrderSeller = Meteor.users.findOne(logics.sales.currentOrder.seller)
 
+logics.sales.syncShowDelivery= ->
+  if logics.sales.templateInstance
+    if logics.sales.currentOrder?.paymentsDelivery is 0
+      logics.sales.templateInstance.ui.extras.toggleExtra('delivery', false)
+    else
+      logics.sales.templateInstance.ui.extras.toggleExtra('delivery', true)
+
 #load moi thong tin can thiet cho ban hang
 logics.sales.syncSale = ->
   if myProfile = logics.sales.myProfile
@@ -30,7 +37,8 @@ logics.sales.syncSale = ->
     logics.sales.currentAllSkulls              = Skull.insideMerchant(myProfile.parentMerchant)
     logics.sales.currentBranchProviders        = Provider.insideBranch(myProfile.currentMerchant)
     logics.sales.currentAllProviders           = Provider.insideMerchant(myProfile.parentMerchant)
-    logics.sales.currentOrderHistory           = Order.history(myProfile.currentMerchant, myProfile.currentWarehouse)
+
+    logics.sales.currentOrderHistory           = Order.myHistory(myProfile.currentMerchant, myProfile.currentWarehouse)
 
   logics.sales.currentBranchStaff              = Meteor.users.find({})
   return
