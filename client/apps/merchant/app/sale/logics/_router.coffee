@@ -1,6 +1,5 @@
 saleRoute =
   template: 'sales',
-  fastRender: true,
   waitOnDependency: 'saleOrder'
   onBeforeAction: ->
     if @ready()

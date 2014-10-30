@@ -12,6 +12,9 @@ iron:router
 mrt:iron-router-progress
 zimme:iron-router-active
 
+mrt:nvd3js
+d3
+
 meteorhacks:zones
 meteorhacks:fast-render
 meteorhacks:subs-manager

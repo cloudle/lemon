@@ -14,6 +14,8 @@ Meteor.publish 'mySaleAndDetail', ->
 
   [mySales, mySaleDetails]
 
+Meteor.publish 'saleBills', ->
+  Schema.sales.find {}
 
 Schema.sales.allow
   insert: -> true

@@ -8,6 +8,7 @@ lemon.dependencies.add 'merchantEssential', ['essentials', 'merchantMessenger', 
 lemon.dependencies.add 'merchantHome', ['merchantEssential', 'myMetroSummaries']
 lemon.dependencies.add 'roleManager', ['merchantEssential', 'currentMerchantRoles']
 lemon.dependencies.add 'staffManager', ['merchantEssential', 'currentMerchantRoles']
+lemon.dependencies.add 'salesReport', ['merchantEssential', 'saleBills']
 
 lemon.dependencies.add 'saleOrder', ['merchantEssential',
                                      'myOrderHistory',
