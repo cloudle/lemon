@@ -3,8 +3,9 @@ saleRoute =
   fastRender: true,
   waitOnDependency: 'saleOrder'
   onBeforeAction: ->
-    Apps.setup(logics.sales, Apps.Merchant.salesInit, 'sales')
-    Apps.setup(logics.sales, Apps.Merchant.salesReload)
+    if @ready()
+      Apps.setup(logics.sales, Apps.Merchant.salesInit, 'sales')
+      Apps.setup(logics.sales, Apps.Merchant.salesReload)
   data: ->
     logics.sales.syncMyProfile()
     logics.sales.syncMyOption()

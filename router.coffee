@@ -1,4 +1,4 @@
-Router.configure
-  loadingTemplate: 'merchantLoadingLayout'
+#Router.configure
+#  loadingTemplate: 'merchantLoadingLayout'
 
 lemon.buildRoutes(Router)
