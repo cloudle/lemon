@@ -49,11 +49,3 @@ logics.sales.addOrderDetail = (productId, quality, price = null, discountCash = 
       #kiem tra orderDetail co ton tai hay ko, neu co cong so luong, tinh gia tong , ko thi them moi
       checkingAddOrderDetail(newOrderDetail, orderDetails)
       logics.sales.reCalculateOrder(currentOrder._id)
-
-
-
-
-
-
-
-

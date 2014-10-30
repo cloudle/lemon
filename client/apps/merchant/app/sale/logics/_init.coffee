@@ -1,5 +1,7 @@
 logics.sales = { name: 'sale-logics' }
 Apps.Merchant.salesInit = []
+Apps.Merchant.salesReload = []
+
 Apps.Merchant.salesInit.push (scope) ->
   console.log Apps.myProfile
   console.log scope.name
@@ -7,6 +9,9 @@ Apps.Merchant.salesInit.push (scope) ->
 
 Apps.Merchant.salesInit.push (scope) ->
   console.log scope.name
+
+Apps.Merchant.salesReload.push (scope) ->
+  console.log 'reruning...'
 
 logics.sales.syncMyProfile = ->
   logics.sales.myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
