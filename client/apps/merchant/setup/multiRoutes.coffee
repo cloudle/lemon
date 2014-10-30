@@ -11,29 +11,4 @@ metroSummaryRoute =
   data: -> {Summary: MetroSummary.findOne({})}
 _.extend(metroSummaryRoute, Apps.Merchant.RouterBase)
 
-importRoute =
-  template: 'import',
-  fastRender: true,
-  waitOn: -> lemon.dependencies.resolve('warehouseImport', Apps.MerchantSubscriber)
-  data: ->
-    logics.sales.syncMyProfile()
-    logics.sales.syncMyOption()
-    logics.sales.syncMySession()
-
-    logics.import.syncCurrentWarehouse()
-    logics.import.syncCurrentImport()
-    logics.import.syncCurrentImportDetails()
-    logics.import.syncCurrentProductAndProvider()
-    logics.import.syncImportInfo()
-
-    return{
-    productSelectOptions  : logics.import.importProductSelectOptions
-    providerSelectOptions : logics.import.importProviderSelectOptions
-
-    #iSpinEdit
-    qualityOptions: logics.import.qualityOptions
-
-    }
-_.extend(importRoute, Apps.Merchant.RouterBase)
-
-lemon.addRoute [merchantDevRoute, metroSummaryRoute, importRoute]
+lemon.addRoute [merchantDevRoute, metroSummaryRoute]

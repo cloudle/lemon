@@ -92,6 +92,10 @@ simpleSchema.orders = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  currentTotalPrice:
+    type: Number
+    defaultValue: 0
+
   currentDiscountCash:
     type: Number
     defaultValue: 0

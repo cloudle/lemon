@@ -60,15 +60,16 @@ updateOrderByOrderDetailEmpty = (currentOrder)->
 
   Schema.orders.update currentOrder._id, $set: updateOrder
 
-logics.sales.reCalculateOrder = (orderId) ->
-  zone.run =>
-    currentOrder = Order.findOne(orderId).data
-    if currentOrder
-      orderDetails = Schema.orderDetails.find({order: orderId}).fetch()
-      if orderDetails.length > 0
-        updateOrderByOrderDetail(currentOrder, orderDetails)
-      else
-        updateOrderByOrderDetailEmpty(currentOrder)
+Apps.Merchant.salesInit.push ->
+  logics.sales.reCalculateOrder = (orderId) ->
+    zone.run =>
+      currentOrder = Order.findOne(orderId).data
+      if currentOrder
+        orderDetails = Schema.orderDetails.find({order: orderId}).fetch()
+        if orderDetails.length > 0
+          updateOrderByOrderDetail(currentOrder, orderDetails)
+        else
+          updateOrderByOrderDetailEmpty(currentOrder)
 
 
 

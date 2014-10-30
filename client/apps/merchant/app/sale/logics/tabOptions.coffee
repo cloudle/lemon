@@ -1,11 +1,9 @@
-logics.sales.tabOptions =
-#  source: logics.sales.currentOrderHistory.fetch()
-#  currentSource: logics.sales.currentOrder
-
-  source: Schema.orders.find({creator: Meteor.userId()})
-  currentSource: 'currentOrder'
-  caption: 'tabDisplay'
-  key: '_id'
-  createAction: -> logics.sales.createNewOrderAndSelected()
-  destroyAction: (instance) -> logics.sales.removeOrderAndOrderDetail(instance._id)
-  navigateAction: (instance) -> logics.sales.selectOrder(instance._id)
+Apps.Merchant.salesInit.push ->
+  logics.sales.tabOptions =
+    source: logics.sales.currentOrderHistory
+    currentSource: 'currentOrder'
+    caption: 'tabDisplay'
+    key: '_id'
+    createAction: -> logics.sales.createNewOrderAndSelected()
+    destroyAction: (instance) -> logics.sales.removeOrderAndOrderDetail(instance._id)
+    navigateAction: (instance) -> logics.sales.selectOrder(instance._id)

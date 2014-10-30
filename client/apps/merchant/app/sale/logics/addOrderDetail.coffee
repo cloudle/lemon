@@ -35,17 +35,18 @@ checkingAddOrderDetail= (newOrderDetail, orderDetails)->
   else
     insertNewOrderDetail(newOrderDetail)
 
-logics.sales.addOrderDetail = (productId, quality, price = null, discountCash = null)->
-  zone.run =>
-    currentOrder = logics.sales.currentOrder
-    if !product = Schema.products.findOne(productId) then return console.log('productId không tồn tại.')
-    if price is null then price = product.price
-    if discountCash is null then discountCash = 0
+Apps.Merchant.salesInit.push ->
+  logics.sales.addOrderDetail = (productId, quality, price = null, discountCash = null)->
+    zone.run =>
+      currentOrder = logics.sales.currentOrder
+      if !product = Schema.products.findOne(productId) then return console.log('productId không tồn tại.')
+      if price is null then price = product.price
+      if discountCash is null then discountCash = 0
 
-    if logics.sales.validation.orderDetail(productId, quality, price, discountCash, product)
-      orderDetails = Schema.orderDetails.find({order: currentOrder._id}).fetch()
-      newOrderDetail = optionOrderDetail(productId, quality, price, discountCash, currentOrder)
+      if logics.sales.validation.orderDetail(productId, quality, price, discountCash, product)
+        orderDetails = Schema.orderDetails.find({order: currentOrder._id}).fetch()
+        newOrderDetail = optionOrderDetail(productId, quality, price, discountCash, currentOrder)
 
-      #kiem tra orderDetail co ton tai hay ko, neu co cong so luong, tinh gia tong , ko thi them moi
-      checkingAddOrderDetail(newOrderDetail, orderDetails)
-      logics.sales.reCalculateOrder(currentOrder._id)
+        #kiem tra orderDetail co ton tai hay ko, neu co cong so luong, tinh gia tong , ko thi them moi
+        checkingAddOrderDetail(newOrderDetail, orderDetails)
+        logics.sales.reCalculateOrder(currentOrder._id)

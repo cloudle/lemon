@@ -48,7 +48,7 @@
 
 Schema.add 'imports', class Import
   @findBy: (importId, merchantId = null, warehouseId = null)->
-    if !merchantId && !warehouseId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
+    myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     @schema.findOne({
       _id      : importId
       merchant : merchantId ? myProfile.currentMerchant
@@ -57,22 +57,19 @@ Schema.add 'imports', class Import
 
 
 
-  @createdByWarehouseAndSelect: (warehouseId, option)->
-#    return ('Kho không chính xác') if !warehouse = Schema.warehouses.findOne(warehouseId)
-#    return ('Mô Tả Không Được Đễ Trống') if !option.description
-#    option.merchant   = warehouse.merchant
-#    option.warehouse  = warehouse._id
-#    option.creator    = Meteor.userId()
-#    option.finish     = false
-#    option.submitted   = false
-#    option.totalPrice = 0
-#    option.deposit    = 0
-#    option.debit      = 0
-#    option.emailCreator = Meteor.user().emails[0].address
-#    option._id = Schema.imports.insert option, (error, result)-> console.log error if error
-#    UserProfile.update {currentImport: option._id}
-#    option
-#
+  @createdNewBy: (description, myProfile = null)->
+    myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    @schema.insert
+      merchant   : myProfile.currentMerchant
+      warehouse  : myProfile.currentWarehouse
+      creator    : myProfile.user
+      finish     : false
+      submitted  : false
+      totalPrice : 0
+      deposit    : 0
+      debit      : 0
+
+
 #  @new: (option)->
 #    userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
 #    option.merchant   = userProfile.currentMerchant

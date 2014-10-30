@@ -1,22 +1,21 @@
-calculateCurrentDiscountPercent = (val)->
-  option = {}
-  option.currentDiscountCash = val
-  total = logics.sales.currentOrder.currentQuality * logics.sales.currentOrder.currentPrice
-  if val > 0
-    option.currentDiscountPercent = Math.round(val/total*100)
+calculateCurrentDiscountPercent = (discountCash, currentOrder)->
+  option = {currentDiscountCash: discountCash}
+  total = currentOrder.currentQuality * currentOrder.currentPrice
+  if discountCash > 0
+    option.currentDiscountPercent = Math.round(discountCash/total*100)
   else
     option.currentDiscountPercent = 0
 
-  Schema.orders.update(logics.sales.currentOrder._id, {$set: option}) if logics.sales.currentOrder
+  Order.update(currentOrder._id, {$set: option})
 
-
-logics.sales.discountCashOptions =
-  reactiveSetter: (val)-> calculateCurrentDiscountPercent(val)
-  reactiveValue: -> logics.sales.currentOrder?.currentDiscountCash ? 0
-  reactiveMax: ->  Session.get('currentProductMaxTotalPrice') ? 0
-  reactiveMin: -> 0
-  reactiveStep: -> 1000
-  others:
-    forcestepdivisibility: 'none'
+Apps.Merchant.salesInit.push ->
+  logics.sales.discountCashOptions =
+    reactiveSetter: (val)-> calculateCurrentDiscountPercent(val, Session.get('currentOrder'))
+    reactiveValue: -> Session.get('currentOrder').currentDiscountCash ? 0
+    reactiveMax: ->  Session.get('currentOrder').currentTotalPrice ? 0
+    reactiveMin: -> 0
+    reactiveStep: -> 1000
+    others:
+      forcestepdivisibility: 'none'
 
 

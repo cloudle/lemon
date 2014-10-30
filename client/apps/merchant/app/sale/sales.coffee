@@ -29,8 +29,8 @@ lemon.defineApp Template.sales,
   rendered: ->
     console.log 'Rerenderd!'
     logics.sales.templateInstance = @
-#    @ui.$deliveryDate.datepicker
-#      language: "vi"
+    lemon.ExcuteLogics()
+    $("[name=deliveryDate]").datepicker('setDate', logics.sales.deliveryDetail.deliveryDate)
 
   events:
     "change [name='advancedMode']": (event, template) ->

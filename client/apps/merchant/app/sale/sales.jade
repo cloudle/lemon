@@ -21,7 +21,7 @@ template(name="sales")
 
       .editor-wrapper.right(style="width: 150px")
         span.ilabel.optional giá tổng
-        input.quality(value="{{formatNumber currentFinalPrice}}" disabled)
+        input.quality(value="{{formatNumber finalPriceProduct}}" disabled)
       .editor-wrapper.right(style="width: 150px")
         span.ilabel.center.optional giảm giá
         +iSpinEdit(options=productDiscountCashOptions)
@@ -79,10 +79,10 @@ template(name="sales")
         button.btn.btn-default.pull-right.finish(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
       .editor-wrapper.pull-right(style="width: 120px")
         span.ilabel.optional.right thực thu
-        input.quality(value="{{formatNumber currentOrder.finalPrice}}")
+        input.quality(value="{{formatNumber currentOrder.finalPrice}}" disabled)
       .editor-wrapper.pull-right(style="width: 120px")
         span.ilabel.right số dư
-        input.debit(value="{{formatNumber currentDebit}}")
+        input.debit(value="{{formatNumber currentDebit}}" disabled)
       .editor-wrapper.pull-right(style="width: 190px")
         span.ilabel.center tiền nhận vào
         +iSpinEdit(options=depositOptions)

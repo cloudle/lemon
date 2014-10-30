@@ -1,22 +1,32 @@
 calculateBillDiscountCash = (discountPercent, currentOrder)->
-  if logics.sales.currentOrder?.billDiscount
+  if currentOrder.billDiscount
     option = {discountPercent : discountPercent}
-    if val > 0
-      if val == 100
+    if discountPercent > 0
+      if discountPercent == 100
         option.discountCash = currentOrder.totalPrice
       else
         option.discountCash = Math.round(currentOrder.totalPrice*option.discountPercent/100)
     else
       option.discountCash = 0
     option.finalPrice = currentOrder.totalPrice - option.discountCash
-  Order.update(logics.sales.currentOrder._id, {$set: option})
+  Order.update(currentOrder._id, {$set: option})
 
-logics.sales.billPercentDiscountOptions =
-  reactiveSetter: (val)-> calculateBillDiscountCash(val, logics.sales.currentOrder)
-  reactiveValue: -> Math.round(logics.sales.currentOrder?.discountPercent*100)/100 ? 0
-  reactiveMax: -> 100
-  reactiveMin: -> 0
-  reactiveStep: -> 1
-  others:
-    forcestepdivisibility: 'none'
-    decimals: 2
+reactiveMaxPercentDiscount = ->
+  if Session.get('currentOrder')?.billDiscount then 100
+  else Session.get('currentOrder')?.discountPercent ? 0
+
+reactiveMinBillPercentDiscount = ->
+  if Session.get('currentOrder')?.billDiscount then 0
+  else Session.get('currentOrder')?.discountPercent ? 0
+
+
+Apps.Merchant.salesInit.push ->
+  logics.sales.billPercentDiscountOptions =
+    reactiveSetter: (val)-> calculateBillDiscountCash(val, Session.get('currentOrder'))
+    reactiveValue: -> Math.round(Session.get('currentOrder').discountPercent*100)/100 ? 0
+    reactiveMax: -> reactiveMaxPercentDiscount()
+    reactiveMin: -> reactiveMinBillPercentDiscount()
+    reactiveStep: -> 1
+    others:
+      forcestepdivisibility: 'none'
+      decimals: 2

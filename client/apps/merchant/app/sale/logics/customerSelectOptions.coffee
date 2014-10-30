@@ -22,19 +22,19 @@ changedActionSelectCustomer = (customerId, currentOrder)->
   Order.update(currentOrder._id, {$set: option})
 
 
+Apps.Merchant.salesInit.push ->
+  logics.sales.customerSelectOptions =
+    query: (query) -> query.callback
+      results: _.filter logics.sales.currentAllCustomers.fetch(), (item) ->
+        unsignedTerm = Helpers.RemoveVnSigns query.term
+        unsignedName = Helpers.RemoveVnSigns item.name
 
-logics.sales.customerSelectOptions =
-  query: (query) -> query.callback
-    results: _.filter logics.sales.currentAllCustomers.fetch(), (item) ->
-      unsignedTerm = Helpers.RemoveVnSigns query.term
-      unsignedName = Helpers.RemoveVnSigns item.name
-
-      unsignedName.indexOf(unsignedTerm) > -1
-    text: 'name'
-  initSelection: (element, callback) -> callback(logics.sales.currentOrderBuyer)
-  formatSelection: formatCustomerSearch
-  formatResult: formatCustomerSearch
-  id: '_id'
-  placeholder: 'CHỌN NGƯỜI MUA'
-  changeAction: (e) -> changedActionSelectCustomer(e.added._id, logics.sales.currentOrder)
-  reactiveValueGetter: -> logics.sales.currentOrderBuyer
+        unsignedName.indexOf(unsignedTerm) > -1
+      text: 'name'
+    initSelection: (element, callback) -> callback(Schema.customers.findOne(Session.get('currentOrder').buyer))
+    formatSelection: formatCustomerSearch
+    formatResult: formatCustomerSearch
+    id: '_id'
+    placeholder: 'CHỌN NGƯỜI MUA'
+    changeAction: (e) -> changedActionSelectCustomer(e.added._id, logics.sales.currentOrder)
+    reactiveValueGetter: -> Session.get('currentOrder').buyer

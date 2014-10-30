@@ -7,16 +7,16 @@ changedActionSelectDiscountCash = (discount)->
   Order.update(logics.sales.currentOrder._id, {$set: option})
   logics.sales.reCalculateOrder(logics.sales.currentOrder._id)
 
-
-logics.sales.billDiscountSelectOptions =
-  query: (query) -> query.callback
-    results: Apps.Merchant.DiscountTypes
-    text: 'id'
-  initSelection: (element, callback) ->
-    callback _.findWhere(Apps.Merchant.DiscountTypes, {_id: logics.sales.currentOrder?.billDiscount})
-  formatSelection: formatPaymentMethodSearch
-  formatResult: formatPaymentMethodSearch
-  placeholder: 'CHỌN SẢN PTGD'
-  minimumResultsForSearch: -1
-  changeAction: (e) -> changedActionSelectDiscountCash(e.added._id)
-  reactiveValueGetter: -> _.findWhere(Apps.Merchant.DiscountTypes, {_id: logics.sales.currentOrder?.billDiscount})
+Apps.Merchant.salesInit.push ->
+  logics.sales.billDiscountSelectOptions =
+    query: (query) -> query.callback
+      results: Apps.Merchant.DiscountTypes
+      text: 'id'
+    initSelection: (element, callback) ->
+      callback _.findWhere(Apps.Merchant.DiscountTypes, {_id: Session.get('currentOrder').billDiscount})
+    formatSelection: formatPaymentMethodSearch
+    formatResult: formatPaymentMethodSearch
+    placeholder: 'CHỌN SẢN PTGD'
+    minimumResultsForSearch: -1
+    changeAction: (e) -> changedActionSelectDiscountCash(e.added._id)
+    reactiveValueGetter: -> _.findWhere(Apps.Merchant.DiscountTypes, {_id: Session.get('currentOrder').billDiscount})

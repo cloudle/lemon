@@ -1,10 +1,10 @@
 logics.import = {}
 
 logics.import.syncCurrentWarehouse = ->
-  logics.import.currentWarehouse = Warehouse.findBy(mySession.currentWarehouse) if mySession = logics.sales.mySession
+  logics.import.currentWarehouse = Warehouse.findBy(mySession.currentWarehouse) if mySession = Session.get('mySession')
 
 logics.import.syncCurrentImport = ->
-  logics.import.currentImport = Import.findBy(mySession.currentImport) if mySession = logics.sales.mySession
+  logics.import.currentImport = Import.findBy(mySession.currentImport) if mySession = Session.get('mySession')
 
 logics.import.syncCurrentImportDetails = ->
   if logics.import.currentImport
@@ -18,7 +18,7 @@ logics.import.syncCurrentProductAndProvider = ->
 
 #load ca thong tin can thiet cho nhap kho(thong tin san pham, skull, provider)
 logics.import.syncImportInfo = ->
-  if myProfile = logics.sales.myProfile
+  if myProfile = Session.get('myProfile')
     logics.import.productsInWarehouse   = Product.insideWarehouse(myProfile.currentWarehouse)
     logics.import.skulls                = Skull.insideMerchant(myProfile.parentMerchant)
     logics.import.providers             = Provider.insideMerchant(myProfile.parentMerchant)
