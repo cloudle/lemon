@@ -11,7 +11,7 @@ saleStatusIsImport = (sale)->
     false
 
 
-createSaleCode= ->
+createSaleCode = ->
   date = new Date()
   day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   oldSale = Schema.sales.findOne({'version.createdAt': {$gt: day}},{sort: {'version.createdAt': -1}})

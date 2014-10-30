@@ -1,4 +1,4 @@
-Meteor.publish 'myOrderHistoryAndDetail', ->
+Meteor.publish 'myOrderHistory', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
   historyOrders = Schema.orders.find({

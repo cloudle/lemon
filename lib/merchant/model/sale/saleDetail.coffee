@@ -1,14 +1,12 @@
 Schema.add 'saleDetails', class SaleDetail
-  @createSaleDetailByOrder = (currentSale, sellingItem, product, takenQuality)->
+  @createSaleDetailByOrder = (currentSale, product, productDetail, quality)->
     option =
       sale          : currentSale._id
-      product       : sellingItem.product
-      productDetail : product._id
-      name          : sellingItem.name
-      skulls        : sellingItem.skulls
-      quality       : takkenQuality
-      price         : sellingItem.price
-      totalPrice    : (takenQuality * sellingItem.price)
+      product       : product.product
+      productDetail : productDetail._id
+      quality       : quality
+      price         : product.price
+      totalPrice    : (quality * product.price)
       returnQuality : 0
       export        : false
       status        : false
@@ -19,7 +17,7 @@ Schema.add 'saleDetails', class SaleDetail
       else
         option.discountPercent = currentSale.discountCash/(currentSale.totalPrice/100)
     else
-      option.discountPercent = sellingItem.discountPercent
+      option.discountPercent = product.discountPercent
     option.finalPrice = option.totalPrice * (100 - option.discountPercent)/100
     option.discountCash   = option.totalPrice - option.finalPrice
 

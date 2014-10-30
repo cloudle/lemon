@@ -1,6 +1,6 @@
 Schema.add 'orders', class Order
-  @findBy: (orderId, merchantId = null, warehouseId = null)->
-    if !merchantId && !warehouseId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
+  @findBy: (orderId, warehouseId = null, merchantId = null)->
+    myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
     @schema.findOne({
       _id      : orderId
       creator  : myProfile.user
@@ -8,13 +8,24 @@ Schema.add 'orders', class Order
       warehouse: warehouseId ? myProfile.currentWarehouse
     })
 
-  @history: (merchantId = null, warehouseId = null)->
-    if !merchantId && !warehouseId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
+  @myHistory: (creatorId, warehouseId = null, merchantId = null)->
+    myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
     @schema.find({
-      creator  : Meteor.userId()
-      merchant : merchantId ? myProfile.currentMerchant
-      warehouse: warehouseId ? myProfile.currentWarehouse
+      creator   : creatorId ? myProfile.user
+      warehouse : warehouseId ? myProfile.currentWarehouse
+      merchant  : merchantId ? myProfile.currentMerchant
     })
+
+  @createdNewBy: (buyer, myProfile = null)->
+    if !myProfile then myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    @schema.insert
+      merchant  : myProfile.currentMerchant
+      warehouse : myProfile.currentWarehouse
+      creator   : myProfile.user
+      seller    : myProfile.user
+      buyer     : buyer?._id ? 'null'
+      tabDisplay: if buyer then Helpers.respectName(buyer.name, buyer.gender) else 'New Order'
+
 
 
 

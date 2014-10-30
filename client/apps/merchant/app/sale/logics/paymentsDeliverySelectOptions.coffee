@@ -2,7 +2,7 @@ formatPaymentMethodSearch = (item) -> "#{item.display}" if item
 
 changedActionSelectPaymentsDelivery = (paymentsDelivery, currentOrder)->
   option = {paymentsDelivery: paymentsDelivery}
-  if e.added._id == 1
+  if paymentsDelivery == 1
     if customer = Schema.customers.findOne(currentOrder.buyer)
       option.contactName     = customer.name ? null
       option.contactPhone    = customer.phone ? null

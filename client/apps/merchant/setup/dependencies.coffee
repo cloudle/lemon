@@ -10,7 +10,7 @@ lemon.dependencies.add 'roleManager', ['merchantEssential', 'currentMerchantRole
 lemon.dependencies.add 'staffManager', ['merchantEssential', 'currentMerchantRoles']
 
 lemon.dependencies.add 'saleOrder', ['merchantEssential',
-                                     'myOrderHistoryAndDetail',
+                                     'myOrderHistory',
                                      'mySaleAndDetail',
                                      'products',
                                      'skulls',
