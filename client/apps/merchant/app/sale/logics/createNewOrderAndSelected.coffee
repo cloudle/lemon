@@ -1,7 +1,8 @@
-logics.sales.createNewOrderAndSelected = ->
-  buyer = logics.sales.currentOrderBuyer
-  newOrderId = Order.createdNewBy(buyer, logics.sales.myProfile)
-  logics.sales.selectOrder(newOrderId) if newOrderId
+Apps.Merchant.salesInit.push ->
+  logics.sales.createNewOrderAndSelected = ->
+    buyer = Schema.customers.findOne(logics.sales.currentOrder.buyer)
+    newOrderId = Order.createdNewBy(buyer, Session.get('myProfile'))
+    logics.sales.selectOrder(newOrderId) if newOrderId
 
 
 

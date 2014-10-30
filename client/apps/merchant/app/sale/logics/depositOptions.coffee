@@ -1,25 +1,25 @@
 calculateDepositAndDebit = (deposit, currentOrder)->
-  if val >= currentOrder.finalPrice
+  if deposit >= currentOrder.finalPrice
     option=
-      currentDeposit  : val
+      currentDeposit  : deposit
       paymentMethod   : 0
       deposit         : currentOrder.finalPrice
       debit           : 0
   else
     option=
-      currentDeposit  : val
+      currentDeposit  : deposit
       paymentMethod   : 1
-      deposit         : val
-      debit           : currentOrder.finalPrice - val
+      deposit         : deposit
+      debit           : currentOrder.finalPrice - deposit
   Order.update(currentOrder._id, {$set: option})
 
-
-logics.sales.depositOptions =
-  reactiveSetter: (val) -> calculateDepositAndDebit(val, logics.sales.currentOrder)
-  reactiveValue: -> logics.sales.currentOrder?.currentDeposit ? 0
-  reactiveMax: -> 99999999999
-  reactiveMin: -> 0
-  reactiveStep: -> 1000
-  others:
-    forcestepdivisibility: 'none'
+Apps.Merchant.salesInit.push ->
+  logics.sales.depositOptions =
+    reactiveSetter: (val) -> calculateDepositAndDebit(val, logics.sales.currentOrder)
+    reactiveValue: -> Session.get('currentOrder').currentDeposit ? 0
+    reactiveMax: -> 99999999999
+    reactiveMin: -> 0
+    reactiveStep: -> 1000
+    others:
+      forcestepdivisibility: 'none'
 

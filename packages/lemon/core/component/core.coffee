@@ -15,6 +15,7 @@ Component.helpers.autoBinding = (context) ->
   context.ui = context.ui ? {}
   bindingElements(context)
   bindingSwitch(context)
+  bindingDatePicker(context)
   bindingExtras(context)
 
 #  --------------------------------------------------------------------->>
@@ -35,6 +36,17 @@ toggleExtra = (name, context, mode) ->
   if mode then currentExtra.$element.show() else currentExtra.$element.hide()
   Component.helpers.arrangeAppLayout()
 
+bindingDatePicker = (context) ->
+  context.datePicker = {}
+  for item in context.findAll("[binding='datePicker'][name]")
+    $item = $(item)
+    name = $item.attr('name')
+    options = {}
+    options.language = 'vi'
+    options.todayHighlight = true if $item.attr('todayHighlight') is true
+    $item.datepicker(options)
+    context.datePicker["$#{name}"] = $item
+
 bindingExtras = (context) ->
   context.ui.extras = {}
   for extra in context.findAll(".editor-row.extra[name]")
@@ -44,3 +56,4 @@ bindingExtras = (context) ->
     $extra.show() if visible
     context.ui.extras[name] = { visibility: visible, $element: $extra }
   context.ui.extras.toggleExtra = (name, mode = true) -> toggleExtra(name, context, mode)
+

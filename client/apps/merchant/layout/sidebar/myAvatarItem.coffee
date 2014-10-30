@@ -8,5 +8,5 @@ lemon.defineWidget Template.myAvatarItem,
       if files.length > 0
         AvatarImages.insert files[0], (error, fileObj) ->
           console.log error, fileObj
-          Schema.userProfiles.update(Apps.myProfile._id, {$set: {avatar: fileObj._id}})
-          AvatarImages.findOne(Apps.myProfile.avatar)?.remove()
+          Schema.userProfiles.update(Session.get('myProfile')._id, {$set: {avatar: fileObj._id}})
+          AvatarImages.findOne(Session.get('myProfile').avatar)?.remove()

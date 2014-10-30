@@ -4,31 +4,18 @@ saleRoute =
   onBeforeAction: ->
     if @ready()
       Apps.setup(logics.sales, Apps.Merchant.salesInit, 'sales')
-      Apps.setup(logics.sales, Apps.Merchant.salesReload)
+#      Apps.setup(logics.sales, Apps.Merchant.salesReload)
   data: ->
-    logics.sales.syncMyProfile()
-    logics.sales.syncMyOption()
-    logics.sales.syncMySession()
-
-    logics.sales.syncSale()
-    logics.sales.syncCurrentOrder()
-    logics.sales.syncCurrentOrderDetails()
-    logics.sales.syncProductAndSellerAndBuyer()
-    logics.sales.syncShowDelivery()
-
-    Session.set('currentOrder', logics.sales.currentOrder)
+    logics.sales.reactiveRun()
+    console.log 'reload data'
 
     return {
-      myProfile: logics.sales.myProfile
-      myOption : logics.sales.myOption
-      mySession: logics.sales.mySession
-
       currentOrder: logics.sales.currentOrder
       orderHistory: logics.sales.currentOrderHistory
 
-      currentFinalPrice: logics.sales.finalPrice()
-      deliveryDetail   : logics.sales.deliveryDetail()
-      currentDebit     : logics.sales.currentDebit()
+      finalPriceProduct: logics.sales.finalPriceProduct
+      deliveryDetail   : logics.sales.deliveryDetail
+      currentDebit     : logics.sales.currentDebit
 
       tabOptions        : logics.sales.tabOptions
       saleDetailOptions : logics.sales.saleDetailOptions

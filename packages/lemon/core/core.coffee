@@ -3,6 +3,8 @@ lemon.log = (params...) ->
   params.unshift("#{now.getMinutes()}:#{now.getSeconds()}")
   console.log.apply(console, params)
 
+lemon.ExcuteLogics = -> UserSession.set("ExcuteLogics", Meteor.uuid())
+
 lemon.sleep = (milliseconds) ->
   start = new Date().getTime()
   for i in [0..1e7]
