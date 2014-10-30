@@ -1,10 +1,17 @@
-@lemon.addRoute = (routes) ->
-  if Array.isArray(routes)
-    modulus.routes.push route for route in routes
-  else
-    modulus.routes.push routes
+@lemon.addRoute = (routes, baseRoute = undefined) ->
+  routes = [routes] unless Array.isArray(routes)
+  for route in routes
+    _.extend(route, baseRoute) if baseRoute
+    if route.waitOnDependency
+      route.waitOn = ->
+        results = lemon.dependencies.resolve(route.waitOnDependency)
+        item.ready() for item in results
+        results
 
-@lemon.buildRoutes = (context) ->
+    modulus.routes.push route
+  return
+
+@lemon.buildRoutes = (router) ->
   for route in modulus.routes
     template = undefined
 
@@ -16,4 +23,4 @@
     else if route.path
       template = route.path.substring(1)
 
-    context.route template, route if template
+    router.route template, route if template

@@ -1,4 +1,4 @@
-Meteor.publish 'fakeWaiter', ->
+Meteor.publish 'fake', ->
   self = @
   setTimeout ->
     self.ready()

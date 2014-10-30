@@ -13,7 +13,6 @@ lemon.dependencies.add 'saleOrder', ['merchantEssential',
                                      'myOrderHistoryAndDetail',
                                      'mySaleAndDetail',
                                      'products',
-                                     'productDetails',
                                      'skulls',
                                      'providers',
                                      'customers']

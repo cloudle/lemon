@@ -15,6 +15,3 @@ logics.sales.createNewOrderAndSelected = ->
   newOrder = createNewOrder(logics.sales.myProfile, buyer)
   logics.sales.selectOrder(newOrder._id)
   newOrder._id
-
-
-

@@ -15,7 +15,6 @@ Meteor.publishComposite 'myMerchantContacts',
     find: (profile) -> AvatarImages.find {_id: profile.avatar}
   ]
 
-
 Meteor.publish 'myOption', -> Schema.userOptions.find({user: @userId})
 Schema.userOptions.allow
   insert: -> true

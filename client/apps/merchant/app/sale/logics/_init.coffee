@@ -1,11 +1,19 @@
-logics.sales = {}
+logics.sales = { name: 'sale-logics' }
+Apps.Merchant.salesInit = []
+Apps.Merchant.salesInit.push (scope) ->
+  console.log Apps.myProfile
+  console.log scope.name
+  scope.name = 'cloud-le'
+
+Apps.Merchant.salesInit.push (scope) ->
+  console.log scope.name
+
 logics.sales.syncMyProfile = ->
   logics.sales.myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
 logics.sales.syncMyOption = ->
   logics.sales.myOption = Schema.userOptions.findOne({user: Meteor.userId()})
 logics.sales.syncMySession = ->
   logics.sales.mySession = Schema.userSessions.findOne({user: Meteor.userId()})
-
 
 logics.sales.syncCurrentOrder = ->
   if mySession = logics.sales.mySession

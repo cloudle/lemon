@@ -11,15 +11,17 @@ lemon.dependencies.list = (dep = undefined ) ->
   return
 
 lemon.dependencies.resolve = (name, Subscriber = Meteor) ->
-  return [] if !lemon.dependencies[name]
+  return if !lemon.dependencies[name]
   dependencies = recursiveResolve(lemon.dependencies[name])
 
+  subscriptions = []
   for dep in dependencies
     if typeof(dep) is 'string'
-      Subscriber.subscribe.call(Subscriber, dep)
+      subscriptions.push Subscriber.subscribe.call(Subscriber, dep)
     else if Array.isArray(dep)
-      Subscriber.subscribe.apply(Subscriber, dep)
-  return
+      subscriptions.push Subscriber.subscribe.apply(Subscriber, dep)
+
+  return subscriptions
 
 #Helpers -------------------------------------------------------------->
 recursiveResolve = (nextDep, currentDeps = []) ->

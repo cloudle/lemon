@@ -20,4 +20,3 @@ logics.sales.billPercentDiscountOptions =
   others:
     forcestepdivisibility: 'none'
     decimals: 2
-

@@ -27,6 +27,7 @@ lemon.defineApp Template.sales,
     Session.setDefault('allowSuccessOrder', false)
 
   rendered: ->
+    console.log 'Rerenderd!'
     logics.sales.templateInstance = @
 #    @ui.$deliveryDate.datepicker
 #      language: "vi"
