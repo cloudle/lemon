@@ -1,19 +1,15 @@
 calculateImportPrice =(val)->
-#  currentImport = Session.get('currentImport')
-#  if currentImport.currentPrice >= 0
-#    if currentImport.currentPrice == currentImport.currentImportPrice || currentImport.currentPrice < val
-#      Schema.imports.update(Session.get('currentImport')._id, {$set: {currentImportPrice: val, currentPrice: val}})
-#  else
-#    Schema.imports.update(Session.get('currentImport')._id, {$set: {currentImportPrice: val}})
-#  Session.set 'currentImport', Schema.imports.findOne(Session.get('currentImport')._id)
-#  Schema.products.update(Session.get('currentImport').currentProduct, {$set:{importPrice: val}})
+  option = {currentImportPrice: val}
+  if Session.get('currentImport').currentPrice < val then option.currentPrice = val
+  Import.update(Session.get('currentImport')._id, {$set: option})
+  Product.update(Session.get('currentImport').currentProduct, {$set:{importPrice: val}})
 
-
-logics.import.importPriceOptions =
-  reactiveSetter: (val) -> calculateImportPrice(val)
-  reactiveValue: -> 0 ? 0
-  reactiveMax: -> 999999999
-  reactiveMin: -> 0
-  reactiveStep: -> 1000
-  others:
-    forcestepdivisibility: 'none'
+Apps.Merchant.importInit.push (scope) ->
+  logics.import.importPriceOptions =
+    reactiveSetter: (val) -> calculateImportPrice(val)
+    reactiveValue: -> Session.get('currentImport').currentImportPrice ? 0
+    reactiveMax: -> 9999999999
+    reactiveMin: -> 0
+    reactiveStep: -> 1000
+    others:
+      forcestepdivisibility: 'none'

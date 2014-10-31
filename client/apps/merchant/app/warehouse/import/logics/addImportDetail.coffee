@@ -1,35 +1,58 @@
-#checkingAndAddImportDetail = (currentImport)->
-#  if !imports = Schema.imports.findOne({_id: importId}) then return {error: true, message: "Phiếu nhập kho không tồn tại"}
-#  if imports.finish == true then return {error: true, message: "Phiếu nhập kho đang chờ duyệt, không thể thêm sản phẩm"}
-#  if !product = Schema.products.findOne(imports.currentProduct) then return {error: true, message: "Không tìm thấy sản phẩm nhập kho"}
-#  #    importDetails = Schema.importDetails.find({import: importId}).fetch()
-#  importDetail = @newImportDetail(imports, product)
-#
-#  findImportDetail = Schema.importDetails.findOne ({
-#    import      : importDetail.import
-#    product     : importDetail.product
-#    provider    : importDetail.provider
-#    importPrice : importDetail.importPrice
-#    expire      : importDetail.expire
-#  })
-#  if findImportDetail
-#    reUpdateImportDetail(importDetail, findImportDetail)
-#  else
-#    Schema.importDetails.insert importDetail, (error, result) -> console.log error if error
-#
-#  Sky.global.reCalculateImport(importId)
-#
-#
-#
-#logics.imports.addImportDetail = (event, template, currentImport) ->
-#  checkingAndAddImportDetail(currentImport)
-#
-#
-#  expire = template.ui.$expire.data('datepicker').dates[0]
-#  if expire > (new Date)
-#    expireDate = new Date(expire.getFullYear(), expire.getMonth(), expire.getDate())
-#    Import.update(currentImport._id, {$set: {currentExpire: expireDate}})
-#  else
-#    Import.update(currentImport._id, {$unset: {currentExpire: true}})
-#
-#  console.log ImportDetail.createByImport Session.get('currentImport')._id
+Apps.Merchant.importInit.push (scope) ->
+  logics.import.getExpireDate = (expire)->
+    expire = $("[name=#{expire}]").datepicker().data().datepicker.dates[0]
+    if expire > (new Date)
+      expireDate = new Date(expire.getFullYear(), expire.getMonth(), expire.getDate())
+    else null
+
+Apps.Merchant.importInit.push (scope) ->
+  logics.import.reCalculateImport = (importId)->
+    if currentImport = Schema.imports.findOne(
+      {
+        _id: importId
+        warehouse: Session.get('myProfile').currentWarehouse
+        merchant : Session.get('myProfile').currentMerchant
+      } )
+      importDetails = Schema.importDetails.find({import: importId}).fetch()
+      totalPrice = 0
+      if importDetails.length > 0
+        for detail in importDetails
+          totalPrice += (detail.importQuality * detail.importPrice)
+          option = {totalPrice: totalPrice, deposit: totalPrice, debit: 0}
+      else option = {totalPrice: 0, deposit: 0, debit: 0}
+      Import.update importId, $set: option
+
+
+reUpdateImportDetail = (newImportDetail, oldImportDetail) ->
+  totalPrice = newImportDetail.importQuality  * oldImportDetail.importPrice
+  Schema.importDetails.update oldImportDetail._id, $inc:{ importQuality : newImportDetail.importQuality , totalPrice: totalPrice}
+  , (error, result) -> console.log error if error
+
+optionImportDetail = (option, currentImport)->
+  option.merchant   = currentImport.merchant
+  option.warehouse  = currentImport.warehouse
+  option.import     = currentImport._id
+  option.totalPrice = option.importQuality * option.importPrice
+  option
+
+checkValidationOption = (option, currentImport) -> true
+
+Apps.Merchant.importInit.push (scope) ->
+  logics.import.addImportDetail = (option, importId) ->
+    if currentImport = Schema.imports.findOne({_id: importId})
+      importDetail = optionImportDetail(option, currentImport)
+
+      findImportDetail = Schema.importDetails.findOne ({
+        import      : importDetail.import
+        product     : importDetail.product
+        provider    : importDetail.provider
+        importPrice : importDetail.importPrice
+        expire      : importDetail.expire
+      })
+      console.log importDetail
+      if findImportDetail
+        reUpdateImportDetail(importDetail, findImportDetail)
+      else
+        Schema.importDetails.insert importDetail, (error, result) -> console.log error if error
+
+      logics.import.reCalculateImport(importId)

@@ -1,26 +1,33 @@
 logics.import = {}
+Apps.Merchant.importInit = []
+Apps.Merchant.importReload = []
 
-logics.import.syncCurrentWarehouse = ->
-  logics.import.currentWarehouse = Warehouse.findBy(mySession.currentWarehouse) if mySession = Session.get('mySession')
+Apps.Merchant.importInit.push (scope) ->
+  logics.import.availableProducts  = Product.insideWarehouse(Session.get('myProfile').currentWarehouse)
+  logics.import.availableSkulls    = Skull.insideMerchant(Session.get('myProfile').parentMerchant)
+  logics.import.availableProviders = Provider.insideMerchant(Session.get('myProfile').parentMerchant)
+  logics.import.branchProviders    = Provider.insideBranch(Session.get('myProfile').currentMerchant)
+  logics.import.myHistory          = Import.myHistory(Session.get('myProfile').user, Session.get('myProfile').currentWarehouse, Session.get('myProfile').currentMerchant)
 
-logics.import.syncCurrentImport = ->
-  logics.import.currentImport = Import.findBy(mySession.currentImport) if mySession = Session.get('mySession')
 
-logics.import.syncCurrentImportDetails = ->
+
+logics.import.reactiveRun = ->
+  if Session.get('mySession') and Session.get('myProfile')
+    logics.import.currentImport = Import.findBy(Session.get('mySession').currentImport, Session.get('myProfile').currentWarehouse, Session.get('myProfile').currentMerchant)
   if logics.import.currentImport
+    Session.set('currentImport', logics.import.currentImport)
+    Apps.MerchantSubscriber.subscribe('importDetails', logics.import.currentImport._id)
+
     logics.import.currentImportDetails = ImportDetail.findBy(logics.import.currentImport._id)
 
-logics.import.syncCurrentProductAndProvider = ->
-  if currentImport = logics.sales.currentImport
-    logics.import.currentProduct  = Product.findBy(currentImport.currentProduct)
-    logics.import.currentProvider = Provider.findBy(currentImport.currentProvider)
+
+#    logics.import.currentWarehouse = Warehouse.findBy(mySession.currentWarehouse) if mySession = Session.get('mySession')
 
 
-#load ca thong tin can thiet cho nhap kho(thong tin san pham, skull, provider)
-logics.import.syncImportInfo = ->
-  if myProfile = Session.get('myProfile')
-    logics.import.productsInWarehouse   = Product.insideWarehouse(myProfile.currentWarehouse)
-    logics.import.skulls                = Skull.insideMerchant(myProfile.parentMerchant)
-    logics.import.providers             = Provider.insideMerchant(myProfile.parentMerchant)
-    logics.import.branchProviders       = Provider.insideBranch(myProfile.currentMerchant)
+
+
+
+
+
+
 

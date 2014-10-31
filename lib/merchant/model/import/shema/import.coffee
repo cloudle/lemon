@@ -13,18 +13,23 @@ simpleSchema.imports = new SimpleSchema
 
   totalPrice:
     type: Number
+    defaultValue: 0
 
   deposit:
     type: Number
+    defaultValue: 0
 
   debit:
     type: Number
+    defaultValue: 0
 
   finish:
     type: Boolean
+    defaultValue: false
 
   submitted:
     type: Boolean
+    defaultValue: false
 
   systemTransaction:
     type: String

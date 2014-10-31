@@ -1,32 +1,32 @@
 importRoute =
   template: 'import',
-  fastRender: true,
-  waitOn: -> lemon.dependencies.resolve('warehouseImport', Apps.MerchantSubscriber)
+  waitOnDependency: 'warehouseImport'
+  onBeforeAction: ->
+    if @ready()
+      Apps.setup(logics.import, Apps.Merchant.importInit, 'import')
+
   data: ->
-    logics.sales.syncMyProfile()
-    logics.sales.syncMyOption()
-    logics.sales.syncMySession()
-
-    logics.import.syncCurrentWarehouse()
-    logics.import.syncCurrentImport()
-    logics.import.syncCurrentImportDetails()
-    logics.import.syncCurrentProductAndProvider()
-    logics.import.syncImportInfo()
-
-    Session.set('currentImport', logics.import.currentImport)
+    logics.import.reactiveRun()
 
     return{
-    productSelectOptions  : logics.import.importProductSelectOptions
-    providerSelectOptions : logics.import.importProviderSelectOptions
+      creatorName: Session.get('myProfile')?.fullName
+      hideAddImportDetail:  "display: none" if Session.get('currentImport')?.finish == true
+      hidePrice:  "display: none" unless Session.get('currentImport')?.currentPrice >= 0
+      hideFinishImport: "display: none" if Session.get('currentImport')?.finish == true || !(Session.get('currentImportDetails')?.length > 0)
+      hideEditImport: "display: none" if Session.get('currentImport')?.finish == false
+      hideSubmitImport: "display: none" if Session.get('currentImport')?.submitted == true
 
-    tabOptions  : logics.import.tabOptions
 
-    #iSpinEdit
-    qualityOptions    : logics.import.qualityOptions
-    importPriceOptions: logics.import.importPriceOptions
+      currentImport         : logics.import.currentImport
+      productSelectOptions  : logics.import.productSelectOptions
+      providerSelectOptions : logics.import.providerSelectOptions
 
+      tabOptions          : logics.import.tabOptions
+      importDetailOptions : logics.import.importDetailOptions
+
+      qualityOptions    : logics.import.qualityOptions
+      importPriceOptions: logics.import.importPriceOptions
+      salePriceOptions  : logics.import.salePriceOptions
     }
-_.extend(importRoute, Apps.Merchant.RouterBase)
 
-
-lemon.addRoute [importRoute]
+lemon.addRoute [importRoute], Apps.Merchant.RouterBase

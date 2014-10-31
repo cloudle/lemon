@@ -2,10 +2,9 @@ template(name="import")
   #header
     .caption-row
       .title Nhập Kho
-      //.commands
-      //  a#popProduct.btn.btn-danger(href="") Thêm Sản Phẩm
-      //  a#popProvider.btn.btn-danger(href="") Thêm Nhà Phân Phối
-      //  +iSelect(options=warehouseSelectOptions class="field")
+      .commands
+        //a#popProduct.btn.btn-danger(href="") Thêm Sản Phẩm
+        //a#popProvider.btn.btn-danger(href="") Thêm Nhà Phân Phối
     .editor-row
       .editor-wrapper(style="width:250px")
         span.ilabel sản phẩm
@@ -19,46 +18,46 @@ template(name="import")
       .editor-wrapper(style="width:150px")
         span.ilabel.center giá nhập
         +iSpinEdit(options=importPriceOptions class="field")
-      //.editor-wrapper(style="width:150px; {{hidePrice}}")
-      //  span.ilabel.center giá bán
-      //  +iSpinEdit(options=priceOptions class="field")
-      //.editor-wrapper(style="width: 120px")
-      //  span.ilabel.optional hết hạn
-      //  input(binding="datePicker" todayHighlight="true" name="expire")
-      //.editor-wrapper(style="width:100px")
-      //  button.btn.btn-default.addImportDetail(type='submit' style="{{hideAddImportDetail}}") Add
+      .editor-wrapper(style="width:150px; {{hidePrice}}")
+        span.ilabel.center giá bán
+        +iSpinEdit(options=salePriceOptions class="field")
+      .editor-wrapper(style="width: 120px")
+        span.ilabel.optional hết hạn
+        input(binding="datePicker" todayHighlight="true" name="expire")
+      .editor-wrapper(style="width:100px")
+        button.btn.btn-default.addImportDetail(type='submit' style="{{hideAddImportDetail}}") Add
     //
     //+productPopover
     //+providerPopover
-    //
+
   #content
-    //+iGrid(options=importDetailOptions)
-    //
+    +iGrid(options=importDetailOptions)
+
   #footer
     .editor-row
       //.editor-wrapper.right(style="width: 100px; {{hideSubmitImport}}")
-      //  button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") ĐÃ DUYỆT
+      .editor-wrapper.right(style="width: 100px")
+        button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") ĐÃ DUYỆT
       //.editor-wrapper.right(style="width: 200px; {{hideFinishImport}}")
-      //  button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") XÁC NHẬN CHỜ DUYỆT
+      .editor-wrapper.right(style="width: 200px")
+        button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") XÁC NHẬN CHỜ DUYỆT
       //.editor-wrapper.right(style="width: 120px; {{hideEditImport}}")
-      //  button.btn.btn-default.right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
-      //.editor-wrapper.right(style="width: 120px")
-      //  span.ilabel tiền còn nợ
-      //  input.debit(value="#{warehouseImport.debit}" disabled)
-      //.editor-wrapper.right(style="width: 120px")
-      //  span.ilabel tiền đã trả
-      //  input.deposit(value="#{warehouseImport.deposit}")
-      //.editor-wrapper.right(style="width: 120px")
-      //  span.ilabel tổng tiền
-      //  input.totalPrice(value="#{warehouseImport.totalPrice}" disabled)
-      //.editor-wrapper.right(style="width: 300px")
-      //  span.ilabel description
-      //  input.description(value="#{warehouseImport.description}" )
-      //.editor-wrapper.right(style="width: 180px")
-      //  span.ilabel người tạo
-      //  input.emailCreator(value="{{emailCreator}}" disabled)
+      .editor-wrapper.right(style="width: 120px")
+        button.btn.btn-default.right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
+      .editor-wrapper.right(style="width: 120px")
+        span.ilabel tiền còn nợ
+        input.debit(value="{{currentImport.debit}}" disabled)
+      .editor-wrapper.right(style="width: 120px")
+        span.ilabel tiền đã trả
+        input.deposit(value="{{currentImport.deposit}}")
+      .editor-wrapper.right(style="width: 120px")
+        span.ilabel tổng tiền
+        input.totalPrice(value="{{currentImport.totalPrice}}" disabled)
+      .editor-wrapper.right(style="width: 300px")
+        span.ilabel description
+        input.description(value="{{currentImport.description}}" )
+      .editor-wrapper.right(style="width: 180px")
+        span.ilabel người tạo
+        input.emailCreator(value="{{creatorName}}" disabled)
 
-    +tabComponent
-
-    option._id = Schema.imports.insert option, (error, result)-> console.log error if error
-    option(options=tabOptions)
+    +tabComponent(options=tabOptions)

@@ -11,12 +11,6 @@ simpleSchema.importDetails = new SimpleSchema
   product:
     type: String
 
-  name:
-    type: String
-
-  skulls:
-    type: [String]
-
   provider:
     type: String
     optional: true
@@ -48,6 +42,7 @@ simpleSchema.importDetails = new SimpleSchema
 
   finish:
     type: Boolean
+    defaultValue: false
 
 
   version: { type: simpleSchema.Version }
