@@ -1,1 +1,2 @@
 export MONGO_URL=mongodb://localhost:27017/lemon
+export MAIL_URL=smtp://lehaoson@gmail.com:Ultimate7@stmp.gmail.com:587/

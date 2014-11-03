@@ -2,7 +2,9 @@ staffManagerRoute =
   template: 'staffManager',
   waitOn: -> lemon.dependencies.resolve('staffManager', Apps.MerchantSubscriber)
   onBeforeAction: ->
-    Apps.setup(logics.customerManager, Apps.Merchant.customerManagerInit, 'customerManager') if @ready()
+    if @ready()
+      Apps.setup(logics.customerManager, Apps.Merchant.customerManagerInit, 'customerManager')
+      @next()
   data: -> {
     gridOptions: logics.staffManager.gridOptions
   }

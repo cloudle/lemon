@@ -9,7 +9,6 @@ lemon-icon
 accounts-password
 mizzao:user-status
 iron:router
-mrt:iron-router-progress
 zimme:iron-router-active
 
 mrt:nvd3js
@@ -34,4 +33,6 @@ mizzao:bootstrap-3
 select2
 reywood:publish-composite
 rajit:bootstrap3-datepicker
+email
+multiply:iron-router-progress
 
