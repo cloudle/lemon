@@ -1,5 +1,5 @@
 logics.import.createImportAndSelected = ->
-  importId = Import.createdNew('01-05-2015', Session.get('myProfile'))
+  importId = Import.createdNewBy('01-05-2015', Session.get('myProfile'))
   UserSession.set('currentImport', importId)
 
 destroyImportAndDetail = (importId)->

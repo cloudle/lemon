@@ -18,7 +18,7 @@ Apps.Merchant.importInit.push (scope) ->
         unsignedName.indexOf(unsignedTerm) > -1
       text: 'name'
     initSelection: (element, callback) ->
-      callback(Schema.providers.findOne(Session.get('currentImport').currentProvider) ? 'skyReset')
+      callback(Schema.providers.findOne(Session.get('currentImport')?.currentProvider) ? 'skyReset')
     formatSelection: formatProviderSearch
     formatResult: formatProviderSearch
     id: '_id'
@@ -27,4 +27,4 @@ Apps.Merchant.importInit.push (scope) ->
       allowClear: true
   #    minimumResultsForSearch: -1
     changeAction: (e) -> updateImportAndProduct(e)
-    reactiveValueGetter: -> Session.get('currentImport').currentProvider ? 'skyReset'
+    reactiveValueGetter: -> Session.get('currentImport')?.currentProvider ? 'skyReset'

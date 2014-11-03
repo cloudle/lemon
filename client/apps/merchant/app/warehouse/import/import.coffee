@@ -1,7 +1,4 @@
 lemon.defineApp Template.import,
-
-
-
   rendered: ->
 #    $(@find '#productPopover').modalPopover
 #      target: '#popProduct'

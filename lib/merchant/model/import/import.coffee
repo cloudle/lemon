@@ -10,9 +10,12 @@ Schema.add 'imports', class Import
   @myHistory: (creatorId, warehouseId = null, merchantId = null)->
     myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
     @schema.find({
-      creator   : creatorId ? myProfile.user
-      warehouse : warehouseId ? myProfile.currentWarehouse
-      merchant  : merchantId ? myProfile.currentMerchant
+      $and : [
+        creator   : creatorId ? myProfile.user
+        warehouse : warehouseId ? myProfile.currentWarehouse
+        merchant  : merchantId ? myProfile.currentMerchant
+        $or : [{ finish : false }, { submitted : false}]
+      ]
     })
 
   @createdNewBy: (description, myProfile = null)->
@@ -21,9 +24,4 @@ Schema.add 'imports', class Import
       merchant   : myProfile.currentMerchant
       warehouse  : myProfile.currentWarehouse
       creator    : myProfile.user
-      finish     : false
-      submitted  : false
-      totalPrice : 0
-      deposit    : 0
-      debit      : 0
-
+      description: description ? 'New Import'

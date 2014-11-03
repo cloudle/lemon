@@ -28,7 +28,7 @@ Apps.Merchant.importInit.push (scope) ->
         unsignedName.indexOf(unsignedTerm) > -1 || item.productCode.indexOf(unsignedTerm) > -1
       text: 'name'
     initSelection: (element, callback) ->
-      callback(Schema.products.findOne(Session.get('currentImport').currentProduct) ? 'skyReset')
+      callback(Schema.products.findOne(Session.get('currentImport')?.currentProduct) ? 'skyReset')
     formatSelection: formatProductSearch
     formatResult: formatProductSearch
     id: '_id'
@@ -36,4 +36,4 @@ Apps.Merchant.importInit.push (scope) ->
   #    minimumResultsForSearch: -1
     hotkey: 'return'
     changeAction: (e) -> updateImportSelectNewProduct(e.added._id)
-    reactiveValueGetter: -> Session.get('currentImport').currentProduct  ? 'skyReset'
+    reactiveValueGetter: -> Session.get('currentImport')?.currentProduct  ? 'skyReset'

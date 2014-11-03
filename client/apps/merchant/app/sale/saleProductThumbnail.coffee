@@ -19,6 +19,6 @@ lemon.defineWidget Template.saleProductThumbnail,
     if number < 10 then '0' + number else number
   round: (number) -> Math.round(number)
   events:
-    "dblclick .full-desc.trash": ->
+    "dblclick .trash": ->
       OrderDetail.remove(@_id)
       logics.sales.reCalculateOrder(@order)

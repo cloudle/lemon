@@ -37,7 +37,7 @@ template(name="merchantHome")
         span.center.left.caption: span.table: i.ico.icon-money
         span.bottom.left.caption CÔNG NỢ
       .tile.teal(class="{{metroUnLocker Summary.data.deliveryCount}}"
-      data-app='delivery')
+      data-app='deliveryManager')
         span.center.middle.caption: span.table: i.ico.icon-truck-1
         span.bottom.middle.caption {{formatNumber Summary.data.deliveryCount}} GIAO HÀNG
       .tile.sun-flower(class="{{metroUnLocker Summary.data.importCount}}"
@@ -49,7 +49,7 @@ template(name="merchantHome")
 
     .tile-group-3
       .tile.sun-flower(class="{{metroUnLocker Summary.data.importCount}}"
-      data-app='billExport')
+      data-app='exportAndImportManager')
         span.center.middle.caption: span.table: i.ico.icon-forward-4
         span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> XUẤT NHẬP KHO
       .tile.pumpkin.double.double-vertical(class="{{metroUnLocker Summary.data.warehouseCount}}"

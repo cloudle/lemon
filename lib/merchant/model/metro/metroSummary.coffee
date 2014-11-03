@@ -77,7 +77,7 @@ Schema.add 'metroSummaries', class MetroSummary
 
     stockProductCount = 0; availableProductCount = 0
     for item in products.fetch()
-      stockProductCount += item.inStockQuality
+      stockProductCount += item.inStockQuality if item.inStockQuality > 0
       availableProductCount += item.availableQuality
 
     inventoryProductCount = 0
@@ -172,60 +172,60 @@ Schema.add 'metroSummaries', class MetroSummary
       if sale.paymentMethod is 1
         incOption.deliveryCount = 1
         incOption.deliveryProductCount = sale.saleCount
-
-      #    oldSale =Schema.sales.findOne({$and: [
-      #      {merchant: sale.merchant}
-      #      {'version.createdAt': {$lt: sale.version.updateAt}}
-      #    ]}, Sky.helpers.defaultSort(1))
-      #    unless oldSale
-      #      oldSale = {version: {}}
-      #      oldSale.version.createdAt = sale.version.updateAt
-      #      if sale.version.updateAt.getDate() == oldSale.version.createdAt.getDate()
-      #        incOption.saleCountDay = 1
-      #        incOption.saleProductCategoryCountDay = 1
-      #        incOption.saleProductCountDay= sale.saleCount
-      #        incOption.depositCountDay= sale.deposit
-      #        incOption.debitCountDay= sale.debit
-      #        incOption.revenueDay= sale.deposit
-      #        if sale.paymentMethod is 1
-      #          incOption.deliveryCountDay = 1
-      #          incOption.deliveryProductCategoryCountDay = 1
-      #          incOption.deliveryProductCountDay = sale.saleCount
-      #      else
-      #        setOption.saleCountDay = 1
-      #        setOption.saleProductCategoryCountDay= 1
-      #        setOption.saleProductCountDay= sale.saleCount
-      #        setOption.depositCountDay= sale.deposit
-      #        setOption.debitCountDay= sale.debit
-      #        setOption.revenueDay= sale.deposit
-      #        if sale.paymentMethod is 1
-      #          setOption.deliveryCountDay = 1
-      #          setOption.deliveryProductCategoryCountDay= 1
-      #          setOption.deliveryProductCountDay = sale.saleCount
-      #
-      #
-      #      if sale.version.updateAt.getMonth() == oldSale.version.createdAt.getMonth()
-      #        incOption.saleCountMonth= 1
-      #        incOption.saleProductCategoryCountMonth= 1
-      #        incOption.saleProductCountMonth= sale.saleCount
-      #        incOption.depositCountMonth= sale.deposit
-      #        incOption.debitCountMonth= sale.debit
-      #        incOption.revenueMonth= sale.deposit
-      #        if sale.paymentMethod is 1
-      #          incOption.deliveryCountMonth = 1
-      #          incOption.deliveryProductCategoryCountMonth = 1
-      #          incOption.deliveryProductCountMonth = sale.saleCount
-      #      else
-      #        setOption.saleCountMonth= 1
-      #        setOption.saleProductCategoryCountMonth= 1
-      #        setOption.saleProductCountMonth= sale.saleCount
-      #        setOption.depositCountMonth= sale.deposit
-      #        setOption.debitCountMonth= sale.debit
-      #        setOption.revenueMonth= sale.deposit
-      #        if sale.paymentMethod is 1
-      #          setOption.deliveryCountMonth = 1
-      #          setOption.deliveryProductCategoryCountMonth = 1
-      #          setOption.deliveryProductCountMonth = sale.saleCount
+#
+#          oldSale =Schema.sales.findOne({$and: [
+#            {merchant: sale.merchant}
+#            {'version.createdAt': {$lt: sale.version.updateAt}}
+#          ]}, Sky.helpers.defaultSort(1))
+#          unless oldSale
+#            oldSale = {version: {}}
+#            oldSale.version.createdAt = sale.version.updateAt
+#            if sale.version.updateAt.getDate() == oldSale.version.createdAt.getDate()
+#              incOption.saleCountDay = 1
+#              incOption.saleProductCategoryCountDay = 1
+#              incOption.saleProductCountDay= sale.saleCount
+#              incOption.depositCountDay= sale.deposit
+#              incOption.debitCountDay= sale.debit
+#              incOption.revenueDay= sale.deposit
+#              if sale.paymentMethod is 1
+#                incOption.deliveryCountDay = 1
+#                incOption.deliveryProductCategoryCountDay = 1
+#                incOption.deliveryProductCountDay = sale.saleCount
+#            else
+#              setOption.saleCountDay = 1
+#              setOption.saleProductCategoryCountDay= 1
+#              setOption.saleProductCountDay= sale.saleCount
+#              setOption.depositCountDay= sale.deposit
+#              setOption.debitCountDay= sale.debit
+#              setOption.revenueDay= sale.deposit
+#              if sale.paymentMethod is 1
+#                setOption.deliveryCountDay = 1
+#                setOption.deliveryProductCategoryCountDay= 1
+#                setOption.deliveryProductCountDay = sale.saleCount
+#
+#
+#            if sale.version.updateAt.getMonth() == oldSale.version.createdAt.getMonth()
+#              incOption.saleCountMonth= 1
+#              incOption.saleProductCategoryCountMonth= 1
+#              incOption.saleProductCountMonth= sale.saleCount
+#              incOption.depositCountMonth= sale.deposit
+#              incOption.debitCountMonth= sale.debit
+#              incOption.revenueMonth= sale.deposit
+#              if sale.paymentMethod is 1
+#                incOption.deliveryCountMonth = 1
+#                incOption.deliveryProductCategoryCountMonth = 1
+#                incOption.deliveryProductCountMonth = sale.saleCount
+#            else
+#              setOption.saleCountMonth= 1
+#              setOption.saleProductCategoryCountMonth= 1
+#              setOption.saleProductCountMonth= sale.saleCount
+#              setOption.depositCountMonth= sale.deposit
+#              setOption.debitCountMonth= sale.debit
+#              setOption.revenueMonth= sale.deposit
+#              if sale.paymentMethod is 1
+#                setOption.deliveryCountMonth = 1
+#                setOption.deliveryProductCategoryCountMonth = 1
+#                setOption.deliveryProductCountMonth = sale.saleCount
 
       metroSummary = Schema.metroSummaries.findOne({merchant: sale.merchant})
       Schema.metroSummaries.update metroSummary._id, $inc: incOption, $set: setOption
