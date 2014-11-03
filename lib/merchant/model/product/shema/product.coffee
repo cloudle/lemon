@@ -45,6 +45,10 @@ simpleSchema.products = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  upperGapQuality:
+    type: Number
+    optional: true
+
   price:
     type: Number
     defaultValue: 0

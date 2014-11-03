@@ -4,6 +4,8 @@ template(name="saleProductThumbnail")
     .thumbnails.sky
       .right-caption {{name}}
       +avatarImageComponent(avatar=avatarUrl alias=name)
+      .horizontal-meter
+        .meter-wrapper: .meter-progress(style="height: {{qualityMeterStyle.percent}}%; background-color: {{qualityMeterStyle.color}}")
       .short-desc.quality {{pad quality}}
       .full-desc.price {{formatNumber finalPrice}} <small>VNĐ</small>
       //.discount

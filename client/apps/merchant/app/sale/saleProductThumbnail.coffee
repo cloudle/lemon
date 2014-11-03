@@ -3,6 +3,14 @@ lemon.defineWidget Template.saleProductThumbnail,
     currentProduct = Schema.products.findOne(@product)
     AvatarImages.findOne(currentProduct?.image)?.url() ? undefined
   colorClasses: -> Helpers.RandomColor()
+  qualityMeterStyle: ->
+    currentProduct = Schema.products.findOne(@product)
+    stockPercentage = currentProduct?.availableQuality / (currentProduct?.upperGapQuality ? 100)
+    return {
+      percent: stockPercentage * 100
+      color: Helpers.ColorBetween(255, 0, 0, 135, 196, 57, stockPercentage, 3)
+    }
+
   name: -> Product.findOne(@product).data.name
   formatCurrency: (number) ->
     accounting.formatMoney(number, { symbol: 'VNĐ',  format: "%v %s", precision: 0 })
