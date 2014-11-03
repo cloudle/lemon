@@ -2,8 +2,8 @@ template(name="saleProductThumbnail")
   .col
     //.thumbnails(class="#{styles}")
     .thumbnails.sky
-      .right-caption {{name}}
-      +avatarImageComponent(avatar=avatarUrl alias=name)
+      .right-caption {{productNameFromId product}}
+      +avatarImageComponent(avatar=avatarUrl alias="{{productNameFromId product}}")
       .horizontal-meter
         .meter-wrapper: .meter-progress(style="height: {{qualityMeterStyle.percent}}%; background-color: {{qualityMeterStyle.color}}")
       .short-desc.quality {{pad quality}}

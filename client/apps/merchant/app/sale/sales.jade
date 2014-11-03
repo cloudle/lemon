@@ -1,4 +1,5 @@
 template(name="sales")
+  +salePrinter(orderDetails=currentOrderDetails order=currentOrder)
   #header
     .caption-row
       .title Bán hàng
@@ -77,6 +78,8 @@ template(name="sales")
         +iSelect(options=customerSelectOptions class="field")
       .editor-wrapper.pull-right
         button.btn.btn-default.pull-right.finish(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
+      .editor-wrapper.pull-right
+        button.btn.btn-default.pull-right.print-preview(type='submit') IN BILL
       .editor-wrapper.pull-right(style="width: 120px")
         span.ilabel.optional.right thực thu
         input.quality(value="{{formatNumber currentOrder.finalPrice}}" disabled)

@@ -11,6 +11,7 @@ saleRoute =
 
     return {
       currentOrder: logics.sales.currentOrder
+      currentOrderDetails: logics.sales.currentOrderDetails
       orderHistory: logics.sales.currentOrderHistory
 
       finalPriceProduct: logics.sales.finalPriceProduct
