@@ -1,6 +1,7 @@
 template(name="saleProductThumbnail")
   .col
-    .thumbnails(class="#{styles}")
+    //.thumbnails(class="#{styles}")
+    .thumbnails.sky
       .right-caption {{name}}
       +avatarImageComponent(avatar=avatarUrl alias=name)
       .short-desc.quality {{pad quality}}

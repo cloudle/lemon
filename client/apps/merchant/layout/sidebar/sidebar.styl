@@ -91,21 +91,22 @@
       transform rotate(90deg)
       color #5C5C5C
 
-    img
+    .avatar
       width 60px; height 60px
       border-radius 50%
-      padding 5px
+      img
+          width 60px; height 60px
+          border-radius 50%
+          padding 5px
+      &.letter
+        display block
+        width 60px; height 60px
+        font-size 14px; padding 5px
+        line-height 60px
+        color #ffffff
+        border-radius 50%
+        text-align center
+        font-weight bolder
+        text-transform uppercase
 
-    &.me img
-       width 78px; height 78px
-
-    span
-      display block
-      width 60px; height 60px
-      font-size 14px; padding 5px
-      line-height 60px
-      color #ffffff
-      border-radius 50%
-      text-align center
-      font-weight bolder
-      text-transform uppercase
+    &.me img { width: 73px; height: 73px; }

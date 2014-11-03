@@ -1,5 +1,5 @@
 template(name="avatarImageComponent")
   if avatar
-    img.avatar-img(src="{{avatar}}")
+    span.avatar.image: img(src="{{avatar}}")
   else
-    span.avatar-letter {{aliasLetter alias}}
+    span.avatar.letter {{aliasLetter alias}}
