@@ -4,6 +4,7 @@ saleRoute =
   onBeforeAction: ->
     if @ready()
       Apps.setup(logics.sales, Apps.Merchant.salesInit, 'sales')
+      @next()
 #      Apps.setup(logics.sales, Apps.Merchant.salesReload)
   data: ->
     logics.sales.reactiveRun()
@@ -11,6 +12,7 @@ saleRoute =
 
     return {
       currentOrder: logics.sales.currentOrder
+      currentOrderDetails: logics.sales.currentOrderDetails
       orderHistory: logics.sales.currentOrderHistory
 
       finalPriceProduct: logics.sales.finalPriceProduct

@@ -11,13 +11,6 @@ lemon.defineWidget Template.saleProductThumbnail,
       color: Helpers.ColorBetween(255, 0, 0, 135, 196, 57, stockPercentage, 3)
     }
 
-  name: -> Product.findOne(@product).data.name
-  formatCurrency: (number) ->
-    accounting.formatMoney(number, { symbol: 'VNĐ',  format: "%v %s", precision: 0 })
-  formatNumber: (number) -> accounting.formatMoney(number, { format: "%v", precision: 0 })
-  pad: (number) ->
-    if number < 10 then '0' + number else number
-  round: (number) -> Math.round(number)
   events:
     "dblclick .trash": ->
       OrderDetail.remove(@_id)

@@ -1,0 +1,23 @@
+template(name="salePrinter")
+   aside.modal.swipe.left#salePrinter
+      .modal-dialog
+         .modal-header
+            button.close(type="button" data-dismiss="modal")
+               span(aria-hidden="true") &times;
+               span.sr-only Close
+            h4.modal-title
+               i.icon-search-8
+               |XEM TRƯỚC PHIẾU BÁN HÀNG
+         .modal-body.sale-bill-preview
+            span.header
+               |<b>{{dayOfWeek}}</b> ngày <b>{{fullDay}}</b>, <br/>
+               |<b>{{timeHook}},</b> hoặc <b>giờ ăn trưa, {{formatNumberK order.finalPrice}}</b>K
+            ul
+               each orderDetails
+                  li
+                     |{{productNameFromId product}}<br/>
+                     |{{formatNumber soldPrice}} * {{formatNumber quality}} (-{{discountPercent}}%)
+
+         .modal-footer
+            button.btn.btn-default(type="button" data-dismiss="modal") Close
+            button.btn.btn-primary(type="button") Save changes

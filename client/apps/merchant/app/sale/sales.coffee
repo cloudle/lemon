@@ -55,7 +55,9 @@ lemon.defineApp Template.sales,
         logics.sales.currentOrder.currentPrice,
         logics.sales.currentOrder.currentDiscountCash
       )
-
+    "click .print-preview": (event, template) ->
+      console.log template
+      $(template.find '#salePrinter').modal()
     'click .finish': (event, template)->
 #      if Sky.global.currentOrder.data.paymentsDelivery is 1
 #        expire = template.ui.$deliveryDate.data('datepicker').dates[0]

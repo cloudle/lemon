@@ -4,7 +4,7 @@ importRoute =
   onBeforeAction: ->
     if @ready()
       Apps.setup(logics.import, Apps.Merchant.importInit, 'import')
-
+      @next()
   data: ->
     logics.import.reactiveRun()
 

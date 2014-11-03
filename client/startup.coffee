@@ -1,4 +1,8 @@
 Meteor.startup ->
+  moment.locale('vi')
+  Router.configure
+    progressDebug: false
+
   Tracker.autorun ->
     if Meteor.userId()
       Session.set('myProfile', Schema.userProfiles.findOne({user: Meteor.userId()}))
