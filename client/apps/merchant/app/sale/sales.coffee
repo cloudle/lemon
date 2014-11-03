@@ -48,7 +48,7 @@ lemon.defineApp Template.sales,
     'blur .comment': (event, template)->
       logics.sales.updateDeliveryComment(template.find(".comment").value)
 
-    'click .addOrderDetail': ()->
+    'click .addOrderDetail': () ->
       logics.sales.addOrderDetail(
         logics.sales.currentOrder.currentProduct,
         logics.sales.currentOrder.currentQuality,

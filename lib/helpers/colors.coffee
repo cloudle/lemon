@@ -7,6 +7,8 @@ monoColors = ['green', 'light-green', 'yellow', 'orange', 'blue', 'dark-blue', '
               'amethyst', 'wisteria', 'wet-asphalt', 'midnight-blue', 'sun-flower', 'carrot', 'pumpkin', 'alizarin',
               'pomegranate', 'clouds', 'sky', 'silver', 'concrete', 'asbestos']
 
+colorGenerateHistory = []
+
 generateRandomIndex = -> Math.floor(Math.random() * monoColors.length)
 
 Helpers.RandomColor = ->

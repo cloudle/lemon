@@ -1,5 +1,8 @@
 lemon.defineWidget Template.saleProductThumbnail,
-  colorClasses: 'none'
+  avatarUrl: ->
+    currentProduct = Schema.products.findOne(@product)
+    AvatarImages.findOne(currentProduct?.image)?.url() ? undefined
+  colorClasses: -> Helpers.RandomColor()
   name: -> Product.findOne(@product).data.name
   formatCurrency: (number) ->
     accounting.formatMoney(number, { symbol: 'VNĐ',  format: "%v %s", precision: 0 })

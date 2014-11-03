@@ -10,6 +10,7 @@ optionOrderDetail = (productId, quality, price, discountCash, currentOrder)->
     discountPercent : discountPercent
     totalPrice      : totalPrice
     finalPrice      : totalPrice - discountCash
+    styles          : Helpers.RandomColor()
   option
 
 reUpdateQualityOfOrderDetail = (newOrderDetail, oldOrderDetail) ->
