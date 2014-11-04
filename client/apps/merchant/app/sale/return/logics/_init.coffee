@@ -13,7 +13,7 @@ logics.returns.reactiveRun = ->
 
   if logics.returns.currentSale
     Session.set('currentSale', logics.returns.currentSale)
-    Apps.MerchantSubscriber.subscribe('saleDetails',logics.returns.currentSale._id)
+    Apps.MerchantSubscriber.subscribe('saleDetailAndProductAndReturn',logics.returns.currentSale._id)
     logics.returns.availableSaleDetails = Schema.saleDetails.find({sale: logics.returns.currentSale._id})
   else
     Session.set('currentSale')

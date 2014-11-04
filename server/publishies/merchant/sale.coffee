@@ -56,7 +56,7 @@ Meteor.publishComposite 'saleDetails', (saleId) ->
 #    find: (profile) -> AvatarImages.find {_id: profile.avatar}
 #  ]
 
-Meteor.publish 'saleAndReturnDetails', (saleId) ->
+Meteor.publish 'saleDetailAndProductAndReturn', (saleId) ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
   if Schema.sales.findOne({_id: saleId, merchant: myProfile.currentMerchant, warehouse: myProfile.currentWarehouse})
