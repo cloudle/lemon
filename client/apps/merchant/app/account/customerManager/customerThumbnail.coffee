@@ -3,4 +3,4 @@ lemon.defineWidget Template.customerThumbnail,
   isntDelete: -> unless Schema.sales.findOne({buyer: @_id}) then true
   dateOfBirth: -> @dateOfBirth?.toDateString()
   events:
-    "dblclick .full-desc.trash": -> Customer.findOne(@_id).destroy()
+    "dblclick .full-desc.trash": ->

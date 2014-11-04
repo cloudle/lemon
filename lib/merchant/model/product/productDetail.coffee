@@ -9,8 +9,6 @@ Schema.add 'productDetails', class ProductDetail
       availableQuality : importDetail.importQuality
       inStockQuality   : importDetail.importQuality
       importPrice      : importDetail.importPrice
-      name             : importDetail.name
-      skulls           : importDetail.skulls
       checkingInventory: false
     option.expire = importDetail.expire if importDetail.expire
     option

@@ -10,7 +10,7 @@ lemon.dependencies.add 'merchantEssential', ['essentials', 'merchantMessenger', 
 lemon.dependencies.add 'merchantHome', ['merchantEssential', 'myMetroSummaries']
 lemon.dependencies.add 'roleManager', ['merchantEssential', 'currentMerchantRoles']
 lemon.dependencies.add 'staffManager', ['merchantEssential', 'currentMerchantRoles']
-lemon.dependencies.add 'customerManager', ['merchantEssential', 'customers']
+lemon.dependencies.add 'customerManager', ['merchantEssential', 'availableCustomers']
 lemon.dependencies.add 'salesReport', ['merchantEssential', 'saleBills']
 
 lemon.dependencies.add 'saleOrder', ['merchantEssential',
@@ -19,10 +19,20 @@ lemon.dependencies.add 'saleOrder', ['merchantEssential',
                                      'products',
                                      'skulls',
                                      'providers',
-                                     'customers']
+                                     'availableCustomers']
 
 lemon.dependencies.add 'warehouseImport', ['merchantEssential',
                                            'myImportHistory',
                                            'products',
                                            'skulls',
                                            'providers']
+
+
+lemon.dependencies.add 'accountingManager', ['merchantEssential', 'saleBillAccounting']
+lemon.dependencies.add 'billManager', ['merchantEssential', 'billManagerSale', 'availableCustomers']
+lemon.dependencies.add 'deliveryManager', ['merchantEssential', 'availableDeliveries']
+lemon.dependencies.add 'returnManager', ['merchantEssential', 'availableSales']
+lemon.dependencies.add 'warehouseManager', ['merchantEssential', 'availableWarehouse']
+lemon.dependencies.add 'branchManager', ['merchantEssential', 'availableBranch']
+
+lemon.dependencies.add 'transactionManager', ['merchantEssential', 'availableTransaction']

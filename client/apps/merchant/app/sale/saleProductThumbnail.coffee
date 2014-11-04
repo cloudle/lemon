@@ -12,6 +12,6 @@ lemon.defineWidget Template.saleProductThumbnail,
     }
 
   events:
-    "dblclick .full-desc.trash": ->
+    "dblclick .trash": ->
       OrderDetail.remove(@_id)
       logics.sales.reCalculateOrder(@order)

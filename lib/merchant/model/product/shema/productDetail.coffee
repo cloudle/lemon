@@ -1,15 +1,12 @@
 simpleSchema.productDetails = new SimpleSchema
   import:
     type: String
-    optional: true
 
   merchant:
     type: String
-    optional: true
 
   warehouse:
     type: String
-    optional: true
 
   provider:
     type: String
@@ -17,29 +14,18 @@ simpleSchema.productDetails = new SimpleSchema
 
   product:
     type: String
-    optional: true
-
-  name:
-    type: String
-
-  skulls:
-    type: [String]
 
   importQuality:
     type: Number
-    optional: true
 
   availableQuality:
     type: Number
-    optional: true
 
   inStockQuality:
     type: Number
-    optional: true
 
   importPrice:
     type: Number
-    optional: true
 
   expire:
     type: Date

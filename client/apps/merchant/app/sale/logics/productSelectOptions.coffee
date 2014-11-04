@@ -9,6 +9,8 @@ updateSelectNewProduct = (product, orderId)->
       currentTotalPrice     : product.price
       currentDiscountCash   : Number(0)
       currentDiscountPercent: Number(0)
+
+
 Apps.Merchant.salesInit.push ->
   logics.sales.productSelectOptions =
     query: (query) -> query.callback
@@ -22,7 +24,7 @@ Apps.Merchant.salesInit.push ->
     formatSelection: formatProductSearch
     formatResult: formatProductSearch
     placeholder: 'CHỌN SẢN PHẨM'
-    minimumResultsForSearch: -1
+#    minimumResultsForSearch: -1
     changeAction: (e) ->
       if logics.sales.currentOrder
         orderId = logics.sales.currentOrder._id

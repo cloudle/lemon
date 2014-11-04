@@ -1,0 +1,24 @@
+template(name="deliveryManager")
+  #header
+    .caption-row
+      .title Giao Hàng
+      .filter.btn-group.btn-group-sm(data-toggle="buttons")
+        label.btn.btn-default(class="{{activeDeliveryFilter 'selected'}}" data-toggle="tooltip" title="chưa nhận" data-filter="selected")
+          input( type="radio" name="options" id="option1")
+            i.fa.fa-user
+        label.btn.btn-default(class="{{activeDeliveryFilter 'working'}}" data-toggle="tooltip" title="đang giao" data-filter="working")
+          input(type="radio" name="options" id="option2")
+            i.fa.fa-users
+        label.btn.btn-default(class="{{activeDeliveryFilter 'done'}}" data-toggle="tooltip" title="hoàn thành" data-filter="done")
+          input(type="radio" name="options" id="option2")
+            i.fa.fa-users
+    //.editor-row
+    //  .editor-wrapper(style="width: 200px")
+    //    span.ilabel chi nhánh
+    //    +iSelect(options=merchantSelectOptions class="field")
+    //  .editor-wrapper(style="width: 200px")
+    //    span.ilabel kho
+    //    +iSelect(options=warehouseSelectOptions class="field")
+
+  #content
+    +iGrid(options=gridOptions)

@@ -1,0 +1,7 @@
+template(name="warehouseThumbnail")
+  .col
+    .thumbnails
+      .right-caption {{name}}
+      .avatar(style="background-image: url('images/missing.jpg')")
+      if isntDelete
+        .trash: a(href="#"): i.icon-bag

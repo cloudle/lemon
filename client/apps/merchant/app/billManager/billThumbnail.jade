@@ -1,0 +1,8 @@
+template(name="billThumbnail")
+  .col
+    .thumbnails
+      .right-caption {{buyerName}} <br /> {{sellerName}}
+      .left-caption {{orderCode}} <br /> {{sellerName}}
+      .full-desc.price {{formatNumber finalPrice}} VNĐ
+      if isntDelete
+        .full-desc.trash: a(href="#"): i.icon-bag

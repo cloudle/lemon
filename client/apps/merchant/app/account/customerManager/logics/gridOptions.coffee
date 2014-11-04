@@ -1,5 +1,5 @@
-Apps.Merchant.customerManagerInit.push ->
+Apps.Merchant.customerManagerInit.push (scope) ->
   logics.customerManager.gridOptions =
     itemTemplate: 'customerThumbnail'
-    reactiveSourceGetter: -> Schema.users.find {parentMerchant: Apps.myProfile.parentMerchant}
+    reactiveSourceGetter: -> logics.customerManager.availableCustomers
     wrapperClasses: 'detail-grid row'
