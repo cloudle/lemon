@@ -14,4 +14,4 @@ billManagerRoute =
       currentSaleDetails: logics.billManager.currentSaleDetails
     }
 
-lemon.addRoute [billManagerRoute], Apps.Merchant.RouterBase
+lemon.addRoute [billManagerRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber

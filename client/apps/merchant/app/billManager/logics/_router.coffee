@@ -12,4 +12,4 @@ billManagerRoute =
       gridOptions: logics.billManager.gridOptions
     }
 
-lemon.addRoute [billManagerRoute], Apps.Merchant.RouterBase
+lemon.addRoute [billManagerRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber

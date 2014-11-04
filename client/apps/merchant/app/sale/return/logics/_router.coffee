@@ -19,4 +19,4 @@ returnsRoute =
       gridOptions: logics.returns.gridOptions
     }
 
-lemon.addRoute [returnsRoute], Apps.Merchant.RouterBase
+lemon.addRoute [returnsRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
