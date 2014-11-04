@@ -1,24 +1,26 @@
 logics.returns = {}
 Apps.Merchant.returnsInit = []
 
+
 Apps.Merchant.returnsInit.push (scope) ->
   logics.returns.availableSales = Sale.findAvailableReturn(Session.get('myProfile'))
 
 
 logics.returns.reactiveRun = ->
   if Session.get('mySession')
-    logics.returns.currentSale = Schema.sales.findOne(Session.get('mySession').currentSale)
+    logics.returns.currentSale   = Schema.sales.findOne(Session.get('mySession').currentSale)
+    logics.returns.currentReturn = Schema.returns.findOne({sale: Session.get('mySession').currentSale, status: {$ne: 2}})
 
   if logics.returns.currentSale
-    logics.returns.currentReturn        = Schema.returns.findOne({sale: logics.returns.currentSale._id, status: {$ne: 2}})
+    Session.set('currentSale', logics.returns.currentSale)
+    Apps.MerchantSubscriber.subscribe('saleDetails',logics.returns.currentSale._id)
     logics.returns.availableSaleDetails = Schema.saleDetails.find({sale: logics.returns.currentSale._id})
   else
-    logics.returns.availableSaleDetails = []
+    Session.set('currentSale')
 
   if logics.returns.currentReturn
-    logics.returns.availableReturnDetails = Schema.returnDetails.find({return: logics.returns.currentReturn})
+    Apps.MerchantSubscriber.subscribe('returnDetails',logics.returns.currentReturn._id)
+    logics.returns.availableReturnDetails = Schema.returnDetails.find({return: logics.returns.currentReturn._id})
   else
-    logics.returns.availableReturnDetails = []
+    logics.returns.availableReturnDetails = Schema.returnDetails.find({return: 'null'})
 
-
-  logics.returns.currentMaxQualityReturn = 0 #returnQuality()

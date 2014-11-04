@@ -16,7 +16,7 @@ calculateDepositAndDebit = (deposit, currentOrder)->
 Apps.Merchant.salesInit.push ->
   logics.sales.depositOptions =
     reactiveSetter: (val) -> calculateDepositAndDebit(val, logics.sales.currentOrder)
-    reactiveValue: -> Session.get('currentOrder').currentDeposit ? 0
+    reactiveValue: -> Session.get('currentOrder')?.currentDeposit ? 0
     reactiveMax: -> 99999999999
     reactiveMin: -> 0
     reactiveStep: -> 1000

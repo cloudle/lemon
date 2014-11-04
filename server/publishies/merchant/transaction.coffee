@@ -21,3 +21,8 @@ Schema.transactions.allow
   insert: -> true
   update: -> true
   remove: -> true
+
+Schema.transactionDetails.allow
+  insert: -> true
+  update: -> true
+  remove: -> true

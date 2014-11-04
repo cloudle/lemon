@@ -324,8 +324,6 @@ Schema.add 'metroSummaries', class MetroSummary
         returnCount: 1
         returnProductCount: returns.productQuality
         returnCash: returns.totalPrice
-
-
       #      oldReturn = Schema.returns.findOne({$and: [
       #        {merchant: returns.merchant}
       #        {'version.updateAt': {$lt: returns.version.updateAt}}
@@ -349,7 +347,6 @@ Schema.add 'metroSummaries', class MetroSummary
       #      else
       #        setOption.returnCountMonth     = returns.productQuality
       #        setOption.returnCashMonth = returns.totalPrice
-
       metroSummary = Schema.metroSummaries.findOne({merchant: returns.merchant})
       Schema.metroSummaries.update metroSummary._id, $inc: option, $set: setOption
 

@@ -139,7 +139,6 @@ Schema.add 'sales', class Sale
     Schema.sales.find({
       merchant : myProfile.currentMerchant
       warehouse: myProfile.currentWarehouse
-      status: true
       submitted: true
       returnLock: false})
 

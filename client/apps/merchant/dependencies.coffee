@@ -35,4 +35,6 @@ lemon.dependencies.add 'returnManager', ['merchantEssential', 'availableSales']
 lemon.dependencies.add 'warehouseManager', ['merchantEssential', 'availableWarehouse']
 lemon.dependencies.add 'branchManager', ['merchantEssential', 'availableBranch']
 
+
+lemon.dependencies.add 'inventoryManager', ['merchantEssential', 'availableBranch', 'availableWarehouse']
 lemon.dependencies.add 'transactionManager', ['merchantEssential', 'receivableAndRelates']

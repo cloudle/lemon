@@ -7,21 +7,21 @@ template(name="returns")
         +iSelect(options=saleSelectOptions class="field")
       .editor-wrapper(style="width: 500px")
         span.ilabel.optional chọn hàng trả
-        //+iSelect(options=returnProductSelectOptions class="field")
+        +iSelect(options=productSelectOptions class="field")
       .editor-wrapper(style="width: 100px")
         span.ilabel.optional số lượng trả
-        //+iSpinEdit(options=returnQualityOptions)
+        +iSpinEdit(options=returnQualityOptions)
       .editor-wrapper(style="width:100px; {{hideAddReturnDetail}}")
         button.btn.btn-default.addReturnDetail(type='submit') THÊM
 
   #content
-    //+iGrid(options=gridOptions)
+    +iGrid(options=gridOptions)
 
   #footer
     .editor-row
       .editor-wrapper.right(style="width: 500px")
         span.ilabel ghi chú
-        input.comment(value="{{saleReturn.comment}}" )
+        input.comment(value="{{currentReturn.comment}}" )
 
     .editor-row
       .editor-wrapper.right(style="width:100px; {{hideSubmitReturn}}")
@@ -35,15 +35,15 @@ template(name="returns")
 
       .editor-wrapper.right(style="width: 100px")
         span.ilabel.optional  tỗng tiền
-        input.totalPrice(value="{{saleReturn.finallyPrice}}" disabled)
+        input.totalPrice(value="{{currentReturn.finallyPrice}}" disabled)
       .editor-wrapper.right(style="width: 180px")
         span.ilabel.center.optional khấu hao
-        //+iSpinEdit(options=discountCashOptions)
+        +iSpinEdit(options=discountCashOptions)
       .editor-wrapper.right(style="width:110px")
         span.ilabel.center giá %
-        //+iSpinEdit(options=discountPercentOptions)
+        +iSpinEdit(options=discountPercentOptions)
 
       .editor-wrapper.right(style="width: 150px")
         span.ilabel.optional  người tạo
-        input.totalPrice(value="{{saleReturn.creatorName}}" disabled)
+        input.totalPrice(value="{{currentReturn.creatorName}}" disabled)
 
