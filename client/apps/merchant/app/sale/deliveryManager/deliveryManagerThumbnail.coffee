@@ -1,5 +1,4 @@
 lemon.defineWidget Template.deliveryManagerThumbnail,
-  colorClasses: 'none'
   showStatus: (status) ->
     switch status
       when 1 then 'Chưa được nhận '

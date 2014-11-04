@@ -21,18 +21,18 @@ Meteor.publish 'billManagerSale', ->
   return [] if !myProfile
   Schema.sales.find {}
 
-#return
+Meteor.publish 'saleBills', ->
+  Schema.sales.find {}
+
+#Return----------------------------------------
 Meteor.publish 'availableSales', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
-  sales = Schema.sales.find({
+  Schema.sales.find({
     merchant  : myProfile.currentMerchant,
     warehouse : myProfile.currentWarehouse,
-    status    : true,
     submitted : true,
     returnLock: false})
-  details = Schema.saleDetails.find({sale: {$in:_.pluck(sales.fetch(), '_id')}})
-  [sales, details]
 
 Meteor.publishComposite 'saleDetails', (saleId) ->
   self = @
@@ -56,8 +56,20 @@ Meteor.publishComposite 'saleDetails', (saleId) ->
 #    find: (profile) -> AvatarImages.find {_id: profile.avatar}
 #  ]
 
-Meteor.publish 'saleBills', ->
-  Schema.sales.find {}
+Meteor.publish 'saleDetails', (saleId) ->
+  myProfile = Schema.userProfiles.findOne({user: @userId})
+  return [] if !myProfile
+  if Schema.sales.findOne({_id: saleId, merchant: myProfile.currentMerchant, warehouse: myProfile.currentWarehouse})
+    saleDetail = Schema.saleDetails.find {sale: saleId}
+    returnProducts = Schema.products.find {_id: {$in:_.pluck(saleDetail.fetch(), 'product')}}
+    returns = Schema.returns.find {sale: saleId, status: {$ne: 2}}
+
+    [saleDetail, returnProducts, returns]
+
+
+
+
+
 
 Schema.sales.allow
   insert: -> true

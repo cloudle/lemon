@@ -1,4 +1,6 @@
-formatSaleReturnSearch = (item) -> "#{item.orderCode} #{}" if item
+formatSaleReturnSearch = (item) ->
+  if item.status then "#{item.orderCode} [Chưa trả] "
+  else "#{item.orderCode} [Đang trả] "
 
 Apps.Merchant.returnsInit.push (scope) ->
   logics.returns.saleSelectOptions =
@@ -16,12 +18,8 @@ Apps.Merchant.returnsInit.push (scope) ->
   #    minimumResultsForSearch: -1
     changeAction: (e) ->
       UserSession.set('currentSale', e.added._id)
-#      Schema.userProfiles.update(Session.get('currentProfile')._id, {$set: {currentSale: e.added._id}})
-#      sale = Schema.sales.findOne(e.added._id)
-#      if !sale.currentProductDetail
-#        saleDetail = Schema.saleDetails.findOne({sale: e.added._id})
-#        Schema.sales.update(e.added._id, $set:{currentProductDetail: saleDetail._id, currentQuality: 1})
-#        sale.currentProductDetail = saleDetail._id
-#        sale.currentQuality       = 1
-#      Session.set 'currentSale', sale
+      if !(Schema.sales.findOne(e.added._id)).currentProductDetail
+        saleDetail = Schema.saleDetails.findOne({sale: e.added._id})
+        Schema.sales.update(e.added._id, $set:{currentProductDetail: saleDetail._id, currentQuality: 1})
+
     reactiveValueGetter: -> logics.returns.currentSale ? 'skyReset'

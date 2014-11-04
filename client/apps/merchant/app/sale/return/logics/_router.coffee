@@ -9,14 +9,14 @@ returnsRoute =
     logics.returns.reactiveRun()
 
     return {
-      saleSelectOptions: logics.returns.saleSelectOptions
-#      returnProductSelectOptions:
-#      returnQualityOptions:
-#
-#      discountCashOptions:
-#      discountPercentOptions:
+      currentReturn         : logics.returns.currentReturn
+      saleSelectOptions     : logics.returns.saleSelectOptions
+      productSelectOptions  : logics.returns.productSelectOptions
+      returnQualityOptions  : logics.returns.returnQualityOptions
+      discountCashOptions   : logics.returns.discountCashOptions
+      discountPercentOptions: logics.returns.discountPercentOptions
 
-#      gridOptions: logics.returns.gridOptions
+      gridOptions: logics.returns.gridOptions
     }
 
-lemon.addRoute [returnsRoute], Apps.Merchant.RouterBase
+lemon.addRoute [returnsRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
