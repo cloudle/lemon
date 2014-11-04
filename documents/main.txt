@@ -1,2 +1,3 @@
 export MONGO_URL=mongodb://localhost:27017/lemon
-export MAIL_URL=smtp://lehaoson@gmail.com:Ultimate7@stmp.gmail.com:587/
+export MAIL_URL=smtp://lehaoson@gmail.com:Ultimate7@stmp.gmail.com:465/
+Meteor.call("mailTo", "lelongking2000@gmail.com", "lehaoson@gmail.com", "Look! This is from the EDS System!", "Hi, King. Congratulations! you are awesome!")

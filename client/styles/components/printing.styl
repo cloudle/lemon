@@ -1,0 +1,12 @@
+print-mode()
+  *
+    visibility hidden !important
+  .printable-area, .printable-area *
+    visibility visible !important
+  .printable-area
+    absolute left 0 top 0
+
+@media print
+  print-mode()
+html.print-mode
+  print-mode()
