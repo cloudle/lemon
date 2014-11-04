@@ -4,6 +4,7 @@ exportAndImportManagerRoute =
   onBeforeAction: ->
     if @ready()
       Apps.setup(logics.exportAndImportManager, Apps.Merchant.exportAndImportManagerInit, 'exportAndImportManager')
+      @next()
   data: ->
     logics.exportAndImportManager.reactiveRun()
 

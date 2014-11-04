@@ -4,7 +4,7 @@ template(name="customerThumbnail")
       .left-caption {{dateOfBirth}}
       .right-caption {{name}}
       .full-desc.price {{phone}}
-      .avatar(style="background-image: url('images/missing.jpg')")
+      +avatarImageComponent(avatar=undefined alias=name)
       .single-price {{address}}
       .short-desc.quality {{gender}}
       .full-desc.trash

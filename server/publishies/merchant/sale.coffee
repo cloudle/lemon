@@ -34,6 +34,9 @@ Meteor.publish 'availableSales', ->
   details = Schema.saleDetails.find({sale: {$in:_.pluck(sales.fetch(), '_id')}})
   [sales, details]
 
+Meteor.publish 'saleDetails', (saleId) ->
+  return [] if !@userId
+  Schema.saleDetails.find {sale: saleId}
 
 Meteor.publish 'saleBills', ->
   Schema.sales.find {}

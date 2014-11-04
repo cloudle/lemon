@@ -4,6 +4,7 @@ customerManagerRoute =
   onBeforeAction: ->
     if @ready()
       Apps.setup(logics.customerManager, Apps.Merchant.customerManagerInit, 'customerManager')
+      @next()
   data: ->
     logics.customerManager.reactiveRun()
 

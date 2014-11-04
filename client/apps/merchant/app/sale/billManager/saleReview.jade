@@ -1,0 +1,34 @@
+template(name="saleReview")
+   aside.modal.swipe.left#salePreview
+      .modal-dialog.sale-bill-preview
+         .modal-header
+            button.close(type="button" data-dismiss="modal")
+               span(aria-hidden="true") &times;
+               span.sr-only Close
+            h4.modal-title
+               i.icon-search-8
+               |XEM PHIẾU BÁN HÀNG
+         .modal-body.printable-area
+            .header
+               span <b>{{timeDMY}}</b> ngày <b>{{fullDay}}</b>, <br/>
+               span <b>{{timeHM}}<sup>{{timeS}}</sup></b> (giờ ăn trưa),<b> {{formatNumberK sale.finalPrice}}</b>k
+            .merchant-info
+               span.merchant-name C.TY GI DO <br/>
+               span.marchant-address Dia chi cong ty gi do
+            ul
+               each saleDetails
+                  li.order-detail
+                     .product-name <b>{{formatNumber quality}}</b> {{productNameFromId product}}
+                     .product-price
+                        span.individual-price * {{formatNumber soldPrice}}
+                        if discountVisible
+                           sup.discount (<b>-{{discountPercent}}</b>%) <br/>
+                        span.final-price {{formatNumber finalPrice}}
+
+            .bill-summary
+               span tổng cộng
+               span.bill-final <b>{{formatNumber sale.finalPrice}}</b> VNĐ
+            .bill-footer HẸN GẶP LẠI
+         .modal-footer
+            button.btn.btn-default(type="button" data-dismiss="modal") ĐÓNG
+            button.btn.btn-primary.icon-print-6.print-button(type="button")

@@ -4,6 +4,7 @@ warehouseManagerRoute =
   onBeforeAction: ->
     if @ready()
       Apps.setup(logics.warehouseManager, Apps.Merchant.warehouseManagerInit, 'warehouseManager')
+      @next()
   data: ->
     logics.warehouseManager.reactiveRun()
 

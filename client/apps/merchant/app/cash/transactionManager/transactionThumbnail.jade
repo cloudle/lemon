@@ -1,0 +1,10 @@
+template(name="transactionThumbnail")
+  .col
+    .thumbnails
+      .right-caption {{ownerName}}
+      +avatarImageComponent(avatar=undefined alias=ownerName)
+      .horizontal-meter
+        .meter-wrapper: .meter-progress(style="height: {{meterStyle.percent}}%; background-color: {{meterStyle.color}}")
+      .short-desc.quality {{daysFromNow}}
+      .full-desc.price {{formatNumber debitCash}} <small>VNĐ</small>
+      .single-price {{formatNumber totalCash}} VNĐ
