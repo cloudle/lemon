@@ -66,11 +66,6 @@ Meteor.publish 'saleDetails', (saleId) ->
 
     [saleDetail, returnProducts, returns]
 
-
-
-
-
-
 Schema.sales.allow
   insert: -> true
   update: -> true
