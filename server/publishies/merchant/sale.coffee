@@ -34,9 +34,27 @@ Meteor.publish 'availableSales', ->
   details = Schema.saleDetails.find({sale: {$in:_.pluck(sales.fetch(), '_id')}})
   [sales, details]
 
-Meteor.publish 'saleDetails', (saleId) ->
-  return [] if !@userId
-  Schema.saleDetails.find {sale: saleId}
+Meteor.publishComposite 'saleDetails', (saleId) ->
+  self = @
+  return {
+    find: ->
+      [] if !self.userId
+      Schema.saleDetails.find {sale: saleId}
+    children: [
+      find: (saleDetai) -> Schema.products.find {_id: product}
+    ]
+  }
+
+#Meteor.publishComposite 'myMerchantContacts',
+#  find: ->
+#    currentProfile = Schema.userProfiles.findOne({user: @userId})
+#    return [] if !currentProfile
+#    Schema.userProfiles.find { currentMerchant: currentProfile.currentMerchant }
+#  children: [
+#    find: (profile) -> Meteor.users.find {_id: profile.user}
+#  ,
+#    find: (profile) -> AvatarImages.find {_id: profile.avatar}
+#  ]
 
 Meteor.publish 'saleBills', ->
   Schema.sales.find {}
