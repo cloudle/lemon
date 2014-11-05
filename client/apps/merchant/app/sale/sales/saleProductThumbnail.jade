@@ -1,5 +1,5 @@
 template(name="saleProductThumbnail")
-  .thumbnails.sky
+  .thumbnails(class="{{colorClasses}}")
     .right-caption {{productNameFromId product}}
     +avatarImageComponent(avatar=avatarUrl alias="{{productNameFromId product}}")
     .horizontal-meter
