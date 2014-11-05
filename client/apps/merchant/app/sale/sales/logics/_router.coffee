@@ -8,7 +8,6 @@ saleRoute =
 #      Apps.setup(logics.sales, Apps.Merchant.salesReload)
   data: ->
     logics.sales.reactiveRun()
-    console.log 'reload data'
 
     return {
       currentOrder: logics.sales.currentOrder

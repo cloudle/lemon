@@ -18,7 +18,6 @@ Helpers.RandomColor = ->
   while true
     randomIndex = generateRandomIndex()
     colorExisted = _.contains(colorGenerateHistory, randomIndex)
-    console.log colorGenerateHistory
     break unless colorExisted
 
   colorGenerateHistory.push randomIndex

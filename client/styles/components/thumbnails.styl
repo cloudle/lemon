@@ -113,10 +113,11 @@
     absolute left 110px top 50px
     z-index 10
     font-size 16px
-    color #808080
+    color #687CA5
     i
       border-radius 50%
-      background-color #ffffff
+      background-color #DBDBDB
+      border solid 1px #D3D1D1
       height 20px; width 20px
       text-align center
       &:hover
@@ -215,6 +216,5 @@ for $color in colors
     background-color $color[1]
     if lightness($color[1]) > 80
       color #444
-      .trash i:hover { background-color: #666666; color: #ffffff; }
     else
       color #fff

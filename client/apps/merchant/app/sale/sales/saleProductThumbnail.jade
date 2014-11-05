@@ -1,16 +1,14 @@
 template(name="saleProductThumbnail")
-  .col
-    //.thumbnails(class="#{styles}")
-    .thumbnails.sky
-      .right-caption {{productNameFromId product}}
-      +avatarImageComponent(avatar=avatarUrl alias="{{productNameFromId product}}")
-      .horizontal-meter
-        .meter-wrapper: .meter-progress(style="height: {{meterStyle.percent}}%; background-color: {{meterStyle.color}}")
-      .short-desc.quality {{pad quality}}
-      .full-desc.price {{formatNumber finalPrice}} <small>VNĐ</small>
-      //.discount
-      //  if false
-      //    span.s4 -{{round discountPercent}}<span class="h5">%</span>
+  .thumbnails.sky
+    .right-caption {{productNameFromId product}}
+    +avatarImageComponent(avatar=avatarUrl alias="{{productNameFromId product}}")
+    .horizontal-meter
+      .meter-wrapper: .meter-progress(style="height: {{meterStyle.percent}}%; background-color: {{meterStyle.color}}")
+    .short-desc.quality {{pad quality}}
+    .full-desc.price {{formatNumber finalPrice}} <small>VNĐ</small>
+    //.discount
+    //  if false
+    //    span.s4 -{{round discountPercent}}<span class="h5">%</span>
 
-      .single-price {{formatNumber price}} VNĐ
-      .trash: i.icon-bag
+    .single-price {{formatNumber price}} VNĐ
+    .trash: i.icon-bag

@@ -1,7 +1,18 @@
+@import 'rupture'
 @import "../../../styles/lib.import.styl"
 
 .application, nav.main
   min-width application-min-width
+  +below(1023px)
+    display none
+
+.unsupported-resolution
+  +above(1023px)
+    display none
+  font-size 30px
+  text-align center
+  margin-top 30px
+  color #999999
 
 .watermark
   color #EEEEEE; font-size 121px

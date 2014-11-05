@@ -1,0 +1,8 @@
+template(name="gridComponent")
+  .igrid(class="#{options.wrapperClasses}")
+    if classicalHeader
+      .igrid-header(class="#{classicalHeader.class}")
+        +UI.dynamic(template=itemTemplate data=classicalHeader.columns)
+    each dataSource
+      .col(class="{{animationClass}}")
+        +UI.dynamic(template=itemTemplate data=this)
