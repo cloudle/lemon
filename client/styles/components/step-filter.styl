@@ -3,7 +3,12 @@
 .step-filter
   list-style none
   text-align center
-  li
+  margin 0; padding 0 20px
+  /*float right*/
+  li.split
+    display inline-block
+    margin 10px
+  li:not(.split)
     position relative
     display inline-block
     margin-right -4px
@@ -22,7 +27,7 @@
       background-color #f7f7f7
       background-image linear-gradient(top, #f7f7f7, #e7e7e7)
       color #a7a7a7
-      margin 0 40px
+      margin 10px 20px
       width 40px; height 40px; line-height 40px
       position relative
       text-align center
@@ -37,9 +42,10 @@
         border-top 2px solid #ddd
         absolute top -8px left -8px bottom -8px right -8px
         border-radius 50%
-        box-shadow inset 0px 8px 48px #ddd
+        box-shadow inset 0px 8px 48px #ECE8E8
         z-index -1
-      &:hover
-        text-decoration none
-        color #555
-        background #ffffff
+
+    &.active span, &:hover span
+      text-decoration none
+      color #555
+      background #ffffff
