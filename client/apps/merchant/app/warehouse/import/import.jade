@@ -5,12 +5,15 @@ template(name="import")
       .commands
         //a#popProduct.btn.btn-danger(href="") Thêm Sản Phẩm
         //a#popProvider.btn.btn-danger(href="") Thêm Nhà Phân Phối
+      .switches
+        input(binding="switch" type="checkbox" name="advancedMode")
+
     .editor-row
       .editor-wrapper(style="width:250px")
         span.ilabel sản phẩm
         +iSelect(options=productSelectOptions class="field")
       .editor-wrapper(style="width:180px")
-        span.ilabel nhà phân phối
+        span.ilabel.optional nhà phân phối
         +iSelect(options=providerSelectOptions class="field")
       .editor-wrapper(style="width:120px")
         span.ilabel.center số lượng
@@ -21,12 +24,20 @@ template(name="import")
       .editor-wrapper(style="width:150px; {{hidePrice}}")
         span.ilabel.center giá bán
         +iSpinEdit(options=salePriceOptions class="field")
-      .editor-wrapper(style="width: 120px")
-        span.ilabel.optional hết hạn
-        input(binding="datePicker" todayHighlight="true" name="expire")
       .editor-wrapper(style="width:100px")
         button.btn.btn-default.addImportDetail(type='submit' style="{{hideAddImportDetail}}") Add
-    //
+
+    .editor-row.extra(name='advanced' style="display: none;")
+      .editor-wrapper(style="width: 120px")
+        span.ilabel.optional ngày sản xuất
+        input(binding="datePicker" todayHighlight="true" name="expire")
+      .editor-wrapper(style="width: 120px")
+        span.ilabel.optional ngày hết hạn
+        input(binding="datePicker" todayHighlight="true" name="expire")
+      .editor-wrapper(style="width: 120px")
+        span.ilabel.optional hạng dùng
+        input(binding="datePicker" todayHighlight="true" name="expire")
+
     //+productPopover
     //+providerPopover
 
@@ -45,19 +56,19 @@ template(name="import")
       .editor-wrapper.right(style="width: 120px")
         button.btn.btn-default.right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
       .editor-wrapper.right(style="width: 120px")
-        span.ilabel tiền còn nợ
+        span.ilabel.optional tiền còn nợ
         input.debit(value="{{currentImport.debit}}" disabled)
       .editor-wrapper.right(style="width: 120px")
-        span.ilabel tiền đã trả
+        span.ilabel.optional tiền đã trả
         input.deposit(value="{{currentImport.deposit}}")
       .editor-wrapper.right(style="width: 120px")
-        span.ilabel tổng tiền
+        span.ilabel.optional tổng tiền
         input.totalPrice(value="{{currentImport.totalPrice}}" disabled)
       .editor-wrapper.right(style="width: 300px")
         span.ilabel description
         input.description(value="{{currentImport.description}}" )
       .editor-wrapper.right(style="width: 180px")
-        span.ilabel người tạo
+        span.ilabel.optional người tạo
         input.emailCreator(value="{{creatorName}}" disabled)
 
     +tabComponent(options=tabOptions)

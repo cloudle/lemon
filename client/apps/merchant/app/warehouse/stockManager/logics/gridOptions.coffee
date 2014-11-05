@@ -1,5 +1,5 @@
-#Apps.Merchant.returnsInit.push (scope) ->
-#  logics.returns.gridOptions =
-#    itemTemplate: 'returnProductThumbnail'
-#    reactiveSourceGetter: -> logics.returns.availableReturnDetails
-#    wrapperClasses: 'detail-grid row'
+Apps.Merchant.stockManagerInit.push (scope) ->
+  logics.stockManager.gridOptions =
+    itemTemplate: 'stockThumbnail'
+    reactiveSourceGetter: -> logics.stockManager.availableProducts
+    wrapperClasses: 'detail-grid row'

@@ -1,5 +1,6 @@
 lemon.defineApp Template.import,
   rendered: ->
+    logics.import.templateInstance = @
 #    $(@find '#productPopover').modalPopover
 #      target: '#popProduct'
 #      backdrop: true
@@ -11,6 +12,8 @@ lemon.defineApp Template.import,
 
 
   events:
+    "change [name='advancedMode']": (event, template) ->
+      logics.import.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
 #    "click #popProduct": (event, template) -> $(template.find '#productPopover').modalPopover('show')
 #    "click #popProvider": (event, template) -> $(template.find '#providerPopover').modalPopover('show')
 

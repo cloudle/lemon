@@ -4,7 +4,7 @@ template(name="stockManager")
       .title XEM TỒN KHO <small>QUẢN LÝ GIÁ BÁN</small>
       .filter
         |Tổng Nhập:{{totalQualityProduct}} - Tồn Kho:{{totalStockProduct}} - Loại:{{totalProduct}}
-        +iSelect(options=warehouseSelectOptions class="field")
+        //+iSelect(options=warehouseSelectOptions class="field")
 
   //.editor-row
   //  .editor-wrapper(style="width: 200px")
@@ -12,4 +12,4 @@ template(name="stockManager")
   //    input(name="email")
 
   #content
-    +iGrid(options=stockDetailOptions)
+    +iGrid(options=gridOptions)

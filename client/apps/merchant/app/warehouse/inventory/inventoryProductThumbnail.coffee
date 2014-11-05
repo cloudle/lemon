@@ -72,7 +72,7 @@ calculateRealQuality = (context) ->
       Schema.inventoryDetails.update context._id, $set: {saleQuality: count}
     return count
 
-lemon.defineWidget Template.inventoryProductThumbnail,
+lemon.defineApp Template.inventoryProductThumbnail,
   colorClass: ->
     if @lock == @submit == false then return 'lime'
     if @lostQuality > 0 then 'pumpkin' else 'belize-hole'
@@ -98,29 +98,39 @@ lemon.defineWidget Template.inventoryProductThumbnail,
       return "display: none"
 
 
-
-  realQualityOptions: -> {
-    parentContext: @
+  realQualityOptions:
     reactiveSetter: (val) ->
-      if @parentContext.lock != @parentContext.submit == false  and @parentContext.success == false
-        option={}
-        maxQuality = @parentContext.lockOriginalQuality - @parentContext.saleQuality
-        if val < maxQuality
-          option.realQuality = val
-          option.lostQuality = maxQuality - val
-        else
-          option.realQuality = maxQuality
-          option.lostQuality = 0
-        Schema.inventoryDetails.update @parentContext._id, $set: option
-    reactiveValue: -> @parentContext.realQuality ? 0
-    #TODO : Chưa cập nhật dc max value (gia tri thay doi, ko cap nhat)
-    reactiveMax: -> @parentContext.lockOriginalQuality - @parentContext.saleQuality
-    reactiveMin: -> 0
+    reactiveValue: -> 5
+    reactiveMax: -> 10
+    reactiveMin: -> 1
     reactiveStep: -> 1
-  }
+
+
+
+#    {
+#      parentContext: @
+#      reactiveSetter: (val) ->
+#        if @parentContext.lock != @parentContext.submit == false  and @parentContext.success == false
+#          option={}
+#          maxQuality = @parentContext.lockOriginalQuality - @parentContext.saleQuality
+#          if val < maxQuality
+#            option.realQuality = val
+#            option.lostQuality = maxQuality - val
+#          else
+#            option.realQuality = maxQuality
+#            option.lostQuality = 0
+#          Schema.inventoryDetails.update @parentContext._id, $set: option
+#      reactiveValue: ->
+#        console.log @parentContext.lockOriginalQuality
+#        @parentContext.realQuality ? 0
+#      #TODO : Chưa cập nhật dc max value (gia tri thay doi, ko cap nhat)
+#      reactiveMax: -> @parentContext.lockOriginalQuality - @parentContext.saleQuality
+#      reactiveMin: -> 0
+#      reactiveStep: -> 1
+#    }
 
   events:
-    "click .fa.fa-lock": (event, template)->
+    "click .icon-lock": (event, template)->
       if @lock == @submit == @success == false
         productDetail = Schema.productDetails.findOne(@productDetail)
         Schema.inventoryDetails.update @_id, $set: {
@@ -132,7 +142,7 @@ lemon.defineWidget Template.inventoryProductThumbnail,
           lostQuality    : 0
         }
 
-    "click .fa.fa-check": (event, template)->
+    "click .icon-ok-6": (event, template)->
       if @lock != @submit == @success == false
         productDetail = Schema.productDetails.findOne(@productDetail)
         Schema.inventoryDetails.update @_id, $set: {
@@ -140,7 +150,7 @@ lemon.defineWidget Template.inventoryProductThumbnail,
           submitDate: new Date
         }
 
-    "click .fa.fa-reply": (event, template)->
+    "click .icon-reply-3": (event, template)->
       if @lock == @submit != @success == false
         Schema.inventoryDetails.update @_id, $set: {
           submit      : false

@@ -1,11 +1,10 @@
-//template(name="inventoryThumbnail")
-//  .col
-//    .thumbnails(class="#{colorClass}")
-//      .right-caption {{creatorName creator}}
-//      .avatar(style="background-image: url('images/missing.jpg')")
-//      .short-desc.quality {{status}}
-//      .single-price {{description}}
-//      .full-desc.price {{createDate version.updateAt}}
-//      .full-desc.trash: a(href="/inventoryHistory") Xem
-//
-//
+template(name="inventoryThumbnail")
+  .col
+    .thumbnails(class="#{colorClass}")
+      .right-caption {{creatorName creator}}
+      .short-desc.quality {{status}}
+      .single-price {{description}}
+      .full-desc.price {{createDate version.updateAt}}
+      .full-desc.trash: a(href="/inventoryHistory") Xem
+
+

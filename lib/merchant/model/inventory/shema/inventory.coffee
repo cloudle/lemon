@@ -17,6 +17,7 @@ simpleSchema.inventories = new SimpleSchema
 
   resolved:
     type: Boolean
+    defaultValue: false
 
   resolveDescription:
     type: String
@@ -24,14 +25,17 @@ simpleSchema.inventories = new SimpleSchema
 
   detail:
     type: Boolean
+    defaultValue: false
 
 # xac nhan nhan vien
   submit:
     type: Boolean
+    defaultValue: false
 
 # hoan thanh xac nhan quan ly
   success:
     type: Boolean
+    defaultValue: false
 
   styles:
     type: String

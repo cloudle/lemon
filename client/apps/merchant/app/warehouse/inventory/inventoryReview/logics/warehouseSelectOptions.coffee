@@ -1,4 +1,3 @@
-
 #formatWarehouseSearch = (item) -> "#{item.name}" if item
 #  warehouseSelectOptions:
 #    query: (query) -> query.callback
@@ -14,6 +13,4 @@
 #    changeAction: (e) ->
 #      Schema.userProfiles.update Session.get('currentProfile')._id, $set:
 #        inventoryWarehouse: e.added._id
-#      Session.set 'inventoryWarehouse', Schema.warehouses.findOne(e.added._id)
 #    reactiveValueGetter: -> Session.get('inventoryWarehouse') ? 'skyReset'
-#

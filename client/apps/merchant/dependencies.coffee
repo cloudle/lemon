@@ -5,7 +5,7 @@ lemon.dependencies.add 'essentials', ['systems', 'userInfo']
 
 lemon.dependencies.add 'merchantMessenger', ['myMerchantContacts', 'unreadMessages']
 lemon.dependencies.add 'merchantNotification', ['unreadNotifications']
-lemon.dependencies.add 'merchantEssential', ['essentials', 'merchantMessenger', 'merchantNotification']
+lemon.dependencies.add 'merchantEssential', ['essentials', 'merchantMessenger', 'merchantNotification', 'myMerchantAndWarehouse']
 
 lemon.dependencies.add 'merchantHome', ['merchantEssential', 'myMetroSummaries']
 lemon.dependencies.add 'roleManager', ['merchantEssential', 'currentMerchantRoles']
@@ -34,7 +34,16 @@ lemon.dependencies.add 'deliveryManager', ['merchantEssential', 'availableDelive
 lemon.dependencies.add 'returnManager', ['merchantEssential', 'availableSales']
 lemon.dependencies.add 'warehouseManager', ['merchantEssential', 'availableWarehouse']
 lemon.dependencies.add 'branchManager', ['merchantEssential', 'availableBranch']
-
-
-lemon.dependencies.add 'inventoryManager', ['merchantEssential', 'availableBranch', 'availableWarehouse']
 lemon.dependencies.add 'transactionManager', ['merchantEssential', 'receivableAndRelates']
+lemon.dependencies.add 'stockManager', ['merchantEssential', 'allProducts']
+
+lemon.dependencies.add 'inventoryReview', ['merchantEssential', 'allInventory']
+lemon.dependencies.add 'inventoryHistory', ['merchantEssential', 'allInventory']
+
+
+lemon.dependencies.add 'inventoryManager', ['merchantEssential',
+                                            'availableBranch',
+                                            'allWarehouse',
+                                            'allInventoryAndDetail',
+                                            'products',
+                                            'allProductDetails']

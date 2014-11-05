@@ -8,41 +8,38 @@ simpleSchema.inventoryDetails = new SimpleSchema
   productDetail:
     type: String
 
-  name:
-    type: String
-
-  skulls:
-    type: [String]
-
 #so luong trong kho
   lockOriginalQuality:
     type: Number
-    optional: true
+    defaultValue: 0
 
 #so luong trong kho
   originalQuality:
     type: Number
-    optional: true
+    defaultValue: 0
 
 #so luong kiem tra
   realQuality:
     type: Number
+    defaultValue: 0
 
 #so luong ban khi kiem kho
   saleQuality:
     type: Number
-    optional: true
+    defaultValue: 0
 
 #so luong mat tiem lai dc
   lostQuality:
     type: Number
-    optional: true
+    defaultValue: 0
 
   resolved:
     type: Boolean
+    defaultValue: false
 
   lock:
     type: Boolean
+    defaultValue: false
 
   lockDate:
     type: Date
@@ -50,6 +47,7 @@ simpleSchema.inventoryDetails = new SimpleSchema
 
   submit:
     type: Boolean
+    defaultValue: false
 
   submitDate:
     type: Date
@@ -57,6 +55,7 @@ simpleSchema.inventoryDetails = new SimpleSchema
 
   success:
     type: Boolean
+    defaultValue: false
 
   successDate:
     type: Date
@@ -64,6 +63,7 @@ simpleSchema.inventoryDetails = new SimpleSchema
 
   status:
     type: Boolean
+    defaultValue: false
 
   version: { type: simpleSchema.Version }
 

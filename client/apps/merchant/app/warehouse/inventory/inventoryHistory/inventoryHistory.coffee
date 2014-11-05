@@ -31,7 +31,8 @@
 #      else
 #        Session.set "currentInventoryDetail"
 #
-#Sky.appTemplate.extends Template.inventoryHistory,
+#lemon.defineApp Template.inventoryHistory,
+#  rendered: ->
 #  merchantSelectOptions:
 #    query: (query) -> query.callback
 #      results: _.filter Session.get('allMerchantInventories'), (item) ->
@@ -91,5 +92,5 @@
 #    reactiveSourceGetter: -> Session.get('currentInventoryDetail') ? []
 #    wrapperClasses: 'detail-grid row'
 #
-#  rendered: ->
+
 #    runInitInventoryHistoryTracker()
