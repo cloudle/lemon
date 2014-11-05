@@ -5,6 +5,7 @@ Schema.add 'deliveries', class Delivery
       warehouse       : sale.warehouse
       creator         : sale.creator
       sale            : sale._id
+      buyer           : sale.buyer
       contactName     : order.contactName
       contactPhone    : order.contactPhone
       deliveryAddress : order.deliveryAddress

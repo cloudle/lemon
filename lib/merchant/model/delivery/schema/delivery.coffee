@@ -3,10 +3,13 @@ simpleSchema.deliveries = new SimpleSchema
     type: String
 
   warehouse:
-      type: String
+    type: String
 
   creator:
-      type: String
+    type: String
+
+  buyer:
+    type: String
 
   sale:
     type: String
