@@ -11,8 +11,7 @@ editor-font-size = 12px
     background-color #fff
     .caption-row
       clearfix()
-      padding-top 10px
-      padding-bottom 5px
+      padding 10px 0 5px 0
       .title
         float left
         font-size 20px
@@ -37,9 +36,13 @@ editor-font-size = 12px
     overflow-y scroll
     margin 3px 0 1px 0
   #footer
-    background #f7f7f7 url(images/dot-bg.png) repeat center top
+    background #ffffff
     padding-top 5px
     min-height 5px
+    clearfix()
+    &.gray
+      /*background #f7f7f7 url(images/dot-bg.png) repeat center top*/
+      $noise-material(#f7f7f7, 'light')
     .extra
       display none
       border-bottom solid 1px #dfdfdf

@@ -2,24 +2,15 @@ template(name="transactionManager")
   #header
     .caption-row
       .title QUẢN LÝ CÔNG NỢ
-      .filter.btn-group.btn-group-sm(data-toggle="buttons")
-        label.btn.btn-default(class="{{activeReceivable '0'}}" data-toggle="tooltip" title="phải thu" data-receivable="0")
-          input( type="radio" name="options" id="option1")
-            i.fa.fa-user
-        label.btn.btn-default(class="{{activeReceivable '1'}}" data-toggle="tooltip" title="phải trả" data-receivable="1")
-          input(type="radio" name="options" id="option2")
-            i.fa.fa-users
-
-      .filter.btn-group.btn-group-sm(data-toggle="buttons")
-        label.btn.btn-default(class="{{activeTransactionFilter '1'}}" data-toggle="tooltip" title="nợ" data-filter="1")
-          input( type="radio" name="options" id="option1")
-            i.fa.fa-user
-        label.btn.btn-default(class="{{activeTransactionFilter '2'}}" data-toggle="tooltip" title="quá hạn" data-filter="2")
-          input(type="radio" name="options" id="option2")
-            i.fa.fa-users
-        label.btn.btn-default(class="{{activeTransactionFilter '3'}}" data-toggle="tooltip" title="hoàn tất" data-filter="3")
-          input(type="radio" name="options" id="option2")
-            i.fa.fa-users
 
   #content
     +iGrid(options=gridOptions)
+
+  #footer.gray
+    ul.step-filter
+      li(class="{{activeReceivable '0'}}" data-receivable="0" data-toggle='tooltip' title="PHẢI THU"): span.icon-money
+      li(class="{{activeReceivable '1'}}" data-receivable="1" data-toggle='tooltip' title="PHẢI TRẢ"): span.icon-emo-cry
+      li.split
+      li(class="{{activeTransactionFilter '1'}}" data-filter="1" data-toggle='tooltip' title="NỢ"): span.icon-feather-1
+      li(class="{{activeTransactionFilter '2'}}" data-filter="2" data-toggle='tooltip' title="QUÁ HẠN"): span.icon-cancel-7
+      li(class="{{activeTransactionFilter '3'}}" data-filter="3" data-toggle='tooltip' title="ĐÃ KẾT THÚC"): span.icon-ok-6

@@ -13,12 +13,16 @@ Component.helpers.customBinding = (uiOptions, context) ->
 
 Component.helpers.autoBinding = (context) ->
   context.ui = context.ui ? {}
+  bindingToolTip(context)
   bindingElements(context)
   bindingSwitch(context)
   bindingDatePicker(context)
   bindingExtras(context)
 
 #  --------------------------------------------------------------------->>
+bindingToolTip = (context) ->
+  $("[data-toggle='tooltip']").tooltip({container: 'body'})
+
 bindingElements = (context) ->
   for item in context.findAll("input[name]:not([binding])")
     name = $(item).attr('name')

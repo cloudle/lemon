@@ -2,16 +2,6 @@ template(name="deliveryManager")
   #header
     .caption-row
       .title Giao Hàng
-      .filter.btn-group.btn-group-sm(data-toggle="buttons")
-        label.btn.btn-default(class="{{activeDeliveryFilter 'selected'}}" data-toggle="tooltip" title="chưa nhận" data-filter="selected")
-          input( type="radio" name="options" id="option1")
-            i.fa.fa-user
-        label.btn.btn-default(class="{{activeDeliveryFilter 'working'}}" data-toggle="tooltip" title="đang giao" data-filter="working")
-          input(type="radio" name="options" id="option2")
-            i.fa.fa-users
-        label.btn.btn-default(class="{{activeDeliveryFilter 'done'}}" data-toggle="tooltip" title="hoàn thành" data-filter="done")
-          input(type="radio" name="options" id="option2")
-            i.fa.fa-users
     //.editor-row
     //  .editor-wrapper(style="width: 200px")
     //    span.ilabel chi nhánh
@@ -22,3 +12,9 @@ template(name="deliveryManager")
 
   #content
     +iGrid(options=gridOptions)
+
+  #footer.gray
+    ul.step-filter
+      li(class="{{activeDeliveryFilter 'selected'}}" data-filter="selected" data-toggle='tooltip' title="CHỜ GIAO"): span.icon-shareable
+      li(class="{{activeDeliveryFilter 'working'}}" data-filter="working" data-toggle='tooltip' title="ĐANG GIAO"): span.icon-truck-1
+      li(class="{{activeDeliveryFilter 'done'}}" data-filter="done" data-toggle='tooltip' title="ĐÃ GIAO"): span.icon-ok-6

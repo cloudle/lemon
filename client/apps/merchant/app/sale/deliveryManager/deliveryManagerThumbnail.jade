@@ -2,7 +2,7 @@ template(name="deliveryManagerThumbnail")
   .col
     .thumbnails(class="#{styles}")
       .right-caption {{showStatus status}}
-      +avatarImageComponent(avatar=undefined alias=contactName)
+      +avatarImageComponent(avatar=undefined alias=customerAlias)
       .short-desc.quality
         button.btn.btn-default.unSuccessDelivery(style="{{hideButtonUnSuccess status}}") {{buttonUnSuccessText status}}
       .full-desc.price
