@@ -67,6 +67,6 @@ Package.onUse(function(api) {
   //  'lib/template.coffee']
   //, ['client', 'server']);
 
-  api.use(['coffeescript', 'underscore', 'aldeed:collection2'], ['client', 'server']);
+  api.use(['coffeescript', 'underscore', 'aldeed:collection2', 'meteorhacks:subs-manager'], ['client', 'server']);
   api.use(['jquery', 'templating'], 'client');
 });
