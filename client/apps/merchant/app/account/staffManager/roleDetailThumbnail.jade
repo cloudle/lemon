@@ -1,6 +1,6 @@
 template(name="roleDetailThumbnail")
   .col
-    .thumbnails.sky
+    .thumbnails(class="{{styles}}")
       +avatarImageComponent(avatar=avatarUrl alias=fullName)
       .right-caption {{email}}
       .full-desc.price {{permissionDesc}}

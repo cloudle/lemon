@@ -1,6 +1,6 @@
 staffManagerRoute =
-  template: 'staffManager',
-  waitOnDependency: -> 'staffManager'
+  template: 'staffManager'
+  waitOnDependency: 'staffManager'
   onBeforeAction: ->
     if @ready()
       Apps.setup(logics.customerManager, Apps.Merchant.customerManagerInit, 'customerManager')

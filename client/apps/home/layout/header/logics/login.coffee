@@ -7,7 +7,7 @@ logics.homeHeader.login = (event, template) ->
     Meteor.loginWithPassword $login.val(), $password.val(), (error) ->
       currentReason = error?.reason
 
-      (Router.go('/dashboard'); return) if !error
+      (Router.go('/merchant'); return) if !error
 
       for currentLoginError in logics.homeHeader.loginErrors
         if currentLoginError.reason is currentReason

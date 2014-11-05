@@ -1,5 +1,5 @@
 customerManagerRoute =
-  template: 'customerManager',
+  template: 'customerManager'
   waitOnDependency: 'customerManager'
   onBeforeAction: ->
     if @ready()

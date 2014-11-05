@@ -8,7 +8,7 @@ lemon.defineWidget Template.merchantThumbnail,
       else
         return false
   events:
-    "dblclick .trash": -> Meteor.call 'destroyBranch', @_id,  (error, result) ->
+    "click .trash": -> Meteor.call 'destroyBranch', @_id,  (error, result) ->
       if error
         console.log error.error
       else

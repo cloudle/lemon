@@ -8,7 +8,7 @@ lemon.defineWidget Template.homeHeader,
     "click #authButton.valid": (event, template) -> logics.homeHeader.login(event, template)
     "click #logoutButton": -> lemon.logout()
     "click #gotoMerchantButton": -> Router.go('/merchant')
-    "click .logo-text": -> Router.go('/dashboard') if Meteor.userId() isnt null
+    "click .logo-text": -> Router.go('/merchant') if Meteor.userId() isnt null
 
     "keypress .login-field": (event, template) ->
       $(template.find("#authButton")).click() if event.which is 13 and Session.get('loginValid') is 'valid'

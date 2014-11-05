@@ -1,7 +1,7 @@
 template(name="warehouseThumbnail")
   .col
-    .thumbnails
+    .thumbnails(class="{{styles}}")
       .right-caption {{name}}
-      .avatar(style="background-image: url('images/missing.jpg')")
+      +avatarImageComponent(avatar=undefined alias=name)
       if isntDelete
-        .trash: a(href="#"): i.icon-bag
+        .trash: i.icon-bag
