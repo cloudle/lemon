@@ -27,4 +27,9 @@ simpleSchema.exports = new SimpleSchema
   status:
     type: Number
 
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
+    optional: true
+
   version: { type: simpleSchema.Version }

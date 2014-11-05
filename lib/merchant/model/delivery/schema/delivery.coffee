@@ -53,6 +53,10 @@ simpleSchema.deliveries = new SimpleSchema
     type: String
     optional: true
 
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
+    optional: true
 
   version: { type: simpleSchema.Version }
 

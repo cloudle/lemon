@@ -37,6 +37,11 @@ simpleSchema.transactions = new SimpleSchema
   status:
     type: String
 
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
+    optional: true
+
   version: {type: simpleSchema.Version}
 
 

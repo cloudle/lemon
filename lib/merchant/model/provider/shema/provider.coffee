@@ -27,6 +27,10 @@ simpleSchema.providers = new SimpleSchema
     type: Boolean
     optional: true
 
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
+    optional: true
 
   location: { type: Schema.Location, optional: true }
   version: { type: simpleSchema.Version }

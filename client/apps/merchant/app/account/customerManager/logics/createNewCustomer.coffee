@@ -14,10 +14,10 @@ logics.customerManager.createNewCustomer = (context) ->
     phone: phone
     address: address
     dateOfBirth: dateOfBirth
+    styles          : Helpers.RandomColor()
     currentMerchant : Session.get('myProfile').currentMerchant
     parentMerchant  : Session.get('myProfile').parentMerchant
     gender          : Session.get('genderNewCustomer')
-
 
   if Schema.customers.findOne({
     name: fullName

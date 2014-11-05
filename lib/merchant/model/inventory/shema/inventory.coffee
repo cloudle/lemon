@@ -33,5 +33,10 @@ simpleSchema.inventories = new SimpleSchema
   success:
     type: Boolean
 
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
+    optional: true
+
   version: { type: simpleSchema.Version }
 

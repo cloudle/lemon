@@ -23,6 +23,11 @@ simpleSchema.warehouses = new SimpleSchema
     type: String
     optional: true
 
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
+    optional: true
+
   location: { type: simpleSchema.Location, optional: true }
   version: { type: simpleSchema.Version }
 

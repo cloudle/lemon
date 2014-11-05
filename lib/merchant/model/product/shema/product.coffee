@@ -53,6 +53,11 @@ simpleSchema.products = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
+    optional: true
+
   version: { type: simpleSchema.Version }
 
   provider:

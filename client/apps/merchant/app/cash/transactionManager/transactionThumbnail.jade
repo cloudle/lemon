@@ -1,6 +1,6 @@
 template(name="transactionThumbnail")
   .col
-    .thumbnails
+    .thumbnails(class="{{styles}}")
       .right-caption {{ownerName}}
       +avatarImageComponent(avatar=undefined alias=ownerName)
       .horizontal-meter

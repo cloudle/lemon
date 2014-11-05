@@ -6,6 +6,7 @@ Schema.add 'transactions', class Transaction
       parent      : sale._id
       creator     : sale.seller
       owner       : sale.buyer
+      styles      : sale.styles ? Helpers.RandomColor()
       group       : 'sale'
       receivable  : true
       totalCash   : sale.finalPrice
