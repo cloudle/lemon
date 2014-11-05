@@ -12,4 +12,4 @@ exportAndImportManagerRoute =
       gridOptions: logics.exportAndImportManager.gridOptions
     }
 
-lemon.addRoute [exportAndImportManagerRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
+lemon.addRoute [exportAndImportManagerRoute], Apps.Merchant.RouterBase

@@ -9,4 +9,4 @@ staffManagerRoute =
     gridOptions: logics.staffManager.gridOptions
   }
 
-lemon.addRoute [staffManagerRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
+lemon.addRoute [staffManagerRoute], Apps.Merchant.RouterBase

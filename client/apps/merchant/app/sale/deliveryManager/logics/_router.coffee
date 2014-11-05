@@ -12,4 +12,4 @@ deliveryManagerRoute =
       gridOptions: logics.deliveryManager.gridOptions
     }
 
-lemon.addRoute [deliveryManagerRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
+lemon.addRoute [deliveryManagerRoute], Apps.Merchant.RouterBase

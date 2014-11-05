@@ -13,4 +13,4 @@ customerManagerRoute =
       allowCreate: logics.customerManager.allowCreate
     }
 
-lemon.addRoute [customerManagerRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
+lemon.addRoute [customerManagerRoute], Apps.Merchant.RouterBase

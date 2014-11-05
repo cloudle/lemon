@@ -13,4 +13,4 @@ warehouseManagerRoute =
       gridOptions: logics.warehouseManager.gridOptions
     }
 
-lemon.addRoute [warehouseManagerRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
+lemon.addRoute [warehouseManagerRoute], Apps.Merchant.RouterBase

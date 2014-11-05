@@ -11,4 +11,4 @@ accountingManagerRoute =
       gridOptions: logics.accountingManager.gridOptions
     }
 
-lemon.addRoute [accountingManagerRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
+lemon.addRoute [accountingManagerRoute], Apps.Merchant.RouterBase

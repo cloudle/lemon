@@ -6,6 +6,5 @@ roleManagerRoute =
     permissions: getPermissionArray()
     roleSelectOptions: logics.roleManager.roleSelectOptions
   }
-_.extend(roleManagerRoute, Apps.Merchant.RouterBase)
 
-lemon.addRoute [roleManagerRoute]
+lemon.addRoute [roleManagerRoute], Apps.Merchant.RouterBase

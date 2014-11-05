@@ -13,4 +13,4 @@ branchManagerRoute =
       gridOptions: logics.branchManager.gridOptions
     }
 
-lemon.addRoute [branchManagerRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
+lemon.addRoute [branchManagerRoute], Apps.Merchant.RouterBase

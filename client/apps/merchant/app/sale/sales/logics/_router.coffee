@@ -39,4 +39,4 @@ saleRoute =
       paymentMethodSelectOption    : logics.sales.paymentMethodSelectOptions
     }
 
-lemon.addRoute [saleRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
+lemon.addRoute [saleRoute], Apps.Merchant.RouterBase

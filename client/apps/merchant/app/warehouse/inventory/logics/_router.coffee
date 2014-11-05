@@ -11,4 +11,4 @@ inventoryManagerRoute =
     return {
     }
 
-lemon.addRoute [inventoryManagerRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
+lemon.addRoute [inventoryManagerRoute], Apps.Merchant.RouterBase

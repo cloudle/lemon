@@ -12,4 +12,4 @@ transactionManagerRoute =
       gridOptions: logics.transactionManager.gridOptions
     }
 
-lemon.addRoute [transactionManagerRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
+lemon.addRoute [transactionManagerRoute], Apps.Merchant.RouterBase

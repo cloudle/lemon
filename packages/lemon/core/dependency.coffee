@@ -10,7 +10,7 @@ lemon.dependencies.list = (dep = undefined ) ->
     console.log name, value for name, value of lemon.dependencies when Array.isArray(value)
   return
 
-lemon.dependencies.resolve = (name, Subscriber = Meteor) ->
+lemon.dependencies.resolve = (name, Subscriber = lemon.GlobalSubscriberCache) ->
   return if !lemon.dependencies[name]
   dependencies = recursiveResolve(lemon.dependencies[name])
 

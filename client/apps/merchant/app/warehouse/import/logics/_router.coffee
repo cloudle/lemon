@@ -29,4 +29,4 @@ importRoute =
       salePriceOptions  : logics.import.salePriceOptions
     }
 
-lemon.addRoute [importRoute], Apps.Merchant.RouterBase, Apps.MerchantSubscriber
+lemon.addRoute [importRoute], Apps.Merchant.RouterBase
