@@ -1,5 +1,7 @@
 formatCustomerSearch = (item) -> "#{item.name}" if item
 
+updateCustomerAllowDelete = (customer) -> Schema.customers.update(customer._id, $set:{allowDelete: false}) if customer.allowDelete
+
 changedActionSelectCustomer = (customerId, currentOrder)->
   if customer = Schema.customers.findOne(customerId)
     option =
@@ -15,12 +17,12 @@ changedActionSelectCustomer = (customerId, currentOrder)->
       option.deliveryAddress = customer.address ? null
       option.comment         = 'giao trong ngay'
 
+    updateCustomerAllowDelete(customer)
     option.buyer = customer._id
     option.tabDisplay = Helpers.respectName(customer.name, customer.gender)
   else
     console.log 'Sai customer'; return
   Order.update(currentOrder._id, {$set: option})
-
 
 Apps.Merchant.salesInit.push ->
   logics.sales.customerSelectOptions =
