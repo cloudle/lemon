@@ -26,9 +26,9 @@ template(name="import")
       .editor-wrapper(style="width:150px; {{hidePrice}}")
         span.ilabel.center giá bán
         +iSpinEdit(options=salePriceOptions class="field")
-
-      .editor-wrapper(style="width:100px")
-        button.btn.btn-default.addImportDetail(type='submit' style="{{hideAddDetail}}") Add
+      if showCreateDetail
+        .editor-wrapper(style="width:100px")
+          button.btn.btn-default.addImportDetail(type='submit' style="{{showCreateDetail}}") Add
 
     .editor-row.extra(name='advanced' style="display: none;")
       .editor-wrapper(style="width: 120px")
@@ -46,15 +46,16 @@ template(name="import")
 
   #footer
     .editor-row
-      //.editor-wrapper.right(style="width: 100px; {{hideSubmitImport}}")
-      .editor-wrapper.right(style="width: 100px")
-        button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN CHỜ DUYỆT
-      //.editor-wrapper.right(style="width: 200px; {{hideFinishImport}}")
-      .editor-wrapper.right(style="width: 200px")
-        button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") ĐÃ DUYỆT
-      //.editor-wrapper.right(style="width: 120px; {{hideEditImport}}")
-      .editor-wrapper.right(style="width: 120px")
-        button.btn.btn-default.right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
+      if showSubmit
+        .editor-wrapper.right(style="width: 100px")
+          button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN CHỜ DUYỆT
+      if showFinish
+        .editor-wrapper.right(style="width: 100px")
+          button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") ĐÃ DUYỆT
+      if showEdit
+        .editor-wrapper.right(style="width: 120px")
+          button.btn.btn-default.right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
+
       .editor-wrapper.right(style="width: 120px")
         span.ilabel.optional tiền còn nợ
         input.debit(value="{{currentImport.debit}}" disabled)

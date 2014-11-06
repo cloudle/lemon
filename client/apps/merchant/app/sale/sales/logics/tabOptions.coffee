@@ -23,4 +23,6 @@ Apps.Merchant.salesInit.push ->
     key: '_id'
     createAction: -> logics.sales.createNewOrderAndSelected()
     destroyAction: (instance) -> destroySaleAndDetail(instance._id)
-    navigateAction: (instance) -> UserSession.set('currentOrder', instance._id)
+    navigateAction: (instance) ->
+      UserSession.set('currentOrder', instance._id)
+      Session.set('currentOrder', logics.sales.currentOrder)

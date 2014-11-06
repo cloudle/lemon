@@ -17,27 +17,16 @@ logics.import.reactiveRun = ->
     logics.import.currentImport = Import.findBy(Session.get('mySession').currentImport,
                                                 Session.get('myProfile').currentWarehouse,
                                                 Session.get('myProfile').currentMerchant)
-  if logics.import.currentImport
+  if currentImport = logics.import.currentImport
     Session.set('currentImport', logics.import.currentImport)
     Apps.MerchantSubscriber.subscribe('importDetails', logics.import.currentImport._id)
     logics.import.currentImportDetails = ImportDetail.findBy(logics.import.currentImport._id)
 
-    if Session.get('currentImport')?.submitted then logics.import.hideAddDetail = "display: none"
-    else logics.import.hideAddDetail = ""
-
-    if Session.get('currentImport')?.currentPrice < 0 then logics.import.hidePrice = "display: none"
-    else logics.import.hidePrice = ""
-
-    if Session.get('currentImport')?.currentPrice < 0
-      logics.import.hideFinishImport = "display: none"
-    else logics.import.hideFinishImport = ""
-
-    if Session.get('currentImport')?.currentPrice < 0 then logics.import.hidePrice = "display: none"
-    else logics.import.hideSubmitImport = ""
-    if Session.get('currentImport')?.submitted is true then logics.import.hideSubmitImport = "display: none"
-    else logics.import.hideSubmitImport = ""
-
-
+    logics.import.showCreateDetail = !currentImport.submitted
+    logics.import.showEdit   = currentImport.submitted
+    permission = Role.hasPermission(Session.get('myProfile').user, Apps.Merchant.Permissions.su.key)
+    logics.import.showSubmit = logics.import.currentImportDetails.count() > 0 and !currentImport.submitted and !permission
+    logics.import.showFinish = logics.import.currentImportDetails.count() > 0 and !logics.import.showSubmit
 
 
 

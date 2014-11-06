@@ -11,8 +11,10 @@ calculateDiscountCashAndDiscountPercent  = (quality, currentOrder)->
 reactiveMaxQuality = ->
   if logics.sales.currentProduct
     qualityProduct = logics.sales.currentProduct?.availableQuality
-    qualityOrderDetail = _.findWhere(logics.sales.currentOrderDetails?.fetch(), {product: logics.sales.currentOrder?.currentProduct})?.quality ? 0
-    max = qualityProduct - qualityOrderDetail
+    orderDetail = _.where(logics.sales.currentOrderDetails.fetch(), {product: logics.sales.currentOrder.currentProduct})
+    for detail in orderDetail
+      qualityProduct -= detail.quality
+    qualityProduct
   else 0
 
 Apps.Merchant.salesInit.push ->

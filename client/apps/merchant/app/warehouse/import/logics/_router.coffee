@@ -10,12 +10,11 @@ importRoute =
 
     return{
       creatorName: Session.get('myProfile')?.fullName
+      showCreateDetail: logics.import.showCreateDetail
+      showSubmit      : logics.import.showSubmit
+      showFinish      : logics.import.showFinish
+      showEdit        : logics.import.showEdit
 
-      hideAddDetail     : logics.import.hideAddDetail
-      hidePrice         : logics.import.hidePrice
-      hideFinishImport  : logics.import.hideFinishImport
-      hideEditImport    : logics.import.hideEditImport
-      hideSubmitImport  : logics.import.hideSubmitImport
 
       myCreateProduct : logics.import.myCreateProduct
       myCreateProvider: logics.import.myCreateProvider
