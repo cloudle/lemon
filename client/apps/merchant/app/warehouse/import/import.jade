@@ -48,13 +48,13 @@ template(name="import")
     .editor-row
       if showSubmit
         .editor-wrapper.right(style="width: 100px")
-          button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN CHỜ DUYỆT
-      if showFinish
-        .editor-wrapper.right(style="width: 100px")
-          button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") ĐÃ DUYỆT
+          button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN
       if showEdit
         .editor-wrapper.right(style="width: 120px")
           button.btn.btn-default.right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
+      if showFinish
+        .editor-wrapper.right(style="width: 100px")
+          button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") HOÀN TẤT
 
       .editor-wrapper.right(style="width: 120px")
         span.ilabel.optional tiền còn nợ

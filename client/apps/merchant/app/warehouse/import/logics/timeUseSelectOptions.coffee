@@ -13,4 +13,4 @@ Apps.Merchant.importInit.push (scope) ->
     placeholder: 'CHỌN HẠN DÙNG'
     minimumResultsForSearch: -1
     changeAction: (e) -> Session.set('timesUseProduct', e.added.timeDate)
-    reactiveValueGetter: -> _.findWhere(Apps.Merchant.TimesUseProduct, {timeDate: Session.get('timesUseProduct')}) ? 'skyReset'
+    reactiveValueGetter: -> _.findWhere(Apps.Merchant.TimesUseProduct, {timeDate: Session.get('timesUseProduct')})?._id ? 'skyReset'
