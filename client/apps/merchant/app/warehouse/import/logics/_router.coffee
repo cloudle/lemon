@@ -10,22 +10,23 @@ importRoute =
 
     return{
       creatorName: Session.get('myProfile')?.fullName
-      hideAddDetail:  "display: none" if Session.get('currentImport')?.submitted == true
-      hidePrice:  "display: none" unless Session.get('currentImport')?.currentPrice >= 0
-      hideFinishImport: "display: none" if Session.get('currentImport')?.finish == true || !(Session.get('currentImportDetails')?.length > 0)
-      hideEditImport: "display: none" if Session.get('currentImport')?.finish == false
-      hideSubmitImport: "display: none" if Session.get('currentImport')?.submitted == true
+
+      hideAddDetail     : logics.import.hideAddDetail
+      hidePrice         : logics.import.hidePrice
+      hideFinishImport  : logics.import.hideFinishImport
+      hideEditImport    : logics.import.hideEditImport
+      hideSubmitImport  : logics.import.hideSubmitImport
 
       myCreateProduct : logics.import.myCreateProduct
       myCreateProvider: logics.import.myCreateProvider
+
+      tabOptions          : logics.import.tabOptions
+      importDetailOptions : logics.import.importDetailOptions
 
       currentImport         : logics.import.currentImport
       productSelectOptions  : logics.import.productSelectOptions
       providerSelectOptions : logics.import.providerSelectOptions
       timeUseSelectOptions  : logics.import.timeUseSelectOptions
-
-      tabOptions          : logics.import.tabOptions
-      importDetailOptions : logics.import.importDetailOptions
 
       qualityOptions    : logics.import.qualityOptions
       importPriceOptions: logics.import.importPriceOptions

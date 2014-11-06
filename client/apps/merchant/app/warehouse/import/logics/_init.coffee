@@ -14,16 +14,28 @@ Apps.Merchant.importInit.push (scope) ->
 
 logics.import.reactiveRun = ->
   if Session.get('mySession') and Session.get('myProfile')
-    logics.import.currentImport = Import.findBy(Session.get('mySession').currentImport, Session.get('myProfile').currentWarehouse, Session.get('myProfile').currentMerchant)
+    logics.import.currentImport = Import.findBy(Session.get('mySession').currentImport,
+                                                Session.get('myProfile').currentWarehouse,
+                                                Session.get('myProfile').currentMerchant)
   if logics.import.currentImport
     Session.set('currentImport', logics.import.currentImport)
     Apps.MerchantSubscriber.subscribe('importDetails', logics.import.currentImport._id)
-
     logics.import.currentImportDetails = ImportDetail.findBy(logics.import.currentImport._id)
 
+    if Session.get('currentImport')?.submitted then logics.import.hideAddDetail = "display: none"
+    else logics.import.hideAddDetail = ""
 
-    logics.import.hideAddDetail = "display: none"
-    logics.import.hideAddDetail = ""
+    if Session.get('currentImport')?.currentPrice < 0 then logics.import.hidePrice = "display: none"
+    else logics.import.hidePrice = ""
+
+    if Session.get('currentImport')?.currentPrice < 0
+      logics.import.hideFinishImport = "display: none"
+    else logics.import.hideFinishImport = ""
+
+    if Session.get('currentImport')?.currentPrice < 0 then logics.import.hidePrice = "display: none"
+    else logics.import.hideSubmitImport = ""
+    if Session.get('currentImport')?.submitted is true then logics.import.hideSubmitImport = "display: none"
+    else logics.import.hideSubmitImport = ""
 
 
 
