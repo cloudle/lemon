@@ -2,7 +2,6 @@ lemon.defineWidget Template.transactionThumbnail,
   colorClass: -> if @status is 'closed' then 'lime' else 'pumpkin'
   avatarUrl: ->
     owner = Schema.customers.findOne(@owner)
-    console.log owner
     return undefined if !owner
     AvatarImages.findOne(owner.avatar)?.url()
 

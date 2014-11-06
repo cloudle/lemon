@@ -16,10 +16,20 @@ Meteor.publish 'saleBillAccounting', ->
   return [] if !myProfile
   Schema.sales.find {}
 
-Meteor.publish 'billManagerSale', ->
-  myProfile = Schema.userProfiles.findOne({user: @userId})
-  return [] if !myProfile
-  Schema.sales.find {}
+Meteor.publishComposite 'billManagerSales', ->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.sales.find {merchant: myProfile.currentMerchant}
+    children: [
+      find: (sale) -> Schema.customers.find {_id: sale.buyer}
+      children: [
+        find: (customer, sale) -> AvatarImages.find {_id: customer.avatar}
+      ]
+    ]
+  }
 
 Meteor.publish 'saleBills', ->
   Schema.sales.find {}
@@ -38,10 +48,10 @@ Meteor.publishComposite 'saleDetails', (saleId) ->
   self = @
   return {
     find: ->
-      [] if !self.userId
+      return EmptyQueryResult if !self.userId
       Schema.saleDetails.find {sale: saleId}
     children: [
-      find: (saleDetai) -> Schema.products.find {_id: product}
+      find: (saleDetail) -> Schema.products.find {_id: product}
     ]
   }
 

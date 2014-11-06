@@ -27,9 +27,8 @@ lemon.dependencies.add 'warehouseImport', ['merchantEssential',
                                            'skulls',
                                            'providers']
 
-
 lemon.dependencies.add 'accountingManager', ['merchantEssential', 'saleBillAccounting']
-lemon.dependencies.add 'billManager', ['merchantEssential', 'billManagerSale', 'availableCustomers']
+lemon.dependencies.add 'billManager', ['merchantEssential', 'billManagerSales']
 lemon.dependencies.add 'deliveryManager', ['merchantEssential', 'availableDeliveries']
 lemon.dependencies.add 'returnManager', ['merchantEssential', 'availableSales']
 lemon.dependencies.add 'warehouseManager', ['merchantEssential', 'availableWarehouse']

@@ -26,6 +26,10 @@ lemon.defineWidget Template.deliveryManagerThumbnail,
   hideButtonSuccess: (status)-> return "display: none" if _.contains([2,5,7,8,10],status)
   hideButtonUnSuccess: (status)-> return "display: none" unless status == 4
   customerAlias: -> Schema.customers.findOne(@buyer)?.name ? @contactName
+  avatarUrl: ->
+    buyer = Schema.customers.findOne(@buyer)
+    return undefined if !buyer
+    AvatarImages.findOne(buyer.avatar)?.url()
 
   events:
     "click .successDelivery":   ->

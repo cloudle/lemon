@@ -1,7 +1,7 @@
 template(name="billThumbnail")
   .col
-    .thumbnails.click-enabled
-      +avatarImageComponent(avatar=undefined alias=buyerName)
+    .thumbnails.click-enabled(class="{{styles}}")
+      +avatarImageComponent(avatar=avatarUrl alias=buyerName)
       .right-caption {{buyerName}} <br /> {{sellerName}}
       .full-desc.price {{formatNumber finalPrice}} VNĐ
       if isntDelete

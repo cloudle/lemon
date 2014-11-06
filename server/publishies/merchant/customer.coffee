@@ -3,14 +3,17 @@
 #  return [] if !myProfile
 #  Schema.customers.find({parentMerchant: myProfile.parentMerchant})
 
-Meteor.publishComposite 'availableCustomers',
-  find: ->
-    myProfile = Schema.userProfiles.findOne({user: @userId})
-    return [] if !myProfile
-    Schema.customers.find { parentMerchant: myProfile.parentMerchant }
-  children: [
-    find: (customer) -> AvatarImages.find {_id: customer.avatar}
-  ]
+Meteor.publishComposite 'availableCustomers', ->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.customers.find {parentMerchant: myProfile.parentMerchant}
+    children: [
+      find: (customer) -> AvatarImages.find {_id: customer.avatar}
+    ]
+  }
 
 Schema.customers.allow
   insert: -> true

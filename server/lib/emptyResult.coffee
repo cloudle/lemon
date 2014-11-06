@@ -1,0 +1,1 @@
+@EmptyQueryResult = Meteor.users.find(false)
