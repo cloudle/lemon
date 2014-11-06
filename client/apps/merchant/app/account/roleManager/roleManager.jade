@@ -15,8 +15,17 @@ template(name="roleManager")
         input(name="newGroupName")
 
   #content.role-manager
-    ul
-      each permissions
-        li.permission-item
-          input(binding="switch" type="checkbox" name="{{key}}")
-          .role-label {{description}}
+    ul.permission-group
+      each permissionGroups
+        li
+          span.group-caption(class="{{icon}}" data-toggle='tooltip' data-placement="right" title="{{description}}")
+          ul.permission-details
+            each children
+              li.permission-item(data-toggle="tooltip" title="{{description}}")
+                input(binding="switch" type="checkbox" name="{{key}}")
+                .role-label {{description}}
+    //  ul
+    //    each
+    //    li.permission-item
+    //      input(binding="switch" type="checkbox" name="{{key}}")
+    //      .role-label {{description}}
