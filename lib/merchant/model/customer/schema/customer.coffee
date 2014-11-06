@@ -39,6 +39,10 @@ simpleSchema.customers = new SimpleSchema
     type: Boolean
     optional: true
 
+  allowDelete:
+    type: Boolean
+    defaultValue: true
+
   styles:
     type: String
     defaultValue: Helpers.RandomColor()
