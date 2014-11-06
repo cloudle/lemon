@@ -1,10 +1,12 @@
 template(name="import")
+  +addProduct(myCreateProduct=myCreateProduct order=currentOrder)
+  +addProvider(myCreateProvider=myCreateProvider order=currentOrder)
   #header
     .caption-row
       .title Nhập Kho
       .commands
-        //a#popProduct.btn.btn-danger(href="") Thêm Sản Phẩm
-        //a#popProvider.btn.btn-danger(href="") Thêm Nhà Phân Phối
+        button.btn.btn-default.pull-right.icon-print-6.add-product(type='submit') Thêm Sản Phẩm
+        button.btn.btn-default.pull-right.icon-print-6.add-provider(type='submit') Thêm NPP
       .switches
         input(binding="switch" type="checkbox" name="advancedMode")
 
@@ -24,22 +26,20 @@ template(name="import")
       .editor-wrapper(style="width:150px; {{hidePrice}}")
         span.ilabel.center giá bán
         +iSpinEdit(options=salePriceOptions class="field")
+
       .editor-wrapper(style="width:100px")
-        button.btn.btn-default.addImportDetail(type='submit' style="{{hideAddImportDetail}}") Add
+        button.btn.btn-default.addImportDetail(type='submit' style="{{hideAddDetail}}") Add
 
     .editor-row.extra(name='advanced' style="display: none;")
       .editor-wrapper(style="width: 120px")
         span.ilabel.optional ngày sản xuất
-        input(binding="datePicker" todayHighlight="true" name="expire")
-      .editor-wrapper(style="width: 120px")
-        span.ilabel.optional ngày hết hạn
-        input(binding="datePicker" todayHighlight="true" name="expire")
+        input(name="productionDate" binding="datePicker" todayHighlight="true")
       .editor-wrapper(style="width: 120px")
         span.ilabel.optional hạng dùng
-        input(binding="datePicker" todayHighlight="true" name="expire")
-
-    //+productPopover
-    //+providerPopover
+        +iSelect(options=timeUseSelectOptions class="field")
+      //.editor-wrapper(style="width: 120px")
+      //  span.ilabel.optional ngày hết hạn
+      //  input(binding="datePicker" todayHighlight="true" name="expire")
 
   #content
     +iGrid(options=importDetailOptions)
@@ -48,10 +48,10 @@ template(name="import")
     .editor-row
       //.editor-wrapper.right(style="width: 100px; {{hideSubmitImport}}")
       .editor-wrapper.right(style="width: 100px")
-        button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") ĐÃ DUYỆT
+        button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN CHỜ DUYỆT
       //.editor-wrapper.right(style="width: 200px; {{hideFinishImport}}")
       .editor-wrapper.right(style="width: 200px")
-        button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") XÁC NHẬN CHỜ DUYỆT
+        button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") ĐÃ DUYỆT
       //.editor-wrapper.right(style="width: 120px; {{hideEditImport}}")
       .editor-wrapper.right(style="width: 120px")
         button.btn.btn-default.right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA

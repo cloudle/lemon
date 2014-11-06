@@ -1,11 +1,4 @@
 Apps.Merchant.importInit.push (scope) ->
-  logics.import.getExpireDate = (expire)->
-    expire = $("[name=#{expire}]").datepicker().data().datepicker.dates[0]
-    if expire > (new Date)
-      expireDate = new Date(expire.getFullYear(), expire.getMonth(), expire.getDate())
-    else null
-
-Apps.Merchant.importInit.push (scope) ->
   logics.import.reCalculateImport = (importId)->
     if currentImport = Schema.imports.findOne(
       {
@@ -38,8 +31,27 @@ optionImportDetail = (option, currentImport)->
 checkValidationOption = (option, currentImport) -> true
 
 Apps.Merchant.importInit.push (scope) ->
-  logics.import.addImportDetail = (option, importId) ->
-    if currentImport = Schema.imports.findOne({_id: importId})
+  logics.import.addImportDetail = (event, template) ->
+    option =
+      product       : Session.get('currentImport').currentProduct
+      importQuality : Session.get('currentImport').currentQuality
+      importPrice   : Session.get('currentImport').currentImportPrice
+      provider      : Session.get('currentImport').currentProvider
+      salePrice     : Session.get('currentImport').currentPrice if Session.get('currentImport').currentPrice
+
+    productionDate = logics.import.getProductionDate()
+    if productionDate and Session.get('timesUseProduct') > 0
+      option.productionDate = productionDate
+      option.timeUse = Session.get('timesUseProduct')
+      option.expire  = new Date(productionDate.getFullYear(), productionDate.getMonth(), productionDate.getDate() + option.timeUse)
+
+    #      if expireDate = logics.import.getExpireDate() and Session.get('timesUseProduct') > 0
+    #        option.expire  = expireDate
+    #        option.timeUse = Session.get('timesUseProduct')
+    #        option.productionDate  = new Date(productionDate.getFullYear(), productionDate.getMonth(), productionDate.getDate() - option.timeUse)
+
+
+    if currentImport = Schema.imports.findOne({_id: Session.get('currentImport')._id})
       importDetail = optionImportDetail(option, currentImport)
 
       findImportDetail = Schema.importDetails.findOne ({
@@ -55,4 +67,4 @@ Apps.Merchant.importInit.push (scope) ->
       else
         Schema.importDetails.insert importDetail, (error, result) -> console.log error if error
 
-      logics.import.reCalculateImport(importId)
+      logics.import.reCalculateImport(Session.get('currentImport')._id)

@@ -14,7 +14,9 @@ updateImportSelectNewProduct = (productId)->
     else
       option.currentPrice = product.importPrice ? 0
       Import.update(Session.get('currentImport')._id, {$set: option})
-    $("[name=expire]").datepicker('setDate', undefined)
+#    $("[name=expire]").datepicker('setDate', undefined)
+    $("[name=productionDate]").datepicker('setDate', undefined)
+    Session.get('timesUseProduct')
 
 
 

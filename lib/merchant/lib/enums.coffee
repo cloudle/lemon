@@ -22,6 +22,48 @@ Apps.Merchant.DiscountTypes = [
   display: 'GIẢM GIÁ THEO PHIẾU'
 ]
 
+Apps.Merchant.TimesUseProduct = [
+  _id: 0
+  timeDate: 1*7
+  display: '1 tuần'
+,
+  _id: 1
+  timeDate: 2*7
+  display: '2 tuần'
+,
+  _id: 2
+  timeDate: 1*30
+  display: '1 tháng'
+,
+  _id: 3
+  timeDate: 2*30
+  display: '2 tháng'
+,
+  _id: 4
+  timeDate: 3*30
+  display: '3 tháng'
+,
+  _id: 5
+  timeDate: 6*30
+  display: '6 tháng'
+,
+  _id: 7
+  timeDate: 9*30
+  display: '9 tháng'
+,
+  _id: 8
+  timeDate: 1*365
+  display: '1 năm'
+,
+  _id: 9
+  timeDate: 2*365
+  display: '2 năm'
+,
+  _id: 10
+  timeDate: 3*365
+  display: '3 năm'
+]
+
 #Apps.Merchant.SaleStatus = [
 #  _id: 0
 #  display: 'New Sale'

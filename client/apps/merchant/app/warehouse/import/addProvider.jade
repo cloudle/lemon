@@ -1,0 +1,30 @@
+template(name="addProvider")
+   aside.modal.swipe.left#addProvider
+      .modal-dialog.sale-bill-preview
+         .modal-header
+            button.close(type="button" data-dismiss="modal")
+               span(aria-hidden="true") &times;
+               span.sr-only Close
+            h4.modal-title
+               i.icon-search-8
+               |THÊM NHÀ PHÂN PHỐI
+         .modal-body.printable-area
+            .header
+            .merchant-info
+               input.form-control.name(            type='text' placeholder='Tên Công Ty'        )
+               input.form-control.address(         type='text' placeholder='Địa Chỉ'            )
+               input.form-control.phone(           type='text' placeholder='Số Điện Thoại'      )
+               div(align="right"): a.btn.btn-danger.create-provider Tạo mới
+            ul
+               each myCreateProvider
+                  li.order-detail
+                     .product-name
+                        |{{name}}
+                        button.btn.delete-provider(type="button") x
+                     .product-price
+                        span.individual-price {{phone}}
+                        span.final-price {{address}}
+            //.bill-summary
+            //.bill-footer
+         .modal-footer
+            button.btn.btn-default(type="button" data-dismiss="modal") ĐÓNG

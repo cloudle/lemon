@@ -23,7 +23,7 @@ lemon.dependencies.add 'saleOrder', ['merchantEssential',
 
 lemon.dependencies.add 'warehouseImport', ['merchantEssential',
                                            'myImportHistory',
-                                           'products',
+                                           'allProducts',
                                            'skulls',
                                            'providers']
 

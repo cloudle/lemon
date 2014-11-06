@@ -1,7 +1,7 @@
 Apps.Merchant.accountingManagerInit.push (scope) ->
   logics.accountingManager.confirmReceiveSale= (currentSale)->
     if currentSale.received == currentSale.imported ==  currentSale.exported == currentSale.submitted == false and currentSale.status == true
-#      unless Role.hasPermission(Schema.userProfiles.findOne({user: Meteor.userId()})._id, Sky.system.merchantPermissions.cashierSale.key) then return
+#      unless Role.hasPermission(Schema.userProfiles.findOne({user: Meteor.userId()})._id, Apps.Merchant.Permissions) then return
       option = {received: true}
       if currentSale.paymentsDelivery == 1
         option.status = false

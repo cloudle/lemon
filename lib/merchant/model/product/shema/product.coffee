@@ -53,6 +53,10 @@ simpleSchema.products = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  allowDelete:
+    type: Boolean
+    defaultValue: true
+
   styles:
     type: String
     defaultValue: Helpers.RandomColor()

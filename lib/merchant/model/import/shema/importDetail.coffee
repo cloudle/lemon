@@ -32,6 +32,14 @@ simpleSchema.importDetails = new SimpleSchema
     type: Date
     optional: true
 
+  productionDate:
+    type: Date
+    optional: true
+
+  timeUse:
+    type: Number
+    optional: true
+
   color:
     type: String
     optional: true
@@ -40,7 +48,7 @@ simpleSchema.importDetails = new SimpleSchema
     type: String
     optional: true
 
-  finish:
+  submitted:
     type: Boolean
     defaultValue: false
 

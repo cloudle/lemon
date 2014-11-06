@@ -8,7 +8,8 @@ Apps.Merchant.importInit.push (scope) ->
   logics.import.availableProviders = Provider.insideMerchant(Session.get('myProfile').parentMerchant)
   logics.import.branchProviders    = Provider.insideBranch(Session.get('myProfile').currentMerchant)
   logics.import.myHistory          = Import.myHistory(Session.get('myProfile').user, Session.get('myProfile').currentWarehouse, Session.get('myProfile').currentMerchant)
-
+  logics.import.myCreateProduct    = Product.canDeleteByMeInside()
+  logics.import.myCreateProvider   = Provider.canDeleteByMe()
 
 
 logics.import.reactiveRun = ->
@@ -21,8 +22,8 @@ logics.import.reactiveRun = ->
     logics.import.currentImportDetails = ImportDetail.findBy(logics.import.currentImport._id)
 
 
-#    logics.import.currentWarehouse = Warehouse.findBy(mySession.currentWarehouse) if mySession = Session.get('mySession')
-
+    logics.import.hideAddDetail = "display: none"
+    logics.import.hideAddDetail = ""
 
 
 

@@ -25,7 +25,11 @@ simpleSchema.providers = new SimpleSchema
 
   status:
     type: Boolean
-    optional: true
+    defaultValue: true
+
+  allowDelete:
+    type: Boolean
+    defaultValue: true
 
   styles:
     type: String

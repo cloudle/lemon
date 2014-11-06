@@ -20,8 +20,7 @@ Schema.add 'importDetails', class ImportDetail
       importQuality : Number(imports.currentQuality)
       importPrice   : Number(imports.currentImportPrice)
       totalPrice    : Number(imports.currentImportPrice)*Number(imports.currentQuality)
-      finish        : false
-      styles        : Sky.helpers.randomColor()
+      submitted     : false
     option.provider  = imports.currentProvider  if imports.currentProvider
     option.expire    = imports.currentExpire    if imports.currentExpire
     option.salePrice = imports.currentPrice    if imports.currentPrice
