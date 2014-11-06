@@ -13,7 +13,15 @@ simpleSchema.userProfiles = new SimpleSchema
     type: String
     optional: true
 
-  parent:
+  parentMerchant:
+    type: String
+    optional: true
+
+  currentMerchant:
+    type: String
+    optional: true
+
+  currentWarehouse:
     type: String
     optional: true
 
@@ -43,6 +51,11 @@ simpleSchema.userProfiles = new SimpleSchema
 
   systemVersion:
     type: String
+    optional: true
+
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
     optional: true
 
   version: { type: simpleSchema.Version }

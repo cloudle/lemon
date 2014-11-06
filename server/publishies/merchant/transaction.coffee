@@ -5,6 +5,9 @@ Meteor.publishComposite 'receivableAndRelates', #No phai thu
     Schema.transactions.find({ merchant: myProfile.currentMerchant, warehouse: myProfile.currentWarehouse, group: 'sale' })
   children: [
     find: (transaction) -> Schema.customers.find { _id: transaction.owner }
+    children: [
+      find: (customer, transaction) -> AvatarImages.find {_id: customer.avatar}
+    ]
   ]
 #Meteor.publishComposite 'myMerchantContacts',
 #  find: ->

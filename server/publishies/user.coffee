@@ -1,10 +1,6 @@
 Meteor.publish 'myProfile', -> Schema.userProfiles.find({user: @userId})
-Schema.userProfiles.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
 
-Meteor.publishComposite 'myMerchantContacts',
+Meteor.publishComposite 'myMerchantProfiles',
   find: ->
     currentProfile = Schema.userProfiles.findOne({user: @userId})
     return [] if !currentProfile
@@ -16,6 +12,12 @@ Meteor.publishComposite 'myMerchantContacts',
   ]
 
 Meteor.publish 'myOption', -> Schema.userOptions.find({user: @userId})
+
+Schema.userProfiles.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
 Schema.userOptions.allow
   insert: -> true
   update: -> true

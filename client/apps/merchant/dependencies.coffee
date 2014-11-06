@@ -3,13 +3,13 @@ lemon.dependencies.add 'essentials', ['systems', 'userInfo']
 
 #lemon.dependencies.add 'merchantInfo', ['myMerchant', 'myWarehouse']
 
-lemon.dependencies.add 'merchantMessenger', ['myMerchantContacts', 'unreadMessages']
+lemon.dependencies.add 'merchantMessenger', ['myMerchantProfiles', 'unreadMessages']
 lemon.dependencies.add 'merchantNotification', ['unreadNotifications']
 lemon.dependencies.add 'merchantEssential', ['essentials', 'merchantMessenger', 'merchantNotification', 'myMerchantAndWarehouse']
 
 lemon.dependencies.add 'merchantHome', ['merchantEssential', 'myMetroSummaries']
 lemon.dependencies.add 'roleManager', ['merchantEssential', 'currentMerchantRoles']
-lemon.dependencies.add 'staffManager', ['merchantEssential', 'currentMerchantRoles']
+lemon.dependencies.add 'staffManager', ['merchantEssential', 'myMerchantProfiles', 'currentMerchantRoles', 'availableBranch', 'availableWarehouse']
 lemon.dependencies.add 'customerManager', ['merchantEssential', 'availableCustomers']
 lemon.dependencies.add 'salesReport', ['merchantEssential', 'saleBills']
 

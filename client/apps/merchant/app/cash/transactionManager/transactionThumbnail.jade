@@ -2,7 +2,7 @@ template(name="transactionThumbnail")
   .col
     .thumbnails(class="{{styles}}")
       .right-caption {{ownerName}}
-      +avatarImageComponent(avatar=undefined alias=ownerName)
+      +avatarImageComponent(avatar=avatarUrl alias=ownerName)
       .horizontal-meter
         .meter-wrapper: .meter-progress(style="height: {{meterStyle.percent}}%; background-color: {{meterStyle.color}}")
       .short-desc.quality {{daysFromNow}}

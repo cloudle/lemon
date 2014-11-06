@@ -40,8 +40,7 @@ Package.onUse(function(api) {
     'system/schema/system.coffee',
     'system/system.coffee',
 
-    //Profiles, Roles & Permissions
-    'system/schema/user.profile.coffee',
+    //Roles & Permissions
     'system/schema/user.option.coffee',
     'system/schema/user.session.coffee',
     'system/schema/role.coffee',

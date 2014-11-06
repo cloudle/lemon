@@ -2,7 +2,10 @@ template(name="staffManager")
   #header
     .caption-row: .title NHÂN VIÊN <small>TÀI KHOẢN</small>
     .editor-row
-      .editor-wrapper(style="width: 200px")
+      .editor-wrapper(style="width: 180px")
+        span.ilabel họ tên
+        input(name="fullName")
+      .editor-wrapper(style="width: 180px")
         span.ilabel tên đăng nhập
         input#email(name="email")
       .editor-wrapper(style="width: 120px")
@@ -11,32 +14,28 @@ template(name="staffManager")
       .editor-wrapper(style="width: 120px")
         span.ilabel.center xác nhận
         input(type="password" name="confirm")
+      .editor-wrapper(style="width: 120px")
+        span.ilabel.center.optional sinh nhật
+        input(name="dateOfBirth" binding="datePicker")
+      .editor-wrapper(style="width: 120px")
+        span.ilabel.center.optional gia nhập
+        input(name="startWorkingDate" binding="datePicker" data-toggle="tooltip" data-container="body" data-placement="left" title="ngày tính lương")
       .editor-wrapper
         button#createStaffAccount.btn.btn-default.addOrderDetail(class="{{allowCreate}}" type='submit') TẠO MỚI
 
-      .editor-wrapper.right(style="width: 400px")
+    .editor-row
+      .editor-wrapper(style="width: 400px")
         span.ilabel.optional phân quyền
         +iSelect(options=roleSelectOptions class="field")
-
-    .editor-row
       .editor-wrapper(style="width: 200px")
-        span.ilabel họ tên
-        input(name="fullName")
-      .editor-wrapper(style="width: 120px")
-        span.ilabel.center.optional sinh nhật
-        input(name="dateOfBirth")
-      .editor-wrapper(style="width: 120px")
-        span.ilabel.center.optional gia nhập
-        input(name="startWorkingDate" data-toggle="tooltip" data-container="body" data-placement="left" title="ngày tính lương")
-      .switches
-        input(binding="switch" type="checkbox" name="genderMode")
-
-      .editor-wrapper.right(style="width: 200px")
         span.ilabel.optional nơi làm việc
         +iSelect(options=branchSelectOptions class="field")
-      .editor-wrapper.right(style="width: 200px")
+      .editor-wrapper(style="width: 200px")
         span.ilabel.optional kho mặc định
         +iSelect(options=warehouseSelectOptions class="field")
+
+      .switches
+        input(binding="switch" type="checkbox" name="genderMode")
 
   #content
     +iGrid(options=gridOptions)

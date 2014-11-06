@@ -1,0 +1,15 @@
+template(name="customerProfileManager")
+  aside.modal.swipe.left#customerProfileManager
+    .modal-dialog
+      .modal-header
+        button.close(type="button" data-dismiss="modal")
+          span(aria-hidden="true") &times;
+          span.sr-only Close
+        h4.modal-title
+          i.icon-search-8
+          span HỒ SƠ MACKAY
+      .modal-body.printable-area
+        h1 body!
+      .modal-footer
+        button.btn.btn-default(type="button" data-dismiss="modal") ĐÓNG
+        button.btn.btn-primary LƯU

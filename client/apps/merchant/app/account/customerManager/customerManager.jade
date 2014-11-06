@@ -1,4 +1,5 @@
 template(name="customerManager")
+  +customerProfileManager
   #header
     .caption-row: .title KHÁCH HÀNG <small>CRM</small>
     .editor-row
@@ -19,5 +20,5 @@ template(name="customerManager")
       .editor-wrapper
         button.btn#createCustomerAccount(class="{{allowCreate}}") TẠO MỚI
 
-  #content
+  #content.customer-manager
     +iGrid(options=gridOptions)

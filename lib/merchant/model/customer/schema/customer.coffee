@@ -9,6 +9,10 @@ simpleSchema.customers = new SimpleSchema
   creator:
     type: String
 
+  avatar:
+    type: String
+    optional: true
+
   areaMerchant:
     type: String
     optional: true

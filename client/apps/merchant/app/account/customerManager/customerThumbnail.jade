@@ -1,10 +1,12 @@
 template(name="customerThumbnail")
   .col
-    .thumbnails(class="{{styles}}")
+    input.hidden.avatarFile(type="file")
+    .thumbnails.click-enable(class="{{styles}}")
       .left-caption {{dateOfBirth}}
       .right-caption {{name}}
       .full-desc.price {{phone}}
-      +avatarImageComponent(avatar=undefined alias=name)
+      +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
       .single-price {{address}}
       .short-desc.quality {{gender}}
-      .trash: i.icon-bag
+      if allowDelete
+        .trash: i.icon-bag
