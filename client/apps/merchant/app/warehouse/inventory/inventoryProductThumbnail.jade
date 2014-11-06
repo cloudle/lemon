@@ -5,7 +5,7 @@ template(name="inventoryProductThumbnail")
       .right-caption {{productDetail.name}}
       .short-desc.quality
         .col.col-auto.pull-right(style="width:120px")
-          +iSpinEdit(options=realQualityOptions)
+        +iSpinEdit(options=realQualityOptions)
       .full-desc.price {{status}} -- Tồn Kho: {{originalQuality}}
       .single-price Đã Bán: {{saleQuality}} / Mất {{lostQuality}}
       .full-desc.trash: a(href="#")
