@@ -35,9 +35,9 @@ Apps.Merchant.salesInit.push (scope) ->
     catch e
       return {error: e}
 
-  scope.validation.getCrossProductQuality = (orderDetail) ->
-    currentProduct = Schema.products.findOne(orderDetail.product)
-    sameProducts = Schema.orderDetails.find({product: orderDetail.product, order: orderDetail.order}).fetch()
+  scope.validation.getCrossProductQuality = (productId, orderId) ->
+    currentProduct = Schema.products.findOne(productId)
+    sameProducts = Schema.orderDetails.find({product: productId, order: orderId}).fetch()
     crossProductQuality = 0
     crossProductQuality += item.quality for item in sameProducts
     return {

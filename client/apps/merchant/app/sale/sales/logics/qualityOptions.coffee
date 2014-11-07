@@ -17,6 +17,11 @@ reactiveMaxQuality = ->
     qualityProduct
   else 0
 
+#  if logics.sales.currentProduct
+#    cross = logics.sales.validation.getCrossProductQuality(logics.sales.currentProduct._id, logics.sales.currentOrder._id)
+#    return cross.product.availableQuality - cross.quality
+#  else 0
+
 Apps.Merchant.salesInit.push ->
   logics.sales.qualityOptions =
     reactiveSetter: (val) -> calculateDiscountCashAndDiscountPercent(val, logics.sales.currentOrder)
