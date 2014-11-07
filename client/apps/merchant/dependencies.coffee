@@ -37,6 +37,7 @@ lemon.dependencies.add 'transactionManager', ['merchantEssential', 'receivableAn
 lemon.dependencies.add 'stockManager', ['merchantEssential', 'allProducts']
 
 lemon.dependencies.add 'inventoryReview', ['merchantEssential', 'allInventory']
+lemon.dependencies.add 'importReview', ['merchantEssential', 'allInventory']
 lemon.dependencies.add 'inventoryHistory', ['merchantEssential', 'allInventory']
 
 
