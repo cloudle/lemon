@@ -31,7 +31,7 @@ template(name="sales")
         +iSpinEdit(options=productDiscountPercentOptions)
 
   #content
-    +gridComponent(options=saleDetailOptions animation="bounceInDown")
+    +gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
 
   #footer
     .editor-row.extra(name='delivery')
@@ -58,9 +58,6 @@ template(name="sales")
       .editor-wrapper(style="width: 120px")
         span.ilabel.optional thanh toán
         +iSelect(options=paymentMethodSelectOption class="field")
-      .editor-wrapper(style="width: 120px")
-        span.ilabel.optional giao hàng
-        +iSelect(options=paymentsDeliverySelectOption class="field")
 
       .editor-wrapper.right(style="width: 195px")
         span.ilabel.optional phương thức giảm giá
@@ -76,6 +73,9 @@ template(name="sales")
       .editor-wrapper(style="width: 180px")
         span.ilabel.optional khách hàng
         +iSelect(options=customerSelectOptions class="field")
+      .editor-wrapper(style="width: 120px")
+        span.ilabel.optional giao hàng
+        +iSelect(options=paymentsDeliverySelectOption class="field")
       .editor-wrapper.pull-right
         button.btn.btn-default.pull-right.finish(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
       .editor-wrapper.pull-right

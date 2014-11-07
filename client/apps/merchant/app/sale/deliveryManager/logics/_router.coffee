@@ -9,7 +9,9 @@ deliveryManagerRoute =
     logics.deliveryManager.reactiveRun()
 
     return {
-      gridOptions: logics.deliveryManager.gridOptions
+      waitingGridOptions: logics.deliveryManager.waitingGridOptions
+      deliveringGridOptions: logics.deliveryManager.deliveringGridOptions
+      doneGridOptions: logics.deliveryManager.doneGridOptions
     }
 
 lemon.addRoute [deliveryManagerRoute], Apps.Merchant.RouterBase

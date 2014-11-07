@@ -1,3 +1,13 @@
+template(name="deliveryManagerThumbnailHeader1")
+  span.title CHỜ GIAO
+  span.icon.icon-shareable
+template(name="deliveryManagerThumbnailHeader2")
+  span.title ĐANG GIAO
+  span.icon.icon-truck-1
+template(name="deliveryManagerThumbnailHeader3")
+  span.title ĐÃ KẾT THÚC
+  span.icon.icon-award
+
 template(name="deliveryManager")
   #header
     .caption-row
@@ -11,10 +21,7 @@ template(name="deliveryManager")
     //    +iSelect(options=warehouseSelectOptions class="field")
 
   #content
-    +iGrid(options=gridOptions)
-
-  #footer.gray
-    ul.step-filter
-      li(class="{{activeDeliveryFilter 'selected'}}" data-filter="selected" data-toggle='tooltip' title="CHỜ GIAO"): span.icon-shareable
-      li(class="{{activeDeliveryFilter 'working'}}" data-filter="working" data-toggle='tooltip' title="ĐANG GIAO"): span.icon-truck-1
-      li(class="{{activeDeliveryFilter 'done'}}" data-filter="done" data-toggle='tooltip' title="ĐÃ GIAO"): span.icon-ok-6
+    .segments-container.size3
+      +gridComponent(options=waitingGridOptions wrapperClass="segments-column" headerTemplate="deliveryManagerThumbnailHeader1" animation="bounceInDown")
+      +gridComponent(options=deliveringGridOptions wrapperClass="segments-column" headerTemplate="deliveryManagerThumbnailHeader2" animation="bounceInDown")
+      +gridComponent(options=doneGridOptions wrapperClass="segments-column" headerTemplate="deliveryManagerThumbnailHeader3" animation="bounceInDown")

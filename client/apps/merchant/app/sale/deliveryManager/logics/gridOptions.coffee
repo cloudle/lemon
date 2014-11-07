@@ -1,5 +1,10 @@
 Apps.Merchant.deliveryManagerInit.push (scope) ->
-  logics.deliveryManager.gridOptions =
+  scope.waitingGridOptions =
     itemTemplate: 'deliveryManagerThumbnail'
-    reactiveSourceGetter: -> logics.deliveryManager.availableDeliveries
-    wrapperClasses: 'detail-grid row'
+    reactiveSourceGetter: -> scope.waitingDeliveries
+  scope.deliveringGridOptions =
+    itemTemplate: 'deliveryManagerThumbnail'
+    reactiveSourceGetter: -> scope.deliveringDeliveries
+  scope.doneGridOptions =
+    itemTemplate: 'deliveryManagerThumbnail'
+    reactiveSourceGetter: -> scope.doneDeliveries

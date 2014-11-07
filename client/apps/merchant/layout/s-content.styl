@@ -90,30 +90,16 @@ editor-font-size = 12px
       &:disabled
         background-color #fff
 
-  .detail-grid
-    margin 0; padding 4px 2px 0 2px
-    min-height 104px
-    .col
-      float: left; padding 0 2px
-      +above(1024px)
-        span(1/3)
-      +above(1200px)
-        span(1/4)
-      +above(1600px)
-        span(1/5)
-      +above(1900px)
-        span(1/6)
-
-    .tile
-      border-radius 2px
-      padding 5px
-      .title
-        font-size 22px
-        overflow ellipsis
-      .summary
-        absolute bottom 5px
-        font-size 20px
-        &.left
-          left 10px; margin 0
-        &.right
-          right 10px
+#content > .detail-grid
+  margin 0; padding 4px 2px 0 2px
+  min-height 104px
+  .col, .item-wrapper
+    float: left; padding 0 2px
+    +above(1024px)
+      span(1/3)
+    +above(1200px)
+      span(1/4)
+    +above(1600px)
+      span(1/5)
+    +above(1900px)
+      span(1/6)
