@@ -15,6 +15,7 @@ Meteor.publishComposite 'myMerchantProfiles', ->
   }
 
 Meteor.publish 'myOption', -> Schema.userOptions.find({user: @userId})
+Meteor.publish 'mySession', -> Schema.userSessions.find({user: @userId})
 
 Schema.userProfiles.allow
   insert: -> true
@@ -26,7 +27,6 @@ Schema.userOptions.allow
   update: -> true
   remove: -> true
 
-Meteor.publish 'mySession', -> Schema.userSessions.find({user: @userId})
 Schema.userSessions.allow
   insert: -> true
   update: -> true

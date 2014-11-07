@@ -16,7 +16,9 @@ Meteor.publish 'allProductDetails', ->
 Schema.products.allow
   insert: -> true
   update: -> true
-  remove: -> true
+  remove: (userId, product) ->
+    productInUse = Schema.importDetails.findOne {product: product._id}
+    return product.totalQuality == 0 and !productInUse
 
 Schema.productDetails.allow
   insert: -> true

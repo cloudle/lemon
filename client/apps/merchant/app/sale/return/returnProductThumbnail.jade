@@ -2,7 +2,7 @@ template(name="returnProductThumbnail")
   .col
     .thumbnails(class="#{styles}")
       .right-caption {{productNameFromId product}}
-      .avatar(style="background-image: url('images/missing.jpg')")
+      +avatarImageComponent(avatar=avatarUrl alias="{{productNameFromId product}}")
       .short-desc.quality {{pad returnQuality}}
       .full-desc.price {{formatNumber finalPrice}} <small>VNĐ</small>
       .discount
