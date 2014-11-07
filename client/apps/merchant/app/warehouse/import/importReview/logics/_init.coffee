@@ -4,7 +4,7 @@ Apps.Merchant.importReviewInit = []
 Apps.Merchant.importReviewInit.push (scope) ->
   scope.availableMerchants  = Schema.merchants.find({})
   scope.availableWarehouses = Schema.warehouses.find({})
-  scope.importReviews = Schema.imports.find {warehouse: Session.get('myProfile').currentWarehouse}
+  scope.importReviews = Schema.imports.find {submitted: true, warehouse: Session.get('myProfile').currentWarehouse}
 
 logics.importReview.reactiveRun = ->
   if Session.get('currentImportReview')

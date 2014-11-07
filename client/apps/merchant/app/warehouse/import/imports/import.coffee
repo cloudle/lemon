@@ -8,7 +8,8 @@ lemon.defineApp Template.import,
 
     'click .addImportDetail': (event, template)-> logics.import.addImportDetail(event, template)
     'click .finishImport'   : (event, template)->
-      logics.import.submit(Session.get('currentImport')._id)
+      if Session.get('currentImport')?.submitted is false
+        logics.import.submit(Session.get('currentImport')._id)
       logics.import.finish(Session.get('currentImport')._id)
     'click .editImport'     : (event, template)-> logics.import.enabledEdit(Session.get('currentImport')._id)
     'click .submitImport'   : (event, template)-> logics.import.submit(Session.get('currentImport')._id)
