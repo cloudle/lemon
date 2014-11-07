@@ -1,8 +1,9 @@
 lemon.defineWidget Template.deliveryManagerThumbnail,
-  showSelectCommand: -> @status is 1
-  showStartCommand: -> @status is 3
+  showSelectCommand:  -> @status is 1
+  showStartCommand:   -> @status is 3
   showConfirmCommand: -> @status is 4
-  showFinishCommand: -> @status is 6 or @status is 9
+  showFinishCommand:  -> @status is 6 or @status is 9
+  showCancelCommand:  -> _.contains([2, 4, 8, 9], @status)
 
   showStatus: (status) ->
     switch status
@@ -41,13 +42,17 @@ lemon.defineWidget Template.deliveryManagerThumbnail,
       Meteor.call "updateDelivery", @_id, true, (error, result) -> console.log error.error if error
     "click .unSuccessDelivery": ->
       Meteor.call "updateDelivery", @_id, false, (error, result) -> console.log error.error if error
+
     "click .select-command": ->
-      Meteor.call "updateDelivery", @_id, true, (error, result) -> console.log error.error if error
+      Meteor.call "updateDelivery", @_id, 'select', (error, result) -> console.log error.error if error
     "click .start-command": ->
-      Meteor.call "updateDelivery", @_id, true, (error, result) -> console.log error.error if error
+      Meteor.call "updateDelivery", @_id, 'start', (error, result) -> console.log error.error if error
     "click .fail-command": ->
-      Meteor.call "updateDelivery", @_id, false, (error, result) -> console.log error.error if error
+      Meteor.call "updateDelivery", @_id, 'fail', (error, result) -> console.log error.error if error
     "click .success-command": ->
-      Meteor.call "updateDelivery", @_id, true, (error, result) -> console.log error.error if error
+      Meteor.call "updateDelivery", @_id, 'success', (error, result) -> console.log error.error if error
     "click .finish-command": ->
-      Meteor.call "updateDelivery", @_id, true, (error, result) -> console.log error.error if error
+      Meteor.call "updateDelivery", @_id, 'finish', (error, result) -> console.log error.error if error
+
+    "click .cancel-command": ->
+      Meteor.call "updateDelivery", @_id, 'cancel', (error, result) -> console.log error.error if error

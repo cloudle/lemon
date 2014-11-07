@@ -7,7 +7,7 @@ Apps.Merchant.salesInit.push ->
 
   logics.sales.updateDeliveryContactPhone = (contactPhone) ->
     if logics.sales.currentOrder
-      if contactPhone.value.length > 1
+      if contactPhone.length > 1
         Order.update(logics.sales.currentOrder._id, {$set: {contactPhone: contactPhone}})
       else contactPhone.value = logics.sales.currentOrder.contactPhone
 

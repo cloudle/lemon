@@ -39,4 +39,4 @@ Apps.Merchant.salesInit.push ->
     id: '_id'
     placeholder: 'CHỌN NGƯỜI MUA'
     changeAction: (e) -> changedActionSelectCustomer(e.added._id, logics.sales.currentOrder)
-    reactiveValueGetter: -> Session.get('currentOrder').buyer
+    reactiveValueGetter: -> Session.get('currentOrder')?.buyer

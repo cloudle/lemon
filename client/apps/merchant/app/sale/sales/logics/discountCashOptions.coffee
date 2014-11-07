@@ -11,8 +11,8 @@ calculateCurrentDiscountPercent = (discountCash, currentOrder)->
 Apps.Merchant.salesInit.push ->
   logics.sales.discountCashOptions =
     reactiveSetter: (val)-> calculateCurrentDiscountPercent(val, Session.get('currentOrder'))
-    reactiveValue: -> Session.get('currentOrder').currentDiscountCash ? 0
-    reactiveMax: ->  Session.get('currentOrder').currentTotalPrice ? 0
+    reactiveValue: -> Session.get('currentOrder')?.currentDiscountCash ? 0
+    reactiveMax: ->  Session.get('currentOrder')?.currentTotalPrice ? 0
     reactiveMin: -> 0
     reactiveStep: -> 1000
     others:

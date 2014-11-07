@@ -13,7 +13,7 @@ Schema.add 'deliveries', class Delivery
       deliveryDate    : order.deliveryDate if order.deliveryDate
       status          : 0
 
-  @insertBySale: (order, sale)-> @schema.insert Delivery.newBySale(order, sale), (error, result) -> if error then error else result
+  @insertBySale: (order, sale)-> @schema.insert Delivery.newBySale(order, sale)
 
 
 

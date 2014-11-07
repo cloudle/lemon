@@ -7,7 +7,7 @@ saleRoute =
       @next()
 #      Apps.setup(logics.sales, Apps.Merchant.salesReload)
   data: ->
-    logics.sales.reactiveRun()
+    Apps.setup(logics.sales, Apps.Merchant.salesReactiveRun)
 
     return {
       currentOrder: logics.sales.currentOrder

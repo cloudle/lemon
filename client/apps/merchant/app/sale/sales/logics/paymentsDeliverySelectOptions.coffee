@@ -20,10 +20,10 @@ Apps.Merchant.salesInit.push ->
       results: Apps.Merchant.DeliveryTypes
       text: 'id'
     initSelection: (element, callback) ->
-      callback _.findWhere(Apps.Merchant.DeliveryTypes, {_id: Session.get('currentOrder').paymentsDelivery})
+      callback _.findWhere(Apps.Merchant.DeliveryTypes, {_id: Session.get('currentOrder')?.paymentsDelivery})
     formatSelection: formatPaymentMethodSearch
     formatResult: formatPaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
     changeAction: (e) -> changedActionSelectPaymentsDelivery(e.added._id, logics.sales.currentOrder)
-    reactiveValueGetter: -> _.findWhere(Apps.Merchant.DeliveryTypes, {_id: Session.get('currentOrder').paymentsDelivery})
+    reactiveValueGetter: -> _.findWhere(Apps.Merchant.DeliveryTypes, {_id: Session.get('currentOrder')?.paymentsDelivery})

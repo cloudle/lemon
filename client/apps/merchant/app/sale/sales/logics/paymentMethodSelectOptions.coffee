@@ -21,11 +21,11 @@ Apps.Merchant.salesInit.push ->
       results: Apps.Merchant.PaymentMethods
       text: 'id'
     initSelection: (element, callback) ->
-      callback _.findWhere(Apps.Merchant.PaymentMethods, {_id: Session.get('currentOrder').paymentMethod})
+      callback _.findWhere(Apps.Merchant.PaymentMethods, {_id: Session.get('currentOrder')?.paymentMethod})
     formatSelection: formatPaymentMethodSearch
     formatResult: formatPaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
     changeAction: (e) -> changedActionSelectPaymentMethod(e.added._id, logics.sales.currentOrder)
-    reactiveValueGetter: -> _.findWhere(Apps.Merchant.PaymentMethods, {_id:Session.get('currentOrder').paymentMethod})
+    reactiveValueGetter: -> _.findWhere(Apps.Merchant.PaymentMethods, {_id:Session.get('currentOrder')?.paymentMethod})
 

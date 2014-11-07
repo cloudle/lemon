@@ -1,4 +1,4 @@
-destroySaleAndDetail = (orderId)->
+destroySaleAndDetail = (scope, orderId)->
   order = Schema.orders.findOne({
     _id       : orderId
     creator   : Session.get('myProfile').user
@@ -9,20 +9,20 @@ destroySaleAndDetail = (orderId)->
       Schema.orderDetails.remove(orderDetail._id)
     Schema.orders.remove(order._id)
 
-    logics.sales.currentOrderHistory.count()
+    scope.currentOrderHistory.count()
   else
     -1
 
 
 
-Apps.Merchant.salesInit.push ->
-  logics.sales.tabOptions =
-    source: logics.sales.currentOrderHistory
+Apps.Merchant.salesInit.push (scope) ->
+  scope.tabOptions =
+    source: scope.currentOrderHistory
     currentSource: 'currentOrder'
     caption: 'tabDisplay'
     key: '_id'
-    createAction: -> logics.sales.createNewOrderAndSelected()
-    destroyAction: (instance) -> destroySaleAndDetail(instance._id)
+    createAction: -> scope.createNewOrderAndSelected()
+    destroyAction: (instance) -> destroySaleAndDetail(scope, instance._id)
     navigateAction: (instance) ->
       UserSession.set('currentOrder', instance._id)
-      Session.set('currentOrder', logics.sales.currentOrder)
+      Session.set('currentOrder', scope.currentOrder)

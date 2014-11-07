@@ -13,10 +13,10 @@ Apps.Merchant.salesInit.push ->
       results: Apps.Merchant.DiscountTypes
       text: 'id'
     initSelection: (element, callback) ->
-      callback _.findWhere(Apps.Merchant.DiscountTypes, {_id: Session.get('currentOrder').billDiscount})
+      callback _.findWhere(Apps.Merchant.DiscountTypes, {_id: Session.get('currentOrder')?.billDiscount})
     formatSelection: formatPaymentMethodSearch
     formatResult: formatPaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
     changeAction: (e) -> changedActionSelectDiscountCash(e.added._id)
-    reactiveValueGetter: -> _.findWhere(Apps.Merchant.DiscountTypes, {_id: Session.get('currentOrder').billDiscount})
+    reactiveValueGetter: -> _.findWhere(Apps.Merchant.DiscountTypes, {_id: Session.get('currentOrder')?.billDiscount})
