@@ -2,8 +2,17 @@ template(name="deliveryManagerThumbnail")
   .thumbnails(class="#{styles}")
     .right-caption {{showStatus status}}
     +avatarImageComponent(avatar=avatarUrl alias=customerAlias)
-    .short-desc.quality
-      button.btn.btn-default.unSuccessDelivery(style="{{hideButtonUnSuccess status}}") {{buttonUnSuccessText status}}
-    .full-desc.price
-    .single-price
-      button.btn.btn-default.successDelivery(style="{{hideButtonSuccess status}}") {{buttonSuccessText status}}
+    //.short-desc.quality
+    //  button.btn.btn-default.unSuccessDelivery(style="{{hideButtonUnSuccess status}}") {{buttonUnSuccessText status}}
+    //.single-price
+    //  button.btn.btn-default.successDelivery(style="{{hideButtonSuccess status}}") {{buttonSuccessText status}}
+    .command-container
+      if showSelectCommand
+        .command-button.select-command.icon-paper-plane-empty
+      if showStartCommand
+        .command-button.start-command.icon-truck-1
+      if showConfirmCommand
+        .command-button.animated.bounceIn.fail-command.icon-emo-cry
+        .command-button.animated.bounceIn.success-command.icon-ok-6
+      if showFinishCommand
+        .command-button.finish-command.icon-award

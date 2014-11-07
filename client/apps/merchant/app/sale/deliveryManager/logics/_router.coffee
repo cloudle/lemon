@@ -6,8 +6,6 @@ deliveryManagerRoute =
       Apps.setup(logics.deliveryManager, Apps.Merchant.deliveryManagerInit, 'deliveryManager')
       @next()
   data: ->
-    logics.deliveryManager.reactiveRun()
-
     return {
       waitingGridOptions: logics.deliveryManager.waitingGridOptions
       deliveringGridOptions: logics.deliveryManager.deliveringGridOptions
