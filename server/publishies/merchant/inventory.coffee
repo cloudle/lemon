@@ -22,6 +22,35 @@ Meteor.publish 'allInventory', ->
   return [] if !myProfile
   Schema.inventories.find({warehouse: myProfile.currentWarehouse})
 
+
+Meteor.publishComposite 'inventoryReviewInWarehouse', ->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.inventories.find {submitted: true, warehouse: myProfile.currentWarehouse}
+    children: [
+      find: (inventory) -> Schema.userProfiles.find {user: inventory.creator}
+    ]
+  }
+
+Meteor.publishComposite 'inventoryDetailInWarehouse', (inventoryId)->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.inventoryDetails.find {inventory: inventoryId, warehouse: myProfile.currentWarehouse}
+    children: [
+      find: (inventoryDetail) -> Schema.products.find {_id: inventoryDetail.product}
+    ]
+  }
+
+
+
+
+
 Schema.inventories.allow
   insert: -> true
   update: -> true

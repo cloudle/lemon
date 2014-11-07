@@ -7,7 +7,7 @@ Apps.Merchant.importInit.push (scope) ->
     query: (query) -> query.callback
       results: Apps.Merchant.TimesUseProduct
       text: 'id'
-    initSelection: (element, callback) -> callback('skyReset')
+    initSelection: (element, callback) -> callback(_.findWhere(Apps.Merchant.TimesUseProduct, {timeDate: Session.get('timesUseProduct')}) ? 'skyReset')
     formatSelection: formatTimesUseProductSearch
     formatResult: formatTimesUseProductSearch
     placeholder: 'CHỌN HẠN DÙNG'
