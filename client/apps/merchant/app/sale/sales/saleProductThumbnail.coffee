@@ -3,12 +3,8 @@ lemon.defineWidget Template.saleProductThumbnail,
     currentProduct = Schema.products.findOne(@product)
     AvatarImages.findOne(currentProduct?.image)?.url() ? undefined
   meterStyle: ->
-    currentProduct = Schema.products.findOne(@product)
-    sameProducts = Schema.orderDetails.find({product: @product, order: @order}).fetch()
-    crossProductQuality = 0
-    crossProductQuality += item.quality for item in sameProducts
-
-    stockPercentage = (currentProduct?.availableQuality - crossProductQuality) / (currentProduct?.upperGapQuality ? 100)
+    cross = logics.sales.validation.getCrossProductQuality(@)
+    stockPercentage = (cross.product?.availableQuality - cross.quality) / (cross.product?.upperGapQuality ? 100)
     return {
       percent: stockPercentage * 100
       color: Helpers.ColorBetween(255, 0, 0, 135, 196, 57, stockPercentage, 3)
@@ -18,3 +14,8 @@ lemon.defineWidget Template.saleProductThumbnail,
     "click .trash": ->
       OrderDetail.remove(@_id)
       logics.sales.reCalculateOrder(@order)
+    "click .command-button.up": ->
+      cross = logics.sales.validation.getCrossProductQuality(@)
+      Schema.orderDetails.update(@_id, {$set: {quality: @quality + 1}}) if (cross.product.availableQuality - cross.quality) > 0
+    "click .command-button.down": ->
+      Schema.orderDetails.update(@_id, {$set: {quality: @quality - 1}}) if @quality > 1

@@ -1,5 +1,5 @@
 logics.sales.validation = {}
-Apps.Merchant.salesInit.push ->
+Apps.Merchant.salesInit.push (scope) ->
   logics.sales.validation.orderDetail = (product, quality, price, discountCash)->
     if quality < 1
       console.log 'Số lượng nhỏ nhất là 1.'
@@ -34,3 +34,13 @@ Apps.Merchant.salesInit.push ->
       return {}
     catch e
       return {error: e}
+
+  scope.validation.getCrossProductQuality = (orderDetail) ->
+    currentProduct = Schema.products.findOne(orderDetail.product)
+    sameProducts = Schema.orderDetails.find({product: orderDetail.product, order: orderDetail.order}).fetch()
+    crossProductQuality = 0
+    crossProductQuality += item.quality for item in sameProducts
+    return {
+      product: currentProduct
+      quality: crossProductQuality
+    }
