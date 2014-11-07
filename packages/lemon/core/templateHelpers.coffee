@@ -11,6 +11,8 @@ Template.registerHelper 'round', (number) -> Math.round(number)
 Template.registerHelper 'momentFormat', (date, format) -> moment(date).format(format)
 
 Template.registerHelper 'productNameFromId', (id) -> Schema.products.findOne(id)?.name
+Template.registerHelper 'skullsNameFromId', (id) -> Schema.products.findOne(id)?.skulls
+Template.registerHelper 'userNameFromId', (id) -> Schema.userProfiles.findOne({user: id})?.fullName
 
 Template.registerHelper 'aliasLetter', (fullAlias) -> fullAlias?.split(' ').pop().substring(0,1)
 

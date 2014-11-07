@@ -1,7 +1,8 @@
 template(name="importReview")
+  +importReviewDetail(import=currentImport importDetails=currentImportDetail)
   #header
     .caption-row
-      .title Xem Kiểm Kho
+      .title Lịch Sử Nhập Kho
       .switches
         input(binding="switch" type="checkbox" name="advancedMode")
     .editor-row.extra(name='advanced')

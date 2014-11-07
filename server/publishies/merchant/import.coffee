@@ -15,6 +15,34 @@ Meteor.publish 'importDetails', (importId) ->
   return [] if !@userId or currentOrder?.creator isnt @userId
   Schema.importDetails.find {import: importId}
 
+
+#----------ImportReview--------------------------------------------------------------
+Meteor.publishComposite 'importReviewInWarehouse', ->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.imports.find {warehouse: myProfile.currentWarehouse}
+    children: [
+      find: (imports) -> Schema.userProfiles.find {user: imports.creator}
+    ]
+  }
+
+Meteor.publishComposite 'importDetailInWarehouse', (importId)->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.importDetails.find {import: importId, warehouse: myProfile.currentWarehouse}
+    children: [
+      find: (importDetail) -> Schema.products.find {_id: importDetail.product}
+    ]
+  }
+#---------------------------------------------------------------------------
+
+
 Schema.imports.allow
   insert: -> true
   update: -> true

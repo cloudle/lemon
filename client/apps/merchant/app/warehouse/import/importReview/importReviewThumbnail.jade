@@ -1,0 +1,10 @@
+template(name="importReviewThumbnail")
+  .col
+    .thumbnails(class="#{colorClass}")
+      .left-caption {{createDate version.updateAt}}
+      .right-caption {{userNameFromId creator}}
+      .short-desc.quality {{status}}
+      .single-price
+      .full-desc.price {{formatNumber totalPrice}}
+
+

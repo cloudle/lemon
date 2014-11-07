@@ -9,7 +9,9 @@ importReviewRoute =
     logics.importReview.reactiveRun()
 
     return {
-      gridOptions: logics.importReview.gridOptions
+      gridOptions         : logics.importReview.gridOptions
+      currentImport       : Session.get('currentImportReview')
+      currentImportDetail : logics.importReview.currentImportReviewDetail
     }
 
 lemon.addRoute [importReviewRoute], Apps.Merchant.RouterBase
