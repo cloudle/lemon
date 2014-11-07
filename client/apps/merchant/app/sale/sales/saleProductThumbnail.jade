@@ -3,6 +3,7 @@ template(name="saleProductThumbnail")
     .right-caption {{productNameFromId product}}
     +avatarImageComponent(avatar=avatarUrl alias="{{productNameFromId product}}")
     .horizontal-meter
+      //background-color: {{meterStyle.color}}
       .meter-wrapper: .meter-progress(style="height: {{meterStyle.percent}}%; background-color: {{meterStyle.color}}")
     .short-desc.quality {{pad quality}}
     .full-desc.price {{formatNumber finalPrice}} <small>VNĐ</small>

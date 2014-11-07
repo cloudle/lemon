@@ -13,11 +13,27 @@ horizontal-meter-theme(color)
       .large-size
         font-size 26px
 
+for $color in colors
+  &.thumbnails.{$color[0]}
+    background-color $color[1]
+    box-shadow inset 0px 1px 0px lighten($color[1], 5), 0px 3px 0px 0px darken($color[1], 10), 0px 5px 2px #999
+    .avatar:before
+      border-top 2px solid darken($color[1], 7)
+      box-shadow inset 0px 8px 48px darken($color[1], 7)
+    .horizontal-meter
+      horizontal-meter-theme($color[1])
+    .trash > i, .command-button
+      background-color darken($color[1], 9)
+    if lightness($color[1]) > 80
+      color #444
+    else
+      color #fff
+
 .thumbnails
   width 100%; height 100px
   color #696969; $noise-material(#eee)
   position relative; float left
-  margin-bottom 4px; overflow hidden
+  margin-bottom 7px; overflow hidden
   border-radius 2px
   z-index 9
   /*outline: rgba(0, 0, 0, 0.1) solid 2px*/
@@ -89,7 +105,7 @@ horizontal-meter-theme(color)
       .meter-progress
         absolute bottom 0
         width 100%; height 50%
-        background-color red
+        background-color #ffffff
 
   .discount
     absolute bottom 15px right 20px
@@ -211,19 +227,3 @@ horizontal-meter-theme(color)
       line-height 25px
       text-align center
       border solid 3px #eee
-
-
-for $color in colors
-  &.thumbnails.{$color[0]}
-    background-color $color[1]
-    .avatar:before
-      border-top 2px solid darken($color[1], 7)
-      box-shadow inset 0px 8px 48px darken($color[1], 7)
-    .horizontal-meter
-      horizontal-meter-theme($color[1])
-    .trash > i, .command-button
-      background-color darken($color[1], 9)
-    if lightness($color[1]) > 80
-      color #444
-    else
-      color #fff

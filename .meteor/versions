@@ -80,7 +80,7 @@ mobile-status-bar@1.0.1
 mongo-livedata@1.0.6
 mongo@1.0.8
 mrt:nvd3js@0.1.0
-multiply:iron-router-progress@1.0.0-pre2
+multiply:iron-router-progress@1.0.0
 npm-bcrypt@0.7.7
 observe-sequence@1.0.3
 ordered-dict@1.0.1
