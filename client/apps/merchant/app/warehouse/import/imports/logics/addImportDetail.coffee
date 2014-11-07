@@ -61,7 +61,7 @@ Apps.Merchant.importInit.push (scope) ->
         importPrice : importDetail.importPrice
         expire      : importDetail.expire
       })
-      console.log importDetail
+
       if findImportDetail
         reUpdateImportDetail(importDetail, findImportDetail)
       else

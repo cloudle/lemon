@@ -23,7 +23,7 @@ Meteor.publishComposite 'importReviewInWarehouse', ->
     find: ->
       myProfile = Schema.userProfiles.findOne({user: self.userId})
       return EmptyQueryResult if !myProfile
-      Schema.imports.find {warehouse: myProfile.currentWarehouse}
+      Schema.imports.find {submitted: true, warehouse: myProfile.currentWarehouse}
     children: [
       find: (imports) -> Schema.userProfiles.find {user: imports.creator}
     ]
