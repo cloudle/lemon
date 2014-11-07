@@ -14,6 +14,7 @@ importRoute =
       showSubmit      : logics.import.showSubmit
       showFinish      : logics.import.showFinish
       showEdit        : logics.import.showEdit
+      hidePriceSale   : logics.import.hidePriceSale
 
 
       myCreateProduct : logics.import.myCreateProduct

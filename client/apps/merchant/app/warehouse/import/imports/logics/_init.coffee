@@ -22,6 +22,7 @@ logics.import.reactiveRun = ->
     Apps.MerchantSubscriber.subscribe('importDetails', logics.import.currentImport._id)
     logics.import.currentImportDetails = ImportDetail.findBy(logics.import.currentImport._id)
 
+    logics.import.hidePriceSale = logics.import.currentImport.currentPrice > 0
     logics.import.showCreateDetail = !currentImport.submitted
     logics.import.showEdit   = currentImport.submitted
     permission = Role.hasPermission(Session.get('myProfile').user, Apps.Merchant.Permissions.su.key)

@@ -1,5 +1,5 @@
 Meteor.methods
-  updateDelivery: (deliveryId, success = true) ->
+  updateDelivery: (deliveryId, success = true, status) ->
     if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()}) then return 'Bạn chưa đăng nhập'
     if !currentDelivery = Schema.deliveries.findOne({
       _id: deliveryId, merchant: userProfile.currentMerchant, warehouse: userProfile.currentWarehouse

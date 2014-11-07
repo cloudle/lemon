@@ -4,8 +4,6 @@ reactiveMinSalePrice = ->
   else
     Number(0)
 
-
-
 Apps.Merchant.importInit.push (scope) ->
   logics.import.salePriceOptions =
     reactiveSetter: (val) -> Import.update(Session.get('currentImport')._id, {$set: {currentPrice: val}})

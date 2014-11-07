@@ -23,9 +23,10 @@ template(name="import")
       .editor-wrapper(style="width:150px")
         span.ilabel.center giá nhập
         +iSpinEdit(options=importPriceOptions class="field")
-      .editor-wrapper(style="width:150px; {{hidePrice}}")
-        span.ilabel.center giá bán
-        +iSpinEdit(options=salePriceOptions class="field")
+      if hidePriceSale
+        .editor-wrapper(style="width:150px")
+          span.ilabel.center giá bán
+          +iSpinEdit(options=salePriceOptions class="field")
       if showCreateDetail
         .editor-wrapper(style="width:100px")
           button.btn.btn-default.addImportDetail(type='submit' style="{{showCreateDetail}}") Add
@@ -35,7 +36,7 @@ template(name="import")
         span.ilabel.optional ngày sản xuất
         input(name="productionDate" binding="datePicker" todayHighlight="true")
       .editor-wrapper(style="width: 120px")
-        span.ilabel.optional hạng dùng
+        span.ilabel.optional hạn sử dụng
         +iSelect(options=timeUseSelectOptions class="field")
       //.editor-wrapper(style="width: 120px")
       //  span.ilabel.optional ngày hết hạn
