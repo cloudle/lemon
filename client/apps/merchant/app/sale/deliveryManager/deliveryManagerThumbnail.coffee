@@ -43,8 +43,10 @@ lemon.defineWidget Template.deliveryManagerThumbnail,
     "click .unSuccessDelivery": ->
       Meteor.call "updateDelivery", @_id, false, (error, result) -> console.log error.error if error
 
-    "click .select-command": ->
-      Meteor.call "updateDelivery", @_id, 'select', (error, result) -> console.log error.error if error
+    "click .select-command": (event, template) ->
+      deliveryId = @_id
+      Helpers.excuteAfterAnimate $(event.delegateTarget), 'item-wrapper', 'zoomOutUp', ->
+        Meteor.call "updateDelivery", deliveryId, 'select', (error, result) -> console.log error.error if error
     "click .start-command": ->
       Meteor.call "updateDelivery", @_id, 'start', (error, result) -> console.log error.error if error
     "click .fail-command": ->
@@ -54,5 +56,7 @@ lemon.defineWidget Template.deliveryManagerThumbnail,
     "click .finish-command": ->
       Meteor.call "updateDelivery", @_id, 'finish', (error, result) -> console.log error.error if error
 
-    "click .cancel-command": ->
-      Meteor.call "updateDelivery", @_id, 'cancel', (error, result) -> console.log error.error if error
+    "click .cancel-command": (event, template) ->
+      deliveryId = @_id
+      Helpers.excuteAfterAnimate $(event.delegateTarget), 'item-wrapper', 'zoomOutUp', ->
+        Meteor.call "updateDelivery", deliveryId, 'cancel', (error, result) -> console.log error.error if error
