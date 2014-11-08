@@ -13,9 +13,8 @@ lemon.defineWidget Template.saleProductThumbnail,
   events:
     "click .trash": (event, template) ->
       orderId = @_id
-      Helpers.excuteAfterAnimate $(event.delegateTarget), 'item-wrapper', 'zoomOutUp', ->
+      Helpers.excuteAfterAnimate $(event.delegateTarget), 'item-wrapper', 'bounceOut', ->
         OrderDetail.remove(orderId)
-
       logics.sales.reCalculateOrder(@order)
     "click .command-button.up": ->
       cross = logics.sales.validation.getCrossProductQuality(@product, @order)
