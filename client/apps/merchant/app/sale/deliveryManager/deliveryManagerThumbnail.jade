@@ -9,8 +9,6 @@ template(name="deliveryManagerThumbnail")
     .command-container
       if showSelectCommand
         .command-button.select-command.icon-paper-plane-empty
-      if showCancelCommand
-        .command-button.cancel-command.icon-reply-3
       if showStartCommand
         .command-button.start-command.icon-truck-1
       if showConfirmCommand
@@ -18,3 +16,5 @@ template(name="deliveryManagerThumbnail")
         .command-button.animated.bounceIn.success-command.icon-ok-6
       if showFinishCommand
         .command-button.finish-command.icon-award
+      if showCancelCommand
+        .command-button.cancel-command.icon-reply-3
