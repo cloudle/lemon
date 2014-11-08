@@ -19,17 +19,19 @@ lemon.defineApp Template.sales,
     "change [name='advancedMode']": (event, template) ->
       logics.sales.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
 
+    "change [name ='deliveryDate']": (event, template) -> logics.sales.updateDeliveryDate()
+
     'blur .contactName': (event, template)->
-      logics.sales.updateDeliveryContactName(template.find(".contactName").value)
+      logics.sales.updateDeliveryContactName(template.find(".contactName"))
 
     'blur .contactPhone': (event, template)->
-      logics.sales.updateDeliveryContactPhone(template.find(".contactPhone").value)
+      logics.sales.updateDeliveryContactPhone(template.find(".contactPhone"))
 
     'blur .deliveryAddress': (event, template)->
-      logics.sales.updateDeliveryAddress(template.find(".deliveryAddress").value)
+      logics.sales.updateDeliveryAddress(template.find(".deliveryAddress"))
 
     'blur .comment': (event, template)->
-      logics.sales.updateDeliveryComment(template.find(".comment").value)
+      logics.sales.updateDeliveryComment(template.find(".comment"))
 
     'click .addOrderDetail': () ->
       logics.sales.addOrderDetail(

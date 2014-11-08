@@ -12,9 +12,11 @@ changedActionSelectCustomer = (customerId, currentOrder)->
       comment: null
 
     if currentOrder.paymentsDelivery == 1
+      date = new Date
       option.contactName     = customer.name ? null
       option.contactPhone    = customer.phone ? null
       option.deliveryAddress = customer.address ? null
+      option.deliveryDate    = new Date(date.getFullYear(), date.getMonth(), date.getDate())
       option.comment         = 'giao trong ngay'
 
     updateCustomerAllowDelete(customer)

@@ -28,6 +28,6 @@ Schema.userOptions.allow
   remove: -> true
 
 Schema.userSessions.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
+  insert: (userId, userSession) -> return userSession.user is userId and Schema.userSessions.findOne({user: userId}) is undefined
+  update: (userId, userSession) -> return userSession.user is userId
+  remove: (userId, userSession) -> true
