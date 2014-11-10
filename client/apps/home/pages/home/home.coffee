@@ -29,8 +29,8 @@ lemon.defineWidget Template.home,
     self = @
     Meteor.setTimeout ->
       animateBackgroundColor()
-      self.bgInterval = Meteor.setInterval(animateBackgroundColor, 5000)
-    , 3000
+      self.bgInterval = Meteor.setInterval(animateBackgroundColor, 15000)
+    , 5000
   destroyed: -> Meteor.clearInterval(@bgInterval)
 
   events:
