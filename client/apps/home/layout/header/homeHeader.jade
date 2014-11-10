@@ -1,25 +1,12 @@
 template(name="homeHeader")
   .header-content
     .home-branding
-      .logo-text
-        .caption eds
-        .slogan {{i18n 'slogan'}}
       .logo-image
-        img(src="images/gera-small.png")
-      .languages {{i18n 'language'}}
-        ul
-          each languages
-            li {{display}}
-
-
-      .login-section
-        if authenticated
-          #gotoMerchantButton.btn.icon-shop
-          #logoutButton.btn.icon-power.background-pumpkin
-        else
-          input.login-field#authAlias(type="text" placeholder="{{i18n 'form.userAccount'}}" maxlength="50")
-          input.login-field#authSecret(type="password" placeholder="{{i18n 'form.password'}}" maxlength="30")
-          #authButton.btn.icon-key-1(class="{{sessionGet 'loginValid'}}")
+        img(src="images/gera-white.png")
+      .logo-text
+        .caption enterprise<b>dual</b>strategy
+          sup.trademark TM
+        .slogan {{i18n 'slogan'}}
 
       .social
         a.icon-facebook-rect
@@ -29,3 +16,7 @@ template(name="homeHeader")
       .phone
         i.icon-mobile
         |+84 838-<b>111</b>-766
+
+      .languages
+        each languages
+          span {{display}}

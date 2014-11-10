@@ -1,8 +1,101 @@
 @import "../../../../styles/lib.import.styl"
 
+.animated-bg
+  clearfix()
+  background-color #54c8eb
+  transition background-color 5s
+
 #homeContent
+  .home-wrapper
+    margin-top 50px
+  .main-left
+    color #ffffff
+    float left
+    padding-top 0; padding-bottom 0
+    width 64%
+    .title
+      font-size 40px
+    p
+      font-size 30px
+      font-weight lighter
+    .youtube-wrapper
+      width 648px; height 368px
+      border solid 4px #FFF
+      background-color #ffffff
+      border-radius 2px
+  .main-right
+    float right
+    .caption
+      margin-left 10px
+      font-size 20px
+      color #ffffff
+    .login-section
+      padding 0 10px
+      margin-bottom 10px
+      input
+        float right
+        border none
+        color #6D6D6D
+        padding 4px 10px
+        margin-right 5px
+        font-size 16px
+        width 175px
+        border-radius 2px
+        margin-bottom 10px
+        &:focus
+          box-shadow 0px 0px 0px 3px rgba(0, 0, 0, 0.1)
+        &#authSecret
+          width 120px
+      .btn
+        float right
+        color #fff
+        background-color transparent
+        padding 2px 4px; margin-right 2px
+        font-size 17px
+        border-radius 2px
+        border solid 1px #ffffff
+        transition text-shadow 1s, box-shadow 1s
+        box-shadow 0 0 10px
+
+        &.invalid
+          box-shadow none
+          pointer-events none
+
+    .registeration-section
+      float left
+      margin-left 10px
+
+      .lemon-field, .lemon-field.group
+        width 338px
+      .lemon-field
+        .ilabel
+          background-color #fff
+          color #696969
+        input
+          color #585858; background #fff
+          padding 8px 16px 8px 14px
+          /*border solid 1px #9B9B9B*/
+          border-radius 2px
+          placeholder #8D8D8D
+        &:last-child
+          margin-bottom 5px
+
+      #secretConfirm
+        margin-left 1px
+
+      .btn
+        color #fff; background transparent
+        border 2px solid #fff
+        padding 4px 12px
+        border-radius 2px
+        &:hover
+          background rgba(255, 255, 255, .3)
+
+      #merchantRegister
+        margin-right 15px
+
   .slider
-    background-color home-theme
+    /*background-color home-theme*/
     min-height 250px
 
     .slider-eds
