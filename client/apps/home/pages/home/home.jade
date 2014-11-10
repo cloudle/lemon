@@ -1,2 +1,30 @@
 template(name="home")
-  .slider(style="width: 100%; height: 450px;")
+  //.slider(style="width: 100%; height: 450px;")
+  .home-wrapper
+    .main-left
+      .youtube-wrapper
+        iframe(width="640" height="360" src="//www.youtube.com/embed/EvQbzjEUWXY?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen)
+      //.title eds
+      //p Mạng quản lý kinh doanh tho
+    .main-right
+      .login-section
+        if authenticated
+          #gotoMerchantButton.btn.icon-shop
+          #logoutButton.btn.icon-power.background-pumpkin
+        else
+          #authButton.btn.icon-key-1(class="{{sessionGet 'loginValid'}}" tabindex="3")
+          input.login-field#authSecret(type="password" placeholder="{{i18n 'form.password'}}" maxlength="30" tabindex="2")
+          input.login-field#authAlias(type="text" placeholder="{{i18n 'form.userAccount'}}" maxlength="50" tabindex="1")
+
+      .caption ĐĂNG KÝ!
+      .registeration-section
+        .lemon-field
+          input#companyName(type="text" placeholder="{{i18n 'form.companyName'}}")
+        .lemon-field
+          input#companyPhone(type="text" placeholder="{{i18n 'form.contactPhone'}}" maxlength="11")
+        .lemon-field
+          input#account(type="text" placeholder="{{i18n 'form.userAccount'}} *")
+        .lemon-field.group.row
+          .col.col-sm-6: input#secret(type="password" placeholder="{{i18n 'form.password'}}  *")
+          .col.col-sm-6: input#secretConfirm(type="password" placeholder="{{i18n 'form.confirm'}} *")
+        #merchantRegister.btn.pull-right(class="{{registerValid}}") {{i18n 'register'}}

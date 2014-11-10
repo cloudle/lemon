@@ -5,5 +5,6 @@ lemon.defineWidget Template.merchantLayout,
   rendered: ->
     $(window).resize -> Helpers.arrangeAppLayout()
     Helpers.animateUsing("#container", "bounceInDown")
+  destroyed: -> $(window).off("resize")
   events:
     "click .collapse-toggle": -> toggleCollapse()

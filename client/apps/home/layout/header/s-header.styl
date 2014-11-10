@@ -2,110 +2,81 @@
 @import "../../../../styles/lib.import.styl"
 
 #homeHeader
-  background-color #fff
+  /*background-color #fff*/
+  color #ffffff
 
   .home-branding
     clearfix()
     padding 0 10px
 
-    .login-section
-      float right
-      margin 31px 0 0 20px
-
-      input
-        float left
-        width 150px
-        border solid 1px #DDD
-        color #6D6D6D
-        padding 2px 10px
-        font-size 13px
-        margin-right 2px
-        border-radius 2px
-
-        &:focus
-          border-color home-theme
-
-      #authSecret
-        width 100px
-
-      .btn
-        float left
-        color #fff
-        background-color home-theme
-        padding 2px 4px; margin-right 2px
-        font-size 13px
-        border-radius 2px
-        &:hover
-          box-shadow inset 0 0 0 1px #fff
-
-        &.invalid
-          background-color #ddd
-          pointer-events none
 
     .logo-text
       cursor pointer
       float left
-      margin-top 20px; padding-right 10px
-      border-right solid 1px #EEEEEE
+      padding-left 10px
+      padding-top 2px
+      /*border-right solid 1px #EEEEEE*/
 
       .caption
-        color #565a5f
-        text-align right
-        font-size 30px
-        font-weight bold
-
+        font-size 28px
+        /*font-weight bold*/
+      font-weight lighter
+      .trademark
+        font-size 8px
+        top -14px; left -5px
       .slogan
         text-align right
-        font-style italic
+        /*font-style italic*/
         font-size 12px
-        color #bcc1c7
-        margin-top -8px
+        margin-top -11px
+        margin-right 47px
 
     .logo-image
       float left
-      padding 14px 0 7px 15px
+      margin-top -5px
 
       img
         width 60px; height 60px
 
     .languages
-      color #828a93
-      float left
-      margin 35px 0 0 25px
+      float right
+      margin 15px 0 0 25px
       text-transform uppercase
       position relative
-      ul
-        margin 0; padding 0
-        list-style none
-        border 1px solid #eaeced
-        position absolute
-        $box-shadow(4px 4px 0 rgba(0, 0, 0, 0.1))
-        li
-          cursor pointer
-          position relative
+      font-size 16px; font-weight lighter
+      span
+        cursor pointer
+        margin-left 5px
+      /*ul*/
+        /*margin 0; padding 0*/
+        /*list-style none*/
+        /*border 1px solid #eaeced*/
+        /*position absolute*/
+        /*$box-shadow(4px 4px 0 rgba(0, 0, 0, 0.1))*/
+        /*li*/
+          /*cursor pointer*/
+          /*position relative*/
 
     .social
       position relative
       float right
-      margin 32px 0 0 0
+      margin 14px 0 0 0
 
       a
-        font-size 12px
-        color #d8d8d8
-        padding-right 5px
+        color #ffffff
+        font-size 16px
+        padding-left 5px
         &:hover
-          color #828a93
+          color #eeeeee
 
     .phone
       position relative
       float right
-      color #828a93
       padding 2px 0 2px 23px
-      font-size 12px
+      font-size 16px; font-weight lighter
       line-height 24px
-      margin 30px 30px 0 30px
+      margin 12px 30px 0 30px
 
       i
-        absolute top 1px left 0
+        absolute top 2px left 0
         font-size 16px
-        color #E0E0E0

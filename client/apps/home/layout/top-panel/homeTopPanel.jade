@@ -6,19 +6,6 @@ template(name="homeTopPanel")
           span.top-panel-toggle: i.icon(class="{{toggleIcon}}")
 
         .content-inner
-          .registeration-section
-            .lemon-field
-              input#companyName(type="text" placeholder="{{i18n 'form.companyName'}}")
-            .lemon-field
-              input#companyPhone(type="text" placeholder="{{i18n 'form.contactPhone'}}" maxlength="11")
-            .lemon-field
-              input#account(type="text" placeholder="{{i18n 'form.userAccount'}} *")
-            .lemon-field.group.row
-              .col.col-sm-6: input#secret(type="password" placeholder="{{i18n 'form.password'}}  *")
-              .col.col-sm-6: input#secretConfirm(type="password" placeholder="{{i18n 'form.confirm'}} *")
-
-            #merchantRegister.btn.pull-right(class="{{registerValid}}") {{i18n 'register'}}
-
           .eula-section
             .title.icon-award {{i18n 'home.term'}}
             .details Đây là chi tiết điều khoản sử dụng...
