@@ -6,10 +6,13 @@ inventoryReviewRoute =
       Apps.setup(logics.inventoryReview, Apps.Merchant.inventoryReviewInit, 'inventoryReview')
       @next()
   data: ->
-    logics.inventoryReview.reactiveRun()
+    Apps.setup(logics.inventoryReview, Apps.Merchant.inventoryReviewReactiveRun)
 
     return {
       gridOptions: logics.inventoryReview.gridOptions
+      currentInventory            : Session.get('currentInventoryReview')
+      currentInventoryDetails     : logics.inventoryReview.currentInventoryDetailReview
+      currentInventoryProductLost : logics.inventoryReview.currentInventoryProductLostReview
     }
 
 lemon.addRoute [inventoryReviewRoute], Apps.Merchant.RouterBase

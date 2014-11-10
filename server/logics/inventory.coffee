@@ -8,6 +8,9 @@ createInventory = (warehouse, userProfile, description, productDetails)->
 
     for productDetail in productDetails.fetch()
       Schema.inventoryDetails.insert({
+        merchant            : warehouse.merchant
+        warehouse           : warehouse._id
+        creator             : userProfile.user
         inventory           : inventoryId
         product             : productDetail.product
         productDetail       : productDetail._id

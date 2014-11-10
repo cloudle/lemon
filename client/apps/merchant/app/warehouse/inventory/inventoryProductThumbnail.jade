@@ -2,7 +2,7 @@ template(name="inventoryProductThumbnail")
   .col
     .thumbnails(class="#{colorClass}")
       .left-caption {{expireDate productDetail.expire}}
-      .right-caption {{productDetail.name}}
+      .right-caption {{productNameFromId product}}
       .short-desc.quality
         .col.col-auto.pull-right(style="width:120px")
         +iSpinEdit(options=realQualityOptions)

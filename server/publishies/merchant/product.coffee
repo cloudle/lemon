@@ -24,3 +24,8 @@ Schema.productDetails.allow
   insert: -> true
   update: -> true
   remove: -> true
+
+Schema.productLosts.allow
+  insert: -> true
+  update: -> true
+  remove: -> true

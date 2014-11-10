@@ -7,6 +7,4 @@ Schema.add 'productLosts', class ProductLost
       product       : inventoryDetail.product
       productDetail : inventoryDetail.productDetail
       inventory     : inventoryDetail.inventory
-      name          : inventoryDetail.name
-      skulls        : inventoryDetail.skulls
       lostQuality   : inventoryDetail.lostQuality

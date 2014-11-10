@@ -9,9 +9,9 @@ Apps.Merchant.accountingManagerInit.push (scope) ->
 
       transaction =  Transaction.newBySale(currentSale)
       transactionDetail = TransactionDetail.newByTransaction(transaction)
-      #      Notification.saleConfirmByAccounting(@id)
-      MetroSummary.updateMetroSummaryBySale(@id)
       Schema.sales.update currentSale._id, $set: option
+      #      Notification.saleConfirmByAccounting(@id)
+      MetroSummary.updateMetroSummaryBySale(currentSale._id)
       console.log 'Kế toán đã nhận tiền.'
 
     if currentSale.status == currentSale.success == currentSale.received == currentSale.exported == true and currentSale.submitted ==  currentSale.imported == false and currentSale.paymentsDelivery == 1

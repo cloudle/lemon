@@ -1,6 +1,7 @@
 logics.import.createImportAndSelected = ->
   importId = Import.createdNewBy('01-05-2015', Session.get('myProfile'))
   UserSession.set('currentImport', importId)
+  Schema.imports.findOne(importId)
 
 destroyImportAndDetail = (importId)->
   currentImport = Schema.imports.findOne(

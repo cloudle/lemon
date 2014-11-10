@@ -3,7 +3,9 @@ template(name="import")
   +addProvider(myCreateProvider=myCreateProvider order=currentOrder)
   #header
     .caption-row
-      .title Nhập Kho
+      .title
+        |Nhập Kho
+        button.btn.btn-success.importHistory(type='submit') LỊCH SỬ
       .commands
         button.btn.btn-default.pull-right.icon-print-6.add-product(type='submit') Thêm Sản Phẩm
         button.btn.btn-default.pull-right.icon-print-6.add-provider(type='submit') Thêm NPP
@@ -46,31 +48,32 @@ template(name="import")
     +iGrid(options=importDetailOptions)
 
   #footer
-    .editor-row
-      if showSubmit
-        .editor-wrapper.right(style="width: 100px")
-          button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN
-      if showEdit
-        .editor-wrapper.right(style="width: 120px")
-          button.btn.btn-default.right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
-      if showFinish
-        .editor-wrapper.right(style="width: 100px")
-          button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") HOÀN TẤT
+    if currentImport
+      .editor-row
+        if showSubmit
+          .editor-wrapper.right(style="width: 100px")
+            button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN
+        if showEdit
+          .editor-wrapper.right(style="width: 120px")
+            button.btn.btn-default.right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
+        if showFinish
+          .editor-wrapper.right(style="width: 100px")
+            button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") HOÀN TẤT
 
-      .editor-wrapper.right(style="width: 120px")
-        span.ilabel.optional tiền còn nợ
-        input.debit(value="{{currentImport.debit}}" disabled)
-      .editor-wrapper.right(style="width: 120px")
-        span.ilabel.optional tiền đã trả
-        input.deposit(value="{{currentImport.deposit}}")
-      .editor-wrapper.right(style="width: 120px")
-        span.ilabel.optional tổng tiền
-        input.totalPrice(value="{{currentImport.totalPrice}}" disabled)
-      .editor-wrapper.right(style="width: 300px")
-        span.ilabel description
-        input.description(value="{{currentImport.description}}" )
-      .editor-wrapper.right(style="width: 180px")
-        span.ilabel.optional người tạo
-        input.emailCreator(value="{{creatorName}}" disabled)
+        .editor-wrapper.right(style="width: 120px")
+          span.ilabel.optional tiền còn nợ
+          input.debit(value="{{currentImport.debit}}" disabled)
+        .editor-wrapper.right(style="width: 120px")
+          span.ilabel.optional tiền đã trả
+          input.deposit(value="{{currentImport.deposit}}")
+        .editor-wrapper.right(style="width: 120px")
+          span.ilabel.optional tổng tiền
+          input.totalPrice(value="{{currentImport.totalPrice}}" disabled)
+        .editor-wrapper.right(style="width: 300px")
+          span.ilabel description
+          input.description(value="{{currentImport.description}}" )
+        .editor-wrapper.right(style="width: 180px")
+          span.ilabel.optional người tạo
+          input.emailCreator(value="{{creatorName}}" disabled)
 
     +tabComponent(options=tabOptions)

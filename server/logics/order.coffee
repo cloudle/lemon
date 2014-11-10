@@ -48,7 +48,7 @@ createSaleAndSaleOrder = (order, orderDetails)->
     option.delivery = Delivery.insertBySale(order, currentSale.data)
   Sale.update currentSale.id, $set: option, (error, result) -> if error then console.log error
 
-  currentSale
+  return currentSale
 
 
 removeOrderAndOrderDetail = (order, userProfile)->

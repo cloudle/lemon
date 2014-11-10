@@ -17,7 +17,7 @@ Meteor.publish 'importDetails', (importId) ->
 
 
 #----------ImportReview--------------------------------------------------------------
-Meteor.publishComposite 'importReviewInWarehouse', ->
+Meteor.publishComposite 'importHistoryInWarehouse', ->
   self = @
   return {
     find: ->
@@ -44,11 +44,11 @@ Meteor.publishComposite 'importDetailInWarehouse', (importId)->
 
 
 Schema.imports.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
+  insert: (userId, imports) -> true
+  update: (userId, imports) -> true
+  remove: (userId, imports) -> true
 
 Schema.importDetails.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
+  insert: (userId, importDetail) -> true
+  update: (userId, importDetail) -> true
+  remove: (userId, importDetail) -> true

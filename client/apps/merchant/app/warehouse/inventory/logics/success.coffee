@@ -31,14 +31,13 @@ logics.inventoryManager.successInventory = (warehouseId) ->
 
 #    Notification.inventoryNewCreate(inventory._id)
     updateInventory = {submit: true, success: true}
-    if temp then updateInventory.success = false
+    if temp
+      updateInventory.success = false
+      MetroSummary.updateMetroSummaryByInventory(inventory._id)
+
     Schema.inventories.update inventory._id, $set: updateInventory
+    Schema.warehouses.update warehouseId, { $set:{checkingInventory: false}, $unset:{inventory: ""} }
 
-    Schema.warehouses.update warehouseId,
-      $set:{checkingInventory: false}
-      $unset:{inventory: ""}
-
-#    MetroSummary.updateMetroSummaryByInventory(inventory._id)
     throw 'Đã Xác Nhận Kiểm Kho.'
   catch error
     return error

@@ -6,7 +6,7 @@ inventoryManagerRoute =
       Apps.setup(logics.inventoryManager, Apps.Merchant.inventoryManagerInit, 'inventory')
       @next()
   data: ->
-    logics.inventoryManager.reactiveRun()
+    Apps.setup(logics.inventoryManager, Apps.Merchant.inventoryReactiveRun)
 
     return {
       show: true

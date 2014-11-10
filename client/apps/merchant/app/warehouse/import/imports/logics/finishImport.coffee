@@ -44,9 +44,9 @@ Apps.Merchant.importInit.push (scope) ->
         navigateNewTab(currentImport._id)
         Schema.imports.update currentImport._id, $set:{finish: true, submitted: true}
         warehouseImport = Schema.imports.findOne(importId)
-  #      transaction = Transaction.newByImport(warehouseImport)
-  #      transactionDetail = TransactionDetail.newByTransaction(transaction)
-    #    MetroSummary.updateMetroSummaryByImport(importId)
+        transaction = Transaction.newByImport(warehouseImport)
+        transactionDetail = TransactionDetail.newByTransaction(transaction)
+        MetroSummary.updateMetroSummaryByImport(importId)
       return ('Phiếu nhập kho đã được duyệt')
     else
       return ('Đã có lỗi trong quá trình xác nhận')

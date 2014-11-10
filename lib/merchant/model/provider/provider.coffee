@@ -1,6 +1,6 @@
 Schema.add 'providers', class Provider
-  @insideMerchant: (merchantId) -> @schema.find({parentMerchant: merchantId})
-  @insideBranch: (branchId) -> @schema.find({merchant: branchId})
+  @insideMerchant: (merchantId) -> @schema.find({parentMerchant: merchantId}, {sort: {'version.createdAt': -1}})
+  @insideBranch: (branchId) -> @schema.find({merchant: branchId}, {sort: {'version.createdAt': -1}})
 
   @findBy: (providerId, parentMerchantId = null)->
     if !parentMerchantId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})

@@ -1,4 +1,4 @@
-lemon.defineWidget Template.importReviewDetail,
+lemon.defineWidget Template.importHistoryDetail,
   showFinish: ->
     if Role.hasPermission(Session.get('myProfile').user, Apps.Merchant.Permissions.su.key)
       if @import?.finish is false and @import?.submitted is true then true

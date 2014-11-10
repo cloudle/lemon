@@ -38,25 +38,20 @@ lemon.defineWidget Template.deliveryManagerThumbnail,
     AvatarImages.findOne(buyer.avatar)?.url()
 
   events:
-    "click .successDelivery":   ->
-      Meteor.call "updateDelivery", @_id, true, (error, result) -> console.log error.error if error
-    "click .unSuccessDelivery": ->
-      Meteor.call "updateDelivery", @_id, false, (error, result) -> console.log error.error if error
-
     "click .select-command": (event, template) ->
       deliveryId = @_id
       Helpers.excuteAfterAnimate $(event.delegateTarget), 'item-wrapper', 'zoomOutUp', ->
-        Meteor.call "updateDelivery", deliveryId, 'select', (error, result) -> console.log error.error if error
+        Meteor.call "updateDelivery", deliveryId, 'select', (error, result) -> console.log error if error
     "click .start-command": ->
-      Meteor.call "updateDelivery", @_id, 'start', (error, result) -> console.log error.error if error
+      Meteor.call "updateDelivery", @_id, 'start', (error, result) -> console.log error if error
     "click .fail-command": ->
-      Meteor.call "updateDelivery", @_id, 'fail', (error, result) -> console.log error.error if error
+      Meteor.call "updateDelivery", @_id, 'fail', (error, result) -> console.log error if error
     "click .success-command": ->
-      Meteor.call "updateDelivery", @_id, 'success', (error, result) -> console.log error.error if error
+      Meteor.call "updateDelivery", @_id, 'success', (error, result) -> console.log error if error
     "click .finish-command": ->
-      Meteor.call "updateDelivery", @_id, 'finish', (error, result) -> console.log error.error if error
+      Meteor.call "updateDelivery", @_id, 'finish', (error, result) -> console.log error if error
 
     "click .cancel-command": (event, template) ->
       deliveryId = @_id
       Helpers.excuteAfterAnimate $(event.delegateTarget), 'item-wrapper', 'zoomOutUp', ->
-        Meteor.call "updateDelivery", deliveryId, 'cancel', (error, result) -> console.log error.error if error
+        Meteor.call "updateDelivery", deliveryId, 'cancel', (error, result) -> console.log error if error

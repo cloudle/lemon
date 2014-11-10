@@ -17,12 +17,6 @@ simpleSchema.productLosts = new SimpleSchema
   inventory:
     type: String
 
-  name:
-    type: String
-
-  skulls:
-    type: [String]
-
   lostQuality:
     type: Number
 

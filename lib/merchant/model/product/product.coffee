@@ -1,5 +1,5 @@
 Schema.add 'products', class Product
-  @insideWarehouse: (warehouseId) -> @schema.find({warehouse: warehouseId})
+  @insideWarehouse: (warehouseId) -> @schema.find({warehouse: warehouseId},{sort: {'version.createdAt': -1}})
 
   @findBy: (productId, warehouseId = null, merchantId = null)->
     if !merchantId && !warehouseId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
@@ -30,7 +30,7 @@ Schema.add 'products', class Product
         creator     : myProfile.user
         productCode : productCode
         name        : name
-        skulls      : [skull]
+        skulls      : skull
 
       findProduct =  @schema.findOne({
         merchant    : newProduct.merchant

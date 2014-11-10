@@ -20,8 +20,8 @@ logics.exportAndImportManager.createSaleExport= (currentSale)->
 
       Schema.saleExports.insert SaleExport.new(currentSale, detail), (error, result) -> console.log error if error
 
-    #      Notification.saleConfirmByExporter(currentSale._id)
-#    MetroSummary.updateMetroSummaryBySaleExport(currentSale._id)
+#          Notification.saleConfirmByExporter(currentSale._id)
+    MetroSummary.updateMetroSummaryBySaleExport(currentSale._id)
     if currentSale.paymentsDelivery == 0 then  Schema.sales.update currentSale._id, $set:{submitted: true, exported: true}
     if currentSale.paymentsDelivery == 1
       Schema.sales.update currentSale._id, $set:{exported: true, status: false}
@@ -39,7 +39,7 @@ logics.exportAndImportManager.createSaleExport= (currentSale)->
 
     #        Schema.saleExports.insert SaleExport.new(currentSale, detail), (error, result) -> console.log error if error
     #      Notification.saleConfirmImporter(currentSale._id)
-#    MetroSummary.updateMetroSummaryBySaleImport(currentSale._id)
+    MetroSummary.updateMetroSummaryBySaleImport(currentSale._id)
     Schema.sales.update currentSale._id, $set:{imported: true, status: false}
     Schema.deliveries.update currentSale.delivery, $set:{status: 9, importer: Meteor.userId()}
     console.log 'create ImportSale'

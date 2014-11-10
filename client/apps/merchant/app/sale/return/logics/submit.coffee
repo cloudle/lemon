@@ -24,7 +24,7 @@ logics.returns.submitReturn = (returnId)->
 
         transaction =  Transaction.newByReturn(currentReturn)
         transactionDetail = TransactionDetail.newByTransaction(transaction)
-#        MetroSummary.updateMetroSummaryByReturn(currentReturn._id, returnQuality)
+        MetroSummary.updateMetroSummaryByReturn(currentReturn._id, returnQuality)
         throw 'Ok, Phiếu đã được duyệt bởi quản lý.'
       throw 'Lỗi, Phiếu chưa được xác nhận từ nhân viên.' if currentReturn.status == 0
       throw 'Lỗi, Phiếu đã được duyệt, không thể thao tác.' if currentReturn.status == 2

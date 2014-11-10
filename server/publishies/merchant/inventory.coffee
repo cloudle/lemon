@@ -7,8 +7,6 @@ Meteor.publish 'currentInventory', (warehouseId)->
   detail    = Schema.inventoryDetails.find({inventory: warehouse.inventory})
   [inventory, detail]
 
-
-
 Meteor.publish 'allInventoryAndDetail', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
@@ -22,7 +20,6 @@ Meteor.publish 'allInventory', ->
   return [] if !myProfile
   Schema.inventories.find({warehouse: myProfile.currentWarehouse})
 
-
 Meteor.publishComposite 'inventoryReviewInWarehouse', ->
   self = @
   return {
@@ -35,15 +32,34 @@ Meteor.publishComposite 'inventoryReviewInWarehouse', ->
     ]
   }
 
+
 Meteor.publishComposite 'inventoryDetailInWarehouse', (inventoryId)->
   self = @
   return {
     find: ->
-      myProfile = Schema.userProfiles.findOne({user: self.userId})
-      return EmptyQueryResult if !myProfile
-      Schema.inventoryDetails.find {inventory: inventoryId, warehouse: myProfile.currentWarehouse}
+      inventory = Schema.inventories.findOne({_id: inventoryId, creator: self.userId})
+      return EmptyQueryResult if !inventory
+      Schema.inventoryDetails.find {inventory: inventory._id}
     children: [
-      find: (inventoryDetail) -> Schema.products.find {_id: inventoryDetail.product}
+      find: (inventoryDetail) -> Schema.productDetails.find {_id: inventoryDetail.productDetail}
+      children: [
+        find: (productDetail) -> Schema.products.find {_id: productDetail.product}
+      ]
+    ]
+  }
+
+Meteor.publishComposite 'productLostInInventory', (inventoryId)->
+  self = @
+  return {
+    find: ->
+      inventory = Schema.inventories.findOne({_id: inventoryId, creator: self.userId})
+      return EmptyQueryResult if !inventory
+      Schema.productLosts.find {inventory: inventory._id}
+    children: [
+      find: (productLost) -> Schema.productDetails.find {_id: productLost.productDetail}
+      children: [
+        find: (productDetail) -> Schema.products.find {_id: productDetail.product}
+      ]
     ]
   }
 

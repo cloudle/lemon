@@ -1,4 +1,4 @@
-lemon.defineWidget Template.importReviewThumbnail,
+lemon.defineWidget Template.importHistoryThumbnail,
   creatorName: (id) -> (Schema.userProfiles.findOne({user: id}))?.fullName
   createDate: (date) -> moment(date).format("DD/MM/YYYY")
 

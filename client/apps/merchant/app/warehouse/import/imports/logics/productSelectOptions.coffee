@@ -1,7 +1,10 @@
 formatProductSearch = (item) -> "#{item.name} [#{item.skulls}]" if item
 
 updateImportSelectNewProduct = (productId)->
-  if !Session.get('currentImport') then logics.import.createImportAndSelected()
+  if !logics.import.currentImport
+    logics.import.currentImport = logics.import.createImportAndSelected()
+    Session.set('currentImport', logics.import.currentImport)
+
   product = Schema.products.findOne(productId)
   if product
     option =

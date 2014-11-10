@@ -1,4 +1,13 @@
 simpleSchema.inventoryDetails = new SimpleSchema
+  merchant:
+    type: String
+
+  warehouse:
+    type: String
+
+  creator:
+    type: String
+
   inventory:
     type: String
 

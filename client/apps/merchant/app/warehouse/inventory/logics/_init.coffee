@@ -1,58 +1,48 @@
 logics.inventoryManager = {}
 Apps.Merchant.inventoryManagerInit = []
+Apps.Merchant.inventoryReactiveRun = []
 
 Apps.Merchant.inventoryManagerInit.push (scope) ->
   Session.setDefault('showCreateNewInventory', true)
   Session.setDefault('allowCreateNewInventory', false)
-
-  logics.inventoryManager.availableMerchants = Schema.merchants.find({
+  scope.availableMerchants = Schema.merchants.find({
     $or:[
       {_id   : Session.get('myProfile').parentMerchant}
       {parent: Session.get('myProfile').parentMerchant}]
   })
 
 
-logics.inventoryManager.reactiveRun = ->
-  if Session.get('myProfile') and Session.get('mySession')
-    if currentMerchant = Schema.merchants.findOne(Session.get('mySession').currentMerchant)
-      logics.inventoryManager.availableWarehouses = Schema.warehouses.find({merchant: currentMerchant._id})
-      if !Schema.warehouses.findOne({_id: Session.get('mySession').currentWarehouse, merchant: currentMerchant._id})
-        UserSession.set('currentWarehouse', logics.inventoryManager.availableWarehouses.fetch()[0]._id)
+Apps.Merchant.inventoryReactiveRun.push (scope) ->
+  if Session.get('mySession') and Session.get('myProfile')
+    if scope.currentMerchant = Schema.merchants.findOne(Session.get('mySession').currentMerchant)
+      scope.currentWarehouse = Schema.warehouses.findOne({_id: Session.get('mySession').currentWarehouse, merchant: scope.currentMerchant._id})
     else
+      scope.currentMerchant  = Schema.merchants.findOne(Session.get('myProfile').currentMerchant)
+      scope.currentWarehouse = Schema.merchants.findOne(Session.get('myProfile').currentWarehouse)
       UserSession.set('currentMerchant', Session.get('myProfile').currentMerchant)
       UserSession.set('currentWarehouse', Session.get('myProfile').currentWarehouse)
 
-    logics.inventoryManager.currentWarehouse = Schema.warehouses.findOne(Session.get('mySession').currentWarehouse)
-    #  Apps.MerchantSubscriber.subscribe('currentInventory', Session.get('mySession').currentWarehouse)
-    logics.inventoryManager.currentInventory = Schema.inventories.findOne(logics.inventoryManager.currentWarehouse.inventory)
-    logics.inventoryManager.inventoryDetails = Schema.inventoryDetails.find({inventory: logics.inventoryManager.currentWarehouse.inventory})
-    logics.inventoryManager.productDetails = Schema.productDetails.find({warehouse: Session.get('mySession').currentWarehouse})
+  if scope.currentWarehouse
+    if !scope.currentInventory || scope.currentWarehouse.inventory != scope.currentInventory._id
+      scope.currentInventory = Schema.inventories.findOne(scope.currentWarehouse.inventory)
+      Apps.MerchantSubscriber.subscribe('inventoryDetailInWarehouse', scope.currentWarehouse.inventory)
+
+    scope.availableWarehouses = Schema.warehouses.find({merchant: scope.currentWarehouse.merchant})
+    scope.inventoryDetails = Schema.inventoryDetails.find({inventory: scope.currentWarehouse.inventory})
+    scope.productDetails   = Schema.productDetails.find({warehouse: scope.currentWarehouse._id})
 
 
+  scope.allowCreate = if scope.currentWarehouse?.checkingInventory || !Session.get('allowCreateNewInventory') then 'btn-default disabled' else 'btn-success'
+  scope.showCreate      = if scope.currentWarehouse?.checkingInventory then "display: none" else ""
+  scope.showDescription = if scope.currentWarehouse?.checkingInventory is true then "display: none" else ""
+  scope.showDestroy     = if scope.currentInventory then "" else "display: none"
 
-  if logics.inventoryManager.currentWarehouse?.checkingInventory || !Session.get('allowCreateNewInventory')
-    logics.inventoryManager.allowCreate = 'btn-default disabled'
-  else logics.inventoryManager.allowCreate = 'btn-success'
-
-  if logics.inventoryManager.currentWarehouse?.checkingInventory
-    logics.inventoryManager.showCreate = "display: none"
-  else logics.inventoryManager.showCreate = ""
-
-  if logics.inventoryManager.currentInventory
-    logics.inventoryManager.showDestroy = ""
-  else logics.inventoryManager.showDestroy = "display: none"
-
-  if logics.inventoryManager.currentWarehouse?.checkingInventory is true
-    logics.inventoryManager.showDescription = "display: none"
-  else logics.inventoryManager.showDescription = ""
-
-  if logics.inventoryManager.currentInventory and logics.inventoryManager.inventoryDetails?.count() > 0
-    logics.inventoryManager.showSubmit = ""
-    for detail in logics.inventoryManager.inventoryDetails.fetch()
+  if scope.currentInventory and scope.inventoryDetails?.count() > 0
+    scope.showSubmit = ""
+    for detail in scope.inventoryDetails.fetch()
       if detail.lock == false || detail.submit == false || detail.success == true
-        logics.inventoryManager.showSubmit = "display: none"
-  else
-    logics.inventoryManager.showSubmit = "display: none"
+        scope.showSubmit = "display: none"; break
+  else scope.showSubmit = "display: none"
 
 
 

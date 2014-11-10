@@ -1,24 +1,16 @@
 logics.inventoryReview = {}
 Apps.Merchant.inventoryReviewInit = []
+Apps.Merchant.inventoryReviewReactiveRun = []
 
 Apps.Merchant.inventoryReviewInit.push (scope) ->
-  logics.inventoryReview.availableMerchants  = Schema.merchants.find({})
-  logics.inventoryReview.availableWarehouses = Schema.warehouses.find({})
-  logics.inventoryReview.availableInventory  = Schema.inventories.find({warehouse: Session.get('myProfile').currentWarehouse})
+  scope.availableMerchants  = Schema.merchants.find({})
+  scope.availableWarehouses = Schema.warehouses.find({})
+  scope.availableInventory  = Schema.inventories.find({warehouse: Session.get('myProfile').currentWarehouse})
 
-logics.inventoryReview.reactiveRun = ->
-
-#runInitInventoryReviewTracker = (context) ->
-#  return if Sky.global.inventoryReviewTracker
-#  Sky.global.inventoryReviewTracker = Tracker.autorun ->
-#    if currentWarehouse = Session.get("inventoryWarehouse")
-#      inventories = Schema.inventories.find({warehouse: currentWarehouse._id}).fetch()
-#      if inventories.length > 0 then Session.set "availableInventories", inventories
-#      if inventories.length == 0 then Session.set "availableInventories"
-#    else
-#      Session.set "availableInventories"
-#
-
+Apps.Merchant.inventoryReviewReactiveRun.push (scope) ->
+  if Session.get('currentInventoryReview')
+    scope.currentInventoryDetailReview      = Schema.inventoryDetails.find {inventory: Session.get('currentInventoryReview')._id, lostQuality: {$gt: 0}}
+    scope.currentInventoryProductLostReview = Schema.productLosts.find {inventory: Session.get('currentInventoryReview')._id}
 
 
 

@@ -1,0 +1,25 @@
+template(name="importHistory")
+  +importHistoryDetail(import=currentImport importDetails=currentImportDetail)
+  #header
+    .caption-row
+      .title Lịch Sử Nhập Kho
+    .editor-row
+      .editor-wrapper.pull-right
+        button.btn.btn-success.createImport(type='submit') NHẬP KHO
+      .editor-wrapper(style="width: 200px")
+        span.ilabel chi nhánh
+        +iSelect(options=branchSelectOptions class="field")
+      .editor-wrapper(style="width: 200px")
+        span.ilabel kho
+        +iSelect(options=warehouseSelectOptions class="field")
+      .editor-wrapper(style="width: 100px")
+        span.ilabel.right xem từ ngày
+        input(name="fromDate" binding="datePicker" todayHighlight="true" maxlength="20")
+      .editor-wrapper(style="width: 100px")
+        span.ilabel đến ngày
+        input(name="toDate" binding="datePicker" todayHighlight="true" maxlength="20")
+      .editor-wrapper
+        button.btn.btn-success#filterImportHistories ÁP DỤNG
+
+  #content
+    +iGrid(options=gridOptions)
