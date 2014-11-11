@@ -20,7 +20,7 @@ template(name="importHistoryDetail")
             li.order-detail
               .product-name <b>{{productNameFromId product}}</b> {{skullsNameFromId product}}
               .product-price
-                span.individual-price * {{formatNumber importQuality}}
+                span.individual-price * {{formatNumber importQuality}} x {{formatNumber importPrice}}
                 span.final-price {{formatNumber totalPrice}}
 
         .bill-summary

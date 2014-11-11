@@ -1,11 +1,16 @@
-#Sky.template.extends Template.inventoryHistoryThumbnail,
-#  colorClass: ->
-#    if @status is true then 'lime' else 'pumpkin'
-#  status: ->
-#    if @status then return 'Success'
-#    else
-#      return 'Fail'
-#
-#  createDate: (date) -> date.toDateString('dd/MM/yy')
-##  Schema.userProfiles.update Session.get('currentProfile')._id, $set:{currentInventoryHistory: e.added._id}
-#
+lemon.defineWidget Template.inventoryHistoryThumbnail,
+  colorClass: ->
+    if @submit == false and @success == false then return 'lime'
+    if @submit == true and @success == false then return 'orange'
+    if @submit == true and @success == true then return 'belize-hole'
+
+  status: ->
+    if @submit == false and @success == false then return 'Checking'
+    if @submit == true and @success == false then return 'Fail'
+    if @submit == true and @success == true then return 'Success'
+
+  creatorName: (id) -> (Schema.userProfiles.findOne({user: id}))?.fullName
+  createDate: -> moment(@version.updateAt).format("DD/MM/YYYY")
+
+  events:
+    'click .full-desc.trash': -> UserSession.get('currentInventoryHistory', @_id)

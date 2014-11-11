@@ -1,16 +1,25 @@
-//template(name="inventoryHistory")
-//  #header
-//    .caption-row: .title Chi Tiết Kiểm Kho
-//    .editor-row
-//      .editor-wrapper(style="width: 200px")
-//        span.ilabel chi nhánh
-//        +iSelect(options=merchantSelectOptions class="field")
-//      .editor-wrapper(style="width: 200px")
-//        span.ilabel kho
-//        +iSelect(options=warehouseSelectOptions class="field")
-//      .editor-wrapper(style="width: 200px")
-//        span.ilabel phiếu kiểm kho
-//        +iSelect(options=inventoryDetailSelectOptions class="field")
-//
-//  #content
-//    +iGrid(options=inventoryDetailOptions)
+template(name="inventoryHistory")
+  +inventoryHistoryDetail(inventory=currentInventory inventoryDetails=currentInventoryDetails productLost=currentInventoryProductLost)
+  #header
+    .caption-row
+      .title Lịch Sử Kiểm Kho
+    .editor-row
+      .editor-wrapper.pull-right
+        button.btn.btn-success.createImport(type='submit') KIỂM KHO
+      .editor-wrapper(style="width: 200px")
+        span.ilabel chi nhánh
+        +iSelect(options=branchSelectOptions class="field")
+      .editor-wrapper(style="width: 200px")
+        span.ilabel kho
+        +iSelect(options=warehouseSelectOptions class="field")
+      .editor-wrapper(style="width: 100px")
+        span.ilabel.right xem từ ngày
+        input(name="fromDate" binding="datePicker" todayHighlight="true" maxlength="20")
+      .editor-wrapper(style="width: 100px")
+        span.ilabel đến ngày
+        input(name="toDate" binding="datePicker" todayHighlight="true" maxlength="20")
+      .editor-wrapper
+        button.btn.btn-success#filterInventoryHistories ÁP DỤNG
+
+  #content
+    +iGrid(options=gridOptions)
