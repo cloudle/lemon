@@ -5,14 +5,11 @@ Meteor.publish 'fake', ->
   , 20000
 
 
-Meteor.publish 'systems', -> Schema.systems.find {}
+Meteor.publish 'system', -> Schema.systems.find {}
 Schema.systems.allow
   insert: -> true
   update: -> true
   remove: -> true
-
-
-
 
 AvatarImages.allow
   insert: -> true

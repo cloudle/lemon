@@ -13,6 +13,7 @@ getNextVersion = (currentVersion, step) ->
   "#{version}.#{nextSubversion}"
 
 Schema.add 'systems', class System
+  @init: -> Schema.systems.insert({version: '0.0.1' }) if Schema.systems.find().count() is 0
   @upgrade: (step = 0.1) ->
     zone.run =>
       currentVersion = @schema.findOne()
@@ -41,4 +42,5 @@ Schema.add 'systems', class System
       console.log "There is #{updates.length} updates since previous version:"
       console.log "#{update.group}: #{update.description}" for update in updates
 
-Schema.systems.insert({version: '0.0.1' }) if Schema.systems.find().count() is 0
+if Meteor.isClient
+  Meteor.subscribe('system')

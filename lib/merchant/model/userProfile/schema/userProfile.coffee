@@ -59,5 +59,3 @@ simpleSchema.userProfiles = new SimpleSchema
     optional: true
 
   version: { type: simpleSchema.Version }
-
-Schema.add 'userProfiles'

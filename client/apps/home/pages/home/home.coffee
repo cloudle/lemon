@@ -17,15 +17,25 @@ colors = [
   '#f69078'  # salmon
 ]
 
+registerErrors = [
+  incorrectPassword  = { reason: "Incorrect password",  message: "tài khoản tồn tại"}
+]
+
 animateBackgroundColor = ->
-  console.log 'animating...'
   $(".animated-bg").css("background-color", colors[currentIndex])
   currentIndex++
   currentIndex = 0 if currentIndex > colors.length
 
 lemon.defineWidget Template.home,
-  rendered: ->
+  registerValid: ->
+    if Session.get('registerAccountValid') == Session.get('registerSecretValid') == 'valid'
+      'valid'
+    else
+      'invalid'
+  registerSecretValid: -> Session.get('registerSecretValid')
 
+  created: -> Router.go('/merchant') unless Meteor.userId() is null or (Session.get('autoNatigateDashboardOff'))
+  rendered: ->
     self = @
     Meteor.setTimeout ->
       animateBackgroundColor()
@@ -47,3 +57,42 @@ lemon.defineWidget Template.home,
         Session.set('loginValid', 'valid')
       else
         Session.set('loginValid', 'invalid')
+
+    "click #merchantRegister.valid": (event, template)->
+      $companyName    = $(template.find("#companyName"))
+      $companyPhone   = $(template.find("#companyPhone"))
+      $account        = $(template.find("#account"))
+      $secret         = $(template.find("#secret"))
+
+      Meteor.call "registerMerchant", $account.val(), $secret.val(), $companyName.val(), $companyPhone.val(), (error, result) ->
+        (return; console.log error) if error
+        Meteor.loginWithPassword $account.val(), $secret.val(), (error) -> Router.go('/merchantWizard') if !error
+
+    "blur #account": (event, template) ->
+      $account = $(template.find("#account"))
+      console.log $account, $account.val().length
+      if $account.val().length > 0
+        Meteor.loginWithPassword $account.val(), '', (error) ->
+          if error?.reason is "Incorrect password"
+            $account.notify("tài khoản đã tồn tại", {position: "right"})
+            Session.set('registerAccountValid', 'invalid')
+          else
+            Session.set('registerAccountValid', 'valid')
+      else
+        Session.set('registerAccountValid', 'invalid')
+
+    "keyup #secret": (event, template) ->
+      $secret  = $(template.find("#secret"))
+      $secretConfirm = $(template.find("#secretConfirm"))
+      if $secretConfirm.val().length > 0 or $secret.val().length > 0 or $secretConfirm.val() is $secret.val()
+        Session.set('registerSecretValid', 'invalid')
+      else
+        Session.set('registerSecretValid', 'valid')
+
+    "keyup .secret-field": (event, template) ->
+      $secret  = $(template.find("#secret"))
+      $secretConfirm = $(template.find("#secretConfirm"))
+      if $secret.val().length > 0 and  $secretConfirm.val() is $secret.val()
+        Session.set('registerSecretValid', 'valid')
+      else
+        Session.set('registerSecretValid', 'invalid')

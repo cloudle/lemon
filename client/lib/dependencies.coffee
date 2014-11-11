@@ -1,5 +1,8 @@
 lemon.dependencies.add 'userInfo', ['myOption', 'myProfile', 'mySession']
-lemon.dependencies.add 'essentials', ['systems', 'userInfo']
+lemon.dependencies.add 'essentials', ['userInfo']
+
+lemon.dependencies.add 'home', ['essentials', 'myPurchase']
+lemon.dependencies.add 'merchantPurchase', ['essentials', 'myPurchase']
 
 #lemon.dependencies.add 'merchantInfo', ['myMerchant', 'myWarehouse']
 
@@ -12,7 +15,6 @@ lemon.dependencies.add 'roleManager', ['merchantEssential', 'currentMerchantRole
 lemon.dependencies.add 'staffManager', ['merchantEssential', 'myMerchantProfiles', 'currentMerchantRoles', 'availableBranch', 'availableWarehouse']
 lemon.dependencies.add 'customerManager', ['merchantEssential', 'availableCustomers']
 lemon.dependencies.add 'transactionManager', ['merchantEssential', 'receivableAndRelates']
-
 
 lemon.dependencies.add 'accountingManager', ['merchantEssential', 'saleBillAccounting']
 lemon.dependencies.add 'billManager', ['merchantEssential', 'billManagerSales']

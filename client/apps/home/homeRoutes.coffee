@@ -1,5 +1,5 @@
 lemon.addRoute [
-  template: 'home', path: '/', layoutTemplate: 'homeLayout'
+  template: 'home', path: '/', layoutTemplate: 'homeLayout', waitOnDependency: 'home'
 ,
-  path: '/merchantWizard', layoutTemplate: 'subHomeLayout'
+  path: '/merchantWizard', layoutTemplate: 'subHomeLayout', waitOnDependency: 'merchantPurchase'
 ]

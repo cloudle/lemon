@@ -3,15 +3,17 @@ template(name="home")
   .home-wrapper
     .main-left
       .youtube-wrapper
-        iframe(width="640" height="360" src="//www.youtube.com/embed/EvQbzjEUWXY?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen)
+        iframe(width="640" height="360" src="//www.youtube.com/embed/lzpE9_dMovU?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen)
       //.title eds
       //p Mạng quản lý kinh doanh tho
     .main-right
-      .login-section
-        if authenticated
+
+      if authenticated
+        .login-section.animated.bounceIn
           #gotoMerchantButton.btn.icon-shop
           #logoutButton.btn.icon-power.background-pumpkin
-        else
+      else
+        .login-section.animated.bounceIn
           #authButton.btn.icon-key-1(class="{{sessionGet 'loginValid'}}" tabindex="3")
           input.login-field#authSecret(type="password" placeholder="{{i18n 'form.password'}}" maxlength="30" tabindex="2")
           input.login-field#authAlias(type="text" placeholder="{{i18n 'form.userAccount'}}" maxlength="50" tabindex="1")
@@ -25,6 +27,6 @@ template(name="home")
         .lemon-field
           input#account(type="text" placeholder="{{i18n 'form.userAccount'}} *")
         .lemon-field.group.row
-          .col.col-sm-6: input#secret(type="password" placeholder="{{i18n 'form.password'}}  *")
-          .col.col-sm-6: input#secretConfirm(type="password" placeholder="{{i18n 'form.confirm'}} *")
+          .col.col-sm-6: input.secret-field#secret(class="{{registerSecretValid}}" type="password" placeholder="{{i18n 'form.password'}}  *")
+          .col.col-sm-6: input.secret-field#secretConfirm(class="{{registerSecretValid}}" type="password" placeholder="{{i18n 'form.confirm'}} *")
         #merchantRegister.btn.pull-right(class="{{registerValid}}") {{i18n 'register'}}
