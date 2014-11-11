@@ -4,7 +4,8 @@ Meteor.publishComposite 'receivableAndRelates', -> #No phai thu
     find: ->
       myProfile = Schema.userProfiles.findOne({user: self.userId})
       return EmptyQueryResult if !myProfile
-      Schema.transactions.find({merchant: myProfile.currentMerchant, warehouse: myProfile.currentWarehouse, group: 'sale'})
+      Schema.transactions.find({merchant: myProfile.currentMerchant, warehouse: myProfile.currentWarehouse})
+#      Schema.transactions.find({merchant: myProfile.currentMerchant, warehouse: myProfile.currentWarehouse, group: 'sale'})
     children: [
       find: (transaction) -> Schema.customers.find {_id: transaction.owner}
       children: [
@@ -12,6 +13,25 @@ Meteor.publishComposite 'receivableAndRelates', -> #No phai thu
       ]
     ]
   }
+
+Meteor.publishComposite 'transactionDetails', (transactionId)->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.transactionDetails.find({transaction: transactionId, merchant: myProfile.currentMerchant})
+    children: [
+      find: (transactionDetail) -> Schema.userProfiles.find {user: transactionDetail.creator}
+#      children: [
+#        find: (customer, transaction) -> AvatarImages.find {_id: customer.avatar}
+#      ]
+    ]
+  }
+
+
+
+
 #Meteor.publishComposite 'myMerchantContacts',
 #  find: ->
 #    currentProfile = Schema.userProfiles.findOne({user: @userId})

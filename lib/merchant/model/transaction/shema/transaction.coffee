@@ -7,6 +7,7 @@ simpleSchema.transactions = new SimpleSchema
 
   parent:
     type: String
+    optional: true
 
   creator:
     type: String

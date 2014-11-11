@@ -59,6 +59,32 @@ Schema.add 'transactions', class Transaction
     option._id = Schema.transactions.insert option
     option
 
+  @newByUser: (ownerId, totalCash, depositCash)->
+    myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    customer  = Schema.customers.findOne({_id: ownerId, parentMerchant: myProfile.parentMerchant})
+    if myProfile and customer and depositCash >= 0 and totalCash >= depositCash
+      option =
+        merchant    : myProfile.currentMerchant
+        warehouse   : myProfile.currentWarehouse
+        creator     : myProfile.user
+        owner       : customer._id
+        group       : 'customer'
+        receivable  : true
+        totalCash   : totalCash
+        depositCash : depositCash
+        debitCash   : (totalCash - depositCash)
+
+      if option.debit is 0
+        option.dueDay = new Date()
+        option.status = 'closed'
+      else
+        option.status = 'tracking'
+
+      option._id = Schema.transactions.insert option
+      option
+
+
+
   recalculateTransaction: (debitCash)->
     if @data.debitCash >= debitCash and @data.status is 'tracking'
       currentDebitCash = @data.debitCash - debitCash

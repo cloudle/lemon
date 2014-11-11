@@ -41,8 +41,8 @@ Apps.Merchant.Permissions =
 
   cashierSale           :{group: 'accounting'  ,key:'cashierSale'          ,description: 'xác nhận thu tiền khi bán hàng' }
   cashierDelivery       :{group: 'accounting'  ,key:'cashierDelivery'      ,description: 'xác nhận thu tiền khi giao hàng thành công' }
-  transactionShow       :{group: 'accounting'     ,key:'transactionShow'       ,description: 'xem thu chi' }
-  transactionManagement :{group: 'accounting'     ,key:'transactionManagement' ,description: 'q.lý thu chi' }
+  transactionShow       :{group: 'accounting'  ,key:'transactionShow'      ,description: 'xem thu chi' }
+  transactionManagement :{group: 'accounting'  ,key:'transactionManagement',description: 'q.lý thu chi' }
 
   saleExport            :{group: 'warehouse'   ,key:'saleExport'           ,description: 'xuất kho khi bán hàng' }
   importDelivery        :{group: 'warehouse'   ,key:'importDelivery'       ,description: 'xác nhận nhập kho khi giao hàng thất bại' }
@@ -53,6 +53,10 @@ Apps.Merchant.Permissions =
   customerCreate        :{group: 'crm'         ,key:'createCustomer'      ,description: 'tạo khách hàng' }
   customerShow          :{group: 'crm'         ,key:'customerShow'        ,description: 'xem khách hàng' }
   customerManagement    :{group: 'crm'         ,key:'customerManagement'  ,description: 'quản lý khách hàng' }
+
+
+  customerTransaction   :{group: 'transaction' ,key:'customerTransaction'  ,description: 'thêm công nợ cho khách hàng' }
+
 
   taskShow              :{group: 'scrum'       ,key:'scrumShow'           ,description: 'xem task' }
   taskCreate            :{group: 'scrum'       ,key:'scrumCreate'         ,description: 'tạo task' }

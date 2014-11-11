@@ -1,6 +1,7 @@
 lemon.defineApp Template.inventory,
   rendered: -> logics.inventoryManager.templateInstance = @
   events:
+    "click .inventoryHistory": (event, template) -> Router.go('/inventoryHistory')
     "input input": (event, template) -> logics.inventoryManager.checkAllowCreate(template)
     'blur input': (event, template)-> logics.inventoryManager.updateDescription(template)
 

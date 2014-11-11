@@ -13,6 +13,7 @@ Template.registerHelper 'momentFormat', (date, format) -> moment(date).format(fo
 Template.registerHelper 'productNameFromId', (id) -> Schema.products.findOne(id)?.name
 Template.registerHelper 'skullsNameFromId', (id) -> Schema.products.findOne(id)?.skulls
 Template.registerHelper 'userNameFromId', (id) -> Schema.userProfiles.findOne({user: id})?.fullName
+Template.registerHelper 'ownerNameFromId', (id) -> Schema.customers.findOne(id)?.name
 
 Template.registerHelper 'aliasLetter', (fullAlias) -> fullAlias?.split(' ').pop().substring(0,1)
 

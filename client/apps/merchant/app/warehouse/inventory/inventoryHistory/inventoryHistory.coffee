@@ -4,6 +4,7 @@ lemon.defineApp Template.inventoryHistory,
     $("[name=toDate]").datepicker('setDate', Session.get('inventoryHistoryFilterToDate'))
 
   events:
+    "click .createInventory": (event, template) -> Router.go('/inventory')
     "click #filterInventoryHistories": (event, template)->
       Session.set('inventoryHistoryFilterStartDate', $("[name=fromDate]").datepicker().data().datepicker.dates[0])
       Session.set('inventoryHistoryFilterToDate', $("[name=toDate]").datepicker().data().datepicker.dates[0])

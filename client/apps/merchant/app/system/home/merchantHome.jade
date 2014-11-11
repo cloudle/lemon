@@ -20,7 +20,7 @@ template(name="merchantHome")
       .tile.quatro.lime(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='sales')
         span.top.right.caption BÁN HÀNG
-        span.center.middle.caption: span.table: i.ico.huge.icon-basket-1
+        span.center.middle.caption: span.table: i.ico.huge.icon-basket-3
         span.bottom.left.caption: h3 {{formatNumber Summary.data.saleProductCount}} <tiny5>SẢN PHẨM ĐÃ BÁN</tiny5>
       .tile.teal(class="{{metroUnLocker Summary.data.saleCount}}"
       data-app='billManager')
@@ -50,11 +50,11 @@ template(name="merchantHome")
       .tile.magenta(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='stockManager')
         span.s7.top.middle.caption ĐIỀU CHỈNH GIÁ BÁN
-        span.center.middle.caption: span.table: i.ico.icon-database
+        span.center.middle.caption: span.table: i.ico.icon-database-2
         span.bottom.middle.caption TỒN KHO
       .tile.peter-river.double.double-vertical(class="{{metroUnLocker Summary.data.warehouseCount}}"
       data-app='importHistory')
-        span.center.left.caption: span.table: i.ico.icon-inbox
+        span.center.left.caption: span.table: i.ico.icon-inbox-1
         span.bottom.left.caption {{formatNumber Summary.data.importCount}} NHẬP KHO
         span.top.left.caption
           h3 <tiny5>TỔNG NHẬP {{Summary.data.importProductCount}}</tiny5>
@@ -67,11 +67,13 @@ template(name="merchantHome")
         span.bottom.middle.caption CHUYỂN KHO
       .tile.orange(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='accountingManager')
+        span.top.right.caption: i.ico.small.icon-ok-6
         span.center.middle.caption: span.table: i.ico.icon-money-2
         span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> THU TIỀN
       .tile.green-sea(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='exportAndImportManager')
-        span.center.middle.caption: span.table: i.ico.icon-database
+        span.top.right.caption: i.ico.small.icon-ok-6
+        span.center.middle.caption: span.table: i.ico.icon-database-2
         span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> XUẤT NHẬP KHO
       .tile.sun-flower(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='inventoryHistory')

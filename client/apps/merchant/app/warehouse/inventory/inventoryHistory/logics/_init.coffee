@@ -31,10 +31,18 @@ Apps.Merchant.inventoryHistoryReactiveRun.push (scope) ->
 
   scope.availableWarehouses  = Schema.warehouses.find({merchant: scope.currentMerchant._id}) if scope.currentMerchant
 
+  if Session.get('mySession')?.currentInventoryWarehouseSelection and Session.get('inventoryHistoryFilterStartDate') and Session.get('inventoryHistoryFilterToDate')
+    scope.availableInventories = Schema.inventories.find({$and: [
+        {warehouse: Session.get('mySession').currentInventoryWarehouseSelection}
+        {'version.createdAt': {$gt: Session.get('inventoryHistoryFilterStartDate')}}
+        {'version.createdAt': {$lt: Session.get('inventoryHistoryFilterToDate')}}
+      ]}, {sort: {'version.createdAt': -1}})
 
   if Session.get('currentInventoryHistory')
-    scope.currentInventoryDetailHistory     = Schema.inventoryDetails.find {inventory: Session.get('currentInventoryHistory')._id, lostQuality: {$gt: 0}}
+    scope.currentInventoryDetailHistory      = Schema.inventoryDetails.find {inventory: Session.get('currentInventoryHistory')._id, lostQuality: {$gt: 0}}
     scope.currentInventoryProductLostHistory = Schema.productLosts.find {inventory: Session.get('currentInventoryHistory')._id}
+
+
 
 
 

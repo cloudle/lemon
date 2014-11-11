@@ -1,0 +1,40 @@
+template(name="transportHistoryDetail")
+  aside.modal.swipe.left#transportHistoryDetail
+    .modal-dialog.sale-bill-preview
+      .modal-header
+        button.close(type="button" data-dismiss="modal")
+          span(aria-hidden="true") &times;
+          span.sr-only Close
+        h4.modal-title
+          i.icon-search-8
+          span CHI TIẾT KIỂM KHO
+      .modal-body.printable-area
+        .header
+        .merchant-info
+          span.marchant-address
+            |Người tạo: {{userNameFromId transport.creator}} <br/>
+            |Miêu tả: {{transport.description}} <br/>
+            |Trạng thái: {{status}}
+        ul
+          if transport.submit
+            each productLost
+              li.order-detail
+                .product-name <b>{{productNameFromId product}}</b> {{skullsNameFromId product}}
+                .product-price
+                  span.individual-price * Mất: {{formatNumber lostQuality}}
+                  //span.final-price {{formatNumber totalPrice}}
+          else
+            each transportDetails
+              li.order-detail
+                .product-name <b>{{productNameFromId product}}</b> {{skullsNameFromId product}}
+                .product-price
+                  span.individual-price * Mất: {{formatNumber lostQuality}}
+                  //span.final-price {{formatNumber totalPrice}}
+
+        //.bill-summary
+        //  span tổng cộng
+        //  span.bill-final <b>{{formatNumber import.totalPrice}}</b> VNĐ
+        //.bill-footer
+      .modal-footer
+        if showFinish
+          button.btn.btn-primary.finish XÁC NHẬN

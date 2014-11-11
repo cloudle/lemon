@@ -1,0 +1,41 @@
+template(name="transactionManagerDetail")
+  aside.modal.swipe.left#transactionManagerDetail
+    .modal-dialog.sale-bill-preview
+      .modal-header
+        button.close(type="button" data-dismiss="modal")
+          span(aria-hidden="true") &times;
+          span.sr-only Close
+        h4.modal-title
+          i.icon-search-8
+          span CHI TIẾT CÔNG NỢ
+      .modal-body.printable-area
+        span {{createDate transaction.version.createAt}} -- {{groupType transaction.group}} <br/>
+        span Nhân viên: {{userNameFromId transaction.creator}} <br/>
+        span Khách Hàng: {{ownerNameFromId transaction.owner}} <br/>
+        span Tình trạng: {{status}} <br/>
+        span Đã trả: {{countDetail}} lần
+        ul
+          each transactionDetail
+            li.order-detail
+              .product-name <b>{{createDate version.createAt}}</b> (tạo bởi: <b>{{userNameFromId creator}} </b>)
+              .product-price
+                span.individual-price Đã trả: {{formatNumber depositCash}}
+                span.final-price Nợ còn: {{formatNumber debitCash}}
+
+        .bill-summary
+          span Tỗng tiền: <b>{{formatNumber transaction.totalCash}}</b> VNĐ <br/>
+          span Đã trả: <b>{{formatNumber transaction.depositCash}}</b> VNĐ
+
+        .bill-footer
+          span Còn nợ:
+          span.bill-final <b>{{formatNumber transaction.debitCash}}</b> VNĐ
+      .modal-footer
+        if hideAddDetail
+          button.btn.btn-primary.showTransactionDetail Thêm
+        else
+          .editor-row
+            .editor-wrapper(style="width:150px")
+              span.ilabel tiền nợ
+              +iSpinEdit(options=depositCashOptions  class="field")
+            .editor-wrapper
+              button.btn.btn-success.createTransactionDetail(type='submit') Xác Nhận

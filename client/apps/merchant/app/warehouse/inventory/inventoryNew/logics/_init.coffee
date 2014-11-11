@@ -14,13 +14,16 @@ Apps.Merchant.inventoryManagerInit.push (scope) ->
 
 Apps.Merchant.inventoryReactiveRun.push (scope) ->
   if Session.get('mySession') and Session.get('myProfile')
-    if scope.currentMerchant = Schema.merchants.findOne(Session.get('mySession').currentMerchant)
-      scope.currentWarehouse = Schema.warehouses.findOne({_id: Session.get('mySession').currentWarehouse, merchant: scope.currentMerchant._id})
+    if scope.currentMerchant = Schema.merchants.findOne(Session.get('mySession').currentInventoryBranchSelection)
+      scope.currentWarehouse = Schema.warehouses.findOne({_id: Session.get('mySession').currentInventoryWarehouseSelection, merchant: scope.currentMerchant._id})
+      if !scope.currentWarehouse
+        scope.currentWarehouse = Schema.warehouses.findOne({isRoot: true, merchant: scope.currentMerchant._id})
+        UserSession.set('currentInventoryWarehouseSelection', scope.currentWarehouse?._id ? 'skyReset')
     else
       scope.currentMerchant  = Schema.merchants.findOne(Session.get('myProfile').currentMerchant)
       scope.currentWarehouse = Schema.merchants.findOne(Session.get('myProfile').currentWarehouse)
-      UserSession.set('currentMerchant', Session.get('myProfile').currentMerchant)
-      UserSession.set('currentWarehouse', Session.get('myProfile').currentWarehouse)
+      UserSession.set('currentInventoryBranchSelection', Session.get('myProfile').currentMerchant)
+      UserSession.set('currentInventoryWarehouseSelection', Session.get('myProfile').currentWarehouse)
 
   if scope.currentWarehouse
     if !scope.currentInventory || scope.currentWarehouse.inventory != scope.currentInventory._id

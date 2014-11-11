@@ -5,6 +5,9 @@ simpleSchema.transactionDetails = new SimpleSchema
   warehouse:
     type: String
 
+  creator:
+    type: String
+
   transaction:
     type: String
 
