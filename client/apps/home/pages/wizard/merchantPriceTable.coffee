@@ -12,38 +12,19 @@ lemon.defineWidget Template.merchantPriceTable,
 
   events:
     "click .command.raise.account": -> Session.set('wizardAccountPlus', Session.get('wizardAccountPlus') + 1)
-    "click .command.raise.branch": -> Session.set('wizardBranchPlus', Session.get('wizardBranchPlus') + 1)
+    "click .command.raise.branch": ->
+      Session.set('wizardBranchPlus', Session.get('wizardBranchPlus') + 1)
+      if Session.get('wizardWarehousePlus') < Session.get('wizardBranchPlus')
+        Session.set('wizardWarehousePlus', Session.get('wizardBranchPlus'))
     "click .command.raise.warehouse": -> Session.set('wizardWarehousePlus', Session.get('wizardWarehousePlus') + 1)
     "click .command.lower.account": -> Session.set('wizardAccountPlus', Session.get('wizardAccountPlus') - 1) if Session.get('wizardAccountPlus') > 0
     "click .command.lower.branch": -> Session.set('wizardBranchPlus', Session.get('wizardBranchPlus') - 1) if Session.get('wizardBranchPlus') > 0
-    "click .command.lower.warehouse": -> Session.set('wizardWarehousePlus', Session.get('wizardWarehousePlus') - 1) if Session.get('wizardWarehousePlus') > 0
+    "click .command.lower.warehouse": ->
+      if Session.get('wizardWarehousePlus') > 0 and Session.get('wizardWarehousePlus') > Session.get('wizardBranchPlus')
+        Session.set('wizardWarehousePlus', Session.get('wizardWarehousePlus') - 1)
 
 #  extendPrice: ->
 #    extendAccountPrice    = @options.extendAccountPrice * Session.get('extendAccountLimit')
 #    extendBranchPrice     = @options.extendBranchPrice * Session.get('extendBranchLimit')
 #    extendWarehousePrice  = @options.extendWarehousePrice * Session.get('extendWarehouseLimit')
 #    extendAccountPrice + extendBranchPrice + extendWarehousePrice
-#
-#  accountLimitOptions:
-#    reactiveSetter: (val) ->
-#      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {extendAccountLimit: val}
-#    reactiveValue: -> Session.get('extendAccountLimit') ? 0
-#    reactiveMax: -> 9999
-#    reactiveMin: -> 0
-#    reactiveStep: -> 1
-#
-#  branchLimitOptions:
-#    reactiveSetter: (val) ->
-#      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {extendBranchLimit: val}
-#    reactiveValue: -> Session.get('extendBranchLimit') ? 0
-#    reactiveMax: -> 500
-#    reactiveMin: -> 0
-#    reactiveStep: -> 1
-#
-#  warehouseLimitOptions:
-#    reactiveSetter: (val) ->
-#      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {extendWarehouseLimit: val}
-#    reactiveValue: -> Session.get('extendWarehouseLimit') ? 0
-#    reactiveMax: -> 999
-#    reactiveMin: -> 0
-#    reactiveStep: -> 1
