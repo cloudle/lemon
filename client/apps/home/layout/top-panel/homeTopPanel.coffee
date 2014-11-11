@@ -31,10 +31,15 @@ lemon.defineWidget Template.homeTopPanel,
       Meteor.call "registerMerchant", $account.val(), $secret.val(), (error, result)->
         if !error
           user = result
-          Schema.userProfiles.insert UserProfile.newDefault(user), (error, result)-> console.log error if error
-          Schema.merchantPackages.insert({merchantRegistered: false, user: user, companyName: $companyName.val(), companyPhone: $companyPhone.val()})
+          Schema.userProfiles.insert {user: user, isRoot: true, systemVersion : simpleSchema.Version}, (error, result)-> console.log error if error
+#          Schema.merchantPackages.insert({merchantRegistered: false, user: user, companyName: $companyName.val(), companyPhone: $companyPhone.val()})
           Session.set('topPanelMinimize', true)
-          Meteor.loginWithPassword $account.val(), $secret.val(), (error) -> Router.go('/merchantWizard') if !error
+#          Meteor.loginWithPassword $account.val(), $secret.val(), (error) -> Router.go('/merchantWizard') if !error
+#Dung tam ve sao se xoa---------------->
+
+
+
+
 
 #    "keypress #secretConfirm": (event, template) ->
 #      $(template.find("#merchantRegister")).click() if event.which is 13 and Template.homeTopPanel.registerValid is 'valid'

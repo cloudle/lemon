@@ -1,15 +1,20 @@
 formatBranchSelect = (item) -> "#{item.name}" if item
 
 Apps.Merchant.staffManagerInit.push (scope) ->
-  currentWarehouse = Schema.warehouses.findOne(Session.get('myProfile').currentWarehouse)
-  Session.set 'createStaffBranchSelection', Schema.merchants.findOne(currentWarehouse.merchant)
-
   logics.staffManager.branchSelectOptions =
     query: (query) -> query.callback
       results: Schema.merchants.find().fetch()
-    initSelection: (element, callback) -> callback Session.get('createStaffBranchSelection')
+    initSelection: (element, callback) ->
+      callback(Schema.merchants.findOne(Session.get('mySession').createStaffBranchSelection) ? 'skyReset')
+    reactiveValueGetter: -> Session.get('mySession').createStaffBranchSelection ? 'skyReset'
     changeAction: (e) ->
-      Session.set('createStaffBranchSelection', e.added)
-    reactiveValueGetter: -> Session.get('createStaffBranchSelection')
+      option =
+        createStaffBranchSelection : e.added._id
+        createStaffWarehouseSelection: Schema.warehouses.findOne({merchant: e.added._id, isRoot: true})?._id ? 'skyReset'
+      Schema.userSessions.update Session.get('mySession')._id, $set: option
+      scope.availableWarehouses = Schema.warehouses.find({merchant: e.added._id})
+
+
+    minimumResultsForSearch: -1
     formatSelection: formatBranchSelect
     formatResult: formatBranchSelect

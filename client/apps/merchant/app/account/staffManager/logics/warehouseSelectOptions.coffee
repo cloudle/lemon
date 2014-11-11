@@ -1,13 +1,13 @@
 formatWarehouseSelect = (item) -> "#{item.name}" if item
 
 Apps.Merchant.staffManagerInit.push (scope) ->
-  Session.set 'createStaffWarehouseSelection', Schema.warehouses.findOne(Session.get('myProfile').currentWarehouse)
-
-  logics.staffManager.warehouseSelectOptions =
+  scope.warehouseSelectOptions =
     query: (query) -> query.callback
-      results: Schema.warehouses.find({merchant: Session.get('myProfile').currentMerchant}).fetch()
-    initSelection: (element, callback) -> callback Session.get('createStaffWarehouseSelection')
-    changeAction: (e) -> Session.set('createStaffWarehouseSelection', e.added)
-    reactiveValueGetter: -> Session.get('createStaffWarehouseSelection')
+      results: scope.availableWarehouses.fetch()
+    initSelection: (element, callback) ->
+      callback(Schema.warehouses.findOne(Session.get('mySession').createStaffWarehouseSelection) ? 'skyReset')
+    changeAction: (e) ->  UserSession.set('createStaffWarehouseSelection', e.added._id)
+    reactiveValueGetter: -> Session.get('mySession').createStaffWarehouseSelection ? 'skyReset'
+    minimumResultsForSearch: -1
     formatSelection: formatWarehouseSelect
     formatResult:    formatWarehouseSelect
