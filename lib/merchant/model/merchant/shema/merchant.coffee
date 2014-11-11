@@ -13,6 +13,7 @@ simpleSchema.merchants = new SimpleSchema
 
   name:
     type: String
+    optional: true #optional tren danh nghia, se phai dien vao trong buoc dang ky!
 
   address:
     type: String

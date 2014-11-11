@@ -1,8 +1,8 @@
 lemon.dependencies.add 'userInfo', ['myOption', 'myProfile', 'mySession']
-lemon.dependencies.add 'essentials', ['userInfo']
+lemon.dependencies.add 'essentials', ['userInfo', 'myPurchase']
 
-lemon.dependencies.add 'home', ['essentials', 'myPurchase']
-lemon.dependencies.add 'merchantPurchase', ['essentials', 'myPurchase']
+lemon.dependencies.add 'home', ['essentials']
+lemon.dependencies.add 'merchantPurchase', ['essentials']
 
 #lemon.dependencies.add 'merchantInfo', ['myMerchant', 'myWarehouse']
 

@@ -1,0 +1,138 @@
+@import "../../../../styles/lib.import.styl"
+@import 'jeet'
+package-theme(color)
+  .title
+    background-color darken(color, 5)
+  .content, .footer
+    background-color color
+  .features li .command
+    background-color color
+
+.merchant-wizard-wrapper
+  min-height 100%
+  clearfix()
+  background-color #54c8eb
+  transition background-color 15s
+
+#wizardContent
+  .col { padding-left: 2px; padding-right: 2px; }
+
+.price-table-group
+  padding 0 12px
+  .package-block
+    cursor pointer
+    border-radius 5px
+    overflow hidden
+    .title { background: #78CFBF; }
+
+    .title, .footer
+      color #FEFEFE
+      text-transform capitalize
+      line-height 2.5
+      position relative
+      text-align center
+
+    .content
+      position: relative
+      color #FEFEFE
+      padding 20px 0 10px 0
+      background #82DACA
+      text-align center
+      font-weight lighter
+
+      .active-icon
+        font-size 60px
+        absolute right 0px top -50px
+      .price
+        position relative
+        display inline-block
+        margin-bottom 0.625rem
+        sup
+          font-size 14px
+          absolute top 12px left -20px
+
+        span
+          font-size 50px
+        sub
+          font-size 12px
+          absolute right -20px bottom 5px
+
+      .hint
+        font-style: italic;
+        font-size: 13px;
+
+    .features
+      list-style-type none
+      background #F5F5F5
+      text-align left
+      color #9C9C9C
+      padding 30px 0
+
+      li
+        position relative
+        padding 10px 40px
+        width 100%
+        border-top: solid 1px #EEEEEE
+        &:before { margin-right: 10px; font-size: 25px; }
+        &:first-child { border-top: none; }
+        span.quality
+          font-size 18px
+          font-weight bolder
+        .command
+          cursor pointer
+          absolute top 10px
+          padding 5px
+          color #ffffff
+          background-color #666666
+          border-radius 50%
+          &:hover
+            box-shadow 0px 0px 0px 3px rgba(0, 0, 0, 0.1)
+          &.lower
+            left 3px
+          &.raise
+            right 3px
+
+    .footer
+      clearfix()
+      background #82DACA
+
+.merchant-wizard-instructions
+  text-align center
+  font-size 20px
+  margin-top 40px
+  margin-bottom 20px
+  color #ffffff
+  span.caption
+    font-size 30px
+  span.description
+    font-weight lighter
+
+.merchant-wizard-fields
+  clearfix()
+  width 100%
+  margin 10px 0 20px 0
+  input[type=text]
+    transition box-shadow 0.5s
+    &:focus
+      box-shadow 0px 0px 0px 2px rgba(0, 0, 0, 0.1)
+    column(1/4, gutter: .3)
+    font-size 14px
+    color #585858; background #fff
+    padding 8px 16px 8px 14px
+    border none
+    border-radius 2px
+    placeholder #8D8D8D
+
+.package-block.free
+  package-theme(lighten(#26bdef, 10))
+  .content { padding: 1px 0; }
+  .price > span { font-size: 70px !important; }
+
+.package-block.basic
+  package-theme(lighten(amethyst, 10))
+
+.package-block.premium
+  package-theme(lighten(lime, 20))
+
+.package-block.advance
+  package-theme(lighten(carrot, 10))

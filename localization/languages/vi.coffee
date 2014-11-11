@@ -5,6 +5,7 @@ i18n.map 'vi',
   commingSoon: 'Đang cập nhật..'
   comment: 'Bình luận'
   register: 'Đăng ký'
+  term: 'Điều khoản'
 
   form:
     userAccount: 'tài khoản'

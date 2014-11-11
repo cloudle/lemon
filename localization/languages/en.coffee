@@ -5,6 +5,7 @@ i18n.map 'en',
   commingSoon: 'Comming soon..'
   comment: 'Comment'
   register: 'Register'
+  term: 'Terms'
 
   form:
     userAccount: 'user account'

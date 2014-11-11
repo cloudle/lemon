@@ -33,6 +33,7 @@ lemon.defineWidget Template.home,
     else
       'invalid'
   registerSecretValid: -> Session.get('registerSecretValid')
+  termButtonActive: -> if Session.get('topPanelMinimize') then '' else 'reading'
 
   created: -> Router.go('/merchant') unless Meteor.userId() is null or (Session.get('autoNatigateDashboardOff'))
   rendered: ->
@@ -58,6 +59,7 @@ lemon.defineWidget Template.home,
       else
         Session.set('loginValid', 'invalid')
 
+    "click #terms": -> Session.set('topPanelMinimize', !Session.get('topPanelMinimize'))
     "click #merchantRegister.valid": (event, template)->
       $companyName    = $(template.find("#companyName"))
       $companyPhone   = $(template.find("#companyPhone"))
@@ -70,7 +72,6 @@ lemon.defineWidget Template.home,
 
     "blur #account": (event, template) ->
       $account = $(template.find("#account"))
-      console.log $account, $account.val().length
       if $account.val().length > 0
         Meteor.loginWithPassword $account.val(), '', (error) ->
           if error?.reason is "Incorrect password"

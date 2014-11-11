@@ -1,3 +1,31 @@
+currentIndex = 0
+colors = [
+  '#54c8eb', # light blue
+  '#4ea9de', # med blue
+  '#4b97d2', # dark blue
+  '#92cc8f', # light green
+  '#41bb98', # mint green
+  '#c9de83', # yellowish green
+  '#dee569', # yellowisher green
+  '#c891c0', # light purple
+  '#9464a8', # med purple
+  '#7755a1', # dark purple
+  '#f069a1', # light pink
+  '#f05884', # med pink
+  '#e7457b', # dark pink
+  '#ffd47e', # peach
+  '#f69078'  # salmon
+]
+
+registerErrors = [
+  incorrectPassword  = { reason: "Incorrect password",  message: "tài khoản tồn tại"}
+]
+
+animateBackgroundColor = ->
+  $(".merchant-wizard-wrapper").css("background-color", colors[currentIndex])
+  currentIndex++
+  currentIndex = 0 if currentIndex > colors.length
+
 #packageOption = (option)->
 #  packageClass          : option.packageClass
 #  price                 : option.price
@@ -45,68 +73,16 @@
 #      if Session.get("merchantPackages").warehouseName?.length > 0 then Session.set('warehouseNameValid', 'valid')
 #      else Session.set('warehouseNameValid', 'invalid')
 #
-#lemon.defineWidget Template.merchantWizard,
-#
-#  trialPackageOption:
-#    packageClass: 'free'
-#    title: 'TRẢI NGHIỆM'
-#    titlePrice: '0'
-#    titleDuration: '14 NGÀY'
-#    price: 0
-#    duration: 14
-#    hint: 'free hint'
-#    accountLim: 5
-#    branchLim: 1
-#    warehouseLim: 1
-#    footer: 'free footer'
-#
-#  oneYearsPackageOption:
-#    packageClass: 'basic'
-#    title: 'KHỞI ĐỘNG'
-#    titlePrice: '11 triệu'
-#    titleDuration: '1 NĂM'
-#    price: 11000000
-#    duration: 365
-#    hint: 'basic hint'
-#    accountLim: 10
-#    branchLim: 1
-#    warehouseLim: 1
-#    extendAccountPrice: 200000
-#    extendBranchPrice: 300000
-#    extendWarehousePrice: 100000
-#    footer: 'basic footer'
-#
-#  threeYearsPackageOption:
-#    packageClass: 'premium'
-#    title: 'TĂNG TRƯỞNG'
-#    titlePrice: '30 triệu'
-#    titleDuration: '3 NĂM'
-#    price: 30000000
-#    duration: 365*3
-#    hint: 'premium hint'
-#    accountLim: 15
-#    branchLim: 1
-#    warehouseLim: 2
-#    extendAccountPrice: 200000
-#    extendBranchPrice: 300000
-#    extendWarehousePrice: 100000
-#    footer: 'premium footer'
-#
-#  fiveYearsPackageOption:
-#    packageClass: 'advance'
-#    title: 'BỀN VỮNG'
-#    titlePrice: '45 triệu'
-#    titleDuration: '5 NĂM'
-#    price: 45000000
-#    duration: 365*5
-#    hint: 'advance hint'
-#    accountLim: 20
-#    branchLim: 2
-#    warehouseLim: 4
-#    extendAccountPrice: 200000
-#    extendBranchPrice: 300000
-#    extendWarehousePrice: 100000
-#    footer: 'advance footer'
+lemon.defineWidget Template.merchantWizard,
+  rendered: ->
+    self = @
+    Meteor.setTimeout ->
+      animateBackgroundColor()
+      self.bgInterval = Meteor.setInterval(animateBackgroundColor, 15000)
+    , 5000
+  destroyed: -> Meteor.clearInterval(@bgInterval)
+  events:
+    "click .package-block": (event, template) -> Session.set('currentMerchantPackage', @options)
 #
 #  merchantPackage: -> Session.get('merchantPackages')
 #  updateValid: ->
@@ -160,7 +136,6 @@
 #        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {warehouseName: $warehouseName.val()}
 #      else
 #        $warehouseName.notify('tên kho hàng không để trống!', {position: "right"})
-#
 #
 #    "click .package-block.free": (event, template)->
 #      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: packageOption(Template.merchantWizard.trialPackageOption)

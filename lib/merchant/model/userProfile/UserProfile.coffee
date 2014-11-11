@@ -5,9 +5,10 @@ Schema.add 'userProfiles', class UserProfile
 
   set: (options) -> @schema.update(@id, {$set: options})
 
-  @newDefault: (userId) ->
+  @newDefault: (userId, merchantId) ->
     option =
       user              : userId
+      merchant          : merchantId
       isRoot            : true
       systemVersion     : Schema.systems.findOne().version
     option

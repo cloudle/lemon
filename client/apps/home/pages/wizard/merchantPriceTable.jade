@@ -1,0 +1,48 @@
+template(name="merchantPriceTable")
+  .package-block(class="{{options.packageClass}}")
+    .title {{options.title}}
+    .content
+      if isActive
+        i.active-icon.animated.bounceIn.icon-award
+      p.price
+        sup VNĐ
+        span {{options.titlePrice}}
+        sub /{{options.titleDuration}}.
+      p.hint {{options.hint}}
+    .features
+      li.icon-group
+        span.quality {{options.accountLim}}
+        if showAccountPlus
+          sup +{{accountPlus}}
+        span Tài khoản
+        if showExtension
+          .command.lower.icon-left-open-4.account.animated.bounceIn
+          .command.raise.icon-right-open-4.account.animated.bounceIn
+      li.icon-location-1
+        span.quality {{options.branchLim}}
+        if showBranchPlus
+          sup +{{branchPlus}}
+        span Chi nhánh
+        if showExtension
+          .command.lower.icon-left-open-4.branch.animated.bounceIn
+          .command.raise.icon-right-open-4.branch.animated.bounceIn
+      li.icon-home-4
+        span.quality {{options.warehouseLim}}
+        if showWarehousePlus
+          sup +{{warehousePlus}}
+        span Kho hàng
+        if showExtension
+          .command.lower.icon-left-open-4.warehouse.animated.bounceIn
+          .command.raise.icon-right-open-4.warehouse.animated.bounceIn
+      //if showExtension
+      //  li.icon-group
+      //    +iSpinEdit(options=accountLimitOptions) Tài khoản/{{options.extendAccountPrice}} vnd
+      //  li.icon-location-1
+      //    +iSpinEdit(options=branchLimitOptions) Chi nhánh/{{options.extendBranchPrice}} vnd
+      //  li.icon-home-4
+      //    +iSpinEdit(options=warehouseLimitOptions) Kho hàng/{{options.extendWarehousePrice}} vnd
+        //+merchantPriceTableExtension
+    .footer
+      if showExtension
+        span {{extendPrice}}
+      span {{options.footer}}

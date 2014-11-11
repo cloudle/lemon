@@ -1,0 +1,22 @@
+template(name="merchantWizard")
+  .home-wrapper
+    .merchant-wizard-instructions
+      span.caption Chúc mừng bạn đã đăng ký thành công! <br>
+      span.description Chọn gói sản phẩm phù hợp và tiếp tục.
+    .merchant-wizard-fields
+      input#companyName(type="text" placeholder="tên doanh nghiệp *" value="{{purchase.companyName}}")
+      input#companyPhone(type="text" placeholder="số điên thoại *" value="{{purchase.contactPhone}}")
+      input#merchantName(type="text" placeholder="tên chi nhánh chính *" value="{{purchase.merchantName}}")
+      input#warehouseName(type="text" placeholder="tên kho hàng *" value="{{purchase.warehouseName}}")
+
+    .price-table-group.row
+      .col.col-sm-3
+        +merchantPriceTable(options=trialPackageOption)
+      .col.col-sm-3
+        +merchantPriceTable(options=oneYearsPackageOption)
+      .col.col-sm-3
+        +merchantPriceTable(options=threeYearsPackageOption)
+      .col.col-sm-3
+        +merchantPriceTable(options=fiveYearsPackageOption)
+
+    #merchantUpdate.btn.pull-right(class="{{updateValid}}") CẬP NHẬT
