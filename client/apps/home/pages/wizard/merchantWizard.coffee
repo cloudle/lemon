@@ -83,7 +83,11 @@ lemon.defineWidget Template.merchantWizard,
   destroyed: -> Meteor.clearInterval(@bgInterval)
   events:
     "click .package-block": (event, template) -> Session.set('currentMerchantPackage', @options)
-#
+    "click .finish-register": (event, template) ->
+      console.log template.data.purchase
+      Schema.merchantPurchases.update(template.data.purchase._id, {$set: {merchantRegistered: true}})
+      Router.go('/merchant')
+
 #  merchantPackage: -> Session.get('merchantPackages')
 #  updateValid: ->
 #    if Session.get('companyNameValid') is 'invalid' then return 'invalid'

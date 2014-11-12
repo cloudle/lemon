@@ -7,3 +7,8 @@ Meteor.publish 'myPurchase', ->
   console.log profile
 
   Schema.merchantPurchases.find({merchant: profile.currentMerchant})
+
+Schema.merchantPurchases.allow
+  insert: -> true
+  update: -> true
+  remove: -> true

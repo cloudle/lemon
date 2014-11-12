@@ -22,4 +22,11 @@ Meteor.methods
       contactPhone      : contactPhone
       merchantName      : 'Trụ Sở'
       warehouseName     : 'Kho Trụ Sở'
+    Schema.warehouses.insert Warehouse.newDefault {
+      merchantId        : merchantId
+      parentMerchantId  : merchantId
+      creator           : userId
+      name              : 'Kho Trụ Sở'
+    }
+
     return user
