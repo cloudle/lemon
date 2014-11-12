@@ -8,12 +8,6 @@ Meteor.methods
       return
 
     merchantId = Schema.merchants.insert({owner: userId, creator: userId, name: companyName})
-    profileId = Schema.userProfiles.insert
-      user              : userId
-      parentMerchant    : merchantId
-      currentMerchant   : merchantId
-      isRoot            : true
-      systemVersion     : Schema.systems.findOne().version
     Schema.merchantPurchases.insert
       merchant          : merchantId
       merchantRegistered: false
@@ -22,11 +16,23 @@ Meteor.methods
       contactPhone      : contactPhone
       merchantName      : 'Trụ Sở'
       warehouseName     : 'Kho Trụ Sở'
-    Schema.warehouses.insert Warehouse.newDefault {
+    warehouseId = Schema.warehouses.insert Warehouse.newDefault {
       merchantId        : merchantId
       parentMerchantId  : merchantId
       creator           : userId
       name              : 'Kho Trụ Sở'
     }
+    Schema.metroSummaries.insert MetroSummary.newByMerchant(merchantId)
+
+    Schema.userProfiles.insert
+      user              : userId
+      parentMerchant    : merchantId
+      currentMerchant   : merchantId
+      currentWarehouse  : warehouseId
+      isRoot            : true
+      systemVersion     : Schema.systems.findOne().version
+
+    Schema.userSessions.insert { user: userId }
+
 
     return user

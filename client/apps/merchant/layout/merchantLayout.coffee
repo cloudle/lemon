@@ -3,7 +3,6 @@ toggleCollapse = -> Session.set 'collapse', if Session.get('collapse') is 'colla
 startHomeTracker = ->
   Apps.Merchant.homeTracker = Tracker.autorun ->
     purchase = Schema.merchantPurchases.findOne({merchant: Session.get("myProfile")?.currentMerchant})
-    console.log purchase
     return if !purchase
     if !purchase.merchantRegistered
       if purchase.user is Meteor.userId()

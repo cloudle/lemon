@@ -22,7 +22,7 @@ reactiveMinBillCashDiscount = ->
 Apps.Merchant.salesInit.push ->
   logics.sales.billCashDiscountOptions =
     reactiveSetter: (val)-> calculateBillDiscountPercent(val, Session.get('currentOrder'))
-    reactiveValue: -> Session.get('currentOrder').discountCash ? 0
+    reactiveValue: -> Session.get('currentOrder')?.discountCash ? 0
     reactiveMax: -> reactiveMaxBillCashDiscount()
     reactiveMin: -> reactiveMinBillCashDiscount()
     reactiveStep: -> 1000
