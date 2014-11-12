@@ -10,8 +10,8 @@ lemon.defineApp Template.transportHistory,
       Session.set('transportHistoryFilterToDate', $("[name=toDate]").datepicker().data().datepicker.dates[0])
 
     "click .thumbnails": (event, template) ->
-      Apps.MerchantSubscriber.subscribe('productLostInTransport', @_id)
-      Apps.MerchantSubscriber.subscribe('transportDetailInWarehouse', @_id)
+      Meteor.subscribe('productLostInTransport', @_id)
+      Meteor.subscribe('transportDetailInWarehouse', @_id)
       Session.set('currentTransportHistory', @)
       $(template.find '#transportHistoryDetail').modal()
 

@@ -1,5 +1,7 @@
 lemon.defineWidget Template.transactionManagerDetail,
-  createDate: (date) -> moment(date).format("DD/MM/YYYY")
+  createDate: ->
+    if @transaction?.debtDate
+      moment(@transaction.debtDate).format("DD/MM/YYYY")
   groupType: (group) ->
     switch group
       when 'sale' then 'Phiếu bán hàng'

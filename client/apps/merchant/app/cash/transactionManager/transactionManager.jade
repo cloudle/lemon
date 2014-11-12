@@ -6,14 +6,23 @@ template(name="transactionManager")
 
     .editor-row
       if unSecureMode
-        .editor-wrapper(style="width: 200px")
-          span.ilabel khách hàng
+        .editor-wrapper(style="width: 170px")
+          span.ilabel chọn khách hàng
           +iSelect(options=customerSelectOptions class="field")
-       .editor-wrapper(style="width:150px")
-          span.ilabel tiền nợ
-          +iSpinEdit(options=debitCashOptions  class="field")
+        .editor-wrapper(style="width:170px")
+          span.ilabel tổng số tiền
+          +iSpinEdit(options=totalCashOptions  class="field")
+        .editor-wrapper(style="width:170px")
+          span.ilabel số tiền đã trả
+          +iSpinEdit(options=depositCashOptions  class="field")
+        .editor-wrapper(style="width: 90px")
+          span.ilabel ngày tạo
+          input(name="debtDate" binding="datePicker" todayHighlight="true" maxlength="20")
+        .editor-wrapper(style="width: 250px")
+          span.ilabel lý do
+          input.description(maxlength="200" value="{{newTransaction.description}}")
         .editor-wrapper
-          button.btn.btn-success.createTransaction(type='submit') THÊM CÔNG NỢ
+          button.btn.btn-success.createTransaction(class="{{allowCreate}}") THÊM
 
 
   #content

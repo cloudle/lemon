@@ -72,17 +72,17 @@ removeOrderAndOrderDetail = (order, userProfile)->
 Meteor.methods
   finishOrder: (orderId) ->
     userProfile = Schema.userProfiles.findOne({user: @userId})
-    if !userProfile then throw new Meteor.Error("User chưa đăng nhập.")
+    if !userProfile then throw new Meteor.Error("User chưa đăng nhập."); return
 
     currentOrder = Schema.orders.findOne({
       _id       : orderId
       creator   : userProfile.user
       merchant  : userProfile.currentMerchant
       warehouse : userProfile.currentWarehouse})
-    if !currentOrder then throw new Meteor.Error("Order không tồn tại.")
+    if !currentOrder then throw new Meteor.Error("Order không tồn tại."); return
 
     orderDetails = Schema.orderDetails.find({order: currentOrder._id}).fetch()
-    if orderDetails.length < 1 then throw new Meteor.Error("Order rỗng.")
+    if orderDetails.length < 1 then throw new Meteor.Error("Order rỗng."); return
 
     product_ids = _.union(_.pluck(orderDetails, 'product'))
     products = Schema.products.find({_id: {$in: product_ids}}).fetch()

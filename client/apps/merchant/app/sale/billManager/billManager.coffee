@@ -9,6 +9,6 @@ lemon.defineApp Template.billManager,
       Session.set('billFilterStartDate', $("[name=fromDate]").datepicker().data().datepicker.dates[0])
       Session.set('billFilterToDate', $("[name=toDate]").datepicker().data().datepicker.dates[0])
     "click .thumbnails": (event, template) ->
-      Apps.MerchantSubscriber.subscribe('saleAndReturnDetails', @_id)
+      Meteor.subscribe('saleAndReturnDetails', @_id)
       Session.set('currentBillManagerSale', @)
       $(template.find '#salePreview').modal()

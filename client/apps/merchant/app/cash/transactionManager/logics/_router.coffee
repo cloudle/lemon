@@ -8,8 +8,10 @@ transactionManagerRoute =
   data: ->
     Apps.setup(logics.transactionManager, Apps.Merchant.transactionManagerReactiveRun)
     return {
+      newTransaction          : Session.get('createNewTransaction')
       gridOptions             : logics.transactionManager.gridOptions
-      debitCashOptions        : logics.transactionManager.debitCashOptions
+      totalCashOptions        : logics.transactionManager.totalCashOptions
+      depositCashOptions      : logics.transactionManager.depositCashOptions
       customerSelectOptions   : logics.transactionManager.customerSelectOptions
 
       currentTransaction        : Session.get('currentTransaction')

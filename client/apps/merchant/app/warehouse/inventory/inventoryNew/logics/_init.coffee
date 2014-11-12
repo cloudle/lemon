@@ -28,7 +28,7 @@ Apps.Merchant.inventoryReactiveRun.push (scope) ->
   if scope.currentWarehouse
     if !scope.currentInventory || scope.currentWarehouse.inventory != scope.currentInventory._id
       scope.currentInventory = Schema.inventories.findOne(scope.currentWarehouse.inventory)
-      Apps.MerchantSubscriber.subscribe('inventoryDetailInWarehouse', scope.currentWarehouse.inventory)
+      Meteor.subscribe('inventoryDetailInWarehouse', scope.currentWarehouse.inventory)
 
     scope.availableWarehouses = Schema.warehouses.find({merchant: scope.currentWarehouse.merchant})
     scope.inventoryDetails = Schema.inventoryDetails.find({inventory: scope.currentWarehouse.inventory})

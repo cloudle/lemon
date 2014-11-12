@@ -10,8 +10,8 @@ lemon.defineApp Template.inventoryHistory,
       Session.set('inventoryHistoryFilterToDate', $("[name=toDate]").datepicker().data().datepicker.dates[0])
 
     "click .thumbnails": (event, template) ->
-      Apps.MerchantSubscriber.subscribe('productLostInInventory', @_id)
-      Apps.MerchantSubscriber.subscribe('inventoryDetailInWarehouse', @_id)
+      Meteor.subscribe('productLostInInventory', @_id)
+      Meteor.subscribe('inventoryDetailInWarehouse', @_id)
       Session.set('currentInventoryHistory', @)
       $(template.find '#inventoryHistoryDetail').modal()
 

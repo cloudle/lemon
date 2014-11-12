@@ -9,7 +9,7 @@ template(name="transactionManagerDetail")
           i.icon-search-8
           span CHI TIẾT CÔNG NỢ
       .modal-body.printable-area
-        span {{groupType transaction.group}} ({{createDate transaction.version.createAt}})<br/>
+        span {{groupType transaction.group}} ({{createDate}})<br/>
         span Nhân viên: {{userNameFromId transaction.creator}} <br/>
         span Khách Hàng: {{ownerNameFromId transaction.owner}} <br/>
         span Tình trạng: {{status}} (đã trả {{countDetail}} lần) <br/>
@@ -40,5 +40,6 @@ template(name="transactionManagerDetail")
               span.ilabel tiền trả
               +iSpinEdit(options=depositCashOptions  class="field")
             .editor-wrapper
-              button.btn.btn-success.createTransactionDetail(type='submit') Xác Nhận
+              button.btn.btn-success.createTransactionDetail(type='submit') Thêm
+            .editor-wrapper
               button.btn.btn-warning.cancelCreateTransactionDetail(type='submit') Hủy

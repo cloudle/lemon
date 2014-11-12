@@ -59,10 +59,10 @@ Schema.add 'transactions', class Transaction
     option._id = Schema.transactions.insert option
     option
 
-  @newByUser: (ownerId, totalCash, depositCash)->
+  @newByUser: (customerId, description, totalCash, depositCash, debtDate)->
     myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-    customer  = Schema.customers.findOne({_id: ownerId, parentMerchant: myProfile.parentMerchant})
-    if myProfile and customer and depositCash >= 0 and totalCash >= depositCash
+    customer  = Schema.customers.findOne({_id: customerId, parentMerchant: myProfile.parentMerchant})
+    if myProfile and customer and depositCash >= 0 and totalCash > depositCash
       option =
         merchant    : myProfile.currentMerchant
         warehouse   : myProfile.currentWarehouse
@@ -70,9 +70,11 @@ Schema.add 'transactions', class Transaction
         owner       : customer._id
         group       : 'customer'
         receivable  : true
+        description : description
         totalCash   : totalCash
         depositCash : depositCash
         debitCash   : (totalCash - depositCash)
+        debtDate    : debtDate
 
       if option.debit is 0
         option.dueDay = new Date()

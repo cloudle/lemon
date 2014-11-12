@@ -19,7 +19,7 @@ logics.import.reactiveRun = ->
                                                 Session.get('myProfile').currentMerchant)
   if currentImport = logics.import.currentImport
     Session.set('currentImport', logics.import.currentImport)
-    Apps.MerchantSubscriber.subscribe('importDetails', logics.import.currentImport._id)
+    Meteor.subscribe('importDetails', logics.import.currentImport._id)
     logics.import.currentImportDetails = ImportDetail.findBy(logics.import.currentImport._id)
 
     logics.import.hidePriceSale = logics.import.currentImport.currentPrice > 0

@@ -38,6 +38,14 @@ simpleSchema.transactions = new SimpleSchema
   status:
     type: String
 
+  description:
+    type: String
+    optional: true
+
+  debtDate:
+    type: Date
+    defaultValue: new Date()
+
   styles:
     type: String
     defaultValue: Helpers.RandomColor()

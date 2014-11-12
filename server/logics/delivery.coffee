@@ -1,17 +1,19 @@
 Meteor.methods
   updateDelivery: (deliveryId, status) ->
     if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      throw new Meteor.Error('deliveryError', Apps.Merchant.DeliveryError.userNotFound.reason)
+      throw new Meteor.Error('deliveryError', Apps.Merchant.DeliveryError.userNotFound.reason); return
 
     if !currentDelivery = Schema.deliveries.findOne({
       _id: deliveryId, merchant: userProfile.currentMerchant, warehouse: userProfile.currentWarehouse
-    }) then throw new Meteor.Error('deliveryError', Apps.Merchant.DeliveryError.userNotFound.reason)
+    }) then throw new Meteor.Error('deliveryError', Apps.Merchant.DeliveryError.userNotFound.reason); return
 
     if !sale = Schema.sales.findOne(currentDelivery.sale)
-      throw new Meteor.Error('deliveryError', Apps.Merchant.DeliveryError.saleNotDelivery.reason)
+      throw new Meteor.Error('deliveryError', Apps.Merchant.DeliveryError.saleNotDelivery.reason); return
 
     if sale.status == sale.submitted == true
-      throw new Meteor.Error('deliveryError', Apps.Merchant.DeliveryError.deliveryIsFinish.reason)
+      throw new Meteor.Error('deliveryError', Apps.Merchant.DeliveryError.deliveryIsFinish.reason); return
+
+    transaction = Schema.transactions.findOne({parent: sale._id})
 
     setOptionDelivery   = {$set:{}}
     setOptionSale       = {$set:{}}
@@ -46,7 +48,7 @@ Meteor.methods
 
       when 'success'
         if currentDelivery.status is 4
-          if sale.debit > 0
+          if transaction.debitCash > 0
             setOptionDelivery = {$set: {status: 5, shipper: userProfile.user}}
             setOptionSale     = {$set: {status: true, success: true}}
           else
@@ -57,7 +59,7 @@ Meteor.methods
 
       when 'fail'
         if currentDelivery.status is 4
-          if sale.debit > 0
+          if transaction.debitCash > 0
             setOptionDelivery = {$set: {status: 8, shipper: userProfile.user}}
             setOptionSale     = {$set: {status: true, success: false}}
           else

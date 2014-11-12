@@ -13,13 +13,13 @@ logics.returns.reactiveRun = ->
 
   if logics.returns.currentSale
     Session.set('currentSale', logics.returns.currentSale)
-    Apps.MerchantSubscriber.subscribe('saleDetailAndProductAndReturn',logics.returns.currentSale._id)
+    Meteor.subscribe('saleDetailAndProductAndReturn',logics.returns.currentSale._id)
     logics.returns.availableSaleDetails = Schema.saleDetails.find({sale: logics.returns.currentSale._id})
   else
     Session.set('currentSale')
 
   if logics.returns.currentReturn
-    Apps.MerchantSubscriber.subscribe('returnDetails',logics.returns.currentReturn._id)
+    Meteor.subscribe('returnDetails',logics.returns.currentReturn._id)
     logics.returns.availableReturnDetails = Schema.returnDetails.find({return: logics.returns.currentReturn._id})
   else
     logics.returns.availableReturnDetails = Schema.returnDetails.find({return: 'null'})

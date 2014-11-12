@@ -1,10 +1,11 @@
-logics.transactionManager = {}
+logics.transactionManager = {newTransaction:{}}
 Apps.Merchant.transactionManagerInit = []
 Apps.Merchant.transactionManagerReactiveRun = []
 
 Apps.Merchant.transactionManagerInit.push (scope) ->
   Session.setDefault('receivable', '0')
   Session.setDefault('transactionFilter', '1')
+  Session.setDefault('createNewTransaction', {customerId: 'skyReset', description: '', totalCash: 0, depositCash: 0, maxCash: 0})
   logics.transactionManager.availableCustomers = []
 
 

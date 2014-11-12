@@ -21,7 +21,7 @@ Apps.Merchant.salesReactiveRun.push (scope) ->
   scope.currentOrder = Order.findBy(Session.get('mySession').currentOrder) if Session.get('mySession')
   if scope.currentOrder
     Session.set('currentOrder', scope.currentOrder)
-    Apps.MerchantSubscriber.subscribe('orderDetails', scope.currentOrder._id)
+    Meteor.subscribe('orderDetails', scope.currentOrder._id)
     scope.currentOrderDetails = OrderDetail.findBy(scope.currentOrder._id)
     scope.currentProduct      = Schema.products.findOne(scope.currentOrder.currentProduct)
 

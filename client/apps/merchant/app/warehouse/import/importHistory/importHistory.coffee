@@ -14,7 +14,7 @@ lemon.defineApp Template.importHistory,
       Session.set('importHistoryFilterToDate', $("[name=toDate]").datepicker().data().datepicker.dates[0])
 
     "click .thumbnails": (event, template) ->
-      Apps.MerchantSubscriber.subscribe('importDetailInWarehouse', @_id)
+      Meteor.subscribe('importDetailInWarehouse', @_id)
       Session.set('currentImportHistory', @)
       $(template.find '#importHistoryDetail').modal()
 
