@@ -8,9 +8,9 @@ lemon.dependencies.add 'merchantPurchase', ['essentials']
 
 lemon.dependencies.add 'merchantMessenger', ['myMerchantProfiles', 'unreadMessages']
 lemon.dependencies.add 'merchantNotification', ['unreadNotifications']
-lemon.dependencies.add 'merchantEssential', ['essentials', 'merchantMessenger', 'merchantNotification', 'myMerchantAndWarehouse']
+lemon.dependencies.add 'merchantEssential', ['essentials', 'merchantMessenger', 'merchantNotification', 'myMerchantAndWarehouse', 'myMetroSummaries']
 
-lemon.dependencies.add 'merchantHome', ['merchantEssential', 'myMetroSummaries']
+lemon.dependencies.add 'merchantHome', ['merchantEssential']
 lemon.dependencies.add 'roleManager', ['merchantEssential', 'currentMerchantRoles']
 lemon.dependencies.add 'staffManager', ['merchantEssential', 'myMerchantProfiles', 'currentMerchantRoles', 'availableBranch', 'allWarehouse']
 lemon.dependencies.add 'customerManager', ['merchantEssential', 'availableCustomers']
