@@ -1,7 +1,5 @@
 currentIndex = 0
 colors = [
-  '#54c8eb', # light blue
-  '#4ea9de', # med blue
   '#4b97d2', # dark blue
   '#92cc8f', # light green
   '#41bb98', # mint green
@@ -72,8 +70,31 @@ animateBackgroundColor = ->
 #
 #      if Session.get("merchantPackages").warehouseName?.length > 0 then Session.set('warehouseNameValid', 'valid')
 #      else Session.set('warehouseNameValid', 'invalid')
-#
+
+finalAccountExtendPrice = ->
+  currentPackage = Session.get('currentMerchantPackage')
+  Session.get('wizardAccountPlus') * currentPackage.extendAccountPrice * currentPackage.years
+finalBranchExtendPrice = ->
+  currentPackage = Session.get('currentMerchantPackage')
+  Session.get('wizardBranchPlus') * currentPackage.extendBranchPrice * currentPackage.years
+finalWarehouseExtendPrice = ->
+  currentPackage = Session.get('currentMerchantPackage')
+  Session.get('wizardWarehousePlus') * currentPackage.extendWarehousePrice * currentPackage.years
+
+
 lemon.defineWidget Template.merchantWizard,
+  accountExtendPrice: -> Session.get('currentMerchantPackage')?.extendAccountPrice
+  branchExtendPrice: -> Session.get('currentMerchantPackage')?.extendBranchPrice
+  warehouseExtendPrice: -> Session.get('currentMerchantPackage')?.extendWarehousePrice
+  packageYears: -> Session.get('currentMerchantPackage')?.years
+  packagePrice: -> Session.get('currentMerchantPackage')?.price
+
+  finalAccountExtendPrice: -> finalAccountExtendPrice()
+  finalBranchExtendPrice: -> finalBranchExtendPrice()
+  finalWarehouseExtendPrice: -> finalWarehouseExtendPrice()
+  crossFinalExtendPrice: -> finalAccountExtendPrice() + finalBranchExtendPrice() + finalWarehouseExtendPrice()
+  crossFinalPrice: -> Session.get('currentMerchantPackage').price + finalAccountExtendPrice() + finalBranchExtendPrice() + finalWarehouseExtendPrice()
+
   rendered: ->
     self = @
     Meteor.setTimeout ->
