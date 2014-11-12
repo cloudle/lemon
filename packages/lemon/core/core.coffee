@@ -1,7 +1,3 @@
-lemon.GlobalSubscriberCache = new SubsManager
-  cacheLimit: 100
-  expireIn: 60
-
 lemon.log = (params...) ->
   now = new Date()
   params.unshift("#{now.getMinutes()}:#{now.getSeconds()}")

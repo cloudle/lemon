@@ -1,10 +1,10 @@
-@lemon.addRoute = (routes, baseRoute = {}, subscriber = lemon.GlobalSubscriberCache) ->
+@lemon.addRoute = (routes, baseRoute = {}) ->
   routes = [routes] unless Array.isArray(routes)
   for route in routes
     _.extend(route, baseRoute)
     if route.waitOnDependency
       route.waitOn = ->
-        results = lemon.dependencies.resolve(route.waitOnDependency, subscriber)
+        results = lemon.dependencies.resolve(route.waitOnDependency)
         item.ready() for item in results
         results
 

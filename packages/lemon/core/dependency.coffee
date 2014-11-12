@@ -10,16 +10,16 @@ lemon.dependencies.list = (dep = undefined ) ->
     console.log name, value for name, value of lemon.dependencies when Array.isArray(value)
   return
 
-lemon.dependencies.resolve = (name, Subscriber = lemon.GlobalSubscriberCache) ->
+lemon.dependencies.resolve = (name) ->
   return if !lemon.dependencies[name]
   dependencies = recursiveResolve(lemon.dependencies[name])
 
   subscriptions = []
   for dep in dependencies
     if typeof(dep) is 'string'
-      subscriptions.push Subscriber.subscribe.call(Subscriber, dep)
+      subscriptions.push Meteor.subscribe.call(Meteor, dep)
     else if Array.isArray(dep)
-      subscriptions.push Subscriber.subscribe.apply(Subscriber, dep)
+      subscriptions.push Meteor.subscribe.apply(Meteor, dep)
 
   return subscriptions
 

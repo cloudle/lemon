@@ -1,7 +1,6 @@
 exceptions = ['topPanelMinimize', 'currentCommentPosition']
 
 lemon.cleanSession = ->
-  lemon.GlobalSubscriberCache.reset()
   console.log 'cleaning sessions'
   delete Session.keys[key] for key, obj of Session.keys when !_.contains(exceptions, key)
 
