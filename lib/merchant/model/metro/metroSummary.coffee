@@ -141,11 +141,9 @@ Schema.add 'metroSummaries', class MetroSummary
         saleDebitCash: sale.debit
         saleRevenueCash: sale.totalPrice
 
-      incOption.deliveryCount        = 1 if sale.paymentsDelivery is 1
-      incOption.deliveryProductCount = sale.saleCount if sale.paymentsDelivery is 1
-      incOption.stockProductCount    = -sale.saleCount if sale.success == true
+      incOption.stockProductCount = -sale.saleCount if sale.success == true
 
-      if sale.paymentMethod is 1
+      if sale.paymentsDelivery is 1
         incOption.deliveryCount = 1
         incOption.deliveryProductCount = sale.saleCount
 #
