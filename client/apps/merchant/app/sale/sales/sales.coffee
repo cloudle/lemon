@@ -13,7 +13,7 @@ lemon.defineApp Template.sales,
     console.log 'Rerenderd!'
     logics.sales.templateInstance = @
     lemon.ExcuteLogics()
-    $("[name=deliveryDate]").datepicker('setDate', logics.sales.deliveryDetail.deliveryDate)
+    $("[name=deliveryDate]").datepicker('setDate', logics.sales.deliveryDetail?.deliveryDate)
 
   events:
     "change [name='advancedMode']": (event, template) ->

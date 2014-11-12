@@ -7,6 +7,19 @@ Meteor.publish 'myOrderHistory', ->
     warehouse : myProfile.currentWarehouse
   })
 
+  if historyOrders.count() is 0
+    orderId = Order.createdNewBy(null, myProfile)
+    mySession = Schema.userSessions.findOne({user: @userId})
+    Schema.userSessions.update(mySession._id, {$set: {currentOrder: orderId}})
+    #Search for new added order!
+    historyOrders = Schema.orders.find({
+      creator   : myProfile.user
+      merchant  : myProfile.currentMerchant
+      warehouse : myProfile.currentWarehouse
+    })
+
+  historyOrders
+
 #  historyOrderDetails = Schema.orderDetails.find({order: {$in:_.pluck(historyOrders.fetch(), '_id')}})
 #  [historyOrders, historyOrderDetails]
 

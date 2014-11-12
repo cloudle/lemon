@@ -24,7 +24,7 @@ Apps.Merchant.salesInit.push ->
       else comment.value = Session.get('currentOrder').comment
 
   logics.sales.updateDeliveryDate = () ->
-    if Session.get('currentOrder').paymentsDelivery
+    if Session.get('currentOrder')?.paymentsDelivery
       date = $("[name=deliveryDate]").datepicker().data().datepicker.dates[0]
       toDate = new Date
       if date

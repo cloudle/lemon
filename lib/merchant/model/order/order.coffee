@@ -24,11 +24,7 @@ Schema.add 'orders', class Order
       creator   : myProfile.user
       seller    : myProfile.user
       buyer     : buyer?._id ? 'null'
-      tabDisplay: if buyer then Helpers.respectName(buyer.name, buyer.gender) else 'New Order'
-
-
-
-
+      tabDisplay: if buyer then Helpers.respectName(buyer.name, buyer.gender) else 'PHIẾU BÁN HÀNG 01'
 
 #  updateContactName     : (value)-> @schema.update(@id, {$set:{contactName:     value}})
 #  updateContactPhone    : (value)-> @schema.update(@id, {$set:{contactPhone:    value}})
