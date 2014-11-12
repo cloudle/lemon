@@ -49,46 +49,46 @@ editor-font-size = 12px
       margin-bottom 10px
 
 
-  .editor-row
-    clearfix()
-    font-size editor-font-size
+.editor-row
+  clearfix()
+  font-size editor-font-size
 
-  .editor-row .editor-wrapper
-    float left
-    position relative
-    padding-left 5px
-    padding-top 5px
-    &.right { float: right; padding-right: 5px; padding-left: 0; }
+.editor-wrapper
+  float left
+  position relative
+  padding-left 5px
+  padding-top 5px
+  &.right { float: right; padding-right: 5px; padding-left: 0; }
 
-    .field
-      width 100%; margin 5px 0
+  .field
+    width 100%; margin 5px 0
 
-    .ilabel
-      absolute left 15px top 0; z-index 10
-      padding 0 4px; line-height 10px
-      font-size 10px
-      text-align center
-      color #fff; background-color #F35112
-      border-radius top 2px
-      &.optional
-        background-color: lime;
-      &.center
-        left: 50%;
-        transform translate(-50%, 0)
-      &.right
-        left: auto; right: 15px
-    .btn
-      margin 5px 0; padding 4px 12px
-      border-radius 3px
-    > input
-      outline: none
-      border 1px solid #DFDFDF
-      width 100%; margin 5px 0
-      padding 0 7px; line-height 28px
-      border-radius 3px
-      font-size: editor-font-size
-      &:disabled
-        background-color #fff
+  .ilabel
+    absolute left 15px top 0; z-index 10
+    padding 0 4px; line-height 10px
+    font-size 10px
+    text-align center
+    color #fff; background-color #F35112
+    border-radius top 2px
+    &.optional
+      background-color: lime;
+    &.center
+      left: 50%;
+      transform translate(-50%, 0)
+    &.right
+      left: auto; right: 15px
+  .btn
+    margin 5px 0; padding 4px 12px
+    border-radius 3px
+  > input
+    outline: none
+    border 1px solid #DFDFDF
+    width 100%; margin 5px 0
+    padding 0 7px; line-height 28px
+    border-radius 3px
+    font-size: editor-font-size
+    &:disabled
+      background-color #fff
 
 #content > .detail-grid
   margin 0; padding 4px 2px 0 2px

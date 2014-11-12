@@ -6,7 +6,6 @@ Apps.Merchant.importInit.push (scope) ->
       else
         description = currentImport.description
 
-
   logics.import.updateDeposit = (deposit, currentImport) ->
     if currentImport.finish is false and currentImport.submitted is false
       if parseInt(deposit) > 0

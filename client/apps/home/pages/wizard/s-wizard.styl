@@ -10,8 +10,9 @@ package-theme(color)
 
 .merchant-wizard-wrapper
   min-height 100%
+  overflow-x scroll
   clearfix()
-  background-color #54c8eb
+  background-color #4ea9de
   transition background-color 15s
 
 #wizardContent
@@ -54,8 +55,8 @@ package-theme(color)
         span
           font-size 50px
         sub
-          font-size 12px
-          absolute right -20px bottom 5px
+          font-size 20px; width 95px
+          absolute right -31px bottom 0px
 
       .hint
         font-style: italic;
@@ -107,21 +108,46 @@ package-theme(color)
   span.description
     font-weight lighter
 
+table.wizard-price-addon
+  margin 20px auto
+  width 95%
+  font-size 20px
+  color #ffffff
+  font-weight lighter
+  td.bold-font
+    font-weight bolder
+  td.bottom-dash
+    border-bottom solid 1px #ffffff
+
 .merchant-wizard-fields
   clearfix()
   width 100%
   margin 10px 0 20px 0
-  input[type=text]
-    transition box-shadow 0.5s
-    &:focus
-      box-shadow 0px 0px 0px 2px rgba(0, 0, 0, 0.1)
+  .editor-wrapper
     column(1/4, gutter: .3)
-    font-size 14px
-    color #585858; background #fff
-    padding 8px 16px 8px 14px
-    border none
-    border-radius 2px
-    placeholder #8D8D8D
+    input[type=text]
+      width 100%
+      transition box-shadow 0.5s
+      &:focus
+        box-shadow 0px 0px 0px 2px rgba(0, 0, 0, 0.1)
+      font-size 14px
+      color #585858; background #fff
+      padding 8px 16px 8px 14px
+      border none
+      border-radius 2px
+      placeholder #8D8D8D
+
+.finish-register.btn
+  float right
+  margin-right 28px
+  margin-top 20px
+  font-size 30px
+  color #ffffff
+  border-radius 3px
+  border solid 1px #ffffff
+  transition box-shadow 1s
+  &:hover, &.valid
+    box-shadow 0 0 15px
 
 .package-block.free
   package-theme(lighten(#26bdef, 10))

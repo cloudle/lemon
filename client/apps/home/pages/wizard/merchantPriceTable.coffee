@@ -10,18 +10,15 @@ lemon.defineWidget Template.merchantPriceTable,
   branchPlus: -> Session.get('wizardBranchPlus')
   warehousePlus: -> Session.get('wizardWarehousePlus')
 
+  realWarehouseLim: -> @options.warehouseLim + Session.get('wizardBranchPlus')
+
   events:
-    "click .command.raise.account": -> Session.set('wizardAccountPlus', Session.get('wizardAccountPlus') + 1)
-    "click .command.raise.branch": ->
-      Session.set('wizardBranchPlus', Session.get('wizardBranchPlus') + 1)
-      if Session.get('wizardWarehousePlus') < Session.get('wizardBranchPlus')
-        Session.set('wizardWarehousePlus', Session.get('wizardBranchPlus'))
+    "click .command.raise.account": -> Session.set('wizardAccountPlus', Session.get('wizardAccountPlus') + 5)
+    "click .command.raise.branch": -> Session.set('wizardBranchPlus', Session.get('wizardBranchPlus') + 1)
     "click .command.raise.warehouse": -> Session.set('wizardWarehousePlus', Session.get('wizardWarehousePlus') + 1)
-    "click .command.lower.account": -> Session.set('wizardAccountPlus', Session.get('wizardAccountPlus') - 1) if Session.get('wizardAccountPlus') > 0
+    "click .command.lower.account": -> Session.set('wizardAccountPlus', Session.get('wizardAccountPlus') - 5) if Session.get('wizardAccountPlus') > 0
     "click .command.lower.branch": -> Session.set('wizardBranchPlus', Session.get('wizardBranchPlus') - 1) if Session.get('wizardBranchPlus') > 0
-    "click .command.lower.warehouse": ->
-      if Session.get('wizardWarehousePlus') > 0 and Session.get('wizardWarehousePlus') > Session.get('wizardBranchPlus')
-        Session.set('wizardWarehousePlus', Session.get('wizardWarehousePlus') - 1)
+    "click .command.lower.warehouse": -> Session.set('wizardWarehousePlus', Session.get('wizardWarehousePlus') - 1) if Session.get('wizardWarehousePlus') > 0
 
 #  extendPrice: ->
 #    extendAccountPrice    = @options.extendAccountPrice * Session.get('extendAccountLimit')

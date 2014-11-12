@@ -4,10 +4,18 @@ template(name="merchantWizard")
       span.caption Chúc mừng bạn đã đăng ký thành công! <br>
       span.description Chọn gói sản phẩm phù hợp và tiếp tục.
     .merchant-wizard-fields
-      input#companyName(type="text" placeholder="tên doanh nghiệp *" value="{{purchase.companyName}}")
-      input#companyPhone(type="text" placeholder="số điên thoại *" value="{{purchase.contactPhone}}")
-      input#merchantName(type="text" placeholder="tên chi nhánh chính *" value="{{purchase.merchantName}}")
-      input#warehouseName(type="text" placeholder="tên kho hàng *" value="{{purchase.warehouseName}}")
+      .editor-wrapper
+        span.ilabel.optional tên doanh nghiệp
+        input#companyName(type="text" placeholder="tên doanh nghiệp *" value="{{purchase.companyName}}")
+      .editor-wrapper
+        span.ilabel.optional số điên thoại
+        input#companyPhone(type="text" placeholder="số điên thoại *" value="{{purchase.contactPhone}}")
+      .editor-wrapper
+        span.ilabel.optional.right tên chi nhánh chính
+        input#merchantName(type="text" placeholder="tên chi nhánh chính *" value="{{purchase.merchantName}}")
+      .editor-wrapper
+        span.ilabel.optional.right tên kho hàng chính
+        input#warehouseName(type="text" placeholder="tên kho hàng chính *" value="{{purchase.warehouseName}}")
 
     .price-table-group.row
       .col.col-sm-3
@@ -19,4 +27,48 @@ template(name="merchantWizard")
       .col.col-sm-3
         +merchantPriceTable(options=fiveYearsPackageOption)
 
-    .finish-register.btn.pull-right(class="{{updateValid}}") HOÀN TẤT
+    table.wizard-price-addon
+      tr
+        td
+        td(width="15%" align="right") SỐ LƯỢNG
+        td(width="20%" align="right") GIÁ ĐƠN VỊ
+        td(width="15%" align="right") THỜI HẠN <sup>(NĂM)</sup>
+        td(width="20%" align="right") TỔNG CỘNG
+      tr
+        td
+          span.icon-group
+          span.pull-right TÀI KHOẢN CỘNG THÊM
+        td(align="right") {{sessionGet 'wizardAccountPlus'}}
+        td(align="right") {{formatNumber accountExtendPrice}} VNĐ
+        td(align="right") {{packageYears}}
+        td(align="right") {{formatNumber finalAccountExtendPrice}} VNĐ
+      tr
+        td
+          span.icon-location-1
+          span.pull-right CHI NHÁNH CỘNG THÊM
+        td(align="right") {{sessionGet 'wizardBranchPlus'}}
+        td(align="right") {{formatNumber branchExtendPrice}} VNĐ
+        td(align="right") {{packageYears}}
+        td(align="right") {{formatNumber finalBranchExtendPrice}} VNĐ
+      tr
+        td
+          span.icon-home-4
+          span.pull-right KHO HÀNG CỘNG THÊM
+        td(align="right") {{sessionGet 'wizardWarehousePlus'}}
+        td(align="right") {{formatNumber warehouseExtendPrice}} VNĐ
+        td(align="right") {{packageYears}}
+        td.bottom-dash(align="right") {{formatNumber finalWarehouseExtendPrice}} VNĐ
+      tr
+        td
+        td
+        td
+        td
+        td.bold-font(align="right") {{formatNumber crossFinalExtendPrice}} VNĐ
+      tr
+        td
+        td
+        td
+        td(align="right") + {{formatNumber packagePrice}}
+        td.bold-font(align="right") {{formatNumber crossFinalPrice}} VNĐ
+
+    .finish-register.btn.icon-award(class="{{updateValid}}") HOÀN TẤT

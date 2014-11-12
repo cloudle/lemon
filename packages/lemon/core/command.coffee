@@ -1,8 +1,11 @@
+exceptions = ['topPanelMinimize', 'currentCommentPosition']
+
 lemon.cleanSession = ->
   lemon.GlobalSubscriberCache.reset()
-  console.log 'clean session is waiting for implements'
+  console.log 'cleaning sessions'
+  delete Session.keys[key] for key, obj of Session.keys when !_.contains(exceptions, key)
 
-lemon.logout = (redirectUrl = undefined)->
+lemon.logout = (redirectUrl = '/')->
   Meteor.logout()
   lemon.cleanSession()
   Meteor.setTimeout ->
