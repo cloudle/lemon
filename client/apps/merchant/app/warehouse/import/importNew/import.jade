@@ -74,6 +74,6 @@ template(name="import")
           input.description(value="{{currentImport.description}}" )
         .editor-wrapper.right(style="width: 180px")
           span.ilabel.optional người tạo
-          input.emailCreator(value="{{creatorName}}" disabled)
+          input.emailCreator(value="{{userNameFromId currentImport.creator}}" disabled)
 
     +tabComponent(options=tabOptions)
