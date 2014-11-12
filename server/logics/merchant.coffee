@@ -22,7 +22,6 @@ Meteor.methods
       creator           : userId
       name              : 'Kho Trụ Sở'
     }
-    Schema.metroSummaries.insert MetroSummary.newByMerchant(merchantId)
 
     Schema.userProfiles.insert
       user              : userId
@@ -31,6 +30,10 @@ Meteor.methods
       currentWarehouse  : warehouseId
       isRoot            : true
       systemVersion     : Schema.systems.findOne().version
+
+    Schema.metroSummaries.insert MetroSummary.newByMerchant(merchantId)
+
+
 
     Schema.userSessions.insert { user: userId }
 
