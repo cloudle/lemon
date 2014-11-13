@@ -19,18 +19,14 @@ lemon.defineApp Template.import,
 
     'click .editImport': (event, template)->
       if currentImport = Session.get('currentImport')
-        Meteor.call 'importEnabledEdit', currentImport._id, (error, result) ->
-          if error then console.log error.error else console.log result
+        Meteor.call 'importEnabledEdit', currentImport._id, (error, result) -> if error then console.log error.error
 
     'click .submitImport': (event, template)->
       if currentImport = Session.get('currentImport')
-        Meteor.call 'importSubmit', currentImport._id, (error, result) ->
-          if error then console.log error.error else console.log result
+        Meteor.call 'importSubmit', currentImport._id, (error, result) -> if error then console.log error.error
 
     'click .finishImport': (event, template)->
       if currentImport = Session.get('currentImport')
         if currentImport.submitted is false
-          Meteor.call 'importSubmit', currentImport._id, (error, result) ->
-            if error then console.log error.error else console.log results
-        Meteor.call 'importFinish', currentImport._id, (error, result) ->
-          if error then console.log error.error else console.log result
+          Meteor.call 'importSubmit', currentImport._id, (error, result) -> if error then console.log error.error
+        Meteor.call 'importFinish', currentImport._id, (error, result) -> if error then console.log error.error

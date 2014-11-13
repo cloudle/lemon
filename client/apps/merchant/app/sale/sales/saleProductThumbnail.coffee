@@ -1,3 +1,12 @@
+reCalculateOrderDetail= (orderDetail, quality)->
+  option = {quality: orderDetail.quality + quality}
+  option.totalPrice   = option.quality * orderDetail.price
+  option.discountCash = Math.round(option.totalPrice * orderDetail.discountPercent/100)
+  option.finalPrice   = option.totalPrice - option.discountCash
+  Schema.orderDetails.update(orderDetail._id, {$set: option})
+  logics.sales.reCalculateOrder(orderDetail.order)
+
+
 lemon.defineWidget Template.saleProductThumbnail,
   avatarUrl: ->
     currentProduct = Schema.products.findOne(@product)
@@ -12,12 +21,15 @@ lemon.defineWidget Template.saleProductThumbnail,
 
   events:
     "click .trash": (event, template) ->
-      orderId = @_id
+      orderDetailId = @_id
+      orderId = @order
       Helpers.excuteAfterAnimate $(event.delegateTarget), 'item-wrapper', 'bounceOut', ->
-        OrderDetail.remove(orderId)
-      logics.sales.reCalculateOrder(@order)
+        OrderDetail.remove(orderDetailId)
+        logics.sales.reCalculateOrder(orderId)
+
+
     "click .command-button.up": ->
       cross = logics.sales.validation.getCrossProductQuality(@product, @order)
-      Schema.orderDetails.update(@_id, {$set: {quality: @quality + 1}}) if (cross.product.availableQuality - cross.quality) > 0
-    "click .command-button.down": ->
-      Schema.orderDetails.update(@_id, {$set: {quality: @quality - 1}}) if @quality > 1
+      reCalculateOrderDetail(@, 1) if (cross.product.availableQuality - cross.quality) > 0
+
+    "click .command-button.down": -> reCalculateOrderDetail(@, -1) if @quality > 1

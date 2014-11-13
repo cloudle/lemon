@@ -9,7 +9,7 @@ template(name="transactionManagerDetail")
           i.icon-search-8
           span CHI TIẾT CÔNG NỢ
       .modal-body.printable-area
-        span {{groupType transaction.group}} ({{createDate}})<br/>
+        span {{groupType transaction.group}} ({{formatDate transaction.debtDate}})<br/>
         span Nhân viên: {{userNameFromId transaction.creator}} <br/>
         span Khách Hàng: {{ownerNameFromId transaction.owner}} <br/>
         span Tình trạng: {{status}} (đã trả {{countDetail}} lần) <br/>
@@ -17,7 +17,7 @@ template(name="transactionManagerDetail")
         ul
           each transactionDetail
             li.order-detail
-              .product-name <b>{{createDate version.createAt}}</b> (tạo bởi: <b>{{userNameFromId creator}} </b>)
+              .product-name <b>{{formatDate paymentDate}}</b> (tạo bởi: <b>{{userNameFromId creator}} </b>)
               .product-price
                 span.individual-price Đã trả: {{formatNumber depositCash}}
                 span.final-price Nợ còn: {{formatNumber debitCash}}
@@ -32,13 +32,18 @@ template(name="transactionManagerDetail")
       .modal-footer
         if showDeleteTransaction
           button.btn.btn-danger.deleteTransaction(data-dismiss="modal") Xóa Phiếu
-        if hideAddDetail
-          button.btn.btn-primary.showTransactionDetail Thêm Trả Tiền
-        else
-          .editor-row
+
+        if allowAddDetail
+          if showAddDetail
+            button.btn.btn-primary.showTransactionDetail Thêm Trả Tiền
+
+          .editor-row(style="{{createTransactionDetail}}")
             .editor-wrapper(style="width:150px")
               span.ilabel tiền trả
               +iSpinEdit(options=depositCashOptions  class="field")
+            .editor-wrapper(style="width: 90px")
+              span.ilabel ngày trả
+              input.createDebtDate(name="createDebtDate" binding="datePicker" todayHighlight="true" maxlength="20")
             .editor-wrapper
               button.btn.btn-success.createTransactionDetail(type='submit') Thêm
             .editor-wrapper

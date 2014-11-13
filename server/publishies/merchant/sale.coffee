@@ -51,7 +51,7 @@ Meteor.publishComposite 'saleDetails', (saleId) ->
       return EmptyQueryResult if !self.userId
       Schema.saleDetails.find {sale: saleId}
     children: [
-      find: (saleDetail) -> Schema.products.find {_id: product}
+      find: (saleDetail) -> Schema.products.find {_id: saleDetail.product}
     ]
   }
 
