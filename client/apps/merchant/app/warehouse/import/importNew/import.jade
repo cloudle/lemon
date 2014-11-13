@@ -7,7 +7,9 @@ template(name="import")
         |Nhập Kho
         button.btn.btn-success.importHistory(type='submit') LỊCH SỬ
       .commands
-        button.btn.btn-default.pull-right.icon-print-6.add-product(type='submit') Thêm Sản Phẩm
+        button.btn.btn-default.pull-right.icon-print-6.add-product(type='submit') Thêm SP
+        //button.btn.btn-default.pull-right.icon-print-6.add-provider(type='submit') Thêm Nhóm SP
+        //button.btn.btn-default.pull-right.icon-print-6.add-provider(type='submit') Thêm NCC
         button.btn.btn-default.pull-right.icon-print-6.add-provider(type='submit') Thêm NPP
       .switches
         input(binding="switch" type="checkbox" name="advancedMode")
@@ -17,16 +19,16 @@ template(name="import")
         span.ilabel sản phẩm
         +iSelect(options=productSelectOptions class="field")
       .editor-wrapper(style="width:180px")
-        span.ilabel.optional nhà phân phối
+        span.ilabel.optional nhà cung cấp
         +iSelect(options=providerSelectOptions class="field")
       .editor-wrapper(style="width:120px")
         span.ilabel.center số lượng
         +iSpinEdit(options=qualityOptions class="field")
-      .editor-wrapper(style="width:150px")
+      .editor-wrapper(style="width:160px")
         span.ilabel.center giá nhập
         +iSpinEdit(options=importPriceOptions class="field")
       if hidePriceSale
-        .editor-wrapper(style="width:150px")
+        .editor-wrapper(style="width:160px")
           span.ilabel.center giá bán
           +iSpinEdit(options=salePriceOptions class="field")
       if showCreateDetail
@@ -70,10 +72,13 @@ template(name="import")
           span.ilabel.optional tổng tiền
           input.totalPrice(value="{{currentImport.totalPrice}}" disabled)
         .editor-wrapper.right(style="width: 300px")
-          span.ilabel description
+          span.ilabel ghi chú
           input.description(value="{{currentImport.description}}" )
-        .editor-wrapper.right(style="width: 180px")
-          span.ilabel.optional người tạo
-          input.emailCreator(value="{{userNameFromId currentImport.creator}}" disabled)
+        //.editor-wrapper.right(style="width: 180px")
+          //span.ilabel.optional người tạo
+          //input.emailCreator(value="{{userNameFromId currentImport.creator}}" disabled)
+        //.editor-wrapper(style="width:150px")
+        //  span.ilabel.optional đại lý (nhà phân phối)
+        //  +iSelect(options=providerSelectOptions class="field")
 
     +tabComponent(options=tabOptions)
