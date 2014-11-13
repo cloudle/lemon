@@ -13,6 +13,7 @@ saleStatusIsImport = (sale)->
 logics.exportAndImportManager.createSaleExport= (currentSale)->
   if saleStatusIsExport(currentSale)
     saleDetails = Schema.saleDetails.find({sale: currentSale._id}).fetch()
+    console.log saleDetails
     for detail in saleDetails
       Schema.saleDetails.update detail._id, $set:{exported: true, exportDate: new Date, status: true}
       Schema.productDetails.update detail.productDetail , $inc:{inStockQuality: -detail.quality}
@@ -20,7 +21,7 @@ logics.exportAndImportManager.createSaleExport= (currentSale)->
 
       Schema.saleExports.insert SaleExport.new(currentSale, detail), (error, result) -> console.log error if error
 
-#          Notification.saleConfirmByExporter(currentSale._id)
+#    Notification.saleConfirmByExporter(currentSale._id)
     MetroSummary.updateMetroSummaryBySaleExport(currentSale._id)
     if currentSale.paymentsDelivery == 0 then  Schema.sales.update currentSale._id, $set:{submitted: true, exported: true}
     if currentSale.paymentsDelivery == 1

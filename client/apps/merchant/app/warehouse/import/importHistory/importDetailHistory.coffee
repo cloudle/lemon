@@ -1,6 +1,6 @@
 lemon.defineWidget Template.importHistoryDetail,
   showFinish: ->
-    if Role.hasPermission(Session.get('myProfile').user, Apps.Merchant.Permissions.su.key)
+    if Role.hasPermission(Session.get('myProfile')?.user, Apps.Merchant.Permissions.su.key)
       if @import?.finish is false and @import?.submitted is true then true
   status: ->
     if @import?.submitted is true and @import?.finish is false then return 'chờ xác nhận'

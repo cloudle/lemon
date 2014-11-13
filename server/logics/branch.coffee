@@ -10,6 +10,7 @@ Meteor.methods
       })
       Schema.warehouses.insert Warehouse.newDefault({merchantId: merchantId})
       Schema.metroSummaries.insert MetroSummary.newByMerchant(merchantId)
+      MetroSummary.updateMetroSummaryBy(['branch'])
 
 
   destroyBranch: (branchId)->

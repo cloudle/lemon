@@ -5,8 +5,8 @@ Apps.Merchant.importHistoryInit.push (scope) ->
     query: (query) -> query.callback
       results: scope.availableMerchants.fetch()
     initSelection: (element, callback) ->
-      callback(Schema.merchants.findOne(Session.get('mySession').currentImportMerchant) ? 'skyReset')
-    reactiveValueGetter: -> Session.get('mySession').currentImportMerchant ? 'skyReset'
+      callback(Schema.merchants.findOne(Session.get('mySession')?.currentImportMerchant) ? 'skyReset')
+    reactiveValueGetter: -> Session.get('mySession')?.currentImportMerchant ? 'skyReset'
     changeAction: (e) ->
       option =
         currentImportMerchant : e.added._id

@@ -39,6 +39,10 @@ simpleSchema.imports = new SimpleSchema
     type: String
     optional: true
 
+  allowDelete:
+    type: Boolean
+    defaultValue: true
+
   styles:
     type: String
     defaultValue: Helpers.RandomColor()

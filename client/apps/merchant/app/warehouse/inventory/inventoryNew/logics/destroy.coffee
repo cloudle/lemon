@@ -4,7 +4,7 @@ logics.inventoryManager.destroyInventory = (warehouseId)->
   if !userSession then return console.log 'Bạn chưa đăng nhập'
 
 #     'Bạn không có quyền hủy phiếu kiểm kho.' unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.inventoryDestroy.key)
-  warehouse = Schema.warehouses.findOne({_id: warehouseId, merchant: userSession.currentMerchant})
+  warehouse = Schema.warehouses.findOne({_id: warehouseId, merchant: userSession.currentInventoryBranchSelection})
   if !warehouse then return console.log 'Kho hang khong ton tai'
   if warehouse.checkingInventory is false then console.log 'Kho hang khong co dang kiem kho'
 
