@@ -1,6 +1,6 @@
 template(name="home")
   //.slider(style="width: 100%; height: 450px;")
-  .home-wrapper
+  .home-wrapper.home-video-section
     .main-left
       .youtube-wrapper
         iframe(width="640" height="360" src="//www.youtube.com/embed/lzpE9_dMovU?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen)
@@ -33,3 +33,6 @@ template(name="home")
           .accept-terms <b>K</b>hi nhấn <b>Đăng Ký</b>, bạn <b>đồng ý</b> và đã đọc <b>điều khoản dịch vụ</b> của chúng tôi.
         #merchantRegister.btn.pull-right(class="{{registerValid}}") {{i18n 'register'}}
         #terms.btn.pull-right(class="{{termButtonActive}}") {{i18n 'term'}}
+
+  .home-wrapper
+    .home-splitter
