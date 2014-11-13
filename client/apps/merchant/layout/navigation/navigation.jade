@@ -6,6 +6,9 @@ template(name="navigation")
         span.version {{systemVersion}}
 
       ul.nav.navbar-nav.navbar-right.notifications
+        if tourVisible
+          li.inav
+            span.tour-toggle: i.icon-light-up
         li.inav
           +messageNotifications
           .notification-counts(class="{{activeClassByCount unreadMessageCount}}") {{unreadMessageCount}}

@@ -10,7 +10,6 @@ lemon.defineApp Template.sales,
     Session.setDefault('allowSuccessOrder', false)
 
   rendered: ->
-    console.log 'Rerenderd!'
     logics.sales.templateInstance = @
     lemon.ExcuteLogics()
     $("[name=deliveryDate]").datepicker('setDate', logics.sales.deliveryDetail?.deliveryDate)

@@ -1,11 +1,14 @@
-exceptions = ['topPanelMinimize', 'currentCommentPosition']
+cleanList = ['registerAccountValid', 'registerSecretValid', 'loginValid']
+
+lemon.listSession = -> console.log key for key, obj of Session.keys
 
 lemon.cleanSession = ->
   console.log 'cleaning sessions'
-  delete Session.keys[key] for key, obj of Session.keys when !_.contains(exceptions, key)
+  delete Session.keys[key] for key, obj of Session.keys when _.contains(cleanList, key)
 
 lemon.logout = (redirectUrl = '/')->
   Meteor.logout()
+  Apps.setupHistories = []
   lemon.cleanSession()
   Meteor.setTimeout ->
     Router.go(redirectUrl) if redirectUrl

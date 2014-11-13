@@ -30,7 +30,6 @@ lemon.dependencies.add 'saleOrder', ['merchantEssential',
                                      'providers',
                                      'availableCustomers']
 
-
 lemon.dependencies.add 'branchManager', ['merchantEssential', 'availableBranch']
 lemon.dependencies.add 'warehouseManager', ['merchantEssential', 'availableWarehouse']
 lemon.dependencies.add 'stockManager', ['merchantEssential', 'allProducts']
@@ -40,7 +39,6 @@ lemon.dependencies.add 'warehouseImport', ['merchantEssential',
                                            'allProducts',
                                            'skulls',
                                            'providers']
-
 
 lemon.dependencies.add 'inventoryHistory', ['merchantEssential', 'allInventory']
 lemon.dependencies.add 'inventoryManager', ['merchantEssential', 'allInventoryAndDetail', 'availableBranch', 'allWarehouse']

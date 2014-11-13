@@ -108,6 +108,7 @@ lemon.defineWidget Template.merchantWizard,
       console.log template.data.purchase
       Schema.merchantPurchases.update(template.data.purchase._id, {$set: {merchantRegistered: true}})
       Router.go('/merchant')
+    "click .register-logout.btn": -> lemon.logout()
 
 #  merchantPackage: -> Session.get('merchantPackages')
 #  updateValid: ->

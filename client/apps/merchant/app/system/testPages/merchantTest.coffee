@@ -1,9 +1,7 @@
-lemon.dependencies.add 'merchantTest', ['merchantTestDep',
-                                        'myMerchantProfiles']
+scope = logics.merchantTest
 
-
-merchantTestRoute =
-  template: 'merchantTest',
-  waitOnDependency: 'merchantTest'
-
-lemon.addRoute [merchantTestRoute], Apps.Merchant.RouterBase
+lemon.defineApp Template.merchantTest,
+  rendered: ->
+    console.log scope.tour
+    scope.tour.init()
+    scope.tour.restart()
