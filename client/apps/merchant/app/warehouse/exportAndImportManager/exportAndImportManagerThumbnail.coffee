@@ -14,4 +14,7 @@ lemon.defineWidget Template.exportAndImportManagerThumbnail,
     if @status == @received == @exported == true and @submitted == @imported == false and @paymentsDelivery == 1 then return 'Đã Nhận Hàng'
 
   events:
-    "click .creatSaleExport": ->  logics.exportAndImportManager.createSaleExport(@)
+    "click .createSaleExport": ->
+      Meteor.call 'createSaleExport', @_id, (error, result) ->
+        if error then console.log error.error
+        else console.log result

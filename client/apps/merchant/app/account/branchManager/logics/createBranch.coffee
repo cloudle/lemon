@@ -10,6 +10,5 @@ logics.branchManager.createBranch = (context) ->
       if error
         console.log error.error
       else
-        MetroSummary.updateMetroSummaryBy(['branch'])
         resetForm(context)
         Session.set('allowCreateNewBranch', false)
