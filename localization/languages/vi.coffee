@@ -35,7 +35,7 @@ i18n.map 'vi',
     award: 'Giải thưởng'
     address: '109 Cộng Hòa, Tân Bình, Tp.HCM.'
     copyWriting: 'Enterprise Dual Strategy System 2013 - 2014, Bản quyền thuộc về công ty TNHH Công Nghệ Thiên Ban.'
-    term: 'Điều khoản sử dụng'
+    term: 'Điều khoản dịch vụ'
 
   menu:
     role: 'phân quyền'

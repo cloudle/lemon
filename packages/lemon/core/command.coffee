@@ -1,10 +1,10 @@
-cleanList = ['registerAccountValid', 'registerSecretValid', 'loginValid']
+lemon.sessionCleanList = ['registerAccountValid', 'registerSecretValid', 'loginValid']
 
 lemon.listSession = -> console.log key for key, obj of Session.keys
 
 lemon.cleanSession = ->
   console.log 'cleaning sessions'
-  delete Session.keys[key] for key, obj of Session.keys when _.contains(cleanList, key)
+  delete Session.keys[key] for key, obj of Session.keys when _.contains(lemon.sessionCleanList, key)
 
 lemon.logout = (redirectUrl = '/')->
   Meteor.logout()

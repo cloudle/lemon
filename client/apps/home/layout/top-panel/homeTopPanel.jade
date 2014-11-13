@@ -8,5 +8,88 @@ template(name="homeTopPanel")
         .content-inner
           .eula-section
             .title.icon-award {{i18n 'home.term'}}
-            .details Đây là chi tiết điều khoản sử dụng...
-            .post-script Tôi đồng ý với tất cả những điều khoản trên.
+            .details
+              +eulaDetails
+            .post-script <b>LƯU Ý</b>: Đăng ký tài khoản đồng nghĩa với việc bạn đã chấp nhận toàn bộ điều khoản của công ty chúng tôi.
+
+template(name="eulaDetails")
+  span.eula-heading Chào mừng Bạn đến với Thiên Ban!
+  p.eula-content-text
+    |Cảm ơn bạn đã tin tưởng và sử dụng Dịch vụ của chúng tôi. Đây là Dịch vụ được cung cấp bởi Công ty TNHH Công Nghệ Thiên Ban có trụ sở tại 109 Cộng Hòa, phường 12, quận Tân Bình, Thành phố Hồ Chí Minh. <br/>
+    |Bằng việc sử dụng Dịch vụ này có nghĩa là bạn đang đồng ý với các điều khoản của Thiên Ban, vui lòng đọc kỹ các điều khoản dưới đây.<br/>
+  span.eula-heading Diễn giải từ ngữ
+  ul
+    li Dịch vụ: Hệ thống quản lý EDS chạy dưới tên miền www.gera.vn.
+    li Nội dung: Hình ảnh, biểu tượng, bài viết, tinh nhắn, biểu đồ, video được đăng trên Website.
+    li Website: Trang thông tin điện tử khi truy cập địa chỉ www.gera.vn.
+    li Chủ tài khoản: Người đăng ký ban đầu; hoặc người giữ tài khoản quản trị; hoặc người truy cập tài khoản Dịch vụ bằng tài khoản quản trị.
+    li Tài khoản quản trị: Tài khoản được tạo đầu tiên khi chủ tài khoản đăng ký trên www.gera.vn.
+    li Bên thứ ba: Khách hàng, đối tác, nhà cung cấp của khách hàng hoặc của Thiên Ban.
+    li Thiên Ban: Công ty TNHH Công Nghệ Thiên Ban.
+  span.eula-heading Khi sử dụng Dịch vụ của chúng tôi
+  p.eula-content-text
+    |Chúng tôi sẽ luôn nỗ lực để đem lại Dịch vụ tốt nhất cho bạn, chúng tôi cũng hy vọng rằng bạn sẽ cảm thấy hài lòng với những gì mình có được. Chúng tôi tin bạn hiểu rằng, mối quan hệ hợp tác này sẽ bền chặt hơn khi có sự hợp tác chân thành của bạn. Vì thế, điều cần làm ngay bây giờ là bạn phải tuân thủ mọi chính sách mà chúng tôi đã cung cấp cho bạn trong phạm vi Dịch vụ. <br/>
+    |Bạn không được sử dụng trái phép và gây trở ngại cho Dịch vụ của chúng tôi, hoặc tìm cách truy cập chúng bằng phương pháp nào đó mà không thông qua giao diện và hướng dẫn được chúng tôi cung cấp. <br/>
+    |Bạn cần hiểu và đồng ý rằng, bạn có trách nhiệm sử dụng Dịch vụ của chúng tôi vào việc kinh doanh hợp pháp và đúng với thuần phong mỹ tục. Bạn không được sử dụng Dịch vụ để phát tán thư rác hoặc các thông tin không mong muốn đến những người dùng khác trong hệ thống dưới mọi hình thức. <br/>
+    |Chúng tôi có thể tạm ngưng hoặc ngừng cung cấp Dịch vụ cho bạn nếu bạn không tuân thủ các điều khoản hoặc chính sách của Thiên Ban hoặc nếu chúng tôi đang điều tra hành vi bị nghi ngờ là sai phạm của bạn.<br/>
+    |Việc bạn sử dụng Dịch vụ của chúng tôi không có nghĩa là bạn được sở hữu bất cứ các quyền sở hữu trí tuệ nào đối với Dịch vụ của chúng tôi hoặc nội dung mà bạn truy cập. Bạn không được sự dụng nôi dung từ dịch vụ của chúng tôi trừ khi bạn được chúng tôi cho phép hoặc được luật pháp cho phép. Các điều khoản này không cấp cho bạn quyền sử dụng bất kỳ thương hiệu hoặc lôgô nào được sử dụng trong Dịch vụ của chúng tôi. <br/>
+    |Bạn không được xóa, che khuất hoặc thay đổi bất kỳ thông báo pháp lý nào được hiển thị trong hoặc kèm theo Dịch vụ của chúng tôi.<br/>
+    |Liên quan đến việc bạn sử dụng Dịch vụ, chúng tôi có thể gửi cho bạn các thông báo dịch vụ, thông báo quản trị và thông tin khác. Bạn có thể chọn không nhận một số thông báo này.
+  span.eula-heading Tài khoản của Bạn
+  p.eula-content-text
+    |Bạn cần có tài khoản để sử dụng Dịch vụ của chúng tôi. Do đó, bạn cần bảo vệ tài khoản của mình, hãy giữ bí mật mật khẩu của bạn để tránh trường hợp tài khoản bị đánh cắp hoặc bị lạm dụng với mục đích không an toàn cho cả bạn và Thiên Ban. Sự cẩn thận này sẽ giúp bạn tránh khỏi những rắc rối không nên có, vì bạn phải chịu trách nhiệm đối với các hoạt động xảy ra trên hoặc thông qua tài khoản của bạn, chúng tôi không chịu trách nhiệm đối với bất kỳ sự xâm nhập trái phép nào do sự bất cẩn của bạn.
+  span.eula-heading Bảo mật thông tin
+  p.eula-content-text
+    |Chúng tôi cam kết giữ kín mọi thông tin của bạn khi sử dụng các Dịch vụ trên Website của chúng tôi. Thông tin của bạn chỉ được thay đổi khi có sự đồng ý hoặc yêu cầu của bạn mà thôi.<br/>
+    |Cùng với đó, bạn cũng hiểu và và đồng ý rằng bạn không có quyền và không có quyền yêu cầu truy cập khu vực riêng của Thiên Ban, khu vực quản trị Dịch vụ, hệ thống và quản trị Website.
+  span.eula-heading Xử lý sự cố
+  p.eula-content-text
+    |Bạn cần biết rằng, trong mọi trường hợp, chúng tôi luôn cố gắng hỗ trợ và khắc phục khi có sự cố xảy ra. Tuy nhiên, Thiên Ban sẽ không chịu trách nhiệm trước những thiệt hại phát sinh do sự chậm trễ không thông báo hoặc che giấu của bạn. Bạn có trách nhiệm thông báo ngay cho Thiên Ban khi phát hiện sự cố trong quá trình sử dụng, bạn cần tích cực phối hợp với chúng tôi để khắc phục sớm nhất cho bạn. Trong trường hợp sự cố liên quan đến Bên thứ ba, bạn có trách nhiệm phối hợp với các bên liên quan để giải quyết.
+  span.eula-heading Đảm bảo cung cấp dịch vụ
+  p.eula-content-text
+    |Chúng tôi cung cấp Dịch vụ với mức độ kỹ thuật và sự quan tâm hợp lý về mặt thương mại, chúng tôi hy vọng rằng bạn sẽ thích thú khi sử dụng Dịch vụ này. Tuy nhiên, có một số điều nhất định mà chúng tôi không hứa hẹn về Dịch vụ của mình.<br/>
+    |Trừ các trường hợp được nêu rõ trong các điều khoản này hoặc các điều khoản bổ sung, chúng tôi không đưa ra bất kỳ hứa hẹn cụ thể nào về dịch vụ. Chúng tôi không đưa ra bất kỳ cam kết nào về nội dung trong các dịch vụ, chức năng cụ thể của các dịch vụ hoặc mức độ tin cậy, sự sẵn có hoặc khả năng đáp ứng nhu cầu của bạn của các dịch vụ đó.<br/>
+    |Chúng tôi cung cấp các dịch vụ theo hiện trạng có thể thực hiện được.<br/>
+    |Bạn cần lưu ý rằng Website này và Dịch vụ là dựa trên những dịch vụ đường truyền internet và có thể bị mất điện hoặc gián đoạn, bị bên ngoài tấn công và xảy ra chậm trễ. Trong những trường hợp như vậy, đối với những điều khoản này, chúng tôi sẽ nỗ lực khắc phục sự gián đoạn và đưa ra sự điều chỉnh, sửa chữa và thay thế trong khả năng có thể để phục hồi hệ thống.
+  span.eula-heading Giới hạn trách nhiệm
+  p.eula-content-text
+    |Như bạn biết đó, chúng ta luôn nỗ lực để hướng tới sự hợp tác bền vững. Trong sự hợp tác này, chúng tôi biết rằng đâu là trách nhiệm mà mình phải cố gắng để làm được và cũng biết rằng đâu là giới hạn vượt ra khỏi tầm kiểm soát mà chúng tôi cam kết. Chúng tôi sẽ không chịu bất kỳ trách nhiệm nào hoặc trách nhiệm liên đới đối với những hậu quả của việc truy cập trái phép đến máy chủ, Website; trang thiết bị và dữ liệu của bạn hoặc dữ liệu khách hàng của bạn vì tai nạn, phương tiện bất hợp pháp, thiết bị của Bên thứ ba và các nguyên nhân khác nằm ngoài sự kiểm soát của chúng tôi. Như một điều kiện khi sử dụng Website này và Dịch vụ, bạn đồng ý rằng chúng tôi, nhân viên, các tổ chức thành viên, cổ đông, đại lý, nhà cung cấp của chúng tôi sẽ không chịu trách nhiệm với bạn và Bên thứ ba về các thiệt hại về lợi nhuận, cơ hội kinh doanh; thiệt hại, chi phí phát sinh trực tiếp hay gián tiếp vì kết nối với Website này hay sử dụng các Dịch vụ của chúng tôi.<br/>
+    |Chúng tôi chân thành khuyến nghị bạn nên tìm hiểu đối tác kỹ càng trước khi xúc tiến hợp tác để tránh các thiệt hại không mong muốn. Bởi vì, chúng tôi sẽ không chịu bất kỳ trách nhiệm nào hoặc trách nhiệm liên đới đối với chất lượng sản phẩm, dịch vụ, thông tin của các website của Bên thứ ba có liên kết với Website www.gera.vn. Ngoài ra, bạn cũng hiểu rằng, chúng tôi không có trách nhiệm và thẩm quyền xác nhận, chứng nhận thông tin và chất lượng dịch vụ, sản phẩm hay bồi thường các thiệt hại liên quan đến việc bạn sử dụng dịch vụ, sản phẩm được quảng cáo trên website đó.<br/>
+    |Mặc dù chúng tôi luôn nỗ lực đễ mang lại Dịch vụ tốt nhất cho bạn, nhưng kinh doanh là một quá trình lâu dài và kết quả kinh doanh lại bị chi phối bởi nhiều yếu tố, chẳng hạn như tầm nhìn, mục tiêu, chiến lược kinh doanh của bạn .v.v. Những vấn đề này vượt khỏi nội dung mà Dịch vụ của chúng tôi cung cấp nên chúng tôi không bảo đảm cũng như không chịu trách nhiệm về kết quả kinh doanh của bạn sau khi sử dụng Dịch vụ.<br/>
+    |Chúng tôi không cung cấp các tư vấn chuyên môn về luật pháp, tài chính, kế toán, thuế hoặc các dịch vụ chuyên môn khác. Bạn hãy tham khảo ý kiến các dịch vụ của một nhà chuyên môn có thẩm quyền khi bạn cần sự hỗ trợ, chúng tôi không chịu trách nhiệm về tính xác thực, tính hợp pháp và tính hợp lệ, .v.v. của những lời khuyên mà bạn nhận được.<br/>
+    |Trong mọi trường hợp, chúng tôi sẽ không chịu trách nhiệm đối với bất kỳ mất mát hay thiệt hại nào không thể dự đoán được một cách hợp lý, chẳng hạn như thảm họa thiên nhiên, chiến tranh, khủng bố, bạo động, đình công, các hoạt động từ phía Chính phủ, lỗi dịch vụ Internet, tấn công từ chối dịch vụ …
+  span.eula-heading Bồi thường Dịch vụ
+  p.eula-content-text
+    |Khi các điều khoản này không còn giữ chúng ta trong mối quan hệ hợp tác, khi có sự tranh cãi xảy ra, nếu bạn và Cơ quan có thẩm quyền luật pháp tuyên bố rằng, chúng tôi phải chịu trách nhiệm cho các sự cố phát sinh, chúng tôi sẽ không chối bỏ trách nhiệm và sẽ bồi thường số tiền không vượt quá số tiền thanh toán 12 tháng trước ngày xảy ra sự cố. <br/>
+    |Đồng thời, bạn có nghĩa vụ bồi thường cho Thiên Ban hoặc bất cứ Bên thứ ba nào cho toàn bộ hay bất cứ thiệt hại thực tế nào mà phần lỗi được xác định là do bạn, khi xảy ra một trong các tình huống dưới đây:
+  ul
+    li Vi phạm các Điều khoản này hoặc các thỏa thuận sử dụng dịch vụ khác của Thiên Ban.
+    li Vi phạm các quy định và pháp luật hiện hành gây ảnh hưởng hay thiệt hại đến Thiên Ban.
+    li Sự vô ý hoặc hành vi cố ý làm sai của bạn, hoặc nhân viên và đại lý của bạn gây ảnh hưởng hay thiệt hại đến Thiên Ban.
+    li Xâm phạm quyền sở hữu trí tuệ hoặc quyền lợi hợp pháp của bất kỳ cá nhân hay tổ chức nào gây ảnh hưởng hay thiệt hại đến Thiên Ban.
+  span.eula-heading Phiên bản dùng thử miễn phí
+  p.eula-content-text
+    | Bạn có thể đăng ký sử dụng phiên bản dùng thử miễn phí. Nhưng có một số chức năng nhất định sẽ không được sử dụng vì giới hạn công nghệ và chính sách.<br/>
+    |Chúng tôi có quyền chấm dứt cung cấp Dịch vụ của phiên bản dùng thử miễn phí bất cứ lúc nào.<br/>
+    |Nếu bạn không thanh toán phí dịch vụ để tiếp tục sử dụng cho đến ngày hết hạn của phiên bản dùng thử miễn phí, chúng tôi sẽ không cung cấp phiên bản dùng thử miễn phí cho bạn nữa. Cũng vậy, bạn sẽ không thể truy cập, đòi lại hoặc sử dụng lại tất cả dữ liệu mà bạn đã nhập hoặc các thiết lập được tạo trong thời gian sử dụng phiên bản dùng thử miễn phí.<br/>
+    |Nếu bạn muốn tiếp tục sử dụng các dữ liệu và thiết lập, bạn phải thanh toán phí dịch vụ trước ngày hết hạn của phiên bản dùng thử miễn phí.
+  span.eula-heading Chấm dứt và ngưng sử dụng Dịch vụ
+  p.eula-content-text
+    |Dịch vụ sẽ tự động chấm dứt vào ngày hết hạn nếu bạn không tiếp tục ký kết hợp đồng bằng cách thanh toán phí dịch vụ cho chúng tôi.<br/>
+    |Chúng tôi có thể ngưng cung cấp Dịch vụ vào bất cứ thời điểm nào vì bất cứ lý do nào trong thời gian cung cấp Dịch vụ. Trong trường hợp này, chúng tôi sẽ thông báo cho bạn biết về việc ngưng sử dụng dịch vụ trước ít nhất là 30 ngày. Thông báo sẽ được gửi qua email hoặc thông báo nội dung lên trang chính.<br/>
+    |Chúng tôi sẽ không chịu trách nhiệm về việc lưu trữ dữ liệu của bạn một khi Dịch vụ bị ngưng sử dụng hoặc hủy. Chúng tôi sẽ xóa dữ liệu của bạn trước sau 6 tháng tính từ ngày hủy và ngưng sử dụng Dịch vụ.
+  span.eula-heading Thay đổi Dịch vụ
+  p.eula-content-text
+    |Khi xét thấy sự thay đổi nào đó là quan trọng, các chi tiết của sự thay đổi sẽ được chúng tôi thông báo đến bạn thông qua trang chính của Dịch vụ. Chúng tôi có quyền thay đổi (thêm hoặc bớt) các thủ tục và chức năng, cũng như việc chỉnh sửa hoặc loại bỏ các thủ tục và chức năng hiện có của Dịch vụ bất cứ lúc nào, sự thay đổi này dựa vào các cân nhắc về chính sách và công nghệ.<br/>
+    |Dịch vụ có thể được thay đổi thường xuyên hoặc đột xuất.<br/>
+    |Bạn có thể đưa ra lời đề nghị hoặc đóng góp ý tưởng cho chúng tôi về các chức năng và thủ tục cần thiết cho bạn bất cứ lúc nào. Tuy nhiên, chúng tôi có quyền quyết định phát triển đề nghị hoặc ý tưởng dựa vào tần số yêu cầu từ nhiều khách hàng khác nhau, tính khả thi của đề nghị hoặc ý tưởng, hướng phát triển và tính phù hợp tổng thể của đề nghị hoặc ý tưởng theo ý riêng của mình.<br/>
+    |Chúng tôi có quyền tự do sử dụng các ý tưởng nâng cao dịch vụ, lời đề nghị, thắc mắc, .v.v. được bạn tạo trong bất cứ mẫu thông tin nào cho việc nâng cao dịch vụ. Chúng tôi có toàn quyền vĩnh viễn, đầy đủ quyền chuyển nhượng, giấy phép sử dụng, trên toàn cầu đối với Nội dung được cung cấp bởi khách hàng. Bạn không thể yêu cầu bất cứ loại hình thức thanh toán nào, như tiền bản quyền,.v.v. đối với Nội dung đã cung cấp cho chúng tôi.
+  span.eula-heading Thay đổi điều khoản
+  p.eula-content-text
+    |Chúng tôi có thể sửa đổi các điều khoản này hoặc bất kỳ điều khoản bổ sung nào áp dụng cho Dịch vụ, chẳng hạn như để phản ánh những thay đổi về luật hoặc những thay đổi về Dịch vụ của chúng tôi. Bạn nên thường xuyên tìm hiểu các điều khoản này. Chúng tôi sẽ đăng thông báo về các sửa đổi đối với các điều khoản này trên trang này. Chúng tôi sẽ đăng thông báo về các điều khoản bổ sung đã được sửa đổi trong Dịch vụ được áp dụng.<br/>
+    |Nếu bạn tiếp tục sử dụng Dịch vụ sau khi nhận thông báo thay đổi được coi là chấp nhận với điều khoản mới. Nếu bạn không có phản đối nào trong vòng 3 ngày kể từ ngày nhận thông báo hoặc bạn tiếp tục sử dụng Dịch vụ sau khi nhận thông báo, thì được coi là bạn đồng ý với điều khoản mới từ thời điểm quá 3 ngày kể từ ngày nhận thông báo hoặc từ thời điểm bạn tiếp tục sử dụng Dịch vụ.
+  span.eula-heading Điều khoản chung
+  p.eula-content-text
+    |Nếu có sự mâu thuẫn giữa các điều khoản này và các điều khoản bổ sung, thì các điều khoản bổ sung sẽ được ưu tiên áp dụng đối với trường hợp mâu thuẫn đó.<br/>
+    |Nếu bạn không tuân thủ các điều khoản này và chúng tôi không hành động ngay, điều này không có nghĩa là chúng tôi đang từ bỏ bất kỳ các quyền nào mà chúng tôi có thể có (chẳng hạn như hành động trong tương lai).<br/>
+    |Nếu thực tế cho thấy một điều khoản cụ thể nào đó là không thể thực thi, điều này sẽ không làm ảnh hưởng đến bất kỳ các điều khoản nào khác.

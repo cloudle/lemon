@@ -29,22 +29,36 @@
       clearfix()
       background-color home-theme
       padding 30px 0 40px 0
+      max-height 350px
       overflow hidden
-      max-height 500px
+
       transition-property padding, max-height
       transition-duration 1s, 0.6s
 
     .eula-section
       float left
+      width 100%;
       .title
         font-size 20px; margin-bottom 15px
       .details
+        font-size 14px
         margin-left 20px
+        max-height 240px
+        overflow-x scroll
+        ul
+          padding-left 23px
+        .eula-heading
+          display block
+          font-weight bold
+          font-size 16px
+        .eula-content-text
+          padding 0 5px
+          text-align justify
 
 .top-panel.minimize
   .content-inner
-    max-height 0
     padding 0
+    max-height 0
 
   .top-panel-toggle
     border solid 3px #ffffff
