@@ -12,6 +12,6 @@ logics.homeHeader.login = (event, template) ->
       for currentLoginError in logics.homeHeader.loginErrors
         if currentLoginError.reason is currentReason
           if currentLoginError.isPasswordError
-            $password.notify(i18n(currentLoginError.message), {position: "bottom right"})
+            $password.notify(i18n(currentLoginError.message), {position: "top right"})
           else
-            $login.notify(i18n(currentLoginError.message))
+            $login.notify(i18n(currentLoginError.message), {position: "top left"})

@@ -8,7 +8,7 @@ i18n.map 'vi',
   term: 'Điều khoản'
 
   form:
-    userAccount: 'tài khoản'
+    userAccount: 'tài khoản (email)'
     password: 'mật khẩu'
     companyName: 'tên doanh nghiệp'
     contactPhone: 'điện thoại liên hệ'

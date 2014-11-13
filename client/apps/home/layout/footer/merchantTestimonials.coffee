@@ -21,19 +21,13 @@ comments = [
   position: -> 'Chủ nhà hàng New Coffee Bar (Mỹ Tho - Tiền Giang)'
   avatar: -> 'c.giau.jpg'
   comment: -> "Việc kinh doanh của tôi đã thuận lợi hơn rất nhiều, có thể cùng lúc được nhiều việc hơn và tập trung vào tăng trưởng và mở rộng kinh doanh."
-,
-  name: -> 'Phạm Minh Hoàng'
-  position: -> 'Chủ shop đồng hồ DOHO Replica'
-  avatar: -> 'no-avatar.jpg'
-  comment: -> "Trước đây, chúng tôi sử dụng excel để quản lý công việc. Bị ấn tượng bởi hệ thống nhắc nhở tự động, tôi
-               quyết định thử dùng EDS, không cần phải ghi nhớ mọi thứ nữa, vì vậy có nhiều thời gian hơn để đi du lịch với gia đình."
-,
-  name: -> 'Đỗ Thụy Vân Quỳnh'
-  position: -> 'Chủ shop thời trang Quỳnh Nhi (Bàu Cát, Tân Bình)'
-  avatar: -> 'no-avatar.jpg'
-  comment: -> "Lúc trước quần áo nhập về quá nhiều nên chuyện tính nhầm giá bán cho khách hàng xảy ra liên tục.
-               Từ khi triển khai EDS, hàng hóa được quản lý rõ ràng hơn, Tôi cũng có nhiều thời gian chăm lo cho gia
-               đình hơn."
+#,
+#  name: -> 'Đỗ Thụy Vân Quỳnh'
+#  position: -> 'Chủ shop thời trang Quỳnh Nhi (Bàu Cát, Tân Bình)'
+#  avatar: -> 'no-avatar.jpg'
+#  comment: -> "Lúc trước quần áo nhập về quá nhiều nên chuyện tính nhầm giá bán cho khách hàng xảy ra liên tục.
+#               Từ khi triển khai EDS, hàng hóa được quản lý rõ ràng hơn, Tôi cũng có nhiều thời gian chăm lo cho gia
+#               đình hơn."
 ]
 
 navigateComment = (step = 1)->

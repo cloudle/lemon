@@ -75,7 +75,7 @@ lemon.defineWidget Template.home,
       if $account.val().length > 0
         Meteor.loginWithPassword $account.val(), '', (error) ->
           if error?.reason is "Incorrect password"
-            $account.notify("tài khoản đã tồn tại", {position: "right"})
+            $account.notify("tài khoản đã tồn tại", {position: "top"})
             Session.set('registerAccountValid', 'invalid')
           else
             Session.set('registerAccountValid', 'valid')

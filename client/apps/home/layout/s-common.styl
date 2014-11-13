@@ -4,6 +4,23 @@
   clearfix()
   max-width 1024px
   margin 0 auto
+  .home-splitter
+    width 100%
+    height 1px
+    background-color #ffffff
+    position relative
+    &:before
+      content: ""
+      width 9px; height 9px
+      border-radius 50%
+      background-color #ffffff
+      absolute left 0px top -4px
+    &:after
+      content: ""
+      width 9px; height 9px
+      border-radius 50%
+      background-color #ffffff
+      absolute right 0px top -4px
 
 .lemon-field
   position relative
