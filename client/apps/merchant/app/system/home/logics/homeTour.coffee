@@ -3,8 +3,8 @@ tourSteps = [
 #  placement: "bottom"
 #  title: "Chào mừng Bạn đến với <b>Thiên Ban</b>!"
 #  content: "Cảm ơn Bạn đã tin tưởng và sử dụng dịch vụ EDS của chúng tôi,
-#            Trước tiên, chúng tôi có đôi điều muốn chia sẽ cùng Bạn về quan niệm sử dụng hệ thống quản lý. Như Bạn cũng
-#            biết, lâu nay cụm từ cài đặt phần mềm có thể đã quen thuộc với nhiều người, cài đặt vào máy và cứ thế sử dụng.
+#            Trước tiên, chúng tôi có đôi điều muốn chia sẻ cùng Bạn về quan niệm sử dụng hệ thống quản lý. Như Bạn đã
+#            biết, lâu nay cụm từ "phần mềm cài đặt" có thể đã quen thuộc với nhiều người, cài đặt vào máy và cứ thế sử dụng.
 #            Tuy nhiên, thời gian sử dụng hiệu quả sẽ diễn ra bao lâu và lợi ích thật sự mà bạn nhận được là gì? Câu hỏi
 #            này khiến cả Thế giới phải suy ngẫm, khi mà người làm kinh doanh muốn có được một nguồn lực tự động mạnh mẽ
 #            nhất thì đây là áp lực thôi thúc người làm công nghệ phải tạo ra một xu hướng mới. Sự phổ biến của các sản
