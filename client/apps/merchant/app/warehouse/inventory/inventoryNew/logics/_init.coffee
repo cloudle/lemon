@@ -26,19 +26,23 @@ Apps.Merchant.inventoryReactiveRun.push (scope) ->
       UserSession.set('currentInventoryWarehouseSelection', Session.get('myProfile').currentWarehouse)
 
   if scope.currentWarehouse
-    if !scope.currentInventory || scope.currentWarehouse.inventory != scope.currentInventory._id
-      scope.currentInventory = Schema.inventories.findOne(scope.currentWarehouse.inventory)
-      Meteor.subscribe('inventoryDetailInWarehouse', scope.currentWarehouse.inventory)
-
     scope.availableWarehouses = Schema.warehouses.find({merchant: scope.currentWarehouse.merchant})
-    scope.inventoryDetails = Schema.inventoryDetails.find({inventory: scope.currentWarehouse.inventory})
-    scope.productDetails   = Schema.productDetails.find({warehouse: scope.currentWarehouse._id})
+    scope.productDetails      = Schema.productDetails.find({warehouse: scope.currentWarehouse._id})
 
+    if scope.currentWarehouse.inventory
+      if scope.currentInventory
+        if scope.currentInventory._id != scope.currentWarehouse.inventory
+          scope.currentInventory = Schema.inventories.findOne(scope.currentWarehouse.inventory)
+          Meteor.subscribe('inventoryDetailInWarehouse', scope.currentInventory._id)
+      else
+        scope.currentInventory = Schema.inventories.findOne(scope.currentWarehouse.inventory)
+        Meteor.subscribe('inventoryDetailInWarehouse', scope.currentInventory._id)
+      scope.inventoryDetails = Schema.inventoryDetails.find({inventory: scope.currentInventory._id})
 
-  scope.allowCreate = if scope.currentWarehouse?.checkingInventory || !Session.get('allowCreateNewInventory') then 'btn-default disabled' else 'btn-success'
+  scope.allowCreate     = if scope.currentWarehouse?.checkingInventory || !Session.get('allowCreateNewInventory') then 'btn-default disabled' else 'btn-success'
   scope.showCreate      = if scope.currentWarehouse?.checkingInventory then "display: none" else ""
   scope.showDescription = if scope.currentWarehouse?.checkingInventory is true then "display: none" else ""
-  scope.showDestroy     = if scope.currentInventory then "" else "display: none"
+  scope.showDestroy = if scope.currentInventory then "" else "display: none"
 
   if scope.currentInventory and scope.inventoryDetails?.count() > 0
     scope.showSubmit = ""

@@ -24,6 +24,10 @@ simpleSchema.transactionDetails = new SimpleSchema
     type: String
     optional: true
 
+  paymentDate:
+    type: Date
+    defaultValue: new Date()
+
   version: {type: simpleSchema.Version}
 
 

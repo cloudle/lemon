@@ -10,6 +10,8 @@ logics.inventoryManager.successInventory = (warehouseId) ->
 
     temp = false
     for detail in Schema.inventoryDetails.find({inventory: inventory._id}).fetch()
+      console.log 'buoc 1'
+
       option =
         realQuality : detail.realQuality-detail.saleQuality
         saleQuality : 0
@@ -24,20 +26,22 @@ logics.inventoryManager.successInventory = (warehouseId) ->
           inStockQuality   : -detail.lostQuality
           availableQuality : -detail.lostQuality
 
+        console.log 'buoc 2'
         Schema.productLosts.insert ProductLost.new(warehouse, detail)
         Schema.products.update detail.product, $inc: updateProduct, (error, result) -> console.log error if error
         Schema.productDetails.update detail.productDetail, $inc: updateProduct, (error, result) -> console.log error if error
       Schema.inventoryDetails.update detail._id, $set: option, (error, result) -> console.log error if error
-
+    console.log 'buoc 3'
 #    Notification.inventoryNewCreate(inventory._id)
     updateInventory = {submit: true, success: true}
     if temp
       updateInventory.success = false
       MetroSummary.updateMetroSummaryByInventory(inventory._id)
 
+    console.log 'buoc 4'
     Schema.inventories.update inventory._id, $set: updateInventory
     Schema.warehouses.update warehouseId, { $set:{checkingInventory: false}, $unset:{inventory: ""} }
 
-    throw 'Đã Xác Nhận Kiểm Kho.'
+    console.log 'Đã Xác Nhận Kiểm Kho.'
   catch error
     return error

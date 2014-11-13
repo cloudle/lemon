@@ -21,7 +21,7 @@ lemon.defineApp Template.transactionManager,
       $element = $(event.currentTarget)
       Session.set 'transactionFilter', $element.attr("data-filter")
 
-    "blur .description": (event, template) ->
+    "input .description": (event, template) ->
       description = template.find(".description")
       if Session.get('createNewTransaction')?.customerId != 'skyReset'
         if description.value.length >= 0
@@ -71,6 +71,7 @@ lemon.defineApp Template.transactionManager,
 
 
     "click .thumbnails": (event, template) ->
+      console.log @_id
       Meteor.subscribe('transactionDetails', @_id)
       Session.set('currentTransaction', @)
       Session.set('showAddTransactionDetail', false)

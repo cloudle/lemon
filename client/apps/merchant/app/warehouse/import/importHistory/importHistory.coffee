@@ -13,10 +13,7 @@ lemon.defineApp Template.importHistory,
       Session.set('importHistoryFilterStartDate', $("[name=fromDate]").datepicker().data().datepicker.dates[0])
       Session.set('importHistoryFilterToDate', $("[name=toDate]").datepicker().data().datepicker.dates[0])
 
-    "click .thumbnails": (event, template) ->
+    "click .thumbnails:not(.full-desc.trash)": (event, template) ->
       Meteor.subscribe('importDetailInWarehouse', @_id)
       Session.set('currentImportHistory', @)
       $(template.find '#importHistoryDetail').modal()
-
-
-

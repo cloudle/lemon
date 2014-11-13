@@ -8,6 +8,5 @@ lemon.defineWidget Template.importHistoryDetail,
   rendered: ->
   events:
     "click .finish": (event, template) ->
-
       if @import?.submitted is true and @import?.finish is false
         logics.import.finish(@import._id)
