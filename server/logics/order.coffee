@@ -40,7 +40,7 @@ createSaleAndSaleOrder = (order, orderDetails)->
   if !currentSale then throw new Meteor.Error("Create sale fail.")
 
   for currentOrderDetail in orderDetails
-    productDetails = Schema.productDetails.find({product: currentOrderDetail.product}).fetch()
+    productDetails = Schema.productDetails.find({product: currentOrderDetail.product, availableQuality: {$gt: 0}}).fetch()
     subtractQualityOnSales(productDetails, currentOrderDetail, currentSale.data)
 
   option = {status: true}

@@ -90,8 +90,8 @@ Schema.add 'sales', class Sale
   @findBillDetails: (starDate, toDate, warehouseId)->
     Schema.sales.find({$and: [
         {warehouse: warehouseId}
-        {'version.createdAt': {$gt: starDate}}
-        {'version.createdAt': {$lt: toDate}}
+        {'version.createdAt': {$gt: new Date(starDate.getFullYear(), starDate.getMonth(), starDate.getDate())}}
+        {'version.createdAt': {$lt: new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate()+1)}}
       ]})
 
   @findExportAndImport: (starDate, toDate, warehouseId)->

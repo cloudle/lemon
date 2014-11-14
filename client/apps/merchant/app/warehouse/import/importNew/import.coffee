@@ -12,8 +12,14 @@ lemon.defineApp Template.import,
       logics.import.updateDescription(template.find(".description").value, Session.get('currentImport'))
 
     'blur .deposit': (event, template)->
-      deposit = template.find(".deposit").value
-      if deposit >= 0 then logics.import.updateDeposit(deposit, Session.get('currentImport'))
+      deposit = template.find(".deposit")
+      currentImport = Session.get('currentImport')
+      if currentImport.totalPrice < deposit.value
+        deposit.value = currentImport.totalPrice
+        if currentImport.debit != currentImport.deposit
+          logics.import.updateDeposit(currentImport.totalPrice , currentImport)
+      else
+        logics.import.updateDeposit(deposit.value , currentImport)
 
     'click .addImportDetail': (event, template)-> logics.import.addImportDetail(event, template)
 

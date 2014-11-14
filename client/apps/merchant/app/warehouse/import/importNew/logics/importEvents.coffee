@@ -8,10 +8,9 @@ Apps.Merchant.importInit.push (scope) ->
 
   logics.import.updateDeposit = (deposit, currentImport) ->
     if currentImport.finish is false and currentImport.submitted is false
-      if parseInt(deposit) > 0
-        if parseInt(deposit) > currentImport.totalPrice then deposit = currentImport.totalPrice
-        option = {deposit: parseInt(deposit), debit: 0}
+      if deposit > 0
+        if deposit > currentImport.totalPrice then option = {deposit: currentImport.totalPrice, debit: 0}
+        else option = {deposit: deposit, debit: currentImport.totalPrice - deposit}
       else
-        deposit = 0
-        option ={ deposit: 0, debit: currentImport.totalPrice}
+        option = {deposit: 0, debit: currentImport.totalPrice}
       Import.update(currentImport._id, {$set: option})
