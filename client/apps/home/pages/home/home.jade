@@ -9,11 +9,11 @@ template(name="home")
     .main-right
 
       if authenticated
-        .login-section.animated.bounceIn
+        .login-section.animated.fadeInDown
           #gotoMerchantButton.btn.icon-shop
           #logoutButton.btn.icon-power.background-pumpkin
       else
-        .login-section.animated.bounceIn
+        .login-section.animated.fadeInDown
           #authButton.btn.icon-forward-3(class="{{sessionGet 'loginValid'}}" tabindex="3")
           input.login-field#authSecret(type="password" placeholder="{{i18n 'form.password'}}" maxlength="30" tabindex="2")
           input.login-field#authAlias(type="text" placeholder="{{i18n 'form.userAccount'}}" maxlength="50" tabindex="1")

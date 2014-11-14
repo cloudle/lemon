@@ -10,6 +10,10 @@ Apps.Merchant.staffManagerInit.push (scope) ->
       {parent: Session.get('myProfile').parentMerchant}]
   })
 
+  Session.setDefault("createStaffGenderSelection", false)
+  Session.setDefault('allowCreateStaffAccount', false)
+  Session.setDefault('currentRoleSelection', [])
+
 Apps.Merchant.staffManagerReactiveRun.push (scope) ->
   if Session.get('mySession') and Session.get('myProfile')
     if scope.currentMerchant = Schema.merchants.findOne(Session.get('mySession').createStaffBranchSelection)
@@ -24,4 +28,3 @@ Apps.Merchant.staffManagerReactiveRun.push (scope) ->
       UserSession.set('createStaffWarehouseSelection', Session.get('myProfile').currentWarehouse)
 
   scope.availableWarehouses = Schema.warehouses.find({merchant: scope.currentMerchant._id}) if scope.currentMerchant
-

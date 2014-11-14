@@ -26,12 +26,10 @@ tourSteps = [
 #,
   element: ".tour-toggle"
   placement: "bottom"
-  title: "Chào mừng bạn đến với hệ thống <b>EDS!</b>"
-  content: "<b>Đ</b>ây là chức năng hướng dẫn sử dụng, sau lần đăng nhập đầu tiên, hệ thống <b>EDS</b> sẽ không tự động bật <b>HƯỚNG DẪN SỬ DỤNG</b>
-            nữa.<br/><br/>
-            <b>T</b>uy nhiên bạn vẫn có thể xem lại hướng dẫn bằng cách ấn vào biểu tượng phía trên.<br/><br/>
-            <b>T</b>rong ít phút, chúng ta sẽ đi qua những bước cần thiết để có thể bắt đầu <b>chuyển phần việc trong tay bạn sang
-            hệ thống tự động<b/>."
+  title: "<b>C</b>hào mừng Bạn đến với hệ thống <b>EDS!</b>"
+  content: "<b>Đ</b>ây là chức năng hướng dẫn sử dụng, sau lần đăng nhập đầu tiên thông báo này sẽ không tự động hiển thị nữa.<br/><br/>
+            <b>T</b>rong khi sử dụng, Bạn có thể xem lại hướng dẫn bằng cách chọn vào biểu tượng phía trên.<br/><br/>
+            <b>N</b>hững bước hướng dẫn cần thiết này sẽ giúp bạn trải nghiệm hệ thống một cách dễ dàng và chuyên nghiệp hơn<b/>."
 ,
 #  element: ".chat-avatar.me"
 #  placement: "left"
@@ -44,48 +42,41 @@ tourSteps = [
 #,
   element: "[data-app='branchManager']"
   placement: "left"
-  title: "<b>BƯỚC 1:</b> CHI NHÁNH"
-  content: "<b>Đ</b>ây là nơi bạn khởi tạo <b>danh sách các chi nhánh</b> khác của doanh nghiệp bạn.<br/>
-            (bỏ qua bước này nếu bạn chưa có hệ thống chi nhánh phụ thuộc)"
+  title: "<b>Bước 1:</b> Tạo mới Chi nhánh"
+  content: "<b>C</b>hức năng này hỗ trợ khởi tạo danh sách chi nhánh trong hệ thống doanh nghiệp của Bạn.<br/><br/>
+            <i>(Bỏ qua bước này nếu Bạn chưa có hệ thống chi nhánh)</i>"
 ,
   element: "[data-app='warehouseManager']"
   placement: "left"
-  title: "<b>BƯỚC 2:</b> KHO HÀNG"
-  content: "<b>M</b>ỗi một chi nhánh có thể chứa hàng hóa trong nhiều kho khác nhau.<br/><br/>
-            Tại đây, bạn có thể khởi tạo thêm <b>kho hàng cho chi nhánh hiện tại</b> nếu cảm thấy cần thiết."
+  title: "<b>Bước 2:</b> Tạo mới Kho hàng"
+  content: "<b>C</b>hức năng này hỗ trợ khởi tạo thêm <b>kho hàng</b> cho chi nhánh.<br/><br/>
+            <i>(Bỏ qua bước này nếu Bạn chưa cần lưu trữ hàng hóa trong nhiều kho)</i>"
 ,
   element: "[data-app='staffManager']"
-  title: "<b>BƯỚC 3:</b> NHÂN VIÊN"
-  content: "<b>V</b>ới hệ thống chi nhánh và kho đã được thiết lập.<br/><br/>
-            <b>Đ</b>ây, là nơi chúng ta quản lý nhân viên, <b>cung cấp tài khoản truy cập, xác định quyền hạn cho từng nhân viên</b>,
-            hay nhân sự cấp quản lý.<br/><br/>
-            <b>EDS</b> đã cung cấp sẵn những quyền hạn mặc định cho bạn, tuy nhiên bạn vẫn có thể tùy chỉnh theo từng nhu cầu riêng biệt."
+  title: "<b>Bước 3:</b> Tạo danh sách Nhân viên"
+  content: "<b>Đ</b>ây là chức năng <b>quản lý nhân viên</b>, Bạn sẽ <b>tạo mới tài khoản</b> truy cập và <b>xác định quyền hạn</b> cho từng nhân viên.<br/><br/>
+            <b>EDS</b> đã hỗ trợ sẵn những chức danh và quyền hạn cụ thể cho từng vị trí nhân viên. Bên cạnh đó, Bạn <b>có
+            thể tạo mới hay tùy chỉnh</b> từng chức danh theo tính đặc thù trong doanh nghiệp của Bạn."
 ,
   element: "[data-app='customerManager']"
-  title: "<b>BƯỚC 4:</b> KHÁCH HÀNG"
-  content: "<b>Đ</b>ể tăng trưởng mạnh mẽ, doanh nghiệp cần <b>thông tin và số liệu rõ ràng</b> từ khách hàng.<br/>
-            <b>T</b>ại đây, sau khi bạn khởi tạo <b>danh sách khách hàng</b> của mình. <b>H</b>ệ thống <b>EDS</b> sẽ thay bạn
-            lưu ý và nhắc nhở bạn những sự kiện liên quan đến khách hàng (<b>sinh nhật, nợ quá hạn, thúc đẩy doanh số</b>...)<br/><br/>
-            <b>Đ</b>ể tiện lợi, bạn cũng có thể tạo mới khách hàng trong khu vực bán hàng."
-,
-  element: "[data-app='sales']"
-  title: "<b>BƯỚC 4:</b> KHÁCH HÀNG (TIẾP THEO)"
-  content: "<b>Đ</b>ây là khu vực bán hàng chúng ta đã đề cập.<br/>
-            <b>T</b>uy nhiên, trước khi có thể bán hàng - bạn sẽ cần phải nhập kho sản phẩm."
+  title: "<b>Bước 4:</b> Tạo danh sách Khách hàng"
+  content: "<b>C</b>hức năng này hỗ trợ khởi tạo <b>danh sách khách hàng</b>. Hệ thống sẽ <b>ghi nhận và nhắc nhở bạn</b> những sự kiện
+            liên quan đến khách hàng (<b>sinh nhật, công nợ, biến động</b> trong tình hình mua hàng qua các thời kỳ …)<br/><br/>
+            <b>B</b>ạn cũng có thể tạo mới khách hàng trong chức năng <b>Bán hàng</b>."
 ,
   element: "[data-app='importHistory']"
   placement: "bottom"
-  title: "<b>BƯỚC 5:</b> NHẬP KHO"
-  content: "<b>T</b>ại đây, bạn có thể nhập kho và xem lại danh sách các đợt nhập kho trước đó.<br/><br/>
-            Sau khi hoàn thành nhập kho bạn đã có thể bán hàng, mọi thứ đã được thiết lập tự động.<br/><br/>
-            <b>Hãy khám phá!</b>"
+  title: "<b>Bước 5:</b> Nhập kho"
+  content: "<b>B</b>ạn có thể thêm <b>sản phẩm, giá nhập, giá bán, nhà cung cấp</b>… và xem lại danh sách các đợt nhập kho trước đó.<br/><br/>
+            <b>S</b>au khi hoàn thành bước này thì Bạn đã có thể bán hàng.<br/><br/>
+            <b>Từ đây, mọi thứ đã được thiết lập tự động.</b>"
 ,
   element: "[data-app='transactionManager']"
   placement: "top"
-  title: "<b>BƯỚC 6</b>*: DANH SÁCH NỢ CŨ"
-  content: "<b>B</b>ạn có thể dừng lại tại <b>BƯỚC 5</b>, tuy nhiên - để hoàn toàn tách khỏi sổ sách.<br/><br/>
-            <b>B</b>ạn có thể chuyển công nợ trước đó vào hệ thống, <b>EDS</b> sẽ theo dõi và tự động nhắc nhở
-            bạn các khoản nợ phải thu, phải trả. <br/><br/>
+  title: "<b>Bước 6</b>*: Danh sách nợ cũ"
+  content: "<b>B</b>ạn có thể dừng lại tại <b>Bước 5</b>. Tuy nhiên, bước này sẽ giúp Bạn không phải đau đầu vì sổ sách nữa.<br/><br/>
+            <b>B</b>ạn có thể chuyển công nợ trước đó vào hệ thống, <b>EDS</b> sẽ <b>theo dõi và tự động nhắc nhở</b> Bạn các
+            khoản nợ phải thu, phải trả, quá hạn...<br/><br/>
 
             <b>Chúc bạn có những trải nghiệm thú vị!</b>"
 
