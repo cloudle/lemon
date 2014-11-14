@@ -4,4 +4,4 @@ Apps.Merchant.RouterBase =
   fastRender: true
   onAfterAction: ->
     Helpers.animateUsing("#container", "bounceInDown")
-    Apps.currentTour.stop()
+    Apps.currentTour?.stop()
