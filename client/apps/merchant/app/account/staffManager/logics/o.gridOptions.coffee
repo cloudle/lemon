@@ -1,5 +1,5 @@
 Apps.Merchant.staffManagerInit.push (scope) ->
-  logics.staffManager.gridOptions =
+  scope.gridOptions =
     itemTemplate: 'roleDetailThumbnail'
     reactiveSourceGetter: -> Schema.userProfiles.find({})
     wrapperClasses: 'detail-grid row'

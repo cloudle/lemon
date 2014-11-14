@@ -29,7 +29,7 @@ tourSteps = [
   title: "<b>C</b>hào mừng Bạn đến với hệ thống <b>EDS!</b>"
   content: "<b>Đ</b>ây là chức năng hướng dẫn sử dụng, sau lần đăng nhập đầu tiên thông báo này sẽ không tự động hiển thị nữa.<br/><br/>
             <b>T</b>rong khi sử dụng, Bạn có thể xem lại hướng dẫn bằng cách chọn vào biểu tượng phía trên.<br/><br/>
-            <b>Q</b>ua những bước hướng dẫn cần thiết này sẽ giúp bạn trải nghiệm hệ thống một cách dễ dàng và chuyên nghiệp hơn<b/>."
+            <b>N</b>hững bước hướng dẫn cần thiết này sẽ giúp bạn trải nghiệm hệ thống một cách dễ dàng và chuyên nghiệp hơn<b/>."
 ,
 #  element: ".chat-avatar.me"
 #  placement: "left"
@@ -74,7 +74,7 @@ tourSteps = [
   element: "[data-app='transactionManager']"
   placement: "top"
   title: "<b>Bước 6</b>*: Danh sách nợ cũ"
-  content: "<b>B</b>ạn có thể dừng lại tại <b>Bước 5</b>. Tuy nhiên, bước này sẽ giúp Bạn không phải đâu đầu vì sổ sách nữa.<br/><br/>
+  content: "<b>B</b>ạn có thể dừng lại tại <b>Bước 5</b>. Tuy nhiên, bước này sẽ giúp Bạn không phải đau đầu vì sổ sách nữa.<br/><br/>
             <b>B</b>ạn có thể chuyển công nợ trước đó vào hệ thống, <b>EDS</b> sẽ <b>theo dõi và tự động nhắc nhở</b> Bạn các
             khoản nợ phải thu, phải trả, quá hạn...<br/><br/>
 

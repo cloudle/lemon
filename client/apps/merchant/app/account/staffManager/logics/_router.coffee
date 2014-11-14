@@ -1,17 +1,18 @@
-staffManagerRoute =
+scope = logics.staffManager
+
+lemon.addRoute
   template: 'staffManager'
   waitOnDependency: 'staffManager'
   onBeforeAction: ->
     if @ready()
-      Apps.setup(logics.staffManager, Apps.Merchant.staffManagerInit, 'staffManager')
+      Apps.setup(scope, Apps.Merchant.staffManagerInit, 'staffManager')
       @next()
   data: ->
-    Apps.setup(logics.staffManager, Apps.Merchant.staffManagerReactiveRun)
+    Apps.setup(scope, Apps.Merchant.staffManagerReactiveRun)
     return {
-      gridOptions: logics.staffManager.gridOptions
-      roleSelectOptions: logics.staffManager.roleSelectOptions
-      branchSelectOptions: logics.staffManager.branchSelectOptions
-      warehouseSelectOptions: logics.staffManager.warehouseSelectOptions
+      gridOptions: scope.gridOptions
+      roleSelectOptions: scope.roleSelectOptions
+      branchSelectOptions: scope.branchSelectOptions
+      warehouseSelectOptions: scope.warehouseSelectOptions
     }
-
-lemon.addRoute [staffManagerRoute], Apps.Merchant.RouterBase
+, Apps.Merchant.RouterBase
