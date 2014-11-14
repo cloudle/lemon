@@ -30,7 +30,8 @@ Apps.Merchant.transactionManagerInit.push (scope) ->
 
   scope.showTransactionDetail = () ->
     Session.set('showAddTransactionDetail', true)
-    $("[name=createDebtDate]").datepicker('setDate', Session.get('transactionDetailPaymentDate'))
+#    $("[name=createDebtDate]").datepicker('setDate', Session.get('transactionDetailPaymentDate'))
+    $("[name=createDebtDate]").datepicker('setDate', new Date())
 
   scope.createNewTransactionDetail = () ->
     Meteor.call 'addTransactionDetail',
@@ -38,11 +39,10 @@ Apps.Merchant.transactionManagerInit.push (scope) ->
       Session.get('depositCashNewTransactionDetail'),
       Session.get('transactionDetailPaymentDate'),
       (error, result) ->
-        if error then console.log error.reason
+        if error then console.log error
         else
           Session.set('depositCashNewTransactionDetail', 0)
           Session.set('transactionDetailPaymentDate', new Date())
-          console.log Session.get('transactionDetailPaymentDate')
           $("[name=createDebtDate]").datepicker('setDate', Session.get('transactionDetailPaymentDate'))
 
 

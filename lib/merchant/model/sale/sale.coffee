@@ -52,8 +52,8 @@ Schema.add 'sales', class Sale
         { $or : [
           {
             warehouse: warehouseId
-            'version.createdAt': {$gt: starDate}
-            'version.createdAt': {$lt: toDate}
+            'version.createdAt': {$gt: new Date(starDate.getFullYear(), starDate.getMonth(), starDate.getDate())}
+            'version.createdAt': {$lt: new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate()+1)}
             paymentsDelivery: 0
             status: true
             submitted: false
@@ -63,8 +63,8 @@ Schema.add 'sales', class Sale
           }
           {
             warehouse: warehouseId
-            'version.createdAt': {$gt: starDate}
-            'version.createdAt': {$lt: toDate}
+            'version.createdAt': {$gt: new Date(starDate.getFullYear(), starDate.getMonth(), starDate.getDate())}
+            'version.createdAt': {$lt: new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate()+1)}
             paymentsDelivery: 1
             status: true
             submitted: false
@@ -74,8 +74,8 @@ Schema.add 'sales', class Sale
           }
           {
             warehouse: warehouseId
-            'version.createdAt': {$gt: starDate}
-            'version.createdAt': {$lt: toDate}
+            'version.createdAt': {$gt: new Date(starDate.getFullYear(), starDate.getMonth(), starDate.getDate())}
+            'version.createdAt': {$lt: new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate()+1)}
             paymentsDelivery: 1
             status: true
             submitted: false
@@ -99,8 +99,8 @@ Schema.add 'sales', class Sale
         { $or : [
           {
             warehouse: warehouseId
-            'version.createdAt': {$gt: starDate}
-            'version.createdAt': {$lt: toDate}
+            'version.createdAt': {$gt: new Date(starDate.getFullYear(), starDate.getMonth(), starDate.getDate())}
+            'version.createdAt': {$lt: new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate()+1)}
             paymentsDelivery: 0
             status: true
             submitted: false
@@ -110,8 +110,8 @@ Schema.add 'sales', class Sale
           }
           {
             warehouse: warehouseId
-            'version.createdAt': {$gt: starDate}
-            'version.createdAt': {$lt: toDate}
+            'version.createdAt': {$gt: new Date(starDate.getFullYear(), starDate.getMonth(), starDate.getDate())}
+            'version.createdAt': {$lt: new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate()+1)}
             paymentsDelivery: 1
             status: true
             submitted: false
@@ -121,8 +121,8 @@ Schema.add 'sales', class Sale
           }
           {
             warehouse: warehouseId
-            'version.createdAt': {$gt: starDate}
-            'version.createdAt': {$lt: toDate}
+            'version.createdAt': {$gt: new Date(starDate.getFullYear(), starDate.getMonth(), starDate.getDate())}
+            'version.createdAt': {$lt: new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate()+1)}
             paymentsDelivery: 1
             status: true
             submitted: false

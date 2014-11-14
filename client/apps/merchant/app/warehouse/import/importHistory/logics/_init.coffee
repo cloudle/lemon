@@ -32,11 +32,11 @@ Apps.Merchant.importHistoryReactiveRun.push (scope) ->
     scope.availableWarehouses = Schema.warehouses.find({merchant: scope.currentMerchant._id})
 
   if Session.get('mySession')?.currentImportWarehouse and Session.get('importHistoryFilterStartDate') and Session.get('importHistoryFilterToDate')
-    scope.importHistorys = Schema.imports.find({$and: [
-      {warehouse: Session.get('mySession').currentImportWarehouse, submitted: true}
-      {'version.createdAt': {$gt: Session.get('importHistoryFilterStartDate')}}
-      {'version.createdAt': {$lt: Session.get('importHistoryFilterToDate')}}
-    ]}, {sort: {'version.createdAt': -1}})
+    scope.importHistorys = Import.findHistory(
+      Session.get('importHistoryFilterStartDate'),
+      Session.get('importHistoryFilterToDate'),
+      Session.get('mySession').currentImportWarehouse
+    )
 
   if Session.get('currentImportHistory')
     scope.currentImportHistoryDetail = Schema.importDetails.find {import: Session.get('currentImportHistory')._id}

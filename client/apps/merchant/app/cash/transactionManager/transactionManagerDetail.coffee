@@ -20,7 +20,7 @@ lemon.defineWidget Template.transactionManagerDetail,
     "click .showTransactionDetail"        : (event, template) -> logics.transactionManager.showTransactionDetail()
     "click .createTransactionDetail"      : (event, template) -> logics.transactionManager.createNewTransactionDetail()
     "click .deleteTransaction"            : (event, template) ->
-      Meteor.call 'deleteTransaction', @transaction._id, (error, result) -> if error then console.log error.reason
+      Meteor.call 'deleteTransaction', @transaction._id, (error, result) -> if error then console.log error
     "change [name ='createDebtDate']"     : (event, template) ->
       Session.set('transactionDetailPaymentDate', $("[name=createDebtDate]").datepicker().data().datepicker.dates[0])
 

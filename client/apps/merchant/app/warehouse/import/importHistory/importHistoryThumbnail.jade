@@ -1,7 +1,7 @@
 template(name="importHistoryThumbnail")
   .col
     .thumbnails(class="#{colorClass}")
-      .left-caption {{createDate version.updateAt}}
+      .left-caption {{createDate version.createdAt}}
       .right-caption {{userNameFromId creator}}
       .short-desc.quality {{status}}
       .single-price
