@@ -59,6 +59,7 @@ Meteor.methods
           option2=
             provider    : importDetail.provider
             importPrice : importDetail.importPrice
+            allowDelete : false
           option2.price = importDetail.salePrice if importDetail.salePrice
 
           Schema.products.update product._id, $inc: option1, $set: option2, (error, result) ->

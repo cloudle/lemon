@@ -9,9 +9,9 @@ lemon.defineWidget Template.transactionManagerDetail,
   formatDate  : (date) -> moment(date).format("DD/MM/YYYY")
   countDetail : -> @transactionDetail?.count() ? 0
 
-  allowAddDetail          : -> if @transaction?.debitCash > 0 then true
+  allowAddDetail          : -> if @transaction and @transaction.debitCash > 0 then true else false
   showAddDetail           : -> !Session.get('showAddTransactionDetail')
-  showDeleteTransaction   : -> if @transactionDetail?.count() is 0 and !Session.get('showAddTransactionDetail') then true
+  showDeleteTransaction   : -> if @transactionDetail and @transactionDetail.count() is 0 and !Session.get('showAddTransactionDetail') then true else false
   createTransactionDetail : -> if Session.get('showAddTransactionDetail') then 'display: block' else 'display: none'
 
   rendered: -> Session.set('transactionDetailPaymentDate', new Date())
@@ -20,7 +20,7 @@ lemon.defineWidget Template.transactionManagerDetail,
     "click .showTransactionDetail"        : (event, template) -> logics.transactionManager.showTransactionDetail()
     "click .createTransactionDetail"      : (event, template) -> logics.transactionManager.createNewTransactionDetail()
     "click .deleteTransaction"            : (event, template) ->
-      Meteor.call 'deleteTransaction', @transaction._id, (error, result) -> if error then console.log error.error
+      Meteor.call 'deleteTransaction', @transaction._id, (error, result) -> if error then console.log error.reason
     "change [name ='createDebtDate']"     : (event, template) ->
       Session.set('transactionDetailPaymentDate', $("[name=createDebtDate]").datepicker().data().datepicker.dates[0])
 

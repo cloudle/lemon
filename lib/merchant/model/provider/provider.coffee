@@ -17,20 +17,19 @@ Schema.add 'providers', class Provider
         allowDelete   : true
 
 
-  @createNew: (name, phone, address)->
+  @createNew: (name, phone = null, address = null)->
     if userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
       provider =
         parentMerchant   : userProfile.parentMerchant
         merchant         : userProfile.currentMerchant
         creator          : userProfile.user
         name             : name
-        phone            : phone
-        location         : {address: [address]}
+        phone            : phone if phone
+        location         : {address: [address]} if address
 
       findProvider =  Schema.providers.findOne({
         parentMerchant: provider.parentMerchant
         name          : provider.name
-        phone         : provider.phone
       })
 
       if findProvider

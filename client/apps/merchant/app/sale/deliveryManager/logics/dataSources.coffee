@@ -1,6 +1,6 @@
 waiting = {status: 1}
-delivering = {status: {$in: [2, 3, 4, 5]}}
-done = {status: {$in: [6, 8, 9]}}
+delivering = {status: {$in: [2, 3, 4]}}
+done = {status: {$in: [5, 8, 6, 9]}}
 sortByUpdateDesc = {sort: {'version.createdAt': -1}}
 
 Apps.Merchant.deliveryManagerInit.push (scope) ->

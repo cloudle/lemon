@@ -24,9 +24,10 @@ Schema.add 'products', class Product
   @createNew: (productCode, name, skull, warehouseId = null)->
     if myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
       warehouse = Schema.warehouses.findOne({_id: warehouseId, merchant: myProfile.currentMerchant})
+      console.log warehouse
       newProduct =
-        merchant    : warehouse.merchant ? myProfile.currentMerchant
-        warehouse   : warehouse._id ? myProfile.currentWarehouse
+        merchant    : warehouse?.merchant ? myProfile.currentMerchant
+        warehouse   : warehouse?._id ? myProfile.currentWarehouse
         creator     : myProfile.user
         productCode : productCode
         name        : name
@@ -51,6 +52,6 @@ Schema.add 'products', class Product
     else
       {error:'Không thể xóa được sản phẩm.'}
 
-
+  @new
 
 

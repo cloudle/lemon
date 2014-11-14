@@ -13,6 +13,7 @@ template(name="transactionManagerDetail")
         span Nhân viên: {{userNameFromId transaction.creator}} <br/>
         span Khách Hàng: {{ownerNameFromId transaction.owner}} <br/>
         span Tình trạng: {{status}} (đã trả {{countDetail}} lần) <br/>
+        span Lý do: {{transaction.description}}<br/>
 
         ul
           each transactionDetail

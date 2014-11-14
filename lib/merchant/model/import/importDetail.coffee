@@ -42,14 +42,15 @@ Schema.add 'importDetails', class ImportDetail
         importQuality : quality
         importPrice   : price
         salePrice     : priceSale
+        totalPrice    : quality * price
         productionDate: productionDate if productionDate
         timeUse       : timeUse if productionDate and timeUse
         expire        : getExpireDate(productionDate, timeUse)  if productionDate and timeUse
 
-      findImportDetail = Schema.importDetails.findOne ({
+      findImportDetail = Schema.importDetails.findOne({
         import          : importDetail.import
         product         : importDetail.product
-        importPrice     : importDetail.importPrice
+        importPrice     : Number(importDetail.importPrice)
         provider        : importDetail.provider if importDetail.provider
         productionDate  : importDetail.productionDate if importDetail.productionDate
         timeUse         : importDetail.timeUse if importDetail.timeUse
@@ -57,7 +58,7 @@ Schema.add 'importDetails', class ImportDetail
       })
 
       if findImportDetail
-        option = $inc:{importQuality:importDetail.importQuality totalPrice: importDetail.importQuality*findImportDetail.importPrice}
+        option = $inc:{importQuality:importDetail.importQuality, totalPrice: importDetail.importQuality * findImportDetail.importPrice}
         Schema.importDetails.update findImportDetail._id, option, (error, result) -> console.log error if error
       else
         @schema.insert importDetail, (error, result) -> console.log error if error

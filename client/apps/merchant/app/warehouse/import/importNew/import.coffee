@@ -41,7 +41,46 @@ lemon.defineApp Template.import,
     'change .excelFileSource': (event, template) ->
       if event.target.files.length > 0
         console.log 'importing'
-        $(".excelFileSource").parse
+        $excelSource = $(".excelFileSource")
+        $excelSource.parse
           config:
             complete: (results, file) ->
               console.log results
+              console.log file
+              if file.type is "text/csv"
+                data = results.data
+                #kiem tra nha cung cap
+                for item, index in data
+                  if index != 0
+                    if !Schema.providers.findOne({parentMerchant: Session.get('myProfile').parentMerchant, name: item[3]})
+                      Provider.createNew(item[3])
+
+                #kiem tra san pham
+                for item, index in data
+                  if index != 0
+                    if !Schema.products.findOne({
+                      merchant    : Session.get('myProfile').currentMerchant
+                      warehouse   : Session.get('myProfile').currentWarehouse
+                      productCode : item[0]
+                      skulls      : item[2]
+                    }) then Product.createNew(item[0], item[1], [item[2]], Session.get('myProfile').currentWarehouse)
+
+                #them san pham vao phieu
+                for item, index in data
+                  if index != 0
+                    importId = logics.import.currentImport._id
+                    productId = Schema.products.findOne({
+                      merchant    : Session.get('myProfile').currentMerchant
+                      warehouse   : Session.get('myProfile').currentWarehouse
+                      productCode : item[0]
+                      skulls      : item[2]
+                    })._id
+                    providerId = Schema.providers.findOne({parentMerchant: Session.get('myProfile').parentMerchant, name: item[3]})._id
+                    quality = item[4]
+                    price = item[5]
+                    priceSale = null
+                    productionDate = null
+                    timeUse = null
+                    ImportDetail.new(importId, productId, quality, price, providerId, priceSale, productionDate, timeUse)
+                    
+        $excelSource.val("")

@@ -14,8 +14,15 @@ Meteor.publish 'allProductDetails', ->
   Schema.productDetails.find({warehouse: myProfile.currentWarehouse})
 
 Schema.products.allow
-  insert: -> true
-  update: -> true
+  insert: (userId, product) ->
+    if Schema.products.findOne({
+      merchant    : product.merchant
+      warehouse   : product.warehouse
+      productCode : product.productCode
+      skulls      : product.skulls
+    }) then false else true
+
+  update: (userId, product) -> true
   remove: (userId, product) ->
     productInUse = Schema.importDetails.findOne {product: product._id}
     return product.totalQuality == 0 and !productInUse

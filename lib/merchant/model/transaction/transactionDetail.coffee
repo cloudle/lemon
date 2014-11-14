@@ -28,5 +28,16 @@ Schema.add 'transactionDetails', class TransactionDetail
       Schema.transactions.update transaction._id, $inc:{depositCash: depositCash, debitCash: -depositCash}
       return true
 
+  @new: (creator, transaction, depositCash, paymentDate)->
+    option =
+      merchant    : transaction.merchant
+      warehouse   : transaction.warehouse
+      creator     : creator
+      transaction : transaction._id
+      totalCash   : transaction.debitCash
+      depositCash : depositCash
+      debitCash   : transaction.debitCash - depositCash
+      paymentDate : paymentDate if paymentDate
+
 
 

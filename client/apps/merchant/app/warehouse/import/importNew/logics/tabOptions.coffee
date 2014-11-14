@@ -14,9 +14,8 @@ destroyImportAndDetail = (importId)->
   )
   if currentImport
     for importDetail in Schema.importDetails.find({import: currentImport._id}).fetch()
-      OrderDetail.remove(importDetail._id)
-    Import.remove(currentImport._id)
-
+      Schema.importDetails.remove(importDetail._id)
+    Schema.imports.remove(currentImport._id)
     logics.import.myHistory.count()
   else
     -1

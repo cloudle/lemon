@@ -1,5 +1,5 @@
 lemon.defineWidget Template.stockThumbnail,
-  canDelete: -> @totalQuality == 0
+  allowDelete: -> @totalQuality == 0
   avatarUrl: -> undefined
   meterStyle: ->
     stockPercentage = @availableQuality / (@upperGapQuality ? 100)
@@ -9,5 +9,4 @@ lemon.defineWidget Template.stockThumbnail,
     }
   events:
     "click .full-desc.trash": ->
-      deletingProduct = Schema.products.findOne(@_id)
-      Schema.products.remove(@_id)
+      if deletingProduct = Schema.products.findOne(@_id) then Schema.products.remove(deletingProduct._id)

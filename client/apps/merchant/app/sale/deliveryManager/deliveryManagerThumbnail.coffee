@@ -3,7 +3,7 @@ lemon.defineWidget Template.deliveryManagerThumbnail,
   showStartCommand:   -> @status is 3
   showConfirmCommand: -> @status is 4
   showFinishCommand:  -> @status is 6 or @status is 9
-  showCancelCommand:  -> _.contains([2, 4, 8, 9], @status)
+  showCancelCommand:  -> _.contains([2, 4, 5, 8, 9], @status)
 
   showStatus: (status) ->
     switch status
@@ -39,9 +39,7 @@ lemon.defineWidget Template.deliveryManagerThumbnail,
 
   events:
     "click .select-command": (event, template) ->
-      deliveryId = @_id
-      Helpers.excuteAfterAnimate $(event.delegateTarget), 'item-wrapper', 'zoomOutUp', ->
-        Meteor.call "updateDelivery", deliveryId, 'select', (error, result) -> console.log error if error
+      Meteor.call "updateDelivery", @_id, 'select', (error, result) -> console.log error if error
     "click .start-command": ->
       Meteor.call "updateDelivery", @_id, 'start', (error, result) -> console.log error if error
     "click .fail-command": ->
@@ -52,6 +50,4 @@ lemon.defineWidget Template.deliveryManagerThumbnail,
       Meteor.call "updateDelivery", @_id, 'finish', (error, result) -> console.log error if error
 
     "click .cancel-command": (event, template) ->
-      deliveryId = @_id
-      Helpers.excuteAfterAnimate $(event.delegateTarget), 'item-wrapper', 'zoomOutUp', ->
-        Meteor.call "updateDelivery", deliveryId, 'cancel', (error, result) -> console.log error if error
+      Meteor.call "updateDelivery", @_id, 'cancel', (error, result) -> console.log error if error
