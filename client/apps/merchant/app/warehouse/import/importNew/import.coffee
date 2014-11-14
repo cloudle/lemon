@@ -30,3 +30,12 @@ lemon.defineApp Template.import,
         if currentImport.submitted is false
           Meteor.call 'importSubmit', currentImport._id, (error, result) -> if error then console.log error.error
         Meteor.call 'importFinish', currentImport._id, (error, result) -> if error then console.log error.error
+    'click .excel-import': (event, template) -> $(".excelFileSource").click()
+
+    'change .excelFileSource': (event, template) ->
+      if event.target.files.length > 0
+        console.log 'importing'
+        $(".excelFileSource").parse
+          config:
+            complete: (results, file) ->
+              console.log results

@@ -7,6 +7,8 @@ template(name="import")
         |Nhập Kho
         button.btn.btn-success.importHistory(type='submit') LỊCH SỬ
       .commands
+        input.hidden.excelFileSource(type="file")
+        button.btn.btn-default.pull-right.excel-import(type='submit') EXCEL!
         button.btn.btn-default.pull-right.icon-print-6.add-product(type='submit') Thêm Sản Phẩm
         button.btn.btn-default.pull-right.icon-print-6.add-provider(type='submit') Thêm NPP
       .switches
