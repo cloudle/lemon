@@ -30,7 +30,7 @@ tourSteps = [
   content: "<b>Đ</b>ây là chức năng hướng dẫn sử dụng, sau lần đăng nhập đầu tiên, hệ thống <b>EDS</b> sẽ không tự động bật <b>HƯỚNG DẪN SỬ DỤNG</b>
             nữa.<br/><br/>
             <b>T</b>uy nhiên bạn vẫn có thể xem lại hướng dẫn bằng cách ấn vào biểu tượng phía trên.<br/><br/>
-            <b>T</b>rong 5 phút, chúng ta sẽ đi qua những bước cần thiết để có thể bắt đầu <b>chuyển phần việc trong tay bạn sang
+            <b>T</b>rong ít phút, chúng ta sẽ đi qua những bước cần thiết để có thể bắt đầu <b>chuyển phần việc trong tay bạn sang
             hệ thống tự động<b/>."
 ,
 #  element: ".chat-avatar.me"
@@ -107,6 +107,6 @@ Apps.Merchant.homeRerun.push (scope) ->
   scope.homeTour = new Tour
     steps: tourSteps
     container: "body"
-#    backdrop: true
+    backdrop: true
 
   Apps.currentTour = scope.homeTour
