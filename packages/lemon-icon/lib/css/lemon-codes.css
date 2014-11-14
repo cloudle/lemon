@@ -192,6 +192,12 @@
 .icon-book:before { content: '\e8be'; } /* '' */
 .icon-plus-circled:before { content: '\e8bf'; } /* '' */
 .icon-minus-circled:before { content: '\e8c0'; } /* '' */
+.icon-doc-text-inv-1:before { content: '\e8c1'; } /* '' */
+.icon-doc-text-2:before { content: '\e8c2'; } /* '' */
+.icon-ok-circled2:before { content: '\e8c3'; } /* '' */
+.icon-ok-circled:before { content: '\e8c4'; } /* '' */
+.icon-doc-inv-1:before { content: '\e8c5'; } /* '' */
+.icon-pencil-circled:before { content: '\e8c6'; } /* '' */
 .icon-emo-happy:before { content: '\f027'; } /* '' */
 .icon-emo-wink:before { content: '\f028'; } /* '' */
 .icon-emo-wink2:before { content: '\f029'; } /* '' */

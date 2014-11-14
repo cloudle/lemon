@@ -5,13 +5,12 @@ template(name="import")
     .caption-row
       .title
         |Nhập Kho
-        button.btn.btn-success.importHistory(type='submit') LỊCH SỬ
+        button.lemon.btn.amethyst.icon-history.importHistory(type='submit') LỊCH SỬ
       .commands
         input.hidden.excelFileSource(type="file")
-        button.btn.btn-default.pull-right.excel-import(type='submit') EXCEL!
-        button.btn.btn-default.pull-right.icon-print-6.add-product(type='submit') Thêm Sản Phẩm
-        button.btn.btn-default.pull-right.icon-print-6.add-provider(type='submit') Thêm NPP
-      .switches
+        button.lemon.btn.lime.icon-building.add-provider(type='submit') Thêm NPP
+        button.lemon.btn.lime.icon-tags-2.add-product(type='submit') Thêm Sản Phẩm
+        button.lemon.btn.lime.icon-note-1.excel-import(type='submit') NHẬP TỰ ĐỘNG
         input(binding="switch" type="checkbox" name="advancedMode")
 
     .editor-row
@@ -33,7 +32,7 @@ template(name="import")
           +iSpinEdit(options=salePriceOptions class="field")
       if showCreateDetail
         .editor-wrapper(style="width:100px")
-          button.btn.btn-default.addImportDetail(type='submit' style="{{showCreateDetail}}") Add
+          button.lemon.btn.lime.icon-plus-circled.addImportDetail(type='submit' style="{{showCreateDetail}}") THÊM MỚI
 
     .editor-row.extra(name='advanced' style="display: none;")
       .editor-wrapper(style="width: 120px")
@@ -54,13 +53,13 @@ template(name="import")
       .editor-row
         if showSubmit
           .editor-wrapper.right(style="width: 100px")
-            button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN
+            button.lemon.btn.lime.icon-ok-6.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN
         if showEdit
           .editor-wrapper.right(style="width: 120px")
-            button.btn.btn-default.right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
+            button.lemon.btn.carrot.icon-pencil-circled.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
         if showFinish
           .editor-wrapper.right(style="width: 100px")
-            button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") HOÀN TẤT
+            button.lemon.btn.lime.icon-award.right.finishImport(type='submit' style="margin-right: 5px;") HOÀN TẤT
 
         .editor-wrapper.right(style="width: 120px")
           span.ilabel.optional tiền còn nợ

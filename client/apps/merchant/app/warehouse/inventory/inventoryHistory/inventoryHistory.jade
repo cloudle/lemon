@@ -5,7 +5,7 @@ template(name="inventoryHistory")
       .title Lịch Sử Kiểm Kho
     .editor-row
       .editor-wrapper.pull-right
-        button.btn.btn-success.createInventory(type='submit') KIỂM KHO
+        button.lemon.btn.amethyst.icon-edit-alt.createInventory(type='submit') KIỂM KHO
       .editor-wrapper(style="width: 200px")
         span.ilabel chi nhánh
         +iSelect(options=branchSelectOptions class="field")
@@ -19,7 +19,7 @@ template(name="inventoryHistory")
         span.ilabel đến ngày
         input(name="toDate" binding="datePicker" todayHighlight="true" maxlength="20")
       .editor-wrapper
-        button.btn.btn-success#filterInventoryHistories ÁP DỤNG
+        button.lemon.btn.lime.icon-ok-6#filterInventoryHistories ÁP DỤNG
 
   #content
     +iGrid(options=gridOptions)

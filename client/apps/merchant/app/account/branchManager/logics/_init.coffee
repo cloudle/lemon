@@ -8,6 +8,6 @@ Apps.Merchant.branchManagerInit.push (scope) ->
 
 logics.branchManager.reactiveRun = ->
   if Session.get('allowCreateNewBranch')
-    logics.branchManager.allowCreate = 'btn-success'
+    logics.branchManager.allowCreate = ''
   else
-    logics.branchManager.allowCreate = 'btn-default disabled'
+    logics.branchManager.allowCreate = 'disabled'

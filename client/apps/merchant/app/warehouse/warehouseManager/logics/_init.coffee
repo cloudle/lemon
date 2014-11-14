@@ -8,6 +8,6 @@ Apps.Merchant.warehouseManagerInit.push (scope) ->
 
 logics.warehouseManager.reactiveRun = ->
   if Session.get('allowCreateNewWarehouse')
-    logics.warehouseManager.allowCreate = 'btn-success'
+    logics.warehouseManager.allowCreate = ''
   else
-    logics.warehouseManager.allowCreate = 'btn-default disabled'
+    logics.warehouseManager.allowCreate = 'disabled'

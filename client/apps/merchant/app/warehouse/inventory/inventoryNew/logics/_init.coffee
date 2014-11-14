@@ -39,7 +39,7 @@ Apps.Merchant.inventoryReactiveRun.push (scope) ->
         Meteor.subscribe('inventoryDetailInWarehouse', scope.currentInventory._id)
       scope.inventoryDetails = Schema.inventoryDetails.find({inventory: scope.currentInventory._id})
 
-  scope.allowCreate     = if scope.currentWarehouse?.checkingInventory || !Session.get('allowCreateNewInventory') then 'btn-default disabled' else 'btn-success'
+  scope.allowCreate     = if scope.currentWarehouse?.checkingInventory || !Session.get('allowCreateNewInventory') then 'disabled' else ''
   scope.showCreate      = if scope.currentWarehouse?.checkingInventory then "display: none" else ""
   scope.showDescription = if scope.currentWarehouse?.checkingInventory is true then "display: none" else ""
   scope.showDestroy = if scope.currentInventory then "" else "display: none"

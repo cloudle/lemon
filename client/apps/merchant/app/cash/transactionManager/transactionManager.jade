@@ -22,8 +22,7 @@ template(name="transactionManager")
           span.ilabel lý do
           input.description(maxlength="200" value="{{newTransaction.description}}")
         .editor-wrapper
-          button.btn.btn-success.createTransaction(class="{{allowCreate}}") THÊM
-
+          button.lemon.btn.lime.icon-plus-circled.createTransaction(class="{{allowCreate}}") THÊM
 
   #content
     +iGrid(options=gridOptions)

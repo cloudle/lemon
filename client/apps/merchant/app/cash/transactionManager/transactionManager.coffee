@@ -3,8 +3,8 @@ lemon.defineApp Template.transactionManager,
   allowCreate: ->
     newTransaction = Session.get('createNewTransaction')
     if newTransaction.customerId != 'skyReset' and newTransaction.totalCash > 0 and newTransaction.totalCash > newTransaction.depositCash and newTransaction.description.length > 0
-      'btn-success'
-    else'btn-default disabled'
+      ''
+    else 'disabled'
 
   activeReceivable: (receivable)-> return 'active' if Session.get('receivable') is receivable
   activeTransactionFilter: (filter)-> return 'active' if Session.get('transactionFilter') is filter

@@ -6,10 +6,10 @@ template(name="roleManager")
         span.ilabel tên nhóm
         +iSelect(options=roleSelectOptions class="field")
       .editor-wrapper
-        .btn.btn-default#updateButton ÁP DỤNG
+        .lemon.btn.lime.icon-ok-6#updateButton ÁP DỤNG
 
       .editor-wrapper.right(style="display")
-        .btn#newGroupButton(class="{{allowCreate}}") TẠO MỚI
+        .lemon.btn.lime.icon-plus-circled#newGroupButton(class="{{allowCreate}}") THÊM MỚI
       .editor-wrapper.right(style="width: 200px")
         span.ilabel.optional tên nhóm
         input(name="newGroupName")

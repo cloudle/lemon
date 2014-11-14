@@ -1,5 +1,5 @@
 lemon.defineApp Template.roleManager,
-  allowCreate: -> if Session.get('allowCreateNewRole') then 'btn-success' else 'btn-default disabled'
+  allowCreate: -> if Session.get('allowCreateNewRole') then '' else 'disabled'
   created: ->
     logics.roleManager.rolesTemplateContext = @
 

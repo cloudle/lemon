@@ -4,7 +4,7 @@ template(name="inventory")
 
     .editor-row
       .editor-wrapper.pull-right
-        button.btn.btn-success.inventoryHistory(type='submit') LỊCH SỬ
+        button.lemon.btn.amethyst.icon-history.inventoryHistory(type='submit') LỊCH SỬ
       .editor-wrapper(style="width: 200px")
         span.ilabel chi nhánh
         +iSelect(options=merchantSelectOptions class="field")
@@ -15,12 +15,11 @@ template(name="inventory")
         span.ilabel lý do kiểm kho
         input(name="description" maxlength="200" value="{{currentInventory.description}}")
       .editor-wrapper(style="width:100px; {{showCreate}}")
-        button.btn.btn-default.createInventory(class="{{allowCreate}}") Tạo
+        button.lemon.btn.lime.icon-plus-circled.createInventory(class="{{allowCreate}}") Tạo
       .editor-wrapper(style="width:100px; {{showDestroy}}")
-        button.btn.btn-default.destroyInventory() Hủy
+        button.lemon.btn.pumpkin.destroyInventory() Hủy
       .editor-wrapper(style="width:100px; {{showSubmit}}")
-        button.btn.btn-default.submitInventory() Xác Nhận
-
+        button.lemon.btn.lime.icon-ok-6.submitInventory() Xác Nhận
 
   #content
     +iGrid(options=gridOptions)

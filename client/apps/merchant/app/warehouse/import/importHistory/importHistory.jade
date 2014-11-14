@@ -5,7 +5,7 @@ template(name="importHistory")
       .title Lịch Sử Nhập Kho
     .editor-row
       .editor-wrapper.pull-right
-        button.btn.btn-success.createImport(type='submit') NHẬP KHO
+        button.lemon.btn.amethyst.icon-inbox-1.createImport(type='submit') NHẬP KHO
       .editor-wrapper(style="width: 200px")
         span.ilabel chi nhánh
         +iSelect(options=branchSelectOptions class="field")
@@ -19,7 +19,7 @@ template(name="importHistory")
         span.ilabel đến ngày
         input(name="toDate" binding="datePicker" todayHighlight="true" maxlength="20")
       .editor-wrapper
-        button.btn.btn-success#filterImportHistories ÁP DỤNG
+        button.lemon.btn.lime.icon-ok-6#filterImportHistories ÁP DỤNG
 
   #content
     +iGrid(options=gridOptions)

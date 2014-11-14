@@ -31,11 +31,11 @@ template(name="transactionManagerDetail")
           span.bill-final <b>{{formatNumber transaction.debitCash}}</b> VNĐ
       .modal-footer
         if showDeleteTransaction
-          button.btn.btn-danger.deleteTransaction(data-dismiss="modal") Xóa Phiếu
+          button.lemon.btn.pumpkin.icon-minus-circled.deleteTransaction(data-dismiss="modal") Xóa Phiếu
 
         if allowAddDetail
           if showAddDetail
-            button.btn.btn-primary.showTransactionDetail Thêm Trả Tiền
+            button.lemon.btn.lime.icon-plus-circled.showTransactionDetail Thêm Trả Tiền
 
           .editor-row(style="{{createTransactionDetail}}")
             .editor-wrapper(style="width:150px")
@@ -45,6 +45,6 @@ template(name="transactionManagerDetail")
               span.ilabel ngày trả
               input.createDebtDate(name="createDebtDate" binding="datePicker" todayHighlight="true" maxlength="20")
             .editor-wrapper
-              button.btn.btn-success.createTransactionDetail(type='submit') Thêm
+              button.lemon.btn.lime.icon-plus-circled.createTransactionDetail(type='submit') Thêm
             .editor-wrapper
-              button.btn.btn-warning.cancelCreateTransactionDetail(type='submit') Hủy
+              button.lemon.btn.pumpkin.cancelCreateTransactionDetail(type='submit') Hủy

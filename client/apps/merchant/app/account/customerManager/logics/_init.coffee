@@ -7,6 +7,6 @@ Apps.Merchant.customerManagerInit.push (scope) ->
 
 logics.customerManager.reactiveRun = ->
   if Session.get('allowCreateNewCustomer')
-    logics.customerManager.allowCreate = 'btn-success'
+    logics.customerManager.allowCreate = ''
   else
-    logics.customerManager.allowCreate = 'btn-default disabled'
+    logics.customerManager.allowCreate = 'disabled'

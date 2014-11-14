@@ -18,7 +18,7 @@ template(name="customerManager")
       .switches
         input(binding="switch" type="checkbox" name="genderMode" checked="true")
       .editor-wrapper
-        button.btn#createCustomerAccount(class="{{allowCreate}}") TẠO MỚI
+        button.lemon.btn.lime.icon-user-add-1#createCustomerAccount(class="{{allowCreate}}") TẠO MỚI
 
   #content.customer-manager
     +iGrid(options=gridOptions)
