@@ -18,7 +18,7 @@ template(name="sales")
         span.ilabel.center giá bán
         +iSpinEdit(options=productPriceOptions)
       .editor-wrapper(style="width:70px")
-        button.btn.btn-default.addOrderDetail(class="{{allowAllOrderDetail}}" type='submit') THÊM
+        button.lemon.btn.lime.icon-plus-circled.addOrderDetail(class="{{allowAllOrderDetail}}" type='submit') THÊM
 
       .editor-wrapper.right(style="width: 150px")
         span.ilabel.optional giá tổng
@@ -77,9 +77,9 @@ template(name="sales")
         span.ilabel.optional giao hàng
         +iSelect(options=paymentsDeliverySelectOption class="field")
       .editor-wrapper.pull-right
-        button.btn.btn-default.pull-right.finish(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
+        button.lemon.btn.lime.pull-right.finish(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
       .editor-wrapper.pull-right
-        button.btn.btn-default.pull-right.icon-print-6.print-preview(type='submit')
+        button.lemon.btn.lime.pull-right.print-preview(type='submit'): span.icon-print-6
       .editor-wrapper.pull-right(style="width: 120px")
         span.ilabel.optional.right thực thu
         input.quality(value="{{formatNumber currentOrder.finalPrice}}" disabled)

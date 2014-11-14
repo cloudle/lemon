@@ -190,6 +190,8 @@
 .icon-edit-alt:before { content: '\e8bc'; } /* '' */
 .icon-shuffle-4:before { content: '\e8bd'; } /* '' */
 .icon-book:before { content: '\e8be'; } /* '' */
+.icon-plus-circled:before { content: '\e8bf'; } /* '' */
+.icon-minus-circled:before { content: '\e8c0'; } /* '' */
 .icon-emo-happy:before { content: '\f027'; } /* '' */
 .icon-emo-wink:before { content: '\f028'; } /* '' */
 .icon-emo-wink2:before { content: '\f029'; } /* '' */

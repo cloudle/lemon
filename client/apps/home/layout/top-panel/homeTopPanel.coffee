@@ -4,7 +4,6 @@ toggleTopPanel = -> Session.set('topPanelMinimize', !Session.get('topPanelMinimi
 lemon.defineWidget Template.homeTopPanel,
   minimizeClass: -> if Session.get('topPanelMinimize') then 'minimize' else ''
   toggleIcon: -> if Session.get('topPanelMinimize') then 'icon-up-open-3' else 'icon-down-open-3'
-  showRegisterToggle: -> Meteor.userId() is null
 
   created: ->
     Session.setDefault('registerAccountValid', 'invalid')

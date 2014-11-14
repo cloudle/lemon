@@ -1,0 +1,20 @@
+@require '../lib.import.styl'
+
+.lemon.btn
+  color #ffffff
+  border-radius 2px
+  padding 3px 12px 2px 12px
+  for $color in colors
+    &.{$color[0]}
+      background-color $color[1]
+      background linear-gradient(top, $color[1], darken($color[1], 3));
+      box-shadow inset 0px 1px 0px $color[1], 0px 3px 0px 0px darken($color[1], 7), 0px 4px 4px #999;
+  &:focus
+    outline none
+  &[class^="icon-"]:not, &[class*=" icon-"]
+    padding-left 5px
+    &:before
+      margin-right 5px
+  &:active
+    box-shadow 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
+    padding-top 4px; padding-bottom 4px
