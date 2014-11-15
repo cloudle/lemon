@@ -11,7 +11,7 @@ Apps.Merchant.salesInit.push (scope) ->
   scope.currentBranchProviders        = Provider.insideBranch(Session.get('myProfile').currentMerchant)
   scope.currentAllProviders           = Provider.insideMerchant(Session.get('myProfile').parentMerchant)
   scope.currentOrderHistory           = Order.myHistory(Session.get('myProfile').user, Session.get('myProfile').currentWarehouse, Session.get('myProfile').currentMerchant)
-
+  scope.currentBranchStaff            = Meteor.users.find({})
 
 Apps.Merchant.salesReload.push (scope) ->
   console.log 'reruning...'

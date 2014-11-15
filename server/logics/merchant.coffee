@@ -39,3 +39,14 @@ Meteor.methods
 
 
     return user
+
+  createMerchantStaff: (email, password, profile)->
+    userId = Accounts.createUser {email: email, password: password}
+    user = Meteor.users.findOne(userId)
+
+    if !user then throw new Meteor.Error("loi tao tai khoan", "khong the tao tai khoan"); return
+
+    profile.user = userId
+    Schema.userProfiles.insert profile
+    MetroSummary.updateMetroSummaryByStaff(userId)
+    return user

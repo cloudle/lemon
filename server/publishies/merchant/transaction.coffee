@@ -1,3 +1,8 @@
+Meteor.publish 'availableReceivable', ->
+  myProfile = Schema.userProfiles.findOne({user: @userId})
+  return [] if !myProfile
+  Schema.transactions.find({merchant: myProfile.currentMerchant, warehouse: myProfile.currentWarehouse})
+
 Meteor.publishComposite 'receivableAndRelates', -> #No phai thu
   self = @
   return {

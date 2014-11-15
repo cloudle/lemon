@@ -5,7 +5,7 @@ template(name="stockThumbnail")
       .horizontal-meter
         .meter-wrapper: .meter-progress(style="height: {{meterStyle.percent}}%; background-color: {{meterStyle.color}}")
       .right-caption {{name}}
-      .short-desc.quality.small {{availableQuality}}/{{inStockQuality}}{{instockQuality}}
+      .short-desc.quality.small {{availableQuality}}/{{inStockQuality}}
       .full-desc.price {{formatNumber price}} <small>VNĐ</small>
       .discount
         if false

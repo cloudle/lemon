@@ -20,12 +20,15 @@ simpleSchema.productDetails = new SimpleSchema
 
   availableQuality:
     type: Number
+    min: 0
 
   inStockQuality:
     type: Number
+    min: 0
 
   importPrice:
     type: Number
+    min: 0
 
   expire:
     type: Date

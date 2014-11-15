@@ -1,7 +1,10 @@
 template(name="customerManager")
   +customerProfileManager
   #header
-    .caption-row: .title KHÁCH HÀNG <small>CRM</small>
+    .caption-row
+      .title KHÁCH HÀNG <small>CRM</small>
+      .switches
+        input(binding="switch" type="checkbox" name="genderMode" checked="true")
     .editor-row
       .editor-wrapper
         span.ilabel tên khách hàng
@@ -15,10 +18,12 @@ template(name="customerManager")
       .editor-wrapper(style="width: 120px")
         span.ilabel.optional sinh nhật
         input(binding="datePicker" todayHighlight="true" name="dateOfBirth")
-      .switches
-        input(binding="switch" type="checkbox" name="genderMode" checked="true")
       .editor-wrapper
         button.lemon.btn.lime.icon-user-add-1#createCustomerAccount(class="{{allowCreate}}") TẠO MỚI
+      .editor-wrapper.pull-right
+        input.hidden.excelFileSource(type="file")
+        button.lemon.btn.blue.pull-right.excel-customer(type='submit' data-toggle="tooltip" data-container="body" data-placement="left" title="Tự động nhập")
+          span.icon-user-add-1
 
   #content.customer-manager
     +iGrid(options=gridOptions)

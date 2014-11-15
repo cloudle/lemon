@@ -5,4 +5,11 @@ lemon.defineWidget Template.roleDetailThumbnail,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   email: ->
     console.log @styles
-    Meteor.users.findOne(@user).emails[0].address
+    Meteor.users.findOne(@user)?.emails[0].address
+
+  events:
+    "click .trash": (event, template) ->
+      if Meteor.users.remove(@user) is 1
+        Schema.userProfiles.remove(@_id)
+        Schema.userSessions.remove(userSession._id) if userSession = Schema.userSessions.findOne({user: @user})
+        Schema.userOptions.remove(userOption._id) if userOption = Schema.userOptions.findOne({user: @user})
