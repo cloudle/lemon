@@ -1,13 +1,14 @@
 @import 'rupture'
 @import "../../../styles/lib.import.styl"
+min-resolution = 1000px
 
 .application, nav.main
   min-width application-min-width
-  +below(1023px)
+  +below(min-resolution)
     display none
 
 .unsupported-resolution
-  +above(1023px)
+  +above(min-resolution)
     display none
   font-size 30px
   text-align center
