@@ -129,6 +129,23 @@ Schema.add 'metroSummaries', class MetroSummary
 
     Schema.metroSummaries.update @id, $set: option
 
+  @updateMetroSummaryByStaff: (staffId)->
+    profile = Schema.userProfiles.findOne({user: staffId})
+    if profile
+      for item in Schema.metroSummaries.find({parentMerchant: profile.parentMerchant}).fetch()
+        option = {staffCountAll: 1}
+        option.staffCount = 1 if item.merchant is profile.currentMerchant
+        Schema.metroSummaries.update item._id, $inc: option
+
+  @updateMetroSummaryByStaffDestroy: (userId)->
+    profile = Schema.userProfiles.findOne({user: userId})
+    if profile
+      for item in Schema.metroSummaries.find({parentMerchant: profile.parentMerchant}).fetch()
+        option = {staffCountAll: -1}
+        option.staffCount = -1 if item.merchant is profile.currentMerchant
+        Schema.metroSummaries.update item._id, $inc: option
+    
+
   @updateMetroSummaryBySale: (saleId)->
     sale = Schema.sales.findOne({_id: saleId, received: true})
     if sale
@@ -335,33 +352,33 @@ Schema.add 'metroSummaries', class MetroSummary
         Schema.metroSummaries.update metroSummary._id, $inc: {stockProductCount: sale.saleCount, availableProductCount: sale.saleCount }
 
   @updateMetroSummaryBy: (context)->
-    userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-    if userProfile
+    profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    if profile
       if _.contains(context,'branch')
-        merchantCount    = Schema.merchants.find({$or:[{_id: userProfile.parentMerchant},{parent: userProfile.parentMerchant}]})
+        merchantCount    = Schema.merchants.find({$or:[{_id: profile.parentMerchant},{parent: profile.parentMerchant}]})
       if _.contains(context,'warehouse') || _.contains(context,'branch')
-        warehouseCount   = Schema.warehouses.find({merchant: userProfile.currentMerchant})
-        warehouseCountAll= Schema.warehouses.find({$or:[{merchant: userProfile.parentMerchant },{parentMerchant: userProfile.parentMerchant}]})
+        warehouseCount   = Schema.warehouses.find({merchant: profile.currentMerchant})
+        warehouseCountAll= Schema.warehouses.find({$or:[{merchant: profile.parentMerchant },{parentMerchant: profile.parentMerchant}]})
       if _.contains(context,'staff')
-        staffCount       = Schema.userProfiles.find({currentMerchant: userProfile.currentMerchant})
-        staffCountAll    = Schema.userProfiles.find({parentMerchant: userProfile.parentMerchant})
+        staffCount       = Schema.userProfiles.find({currentMerchant: profile.currentMerchant})
+        staffCountAll    = Schema.userProfiles.find({parentMerchant: profile.parentMerchant})
       if _.contains(context,'customer')
-        customerCount    = Schema.customers.find({currentMerchant: userProfile.currentMerchant})
-        customerCountAll = Schema.customers.find({parentMerchant: userProfile.parentMerchant})
+        customerCount    = Schema.customers.find({currentMerchant: profile.currentMerchant})
+        customerCountAll = Schema.customers.find({parentMerchant: profile.parentMerchant})
 
-      metroSummary = Schema.metroSummaries.find({parentMerchant: userProfile.parentMerchant})
+      metroSummary = Schema.metroSummaries.find({parentMerchant: profile.parentMerchant})
       for item in metroSummary.fetch()
         option = {}
         if _.contains(context,'branch')
           option.merchantCount = merchantCount.count()
         if _.contains(context,'warehouse') || _.contains(context,'branch')
-          option.warehouseCount    = warehouseCount.count() if item.merchant == userProfile.currentMerchant
+          option.warehouseCount    = warehouseCount.count() if item.merchant == profile.currentMerchant
           option.warehouseCountAll = warehouseCountAll.count()
         if _.contains(context,'staff')
-          option.staffCount    = staffCount.count() if item.merchant == userProfile.currentMerchant
+          option.staffCount    = staffCount.count() if item.merchant == profile.currentMerchant
           option.staffCountAll = staffCountAll.count()
         if _.contains(context,'customer')
-          option.customerCount    = customerCount.count() if item.merchant == userProfile.currentMerchant
+          option.customerCount    = customerCount.count() if item.merchant == profile.currentMerchant
           option.customerCountAll = customerCountAll.count()
 
         Schema.metroSummaries.update item._id, $set: option

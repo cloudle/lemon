@@ -49,6 +49,10 @@ simpleSchema.userProfiles = new SimpleSchema
     type: [String]
     optional: true
 
+  allowDelete:
+    type: Boolean
+    defaultValue: true
+
   systemVersion:
     type: String
     optional: true

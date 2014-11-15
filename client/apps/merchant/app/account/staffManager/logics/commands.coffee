@@ -14,22 +14,22 @@ Apps.Merchant.staffManagerInit.push (scope) ->
       roles = []
       if Session.get('currentRoleSelection')?.length > 0
         roles.push role.name for role in Session.get('currentRoleSelection')
+
       newProfile =
         parentMerchant    : Session.get("myProfile").parentMerchant
-        currentMerchant   : Session.get("createStaffBranchSelection")._id
-        currentWarehouse  : Session.get("createStaffWarehouseSelection")._id
+        currentMerchant   : Session.get("mySession").createStaffBranchSelection
+        currentWarehouse  : Session.get("mySession").createStaffWarehouseSelection
+        creator           : Session.get("myProfile").user
+        isRoot            : false
         fullName          : fullName
+        gender            : Session.get("createStaffGenderSelection") if fullName
+        dateOfBirth       : dateOfBirth if dateOfBirth
+        startWorkingDate  : startWorkingDate if startWorkingDate
+        roles             : roles if roles.length > 0
         systemVersion     : Schema.systems.findOne().version
+      #        avatar            :
 
-      newProfile.roles = roles if roles.length > 0
-      newProfile.dateOfBirth = dateOfBirth if dateOfBirth
-      newProfile.startWorkingDate = startWorkingDate if startWorkingDate
-      newProfile.gender = Session.get("createStaffGenderSelection") if fullName
-
-      Meteor.call "createMerchantAccount", email, password, newProfile
-      #      Meteor.call "createMerchantAccount",
-      #        email: template.ui.$email.val()
-      #        password: template.ui.$password.val()
+      Meteor.call "createMerchantStaff", email, password, newProfile
 
       newMemberName = fullName ? email
 #      Notification.newMemberJoined(newMemberName, Session.get("merchantPackages").companyName)

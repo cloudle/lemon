@@ -4,3 +4,5 @@ template(name="roleDetailThumbnail")
       +avatarImageComponent(avatar=avatarUrl alias=fullName)
       .right-caption {{email}}
       .full-desc.price {{permissionDesc}}
+      if allowDelete
+        .full-desc.trash: a(href="#"): i.icon-bag

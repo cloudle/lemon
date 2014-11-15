@@ -7,10 +7,8 @@ template(name="import")
         |Nhập Kho
         button.lemon.btn.amethyst.icon-history.importHistory(type='submit') LỊCH SỬ
       .commands
-        input.hidden.excelFileSource(type="file")
         button.lemon.btn.lime.icon-building.add-provider(type='submit') Thêm NPP
         button.lemon.btn.lime.icon-tags-2.add-product(type='submit') Thêm Sản Phẩm
-        button.lemon.btn.lime.icon-note-1.excel-import(type='submit') NHẬP TỰ ĐỘNG
         input(binding="switch" type="checkbox" name="advancedMode")
 
     .editor-row
@@ -32,7 +30,11 @@ template(name="import")
           +iSpinEdit(options=salePriceOptions class="field")
       if showCreateDetail
         .editor-wrapper(style="width:100px")
-          button.lemon.btn.lime.icon-plus-circled.addImportDetail(type='submit' style="{{showCreateDetail}}") THÊM MỚI
+          button.lemon.btn.lime.icon-plus-circled.addImportDetail(type='submit' style="{{showCreateDetail}}") THÊM
+      .editor-wrapper.pull-right
+        input.hidden.excelFileSource(type="file")
+        button.lemon.btn.blue.pull-right.excel-import(type='submit' data-toggle="tooltip" data-container="body" data-placement="left" title="Nhập tự động")
+          span.icon-inbox-1
 
     .editor-row.extra(name='advanced' style="display: none;")
       .editor-wrapper(style="width: 120px")

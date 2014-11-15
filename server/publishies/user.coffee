@@ -17,15 +17,29 @@ Meteor.publishComposite 'myMerchantProfiles', ->
 Meteor.publish 'myOption', -> Schema.userOptions.find({user: @userId})
 Meteor.publish 'mySession', -> Schema.userSessions.find({user: @userId})
 
+
+
+
+Meteor.users.allow
+  insert: (userId, user)-> true
+  update: (userId, user)-> true
+  remove: (userId, user)->
+    if Schema.orders.findOne {creator: user._id} then return false
+    if Schema.sales.findOne {creator: user._id} then return false
+    if Schema.imports.findOne {creator: user._id} then return false
+    if Schema.customers.findOne {creator: user._id} then return false
+    MetroSummary.updateMetroSummaryByStaffDestroy(userId)
+    return true
+
 Schema.userProfiles.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
+  insert: (userId, userProfile)-> true
+  update: (userId, userProfile)-> true
+  remove: (userId, userProfile)-> true
 
 Schema.userOptions.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
+  insert: (userId, userOption)-> true
+  update: (userId, userOption)-> true
+  remove: (userId, userOption)-> true
 
 Schema.userSessions.allow
   insert: (userId, userSession) -> return userSession.user is userId and Schema.userSessions.findOne({user: userId}) is undefined

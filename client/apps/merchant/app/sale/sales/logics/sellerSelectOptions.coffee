@@ -2,12 +2,12 @@ formatSellerSearch = (item) -> "#{item.emails[0].address}" if item
 Apps.Merchant.salesInit.push ->
   logics.sales.sellerSelectOptions =
     query: (query) -> query.callback
-    results: _.filter logics.sales.currentBranchStaff?.fetch(), (item) ->
-      result = false
-      for email in item.emails
-        if email.address.indexOf(query.term) > -1 then (result = true; break)
-      result
-    text: 'email'
+      results: _.filter logics.sales.currentBranchStaff?.fetch(), (item) ->
+        result = false
+        for email in item.emails
+          if email.address.indexOf(query.term) > -1 then (result = true; break)
+        result
+      text: 'email'
     initSelection: (element, callback) ->
       currentSeller = logics.sales.currentOrder?.seller ? Meteor.userId()
       callback Meteor.users.findOne(currentSeller)

@@ -1,22 +1,23 @@
-checkValidationFileImport = (data)->
+checkValidationFileImport = (column)->
+  data = []
+  data.push(item.trim()) for item in column
+
   productColumn = {}
-  productColumn.barcode        = data.indexOf("Mã Code")
-  productColumn.name           = data.indexOf("Tên Sản Phẩm")
-  productColumn.skull          = data.indexOf("Qui Cách")
-  productColumn.quality        = data.indexOf("Số Lượng")
-  productColumn.price          = data.indexOf("Giá Nhập")
-  productColumn.priceSale      = data.indexOf("Giá Bán")
-  productColumn.productionDate = data.indexOf("Ngày Sản Xuất")
-  productColumn.expireDate     = data.indexOf("Ngày Hết Hạn")
+  productColumn.barcode        = data.indexOf("Tài Khoản")
+  productColumn.name           = data.indexOf("Mật Khẩu")
+  productColumn.skull          = data.indexOf("Chi Nhánh")
+  productColumn.quality        = data.indexOf("Kho Hàng")
+  productColumn.price          = data.indexOf("Tên Nhân Viên")
+  productColumn.priceSale      = data.indexOf("Giới Tính")
+  productColumn.productionDate = data.indexOf("Sinh Nhật")
+  productColumn.expireDate     = data.indexOf("Ngày Gia Nhập")
   productColumn.providerName   = data.indexOf("Nhà Cung Cấp")
 
-  for key, value of productColumn
-    return productColumn = {} if value is -1
-
+  (return productColumn = {} if value is -1) for key, value of productColumn
   productColumn
 
 
-checkAndAddNewProvider = (column, data, profile)->
+checkAndAddNewMerchantAndWarehouse = (column, data, profile)->
   for item in data
     if !Schema.providers.findOne({parentMerchant: profile.parentMerchant, name: item[column.providerName]})
       Provider.createNew(item[column.providerName])
@@ -30,7 +31,7 @@ checkAndAddNewProduct = (column, data, profile)->
       skulls      : item[column.skull]
     }) then Product.createNew(item[column.barcode], item[column.name], [item[column.skull]], profile.currentWarehouse)
 
-addDetailInImport1 = (column, data, profile)->
+addMerchantStaff = (column, data, profile)->
   for item in data
     imports = logics.import.currentImport
     provider = Schema.providers.findOne({parentMerchant: profile.parentMerchant, name: item[column.providerName]})
@@ -70,32 +71,12 @@ addDetailInImport1 = (column, data, profile)->
     else
       Schema.importDetails.insert importDetail, (error, result) -> console.log error if error
 
-addDetailInImport = (column, data, profile)->
-  for item in data
-    importId = logics.import.currentImport._id
-    productId = Schema.products.findOne({
-      merchant    : profile.currentMerchant
-      warehouse   : profile.currentWarehouse
-      productCode : item[column.barcode]
-      skulls      : item[column.skull]
-    })._id
-    providerId = Schema.providers.findOne({parentMerchant: profile.parentMerchant, name: item[column.providerName]})._id
-    quality = item[column.quality]
-    price = item[column.price]
-    priceSale = item[column.priceSale]
-    #    timeUse = null
-    productionDate = moment(item[column.productionDate], "DD/MM/YYYY")._d
-    expireDate = moment(item[column.providerName], "DD/MM/YYYY")._d
-
-    ImportDetail.new(importId, productId, quality, price, providerId)
-#    ImportDetail.new(importId, productId, quality, price, providerId, priceSale, productionDate, timeUse)
 
 Apps.Merchant.exportFileImport = (data)->
   profile = Schema.userProfiles.findOne({user: Meteor.userId()})
   productColumn = checkValidationFileImport(data[0])
   if _.keys(productColumn).length > 0
     data = _.without(data, data[0])
-    checkAndAddNewProvider(productColumn, data, profile)
-    checkAndAddNewProduct(productColumn, data, profile)
-    addDetailInImport1(productColumn, data, profile)
+    checkAndAddNewMerchantAndWarehouse(productColumn, data, profile)
+    addMerchantStaff(productColumn, data, profile)
 
