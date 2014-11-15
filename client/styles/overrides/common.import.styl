@@ -3,6 +3,11 @@ body { margin: 0 }
 input[type="text"]:focus, input[type="password"]:focus { outline: none !important; }
 a:hover { cursor: pointer; text-decoration: none !important; }
 
+body.no-text *
+  color transparent !important
+body.edit *
+  background rgba(0,0,0,0.05) !important
+
 .tour-step-background
   border-radius 2px
   opacity 0.2

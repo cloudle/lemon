@@ -3,36 +3,38 @@ template(name="home")
   .home-wrapper.home-video-section
     .main-left
       .youtube-wrapper
-        iframe(width="640" height="360" src="//www.youtube.com/embed/lzpE9_dMovU?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen)
+        iframe(width="623" height="350" src="//www.youtube.com/embed/lzpE9_dMovU?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen)
       //.title eds
       //p Mạng quản lý kinh doanh tho
     .main-right
-
       if authenticated
         .login-section.animated.fadeInDown
           #gotoMerchantButton.btn.icon-shop
           #logoutButton.btn.icon-power.background-pumpkin
       else
         .login-section.animated.fadeInDown
-          #authButton.btn.icon-forward-3(class="{{sessionGet 'loginValid'}}" tabindex="3")
-          input.login-field#authSecret(type="password" placeholder="{{i18n 'form.password'}}" maxlength="30" tabindex="2")
           input.login-field#authAlias(type="text" placeholder="{{i18n 'form.userAccount'}}" maxlength="50" tabindex="1")
+          input.login-field#authSecret(type="password" placeholder="{{i18n 'form.password'}}" maxlength="30" tabindex="2")
+          #authButton.btn.icon-forward-3(class="{{sessionGet 'loginValid'}}" tabindex="3")
 
       .caption ĐĂNG KÝ!
       .registeration-section
         .lemon-field
-          input#companyName(type="text" placeholder="{{i18n 'form.companyName'}}")
-        .lemon-field
-          input#companyPhone(type="text" placeholder="{{i18n 'form.contactPhone'}}" maxlength="11")
-        .lemon-field
           input#account(type="text" placeholder="{{i18n 'form.userAccount'}} *")
         .lemon-field.group.row
-          .col.col-sm-6: input.secret-field#secret(class="{{registerSecretValid}}" type="password" placeholder="{{i18n 'form.password'}}  *")
-          .col.col-sm-6: input.secret-field#secretConfirm(class="{{registerSecretValid}}" type="password" placeholder="{{i18n 'form.confirm'}} *")
+          .col.col-sm-7: input.secret-field#secret(class="{{registerSecretValid}}" type="password" placeholder="{{i18n 'form.password'}}  *")
+          .col.col-sm-5: input.secret-field#secretConfirm(class="{{registerSecretValid}}" type="password" placeholder="{{i18n 'form.confirm'}} *")
+        .lemon-field.group.row
+          .col.col-sm-7: input#companyName(type="text" placeholder="{{i18n 'form.companyName'}}")
+          .col.col-sm-5: input#companyPhone(type="text" placeholder="{{i18n 'form.contactPhone'}}" maxlength="11")
         .lemon-field
           .accept-terms <b>Đăng ký</b> sử dụng cũng đồng nghĩa với việc Bạn đã đọc và <b>đồng ý</b> với <b>Điều khoản</b> của Chúng tôi.
-        #merchantRegister.btn.pull-right(class="{{registerValid}}") {{i18n 'register'}}
-        #terms.btn.pull-right(class="{{termButtonActive}}") {{i18n 'term'}}
 
-  .home-wrapper
+        #merchantRegister.btn(class="{{registerValid}}") {{i18n 'register'}}
+        #terms.btn(class="{{termButtonActive}}") {{i18n 'term'}}
+
+  .home-wrapper.home-after-video-section
+    .home-splitter
+
+  .home-wrapper.home-before-footer-section
     .home-splitter

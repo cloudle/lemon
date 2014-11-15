@@ -1,4 +1,9 @@
 toggleCollapse = -> Session.set 'collapse', if Session.get('collapse') is 'collapsed' then '' else 'collapsed'
+arrangeSideBar = (context) ->
+  messengerHeight = $("#messenger").outerHeight()
+  brandingHeight = $(".branding").outerHeight()
+  msgListHeight = $(window).height() - brandingHeight - messengerHeight
+  $("ul.messenger-list").css("height", "#{msgListHeight}px") if msgListHeight > 150
 
 startHomeTracker = ->
   Apps.Merchant.homeTracker = Tracker.autorun ->
@@ -18,7 +23,12 @@ lemon.defineWidget Template.merchantLayout,
   created: -> startHomeTracker()
 
   rendered: ->
-    $(window).resize -> Helpers.arrangeAppLayout()
+    arrangeSideBar(@)
+
+    $(window).resize ->
+      Helpers.arrangeAppLayout()
+      arrangeSideBar(@)
+
     Helpers.animateUsing("#container", "bounceInDown")
 
   destroyed: ->

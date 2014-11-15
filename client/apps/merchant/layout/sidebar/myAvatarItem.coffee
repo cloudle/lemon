@@ -1,8 +1,9 @@
 lemon.defineWidget Template.myAvatarItem,
+  shortAlias: -> Helpers.shortName(@fullName ? Meteor.users.findOne(@user)?.emails[0].address)
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
 
   events:
-    "click": (event, template) -> template.find('.avatarFileSelector').click()
+    "click .avatar.image": (event, template) -> template.find('.avatarFileSelector').click()
     "change .avatarFileSelector": (event, template)->
       files = event.target.files
       if files.length > 0

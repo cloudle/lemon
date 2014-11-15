@@ -2,14 +2,29 @@
 
 #sidebar
   collapse-transition()
+  position relative
   margin-top 40px
   fixed right 0
-  width left-pane-size
+  width sidebar-size
   min-height 100%
-  background-color left-pane-background-color
+  background-color sidebar-background-color
   padding-top nav-bottom-border-size
-  border-left 5px solid #1A1A1A
   z-index 999
+
+  if sidebar-border-size > 0
+    border-left solid sidebar-border-size sidebar-border-color
+
+  .collapse-toggle
+    cursor pointer
+    width 25px
+    height 40px
+    absolute top 6px
+    left -(@width+sidebar-border-size)
+    background-color lime
+    border-radius left 2px
+    &:before
+      color #fff; font-size 14px
+      margin 13px 6px
 
   ul.sidebar-nav
     clearfix()
@@ -47,23 +62,22 @@
   ul.messenger-list
     padding 0; margin 0
     color #fff
+    overflow-y scroll
+    li
+      border-bottom solid 1px darken(sidebar-background-color, 3)
+      border-top solid 1px lighten(sidebar-background-color, 3)
+      &:first-child
+        border-top none
 
   .chat-avatar
     user-select(none)
     list-style: none;
     position: relative;
     cursor: pointer;
-    &.me { input[type="file"] { display: none; } }
-
-    &:after
-      font-family 'lemon'
-      content '\E848'
-      absolute bottom -7px left 26px
-      font-size 10px
-      color #999999
+    &.me input[type="file"] { display: none; }
 
     .online-status-orb
-      width 10px; height 10px
+      width 8px; height 8px
       absolute top 6px right 6px
       border-radius 50%
       background-color gray
@@ -73,40 +87,33 @@
         background-color carrot
 
     .has-message-status
-      absolute left 5px top 10px
+      absolute right 6px top 21px
       line-height 5px
       font-size 8px
       visibility hidden
+      color #FFD800
       &.active
         visibility visible
 
     .alias
       pointer-events none
       transition(left 0.15s ease)
-      absolute top 37px left 36px
-      padding 0 2px; width 54px
-      font-size 9px
+      absolute top 10px left 60px
+      padding 0 2px; width 80px
+      font-size 12px
       overflow ellipsis
       text-transform capitalize
-      transform rotate(90deg)
-      color #5C5C5C
+      color #ffffff
 
     .avatar
-      width 60px; height 60px
-      border-radius 50%
       img
-          width 60px; height 60px
-          border-radius 50%
-          padding 5px
+        width 50px; height 50px
       &.letter
         display block
-        width 60px; height 60px
+        width 50px; height 50px
         font-size 14px; padding 5px
-        line-height 60px
-        color #ffffff
-        border-radius 50%
+        line-height 41px
+        color #ffffff; background-color #282828
         text-align center
         font-weight bolder
         text-transform uppercase
-
-    &.me img { width: 73px; height: 73px; }

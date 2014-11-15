@@ -1,0 +1,10 @@
+template(name="messenger")
+  #messenger(class="{{visibilityClass}} {{minimizedClass}}")
+    input(type="text")
+    .all-messages
+      each currentMessages
+        .message-wrapper
+          span.message(class="{{messageClass}}") {{message}}
+          if friendMessage
+            .chatbox-avatar
+              +avatarImageComponent(avatar=targetAvatar alias=targetAlias)
