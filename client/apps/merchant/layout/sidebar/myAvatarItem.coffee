@@ -3,7 +3,7 @@ lemon.defineWidget Template.myAvatarItem,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
 
   events:
-    "click .avatar.image": (event, template) -> template.find('.avatarFileSelector').click()
+    "click .avatar": (event, template) -> template.find('.avatarFileSelector').click()
     "change .avatarFileSelector": (event, template)->
       files = event.target.files
       if files.length > 0
