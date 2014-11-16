@@ -1,3 +1,5 @@
+root = global ? window
+
 exceptions = ['helpers']
 
 extendObject = (source, destination) ->
@@ -11,10 +13,11 @@ generateSchema = (name) ->
 
 generateModel = (name, extensionObj) ->
   singularName = extensionObj.name
-  class @[singularName] extends modelBase
-  extendObject extensionObj, @[singularName]
-  @[singularName].schema = Schema[name]
-  @[singularName].prototype.schema = Schema[name]
+  class root[singularName] extends modelBase
+  extendObject extensionObj, root[singularName]
+  root[singularName].schema = Schema[name]
+  root[singularName].prototype.schema = Schema[name]
+  console.log "added #{singularName}",
 
 Schema.add = (name, extensionObj = undefined) ->
   generateSchema(name, extensionObj)
