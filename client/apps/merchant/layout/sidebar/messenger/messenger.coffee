@@ -28,7 +28,6 @@ lemon.defineWidget Template.messenger,
     scope.incomingObserver = scope.allMessages.observeChanges
       added: (id, instance) -> scope.playSoundIfNecessary(instance, thisTime)
 
-
     $(".conversation-wrapper").slimScroll({size: '3px', color: '#909090', railOpacity: 1})
     $("body").on "DOMNodeInserted", ".conversation-wrapper", (e) ->
       $(".conversation-wrapper").slimScroll({scrollTo: '99999px'})

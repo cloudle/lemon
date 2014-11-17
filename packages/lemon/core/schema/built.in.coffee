@@ -17,7 +17,6 @@ simpleSchema.Version = new SimpleSchema
     denyInsert: true
     optional: true
 
-
 simpleSchema.Location = new SimpleSchema
   address:
     type: [String]
