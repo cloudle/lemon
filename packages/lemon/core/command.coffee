@@ -1,4 +1,6 @@
-lemon.sessionCleanList = ['registerAccountValid', 'registerSecretValid', 'loginValid', 'allowCreateStaffAccount']
+lemon.sessionCleanList = ['registerAccountValid', 'registerSecretValid', 'loginValid',
+                          'allowCreateStaffAccount',
+                          'currentChatTarget']
 
 lemon.listSession = -> console.log key for key, obj of Session.keys
 

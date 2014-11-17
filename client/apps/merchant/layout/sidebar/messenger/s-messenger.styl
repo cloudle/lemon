@@ -3,10 +3,62 @@
 #messenger
   background-color sidebar-background-color
   clearfix()
-  width 100%
+  width 100%; padding-top 5px
+  border-top solid 2px sidebar-border-color
+  position relative
+
+  .target-caption
+    height 32px
+    .avatar
+      absolute left -17px
+      &.letter
+        border-radius 2px; background-color #C6C6C6; color #4D4D4D
+        width 30px; height 30px; line-height @height
+        font-size 15px; text-transform uppercase
+        display block
+        text-align center
+      &.image img
+        width 30px; height 30px; border-radius 2px
+    .chat-target-name
+      absolute top 5px left 20px
+      max-width 195px
+      overflow ellipsis
+      color #ffffff; font-weight lighter
 
   .conversation-wrapper
     height 275px
+    color #ffffff
+    margin 5px 0 0 0; padding 0
+    font-size 12px
+    overflow-y scroll
+
+    .message-wrapper
+      clearfix()
+      margin 0 5px 5px 5px
+
+      span.message
+        display inline-block
+        padding 4px
+        background-color #608495
+        border-radius 2px
+        position relative
+      &.friend span.message:before
+        content ""
+        width 6px; height 6px
+        background-color #608495
+        absolute top 9px left -3px
+        transform rotate(45deg)
+      &.me span.message:after
+        content ""
+        width 6px; height 6px
+        background-color #a3c378
+        absolute top 9px right -3px
+        transform rotate(45deg)
+      &.me
+        text-align right
+        span.message
+          background-color #a3c378
+
   .input-wrapper input
     color #ffffff; background-color #121212
     placeholder #565656
