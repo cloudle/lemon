@@ -35,4 +35,4 @@ lemon.defineWidget Template.merchantLayout,
     $(window).off("resize")
     destroyHomeTracker()
   events:
-    "click .collapse-toggle": -> toggleCollapse()
+    "click .collapse-toggle": -> toggleCollapse(); Helpers.arrangeAppLayout()

@@ -16,4 +16,4 @@ Apps.Merchant.messengerReactive.push (scope) ->
     Meteor.subscribe("conversationWith", target)
     sentByTarget = { sender: target }
     sentToTarget = { receiver: target }
-    scope.currentMessages = Schema.messages.find {$or: [sentByTarget, sentToTarget]}, {sort: {"version.updateAt": 1}}
+    scope.currentMessages = Schema.messages.find {$or: [sentByTarget, sentToTarget]}, {sort: {"version.createdAt": 1}}
