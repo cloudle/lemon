@@ -14,6 +14,7 @@ Meteor.methods
       if transactionDetails.count() > 0 then throw 'Không thể xóa transaction khi có transactionDetails'
 
       if (Schema.transactions.remove transaction._id) is 1
+        MetroSummary.updateMetroSummaryByDestroyTransaction(transaction.merchant, transaction.debitCash)
         return true
       else throw 'Xóa transaction không thành công'
           
