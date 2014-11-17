@@ -31,7 +31,7 @@
 //    "METEOR_ENV": "development",
     "PORT": 80,
     "ROOT_URL": "http://gera.vn",
-    "MONGO_URL": "mongodb://localhost:27017/edsBeta",
+    "MONGO_URL": "mongodb://localhost:27017/eds",
     "MAIL_URL": "smtp://thienbantech@gmail.com:thienban2014@stmp.gmail.com:465/"
   },
 

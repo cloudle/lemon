@@ -41,13 +41,13 @@ tourSteps = [
 #            Tương tự, phía dưới là tình trạng kết nối của <b>đồng nghiệp</b>."
 #,
   element: "[data-app='branchManager']"
-  placement: "left"
+  placement: "top"
   title: "<b>Bước 1:</b> Tạo mới Chi nhánh"
   content: "<b>C</b>hức năng này hỗ trợ khởi tạo danh sách chi nhánh trong hệ thống doanh nghiệp của Bạn.<br/><br/>
             <i>(Bỏ qua bước này nếu Bạn chưa có hệ thống chi nhánh)</i>"
 ,
   element: "[data-app='warehouseManager']"
-  placement: "left"
+  placement: "top"
   title: "<b>Bước 2:</b> Tạo mới Kho hàng"
   content: "<b>C</b>hức năng này hỗ trợ khởi tạo thêm <b>kho hàng</b> cho chi nhánh.<br/><br/>
             <i>(Bỏ qua bước này nếu Bạn chưa cần lưu trữ hàng hóa trong nhiều kho)</i>"

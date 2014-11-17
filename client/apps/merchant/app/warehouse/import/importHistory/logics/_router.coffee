@@ -3,6 +3,7 @@ importHistoryRoute =
   waitOnDependency: 'importHistory'
   onBeforeAction: ->
     if @ready()
+      if Schema.imports.find({}).count() is 0 then Router.go('/import')
       Apps.setup(logics.importHistory, Apps.Merchant.importHistoryInit, 'importHistory')
       @next()
   data: ->
