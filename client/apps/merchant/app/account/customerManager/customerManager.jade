@@ -20,10 +20,12 @@ template(name="customerManager")
         input(binding="datePicker" todayHighlight="true" name="dateOfBirth")
       .editor-wrapper
         button.lemon.btn.lime.icon-user-add-1#createCustomerAccount(class="{{allowCreate}}") TẠO MỚI
-      .editor-wrapper.pull-right
+      .editor-wrapper.right
         input.hidden.excelFileSource(type="file")
-        button.lemon.btn.blue.pull-right.excel-customer(type='submit' data-toggle="tooltip" data-container="body" data-placement="left" title="Tự động nhập")
+        button.lemon.btn.blue.right.excel-customer(type='submit' data-toggle="tooltip" data-container="body" data-placement="top" title="Tự động nhập")
           span.icon-user-add-1
-
+      .editor-wrapper.right
+        a.lemon.btn.blue(href="/template/khach_hang.csv" target="_blank" data-toggle="tooltip" data-container="body" data-palace-holder="top" title="Tải về file Mẫu")
+          span.icon-doc-text-inv-1
   #content.customer-manager
     +iGrid(options=gridOptions)

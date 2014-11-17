@@ -5,8 +5,9 @@ template(name="import")
     .caption-row
       .title
         |Nhập Kho
-        button.lemon.btn.amethyst.icon-history.importHistory(type='submit') LỊCH SỬ
       .commands
+        if showHistory
+          button.lemon.btn.amethyst.icon-history.importHistory(type='submit') LỊCH SỬ
         button.lemon.btn.lime.icon-building.add-provider(type='submit') Thêm NPP
         button.lemon.btn.lime.icon-tags-2.add-product(type='submit') Thêm Sản Phẩm
         input(binding="switch" type="checkbox" name="advancedMode")
@@ -31,10 +32,13 @@ template(name="import")
       if showCreateDetail
         .editor-wrapper(style="width:100px")
           button.lemon.btn.lime.icon-plus-circled.addImportDetail(type='submit' style="{{showCreateDetail}}") THÊM
-      .editor-wrapper.pull-right
+      .editor-wrapper.right
         input.hidden.excelFileSource(type="file")
-        button.lemon.btn.blue.pull-right.excel-import(type='submit' data-toggle="tooltip" data-container="body" data-placement="left" title="Nhập tự động")
+        button.lemon.btn.blue.right.excel-import(type='submit' data-toggle="tooltip" data-container="body" data-placement="top" title="Nhập tự động")
           span.icon-inbox-1
+      .editor-wrapper.right
+        a.lemon.btn.blue(href="/template/nhap_kho.csv" target="_blank" data-toggle="tooltip" data-container="body" data-palace-holder="top" title="Tải về file Mẫu")
+          span.icon-doc-text-inv-1
 
     .editor-row.extra(name='advanced' style="display: none;")
       .editor-wrapper(style="width: 120px")

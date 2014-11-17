@@ -3,7 +3,7 @@ Template.registerHelper 'appCollapseClass', -> if Session.get('collapse') then '
 
 Template.registerHelper 'sessionGet', (name) -> Session.get(name)
 Template.registerHelper 'authenticated', (name) -> Meteor.userId() isnt null
-Template.registerHelper 'metroUnLocker', (context) ->  if context < 1 then 'locked'
+Template.registerHelper 'metroUnLocker', (context) ->  if context < 1 then ' locked'
 Template.registerHelper 'formatNumber', (context) ->  accounting.formatNumber(context)
 Template.registerHelper 'formatNumberK', (context) ->  accounting.formatNumber(context/1000)
 

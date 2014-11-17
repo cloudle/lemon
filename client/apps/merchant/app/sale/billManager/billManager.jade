@@ -1,7 +1,10 @@
 template(name="billManager")
   +saleReview(saleDetails=currentSaleDetails sale=currentSale)
   #header
-    .caption-row: .title ĐƠN HÀNG
+    .caption-row
+      .title ĐƠN HÀNG
+      .commands
+        button.lemon.btn.amethyst.icon-basket-3.createSale BÁN HÀNG
     .editor-row
       .editor-wrapper(style="width: 100px")
         span.ilabel.right xem từ ngày
@@ -11,8 +14,6 @@ template(name="billManager")
         input(name="toDate" binding="datePicker" todayHighlight="true" maxlength="20")
       .editor-wrapper
         button.lemon.btn.lime.icon-ok-6#filterBills ÁP DỤNG
-      .editor-wrapper.pull-right
-        button.lemon.btn.amethyst.icon-basket-3.createSale BÁN HÀNG
       //.editor-wrapper.pull-right(style="width: 150px")
       //  span.ilabel chọn kho
       //  +iSelect(options=warehouseSelectOptions class="field")

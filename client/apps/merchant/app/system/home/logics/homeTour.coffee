@@ -94,7 +94,7 @@ tourSteps = [
 #  content: "Content of my step"
 ]
 
-Apps.Merchant.homeRerun.push (scope) ->
+Apps.Merchant.homeInit.push (scope) ->
   scope.homeTour = new Tour
     steps: tourSteps
     container: "body"

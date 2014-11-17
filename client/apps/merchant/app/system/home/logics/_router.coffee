@@ -6,7 +6,7 @@ lemon.addRoute
   waitOnDependency: 'merchantHome'
   onBeforeAction: ->
     if @ready()
-      Apps.setup(scope, Apps.Merchant.homeRerun, 'merchantHome')
+      Apps.setup(scope, Apps.Merchant.homeInit, 'merchantHome')
       @next()
   data: -> {
     Summary: MetroSummary.findOne({})

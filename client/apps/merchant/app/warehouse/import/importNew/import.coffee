@@ -1,4 +1,5 @@
 lemon.defineApp Template.import,
+  showHistory: -> Session.get("metroSummary")?.importCount > 0
   rendered: -> logics.import.templateInstance = @
   events:
     "click .add-product": (event, template) -> $(template.find '#addProduct').modal()

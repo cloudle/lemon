@@ -1,2 +1,2 @@
 logics.merchantHome = { name: 'merchant-home-logics' }
-Apps.Merchant.homeRerun = []
+Apps.Merchant.homeInit = []

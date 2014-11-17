@@ -4,11 +4,11 @@ Meteor.publish 'myImportHistory', ->
   myImports = Schema.imports.find({
     creator  : myProfile.user,
     merchant : myProfile.currentMerchant,
-    warehouse: myProfile.currentWarehouse})
+    warehouse: myProfile.currentWarehouse,
+    finish   : false})
 
 #  myImportDetails = Schema.importDetails.find({import: {$in:_.pluck(myImports.fetch(), '_id')}})
 #  [myImports,   myImportDetails]
-
 
 Meteor.publish 'importDetails', (importId) ->
   currentOrder = Schema.imports.findOne(importId)
