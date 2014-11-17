@@ -23,7 +23,7 @@ template(name="merchantHome")
         span.bottom.middle.caption {{formatNumber Summary.data.merchantCount}}<br />CHI NHÁNH
 
     .tile-group-3
-      .tile.quatro.lime#saleManager(class="{{metroUnLocker Summary.data.importCount}}"
+      .tile.quatro.lime#saleManager(class="{{metroUnLocker Summary.data.importCount}}{{metroUnLocker Summary.data.customerCountAll}}{{metroUnLocker Summary.data.staffCountAll}}"
       data-app='sales')
         span.top.right.caption BÁN HÀNG
         span.center.middle.caption: span.table: i.ico.huge.icon-basket-3

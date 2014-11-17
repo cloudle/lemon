@@ -1,6 +1,7 @@
 checkValidationFileCustomer = (column)->
   data = []
   data.push(item.trim()) for item in column
+  console.log data
 
   customerColumn = {}
   customerColumn.name        = data.indexOf("Tên Khách Hàng")
@@ -8,6 +9,8 @@ checkValidationFileCustomer = (column)->
   customerColumn.gender      = data.indexOf("Giới Tính")
   customerColumn.phone       = data.indexOf("Số Điện Thoại")
   customerColumn.address     = data.indexOf("Địa Chỉ")
+
+  console.log customerColumn
 
   (return customerColumn = {} if value is -1) for key, value of customerColumn
   customerColumn

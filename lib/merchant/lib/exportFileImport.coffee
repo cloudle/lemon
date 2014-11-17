@@ -1,7 +1,7 @@
 checkValidationFileImport = (column)->
   data = []
   data.push(item.trim()) for item in column
-
+  console.log data
   productColumn = {}
   productColumn.barcode        = data.indexOf("Mã Code")
   productColumn.name           = data.indexOf("Tên Sản Phẩm")
@@ -13,6 +13,7 @@ checkValidationFileImport = (column)->
   productColumn.expireDate     = data.indexOf("Ngày Hết Hạn")
   productColumn.providerName   = data.indexOf("Nhà Cung Cấp")
 
+  console.log productColumn
   for key, value of productColumn
     return productColumn = {} if value is -1
 

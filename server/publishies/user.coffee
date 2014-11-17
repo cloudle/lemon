@@ -24,6 +24,7 @@ Meteor.users.allow
   insert: (userId, user)-> true
   update: (userId, user)-> true
   remove: (userId, user)->
+    if userId is user._id then return false
     if Schema.orders.findOne {creator: user._id} then return false
     if Schema.sales.findOne {creator: user._id} then return false
     if Schema.imports.findOne {creator: user._id} then return false
