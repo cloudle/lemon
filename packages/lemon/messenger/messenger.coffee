@@ -1,4 +1,4 @@
-Schema.add 'messages', class Messenger
+Schema.add 'messages', "Messenger", class Messenger
   @say: (message, receiver) ->
     zone.run =>
       @schema.insert

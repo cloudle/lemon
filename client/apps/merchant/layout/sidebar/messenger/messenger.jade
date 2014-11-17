@@ -1,7 +1,15 @@
 template(name="messenger")
   #messenger
+    .target-caption
+      if hasTarget
+        .animated.bounceInRight
+          +avatarImageComponent(avatar=avatarUrl alias=shortAlias)
+          span.chat-target-name {{targetName}}
     .conversation-wrapper
-      span conversations
+      each currentMessages
+        .message-wrapper(class="{{messageClass}}")
+          span.message {{message}}
+
     .input-wrapper
       input(type="text" placeholder="trò chuyện...")
     .search-wrapper

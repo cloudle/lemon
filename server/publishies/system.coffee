@@ -4,7 +4,6 @@ Meteor.publish 'fake', ->
     self.ready()
   , 20000
 
-
 Meteor.publish 'system', -> Schema.systems.find {}
 Schema.systems.allow
   insert: -> true

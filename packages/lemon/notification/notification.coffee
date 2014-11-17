@@ -1,2 +1,2 @@
-Schema.add 'notifications', class Notification
+Schema.add 'notifications', "Notification", class Notification
   dump: ""
