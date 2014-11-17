@@ -46,7 +46,6 @@ lemon.defineApp Template.customerManager,#      $companyName = $(template.find("
           config:
             complete: (results, file) ->
               if file.type is "text/csv"
-                console.log results.data
                 Apps.Merchant.exportFileCustomer(results.data)
 
         $excelSource.val("")

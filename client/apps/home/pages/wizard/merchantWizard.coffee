@@ -144,6 +144,7 @@ lemon.defineWidget Template.merchantWizard,
       Schema.merchantPurchases.update(template.data.purchase._id, {$set: {merchantRegistered: true}})
       Schema.merchants.update(Session.get('myProfile').currentMerchant, {$set: {name: template.data.purchase.merchantName}})
       Schema.warehouses.update(Session.get('myProfile').currentWarehouse, {$set: {name: template.data.purchase.warehouseName}})
+      Schema.userProfiles.update(Session.get('myProfile')._id, {$set: {roles: ["admin"]}})
       Router.go('/merchant')
     "click .register-logout.btn": -> lemon.logout()
 
@@ -172,34 +173,6 @@ lemon.defineWidget Template.merchantWizard,
 #  rendered: -> runInitMerchantWizardTracker()
 #
 #  events:
-#    "blur #companyName"  : (event, template) ->
-#      $companyName = $(template.find("#companyName"))
-#      if $companyName.val().length > 0
-#        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {companyName: $companyName.val()}
-#      else
-#        $companyName.notify('tên công ty không được để trống', {position: "right"})
-#
-#    "blur #companyPhone" : (event, template) ->
-#      $companyPhone = $(template.find("#companyPhone"))
-#      if $companyPhone.val().length > 0
-#        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {companyPhone: $companyPhone.val()}
-#      else
-#        $companyPhone.notify('số điện thoại không được để trống!', {position: "right"})
-#
-#    "blur #merchantName" : (event, template) ->
-#      $merchantName = $(template.find("#merchantName"))
-#      if $merchantName.val().length > 0
-#        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {merchantName: $merchantName.val()}
-#      else
-#        $merchantName.notify('tên chi nhánh không được để trống!', {position: "right"})
-#
-#    "blur #warehouseName": (event, template) ->
-#      $warehouseName = $(template.find("#warehouseName"))
-#      if $warehouseName.val().length > 0
-#        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {warehouseName: $warehouseName.val()}
-#      else
-#        $warehouseName.notify('tên kho hàng không để trống!', {position: "right"})
-#
 #    "click .package-block.free": (event, template)->
 #      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: packageOption(Template.merchantWizard.trialPackageOption)
 #

@@ -63,6 +63,9 @@ Apps.Merchant.salesReactiveRun.push (scope) ->
         if !Session.get('currentOrder').deliveryAddress then allowSuccess = false
         if !Session.get('currentOrder').deliveryDate then allowSuccess = false
         if !Session.get('currentOrder').comment then allowSuccess = false
+      else
+        if !Schema.customers.findOne(scope.currentOrder.buyer) then allowSuccess = false
+
     else allowSuccess = false
     Session.set('allowSuccess', allowSuccess)
 
