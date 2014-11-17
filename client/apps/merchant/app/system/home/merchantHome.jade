@@ -1,10 +1,10 @@
 template(name="merchantHome")
   .metro: .metro-wrapper
     .tile-group-1
-      .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}"
-      data-app='tracker')
-        span.center.middle.caption: span.table: i.ico.icon-book
-        span.bottom.middle.caption NHẬT KÝ
+      .tile.wisteria(class="{{metroUnLocker Summary.data.staffCount}}"
+      data-app='roleManager')
+        span.center.middle.caption: span.table: i.ico.icon-user-add-1
+        span.bottom.middle.caption PHÂN QUYỀN
       .tile.carrot(class="{{metroUnLocker Summary.data.staffCount}}"
       data-app='staffManager')
         span.s7.top.middle.caption TÀI KHOẢN
@@ -15,12 +15,9 @@ template(name="merchantHome")
         span.s7.top.middle.caption HỒ SƠ MACKAY
         span.center.middle.caption: span.table: i.ico.icon-heart-8
         span.bottom.middle.caption {{formatNumber Summary.data.customerCountAll}}<br />KHÁCH HÀNG
-      .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}"
-      data-app='branchManager')
-        span.center.middle.caption: span.table
-          i.ico.icon-home-6
-          i.ico.small.icon-home-6
-        span.bottom.middle.caption {{formatNumber Summary.data.merchantCount}}<br />CHI NHÁNH
+      .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}")
+        span.center.middle.caption: span.table: i.ico.icon-cog-6
+        span.bottom.middle.caption
 
     .tile-group-3
       .tile.quatro.lime#saleManager(class="{{metroUnLocker Summary.data.importCount}}{{metroUnLocker Summary.data.customerCountAll}}{{metroUnLocker Summary.data.staffCountAll}}"
@@ -45,16 +42,15 @@ template(name="merchantHome")
       data-app='returns' )
         span.center.middle.caption: span.table: i.ico.icon-reply-all-1
         span.bottom.middle.caption  {{formatNumber Summary.data.returnCount}} TRẢ HÀNG
-      .tile.lime(class="{{metroUnLocker Summary.data.warehouseCount}}"
-      data-app='warehouseManager')
-        span.center.middle.caption: span.table
-          i.ico.icon-home-4
-        span.bottom.middle.caption {{formatNumber Summary.data.warehouseCount}}<br />KHO HÀNG
-      .tile.wisteria(class="{{metroUnLocker Summary.data.staffCount}}"
-      data-app='roleManager')
-        span.center.middle.caption: span.table: i.ico.icon-user-add-1
-        span.bottom.middle.caption PHÂN QUYỀN
-
+      .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}")
+        span.center.middle.caption: span.table: i.ico.icon-cog-6
+        span.bottom.middle.caption
+      .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}")
+        span.center.middle.caption: span.table: i.ico.icon-cog-6
+        span.bottom.middle.caption
+      .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}")
+        span.center.middle.caption: span.table: i.ico.icon-cog-6
+        span.bottom.middle.caption
     .tile-group-3
       .tile.carrot.double.double-vertical(class="{{metroUnLocker Summary.data.warehouseCount}}"
       data-app='importHistory')
@@ -93,3 +89,17 @@ template(name="merchantHome")
       data-app='inventoryHistory')
         span.center.middle.caption: span.table: i.ico.icon-edit-alt
         span.bottom.middle.caption {{formatNumber Summary.data.inventoryCount}}<br />KIỂM KHO
+      .tile.lime(class="{{metroUnLocker Summary.data.warehouseCount}}"
+      data-app='warehouseManager')
+        span.center.middle.caption: span.table
+          i.ico.icon-home-4
+        span.bottom.middle.caption {{formatNumber Summary.data.warehouseCount}}<br />KHO HÀNG
+      .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}"
+      data-app='branchManager')
+        span.center.middle.caption: span.table
+          i.ico.icon-home-6
+          i.ico.small.icon-home-6
+        span.bottom.middle.caption {{formatNumber Summary.data.merchantCount}}<br />CHI NHÁNH
+      .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}")
+        span.center.middle.caption: span.table: i.ico.icon-book
+        span.bottom.middle.caption NHẬT KÝ
