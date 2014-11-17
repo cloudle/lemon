@@ -1,17 +1,25 @@
 Meteor.publish 'products', ->
-  myProfile = Schema.userProfiles.findOne({user: @userId})
-  return [] if !myProfile
-  Schema.products.find({warehouse: myProfile.currentWarehouse, availableQuality: {$gt: 0}})
+  profile = Schema.userProfiles.findOne({user: @userId})
+  return [] if !profile
+  Schema.products.find({warehouse: profile.currentWarehouse, availableQuality: {$gt: 0}})
 
 Meteor.publish 'allProducts', ->
-  myProfile = Schema.userProfiles.findOne({user: @userId})
-  return [] if !myProfile
-  Schema.products.find({warehouse: myProfile.currentWarehouse})
+  profile = Schema.userProfiles.findOne({user: @userId})
+  return [] if !profile
+  Schema.products.find({warehouse: profile.currentWarehouse})
 
 Meteor.publish 'allProductDetails', ->
-  myProfile = Schema.userProfiles.findOne({user: @userId})
-  return [] if !myProfile
-  Schema.productDetails.find({warehouse: myProfile.currentWarehouse})
+  profile = Schema.userProfiles.findOne({user: @userId})
+  return [] if !profile
+  Schema.productDetails.find({warehouse: profile.currentWarehouse})
+
+
+Meteor.publish 'productDetails', (productId) ->
+  profile = Schema.userProfiles.findOne({user: @userId})
+  currentProduct = Schema.products.findOne({_id: productId, merchant: profile.currentMerchant})
+  return [] if !profile or !currentProduct
+  Schema.productDetails.find {product: currentProduct._id}
+
 
 Schema.products.allow
   insert: (userId, product) ->

@@ -7,6 +7,10 @@ lemon.defineWidget Template.roleDetailThumbnail,
     console.log @styles
     Meteor.users.findOne(@user)?.emails[0].address
 
+  allowDelete: ->
+    if @user is Meteor.userId() then false
+    else @allowCreate
+
   events:
     "click .trash": (event, template) ->
       if Meteor.users.remove(@user) is 1
