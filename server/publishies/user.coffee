@@ -25,6 +25,7 @@ Meteor.users.allow
   update: (userId, user)-> true
   remove: (userId, user)->
     if userId is user._id then return false
+    if Meteor.users.findOne(user._id).status?.online then return false
     if Schema.orders.findOne {creator: user._id} then return false
     if Schema.sales.findOne {creator: user._id} then return false
     if Schema.imports.findOne {creator: user._id} then return false

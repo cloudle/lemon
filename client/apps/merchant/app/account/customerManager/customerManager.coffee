@@ -45,7 +45,10 @@ lemon.defineApp Template.customerManager,#      $companyName = $(template.find("
         $excelSource.parse
           config:
             complete: (results, file) ->
-              if file.type is "text/csv"
-                Apps.Merchant.exportFileCustomer(results.data)
+              console.log results
+              console.log file
+              if file.name is "khach_hang.csv"
+#                if file.type is "text/csv" || file.type is "application/vnd.ms-excel"
+                logics.customerManager.importFileCustomerCSV(results.data)
 
         $excelSource.val("")

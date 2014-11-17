@@ -54,6 +54,14 @@ Schema.transactions.allow
   remove: -> true
 
 Schema.transactionDetails.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
+  insert: (userId, transactionDetail)->
+#    profile = Schema.userProfiles.findOne({user: userId})
+#    metroSummary = Schema.metroSummaries.findOne({merchant: profile.currentMerchant})
+#    Schema.metroSummaries.update metroSummary._id, $inc: {
+#      saleDepositCash       : transactionDetail.depositCash
+#      saleDebitCash         : -transactionDetail.depositCash }
+
+    true
+
+  update: (userId, transactionDetail)-> true
+  remove: (userId, transactionDetail)-> true

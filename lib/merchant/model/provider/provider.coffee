@@ -39,7 +39,7 @@ Schema.add 'providers', "Provider", class Provider
 
   @destroyByCreator: (providerId)->
     provider = @schema.findOne({_id: providerId , creator: Meteor.userId()})
-    if provider.status is true
+    if provider.allowDelete
       @schema.remove(providerId)
       {}
     else

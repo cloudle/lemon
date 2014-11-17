@@ -13,6 +13,9 @@ stockManagerRoute =
       totalStockProduct  : logics.stockManager.totalStockProduct() ? 0
       totalProduct       : logics.stockManager.availableProducts?.count() ? 0
 
+      currentProduct        : Session.get('currentProduct')
+      currentProductDetails : logics.stockManager.currentProductDetails
+
       gridOptions: logics.stockManager.gridOptions
     }
 
