@@ -5,6 +5,7 @@ Schema.add 'productDetails', "ProductDetail", class ProductDetail
       merchant         : imports.merchant
       warehouse        : imports.warehouse
       product          : importDetail.product
+      provider         : importDetail.provider if importDetail.provider
       importQuality    : importDetail.importQuality
       availableQuality : importDetail.importQuality
       inStockQuality   : importDetail.importQuality

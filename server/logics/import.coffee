@@ -50,6 +50,8 @@ Meteor.methods
           Schema.productDetails.insert productDetail, (error, result) ->
             if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
 
+          Schema.providers.update(productDetail.provider, $set:{allowDelete: false})
+
           product = Schema.products.findOne importDetail.product
           option1=
             totalQuality    : importDetail.importQuality

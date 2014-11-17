@@ -46,6 +46,10 @@ simpleSchema.transactions = new SimpleSchema
     type: Date
     defaultValue: new Date()
 
+  allowDelete:
+    type: Boolean
+    defaultValue: true
+
   styles:
     type: String
     defaultValue: Helpers.RandomColor()

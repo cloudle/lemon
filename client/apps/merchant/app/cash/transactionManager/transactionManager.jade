@@ -23,6 +23,10 @@ template(name="transactionManager")
           input.description(maxlength="200" value="{{newTransaction.description}}")
         .editor-wrapper
           button.lemon.btn.lime.icon-plus-circled.createTransaction(class="{{allowCreate}}") THÊM
+      .editor-wrapper.pull-right
+        input.hidden.excelFileSource(type="file")
+        button.lemon.btn.blue.pull-right.excel-transaction(type='submit' data-toggle="tooltip" data-container="body" data-placement="left" title="Nhập tự động")
+          span.icon-inbox-1
 
   #content
     +iGrid(options=gridOptions)

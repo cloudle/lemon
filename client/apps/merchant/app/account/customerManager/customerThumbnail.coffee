@@ -6,6 +6,7 @@ lemon.defineWidget Template.customerThumbnail,
   events:
     "click .trash": (event, template) ->
       Schema.customers.remove(@_id)
+      MetroSummary.updateMetroSummaryBy(['customer'])
       event.stopPropagation()
     "click .avatar": (event, template) ->
       template.find('.avatarFile').click()

@@ -4,16 +4,17 @@ checkValidationFileCustomer = (column)->
   console.log data
 
   customerColumn = {}
-  customerColumn.name        = data.indexOf("Tên Khách Hàng")
-  customerColumn.dateOfBirth = data.indexOf("Sinh Nhật")
-  customerColumn.gender      = data.indexOf("Giới Tính")
-  customerColumn.phone       = data.indexOf("Số Điện Thoại")
-  customerColumn.address     = data.indexOf("Địa Chỉ")
+  customerColumn.name        = data.indexOf("ten khach hang")
+  customerColumn.dateOfBirth = data.indexOf("sinh nhat")
+  customerColumn.gender      = data.indexOf("gioi tinh")
+  customerColumn.phone       = data.indexOf("so dien thoai")
+  customerColumn.address     = data.indexOf("dia chi")
 
   console.log customerColumn
 
   (return customerColumn = {} if value is -1) for key, value of customerColumn
   customerColumn
+
 Apps.Merchant.customerManagerInit.push (scope) ->
   scope.importFileCustomerCSV = (data)->
     profile = Schema.userProfiles.findOne({user: Meteor.userId()})

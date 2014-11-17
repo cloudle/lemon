@@ -3,15 +3,15 @@ checkValidationFileImport = (column)->
   data.push(item.trim()) for item in column
   console.log data
   productColumn = {}
-  productColumn.barcode        = data.indexOf("Mã Code")
-  productColumn.name           = data.indexOf("Tên Sản Phẩm")
-  productColumn.skull          = data.indexOf("Qui Cách")
-  productColumn.quality        = data.indexOf("Số Lượng")
-  productColumn.price          = data.indexOf("Giá Nhập")
-  productColumn.priceSale      = data.indexOf("Giá Bán")
-  productColumn.productionDate = data.indexOf("Ngày Sản Xuất")
-  productColumn.expireDate     = data.indexOf("Ngày Hết Hạn")
-  productColumn.providerName   = data.indexOf("Nhà Cung Cấp")
+  productColumn.barcode        = data.indexOf("ma san pham (barcode)")
+  productColumn.name           = data.indexOf("ten san pham")
+  productColumn.skull          = data.indexOf("quy cach")
+  productColumn.quality        = data.indexOf("so luong")
+  productColumn.price          = data.indexOf("gia nhap")
+  productColumn.priceSale      = data.indexOf("gia ban")
+  productColumn.productionDate = data.indexOf("ngay san xuat")
+  productColumn.expireDate     = data.indexOf("ngay het han")
+  productColumn.providerName   = data.indexOf("nha cung cap")
 
   console.log productColumn
   for key, value of productColumn

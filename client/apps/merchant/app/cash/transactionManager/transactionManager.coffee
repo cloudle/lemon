@@ -28,5 +28,21 @@ lemon.defineApp Template.transactionManager,
       Session.set('showAddTransactionDetail', false)
       $(template.find '#transactionManagerDetail').modal()
 
+    'click .excel-transaction': (event, template) -> $(".excelFileSource").click()
+    'change .excelFileSource': (event, template) ->
+      if event.target.files.length > 0
+        console.log 'importing'
+        $excelSource = $(".excelFileSource")
+        $excelSource.parse
+          config:
+            complete: (results, file) ->
+              console.log file
+              console.log results
+              #              if file.name is "nhap_kho.csv"
+              #              if file.type is "text/csv" || file.type is "application/vnd.ms-excel"
+              logics.transactionManager.importFileTransactionCSV(results.data)
+
+        $excelSource.val("")
+
 
 
