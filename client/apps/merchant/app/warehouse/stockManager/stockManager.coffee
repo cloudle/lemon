@@ -1,8 +1,8 @@
 lemon.defineApp Template.stockManager,
   events:
     "click .thumbnails": (event, template) ->
-      console.log @
-#      Meteor.subscribe('saleDetails', @_id)
-#      Session.set('currentBillManagerSale', @)
-#      $(template.find '#productEdit').modal()
+      Meteor.subscribe('productDetails', @_id)
+      Session.set('currentProduct', @)
+      Session.set('updateProductPrice', false)
+      $(template.find '#productEdit').modal()
 

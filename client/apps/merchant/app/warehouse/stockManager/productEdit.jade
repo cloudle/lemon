@@ -1,34 +1,48 @@
 template(name="productEdit")
    aside.modal.swipe.left#productEdit
-      .modal-dialog.sale-bill-preview
+      .modal-dialog.sale-bill-preview(style="width: 350px;")
          .modal-header
             button.close(type="button" data-dismiss="modal")
                span(aria-hidden="true") &times;
                span.sr-only Close
             h4.modal-title
                i.icon-search-8
-               |XEM PHIẾU BÁN HÀNG
+               |CHI TIẾT SẢN PHẨM
          .modal-body.printable-area
-            .header
-               span <b>{{timeDMY}}</b> ngày <b>{{fullDay}}</b>, <br/>
-               span <b>{{timeHM}}<sup>{{timeS}}</sup></b> (giờ ăn trưa),<b> {{formatNumberK sale.finalPrice}}</b>k
-            .merchant-info
-               span.merchant-name C.TY GI DO <br/>
-               span.marchant-address Dia chi cong ty gi do
+            span Mã sản phẩm: {{product.productCode}}<br/>
+            span Tên sản phẩm: {{product.name}}<br/>
+            span Quy cách: {{product.skulls}}<br/>
+            span Giá bán: {{formatNumber product.price}} vnd<br/>
+            span Người tạo: {{userNameFromId product.creator}}<br/>
+
             ul
-               each saleDetails
+               each productDetails
                   li.order-detail
-                     .product-name <b>{{formatNumber quality}}</b> {{productNameFromId product}}
+                     .product-name <b>Ngày: {{formatDate version.createdAt}}</b>
                      .product-price
-                        span.individual-price * {{formatNumber soldPrice}}
-                        if discountVisible
-                           sup.discount (<b>-{{discountPercent}}</b>%) <br/>
-                        span.final-price {{formatNumber finalPrice}}
+                        span.individual-price Đã nhập: {{formatNumber importQuality}} {{product.skulls}}
+                        span.final-price Giá nhập: {{formatNumber importPrice}}
 
             .bill-summary
-               span tổng cộng
-               span.bill-final <b>{{formatNumber sale.finalPrice}}</b> VNĐ
-            .bill-footer HẸN GẶP LẠI
+               .editor-row
+                  span Tổng Nhập:
+                  span.bill-final <b>{{formatNumber product.totalQuality}} {{product.skulls}}</b>
+               .editor-row
+                  span Tồn Kho:
+                  span.bill-final <b>{{formatNumber product.inStockQuality}} {{product.skulls}}</b>
+               .editor-row
+                  span Có Thể Bán:
+                  span.bill-final <b>{{formatNumber product.availableQuality}} {{product.skulls}}</b>
          .modal-footer
-            button.lemon.btn.pumpkin(type="button" data-dismiss="modal") ĐÓNG
-            button.lemon.btn.blue.print-button(type="button"): span.icon-print-6
+            .editor-row
+               if updateProductPrice
+                  button.lemon.btn.lime.icon-plus-circled.showUpdateProductPrice Chỉnh giá bán
+            .editor-row(style="{{showUpdateProductPrice}}")
+               .editor-wrapper(style="width:160px")
+                  span.ilabel giá bán mới
+                  +iSpinEdit(options=productPriceOptions  class="field")
+               .editor-wrapper
+                  button.lemon.btn.pumpkin.cancelUpdateProductPrice(type='submit') Hủy
+               .editor-wrapper
+                  button.lemon.btn.lime.updateProductPrice(type='submit') Cập nhật
+

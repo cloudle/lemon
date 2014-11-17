@@ -49,6 +49,8 @@ Schema.imports.allow
   remove: (userId, imports) -> true
 
 Schema.importDetails.allow
-  insert: (userId, importDetail) -> true
+  insert: (userId, importDetail) ->
+    Schema.providers.update(importDetail.provider, $set:{allowDelete: false})
+    true
   update: (userId, importDetail) -> true
   remove: (userId, importDetail) -> true

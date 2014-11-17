@@ -10,4 +10,6 @@ Schema.providers.allow
       name: provider.name
     }) then false else true
   update: (userId, provider) -> true
-  remove: (userId, provider) -> true
+  remove: (userId, provider) ->
+    if provider.allowDelete
+      if Schema.importDetails.findOne({provider: provider._id}) then false else true

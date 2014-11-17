@@ -47,7 +47,9 @@ lemon.defineApp Template.import,
             complete: (results, file) ->
               console.log file
               console.log results
-              if file.type is "text/csv"
-                Apps.Merchant.exportFileImport(results.data)
+              if file.name is "nhap_kho.csv"
+#                if file.type is "text/csv" || file.type is "application/vnd.ms-excel"
+                logics.import.importFileProductCSV(results.data)
+
 
         $excelSource.val("")

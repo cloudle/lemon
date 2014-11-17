@@ -36,6 +36,7 @@ Meteor.methods
 
       if Schema.transactionDetails.insert TransactionDetail.new(profile.user, transaction, depositCash, paymentDate)
         Schema.transactions.update transaction._id, $inc:{depositCash: depositCash, debitCash: -depositCash}
+        MetroSummary.updateMetroSummaryByTransaction(profile.currentMerchant, depositCash)
       else throw 'Thêm trả nợ không thành công'
 
     catch error
