@@ -4,7 +4,7 @@ resizeAndCropCenter = (source, width, height) ->
         .stream()
 
 avatarStorage = new FS.Store.FileSystem "avatar",
-  path: "./uploads/avatar"
+  path: "/opt/uploads/avatar"
   transformWrite: (fileObj, readStream, writeStream) ->
     gmSource = gm(readStream, fileObj.name())
     resizeAndCropCenter(gmSource, '100', '100').pipe(writeStream)

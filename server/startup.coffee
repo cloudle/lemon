@@ -1,2 +1,1 @@
-process.env.MONGO_URL = 'mongodb://localhost:27017/lemon'
-process.env.MAIL_URL  = 'smtp://lehaoson@gmail.com:Ultimate7@smtp.gmail.com:465/';
+Kadira.connect('boFKn75mWy6TRCAi9', 'c29185b9-5dc0-4016-90b7-7fe2d4eff1f2')

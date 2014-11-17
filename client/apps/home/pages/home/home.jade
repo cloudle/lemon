@@ -12,10 +12,10 @@ template(name="home")
           #gotoMerchantButton.btn.icon-shop
           #logoutButton.btn.icon-power.background-pumpkin
       else
-        .login-section.animated.fadeInDown
+        .login-section
           input.login-field#authAlias(type="text" placeholder="{{i18n 'form.userAccount'}}" maxlength="50" tabindex="1")
           input.login-field#authSecret(type="password" placeholder="{{i18n 'form.password'}}" maxlength="30" tabindex="2")
-          #authButton.btn.icon-forward-3(class="{{sessionGet 'loginValid'}}" tabindex="3")
+          #authButton.btn(class="{{sessionGet 'loginValid'}}" tabindex="3") ĐĂNG NHẬP
 
       .caption ĐĂNG KÝ!
       .registeration-section

@@ -16,7 +16,6 @@ generateModel = (name, globalName, extensionObj) ->
   extendObject extensionObj, root[globalName]
   root[globalName].schema = Schema[name]
   root[globalName].prototype.schema = Schema[name]
-  console.log "added #{globalName}",
 
 Schema.add = (name, globalName = undefined, extensionObj = undefined) ->
   generateSchema(name)
