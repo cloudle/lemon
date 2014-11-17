@@ -95,6 +95,13 @@ lemon.defineWidget Template.merchantWizard,
   crossFinalExtendPrice: -> finalAccountExtendPrice() + finalBranchExtendPrice() + finalWarehouseExtendPrice()
   crossFinalPrice: -> Session.get('currentMerchantPackage').price + finalAccountExtendPrice() + finalBranchExtendPrice() + finalWarehouseExtendPrice()
 
+  updateValid: ->
+    if !purchase = logics.merchantWizard.purchase then return 'disabled'
+    if !purchase.companyName || purchase.companyName.length is 0 then return 'disabled'
+    if !purchase.contactPhone || purchase.contactPhone.length is 0 then return 'disabled'
+    if !purchase.merchantName || purchase.merchantName.length is 0 then return 'disabled'
+    if !purchase.warehouseName || purchase.warehouseName.length is 0 then return 'disabled'
+
   rendered: ->
     self = @
     Meteor.setTimeout ->
@@ -103,11 +110,40 @@ lemon.defineWidget Template.merchantWizard,
     , 5000
   destroyed: -> Meteor.clearInterval(@bgInterval)
   events:
+    "blur #companyName"  : (event, template) ->
+      $companyName = $(template.find("#companyName"))
+      if $companyName.val().length > 0
+        Schema.merchantPurchases.update logics.merchantWizard.purchase._id, $set: {companyName: $companyName.val()}
+      else
+        $companyName.notify('tên công ty không được để trống', {position: "bottom"})
+
+    "blur #companyPhone" : (event, template) ->
+      $companyPhone = $(template.find("#companyPhone"))
+      if $companyPhone.val().length > 0
+        Schema.merchantPurchases.update logics.merchantWizard.purchase._id, $set: {contactPhone: $companyPhone.val()}
+      else
+        $companyPhone.notify('số điện thoại không được để trống!', {position: "bottom"})
+
+    "blur #merchantName" : (event, template) ->
+      $merchantName = $(template.find("#merchantName"))
+      if $merchantName.val().length > 0
+        Schema.merchantPurchases.update logics.merchantWizard.purchase._id, $set: {merchantName: $merchantName.val()}
+      else
+        $merchantName.notify('tên chi nhánh không được để trống!', {position: "bottom"})
+
+    "blur #warehouseName": (event, template) ->
+      $warehouseName = $(template.find("#warehouseName"))
+      if $warehouseName.val().length > 0
+        Schema.merchantPurchases.update logics.merchantWizard.purchase._id, $set: {warehouseName: $warehouseName.val()}
+      else
+        $warehouseName.notify('tên kho hàng không để trống!', {position: "bottom"})
+
     "click .package-block": (event, template) -> Session.set('currentMerchantPackage', @options)
     "click .finish-register": (event, template) ->
       console.log template.data.purchase
       Schema.merchantPurchases.update(template.data.purchase._id, {$set: {merchantRegistered: true}})
-
+      Schema.merchants.update(Session.get('myProfile').currentMerchant, {$set: {name: template.data.purchase.merchantName}})
+      Schema.warehouses.update(Session.get('myProfile').currentWarehouse, {$set: {name: template.data.purchase.warehouseName}})
       Router.go('/merchant')
     "click .register-logout.btn": -> lemon.logout()
 

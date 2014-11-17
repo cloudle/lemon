@@ -33,9 +33,8 @@ checkAndAddNewProduct = (column, data, profile)->
       skulls      : item[column.skull]
     }) then Product.createNew(item[column.barcode], item[column.name], [item[column.skull]], profile.currentWarehouse)
 
-addDetailInImport = (column, data, profile)->
+addDetailInImport = (column, data, imports, profile)->
   for item in data
-    imports = logics.import.currentImport
     provider = Schema.providers.findOne({parentMerchant: profile.parentMerchant, name: item[column.providerName]})
     product = Schema.products.findOne({
       merchant    : profile.currentMerchant
@@ -73,13 +72,31 @@ addDetailInImport = (column, data, profile)->
     else
       Schema.importDetails.insert importDetail, (error, result) -> console.log error if error
 
+reCalculateImport = (importId)->
+  importDetails = Schema.importDetails.find({import: importId._id}).fetch()
+  totalPrice = 0
+  if importDetails.length > 0
+    for detail in importDetails
+      totalPrice += (detail.importQuality * detail.importPrice)
+      option = {totalPrice: totalPrice, deposit: totalPrice, debit: 0}
+  else option = {totalPrice: 0, deposit: 0, debit: 0}
+  Schema.imports.update importId, $set: option
+
+
+currentImportFind = (profile)->
+  importId = Schema.userSessions.findOne({user: profile.user})?.currentImport
+  if importId then Schema.imports.findOne(importId) else logics.import.createImportAndSelected()
+
 
 Apps.Merchant.exportFileImport = (data)->
   profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+  currentImport = currentImportFind(profile)
   productColumn = checkValidationFileImport(data[0])
   if _.keys(productColumn).length > 0
     data = _.without(data, data[0])
     checkAndAddNewProvider(productColumn, data, profile)
     checkAndAddNewProduct(productColumn, data, profile)
-    addDetailInImport(productColumn, data, profile)
+    addDetailInImport(productColumn, data, currentImport, profile)
+#    reCalculateImport(currentImport._id)
+    logics.import.reCalculateImport(currentImport._id)
 

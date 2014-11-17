@@ -1,4 +1,29 @@
-lemon.defineApp Template.customerManager,
+lemon.defineApp Template.customerManager,#      $companyName = $(template.find("#companyName"))
+#      if $companyName.val().length > 0
+#        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {companyName: $companyName.val()}
+#      else
+#        $companyName.notify('tên công ty không được để trống', {position: "right"})
+#
+#    "blur #companyPhone" : (event, template) ->
+#      $companyPhone = $(template.find("#companyPhone"))
+#      if $companyPhone.val().length > 0
+#        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {companyPhone: $companyPhone.val()}
+#      else
+#        $companyPhone.notify('số điện thoại không được để trống!', {position: "right"})
+#
+#    "blur #merchantName" : (event, template) ->
+#      $merchantName = $(template.find("#merchantName"))
+#      if $merchantName.val().length > 0
+#        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {merchantName: $merchantName.val()}
+#      else
+#        $merchantName.notify('tên chi nhánh không được để trống!', {position: "right"})
+#
+#    "blur #warehouseName": (event, template) ->
+#      $warehouseName = $(template.find("#warehouseName"))
+#      if $warehouseName.val().length > 0
+#        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {warehouseName: $warehouseName.val()}
+#      else
+#        $warehouseName.notify('tên kho hàng không để trống!', {position: "right"})
   created: ->
     Session.setDefault('allowCreateNewCustomer', false)
     Session.setDefault('genderNewCustomer', true)
@@ -22,6 +47,6 @@ lemon.defineApp Template.customerManager,
             complete: (results, file) ->
               if file.type is "text/csv"
                 console.log results.data
-#                Apps.Merchant.exportFileCustomer(results.data)
+                Apps.Merchant.exportFileCustomer(results.data)
 
         $excelSource.val("")

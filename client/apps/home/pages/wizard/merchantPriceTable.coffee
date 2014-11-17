@@ -3,14 +3,18 @@ isCurrentPackage = (context) -> Session.get("currentMerchantPackage")?.packageCl
 lemon.defineWidget Template.merchantPriceTable,
   isActive: -> Session.get("currentMerchantPackage")?.packageClass is @options.packageClass
   showExtension: -> @options.packageClass isnt 'free' and isCurrentPackage(@)
-  showAccountPlus: -> Session.get('wizardAccountPlus') > 0 and isCurrentPackage(@)
-  showBranchPlus: -> Session.get('wizardBranchPlus') > 0 and isCurrentPackage(@)
-  showWarehousePlus: -> Session.get('wizardWarehousePlus') > 0 and isCurrentPackage(@)
+  showAccountPlus: -> Session.get('wizardAccountPlus') > 0 and isCurrentPackage(@) and @options.packageClass isnt 'free'
+  showBranchPlus: -> Session.get('wizardBranchPlus') > 0 and isCurrentPackage(@) and @options.packageClass isnt 'free'
+  showWarehousePlus: -> Session.get('wizardWarehousePlus') > 0 and isCurrentPackage(@) and @options.packageClass isnt 'free'
   accountPlus: -> Session.get('wizardAccountPlus')
   branchPlus: -> Session.get('wizardBranchPlus')
   warehousePlus: -> Session.get('wizardWarehousePlus')
 
-  realWarehouseLim: -> @options.warehouseLim + Session.get('wizardBranchPlus')
+  realWarehouseLim: ->
+    if @options.packageClass is 'free'
+      @options.warehouseLim
+    else
+      @options.warehouseLim + Session.get('wizardBranchPlus')
 
   events:
     "click .command.raise.account": -> Session.set('wizardAccountPlus', Session.get('wizardAccountPlus') + 5)

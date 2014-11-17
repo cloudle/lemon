@@ -33,11 +33,14 @@ Apps.Merchant.inventoryReactiveRun.push (scope) ->
       if scope.currentInventory
         if scope.currentInventory._id != scope.currentWarehouse.inventory
           scope.currentInventory = Schema.inventories.findOne(scope.currentWarehouse.inventory)
-          Meteor.subscribe('inventoryDetailInWarehouse', scope.currentInventory._id)
       else
         scope.currentInventory = Schema.inventories.findOne(scope.currentWarehouse.inventory)
-        Meteor.subscribe('inventoryDetailInWarehouse', scope.currentInventory._id)
+      Meteor.subscribe('inventoryDetailInWarehouse', scope.currentInventory._id)
       scope.inventoryDetails = Schema.inventoryDetails.find({inventory: scope.currentInventory._id})
+    else
+      scope.currentInventory = null
+      scope.inventoryDetails = null
+
 
   scope.allowCreate     = if scope.currentWarehouse?.checkingInventory || !Session.get('allowCreateNewInventory') then 'disabled' else ''
   scope.showCreate      = if scope.currentWarehouse?.checkingInventory then "display: none" else ""

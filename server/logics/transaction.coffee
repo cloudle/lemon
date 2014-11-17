@@ -4,8 +4,8 @@ Meteor.methods
       profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if !profile then throw 'Không tìm thấy profile'
 
-      permission = Role.hasPermission(profile._id, Apps.Merchant.Permissions.transactionManagement.key)
-      if permission is false then throw 'Bạn không có quyền thực hiên.'
+#      permission = Role.hasPermission(profile._id, Apps.Merchant.Permissions.transactionManagement.key)
+#      if permission is false then throw 'Bạn không có quyền thực hiên.'
 
       transaction = Schema.transactions.findOne({_id: id, merchant: profile.currentMerchant})
       if !transaction then throw 'Không tìm thấy transaction'
@@ -26,17 +26,15 @@ Meteor.methods
       profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if !profile then throw 'Không tìm thấy profile'
 
-      permission = Role.hasPermission(profile._id, Apps.Merchant.Permissions.transactionManagement.key)
-      if permission is false then throw 'Bạn không có quyền thực hiên.'
+#      permission = Role.hasPermission(profile._id, Apps.Merchant.Permissions.transactionManagement.key)
+#      if permission is false then throw 'Bạn không có quyền thực hiên.'
 
       transaction = Schema.transactions.findOne({_id: transactionId, merchant: profile.currentMerchant})
       if !transaction then throw 'Không tìm thấy transaction'
       if transaction.debitCash < depositCash then throw 'Tiền trả lớn hơn tiền thiếu.'
       if depositCash <= 0 then throw 'Tiền trả lớn hơn 0.'
 
-      console.log 'ok'
       if Schema.transactionDetails.insert TransactionDetail.new(profile.user, transaction, depositCash, paymentDate)
-        console.log 'ok 1'
         Schema.transactions.update transaction._id, $inc:{depositCash: depositCash, debitCash: -depositCash}
       else throw 'Thêm trả nợ không thành công'
 

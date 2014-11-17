@@ -45,6 +45,8 @@ lemon.defineApp Template.import,
         $excelSource.parse
           config:
             complete: (results, file) ->
+              console.log file
+              console.log results
               if file.type is "text/csv"
                 Apps.Merchant.exportFileImport(results.data)
 

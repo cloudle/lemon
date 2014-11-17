@@ -36,17 +36,18 @@ subtractQualityOnSales = (stockingItems, sellingItem , currentSale) ->
 
 
 createSaleAndSaleOrder = (order, orderDetails)->
-  currentSale = Sale.findOne(Sale.insertByOrder(order))
+  currentSale = Schema.sales.findOne(Sale.insertByOrder(order))
+  console.log currentSale
   if !currentSale then throw new Meteor.Error("Create sale fail.")
 
   for currentOrderDetail in orderDetails
     productDetails = Schema.productDetails.find({product: currentOrderDetail.product, availableQuality: {$gt: 0}}).fetch()
-    subtractQualityOnSales(productDetails, currentOrderDetail, currentSale.data)
+    subtractQualityOnSales(productDetails, currentOrderDetail, currentSale)
 
   option = {status: true}
-  if currentSale.data.paymentsDelivery == 1
-    option.delivery = Delivery.insertBySale(order, currentSale.data)
-  Sale.update currentSale.id, $set: option, (error, result) -> if error then console.log error
+  if currentSale.paymentsDelivery == 1
+    option.delivery = Delivery.insertBySale(order, currentSale)
+  Schema.sales.update currentSale._id, $set: option, (error, result) -> if error then console.log error
 
   return currentSale
 
