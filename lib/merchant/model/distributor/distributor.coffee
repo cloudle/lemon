@@ -1,2 +1,2 @@
-Schema.add 'distributors', class Distributors
+Schema.add 'distributors', "Distributors", class Distributors
   @insideMerchant: ->

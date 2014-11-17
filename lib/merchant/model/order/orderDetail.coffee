@@ -1,4 +1,4 @@
-Schema.add 'orderDetails', class OrderDetail
+Schema.add 'orderDetails', "OrderDetail", class OrderDetail
   @findBy: (orderId)-> @schema.find({order: orderId})
 
 

@@ -1,4 +1,4 @@
-Schema.add 'merchants', class Merchant
+Schema.add 'merchants', "Merchant", class Merchant
   checkProductExpireDate: (value, warehouseId = null)->
     timeOneDay = 86400000
     tempDate = new Date

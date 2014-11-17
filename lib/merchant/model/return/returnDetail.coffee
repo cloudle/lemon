@@ -1,4 +1,4 @@
-Schema.add 'returnDetails', class ReturnDetail
+Schema.add 'returnDetails', "ReturnDetail", class ReturnDetail
   @newByReturn : (returnId, saleId)->
     sale = Schema.sales.findOne(saleId)
     saleDetail = Schema.saleDetails.findOne(sale.currentProductDetail)

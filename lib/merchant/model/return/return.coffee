@@ -1,4 +1,4 @@
-Schema.add 'returns', class Return
+Schema.add 'returns', "Return", class Return
   @createBySale: (saleId)->
     return console.log("Phiếu bán hàng không tồn tại.") if !sale = Schema.sales.findOne({_id: saleId})
     return console.log("Không thể tạo phiếu trả hàng mới, phiếu trả hàng cũ chưa kết thúc.") if sale.status == false

@@ -1,4 +1,4 @@
-Schema.add 'productGroups', class ProductGroup
+Schema.add 'productGroups', "ProductGroup", class ProductGroup
   @find: ->
 
 

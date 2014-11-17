@@ -10,7 +10,7 @@ saleStatusIsImport = (sale)->
   else
     false
 
-Schema.add 'metroSummaries', class MetroSummary
+Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
   @newByMerchant: (merchantId)->
     currentMerchant = Schema.merchants.findOne(merchantId)
     if currentMerchant

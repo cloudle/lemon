@@ -3,7 +3,7 @@ getExpireDate = (productionDate, timeUse)->
 
 
 
-Schema.add 'importDetails', class ImportDetail
+Schema.add 'importDetails', "ImportDetail", class ImportDetail
   @findBy: (importId, merchantId = null, warehouseId = null)->
     if !merchantId && !warehouseId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
     @schema.find({

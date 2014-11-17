@@ -1,4 +1,4 @@
-Schema.add 'warehouses', class Warehouse
+Schema.add 'warehouses', "Warehouse", class Warehouse
   @findBy: (warehouseId, merchantId = null)->
     if !merchantId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
     @schema.findOne({

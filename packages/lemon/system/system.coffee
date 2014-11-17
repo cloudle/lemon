@@ -12,7 +12,7 @@ getNextVersion = (currentVersion, step) ->
 
   "#{version}.#{nextSubversion}"
 
-Schema.add 'systems', class System
+Schema.add 'systems', "System", class System
   @init: -> Schema.systems.insert({version: '0.0.1' }) if Schema.systems.find().count() is 0
   @upgrade: (step = 0.1) ->
     zone.run =>

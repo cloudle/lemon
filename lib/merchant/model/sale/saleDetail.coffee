@@ -1,4 +1,4 @@
-Schema.add 'saleDetails', class SaleDetail
+Schema.add 'saleDetails', "SaleDetail", class SaleDetail
   @createSaleDetailByOrder = (currentSale, product, productDetail, quality)->
     option =
       sale          : currentSale._id

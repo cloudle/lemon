@@ -1,4 +1,4 @@
-Schema.add 'imports', class Import
+Schema.add 'imports', "Import", class Import
   @findBy: (importId, warehouseId = null, merchantId = null)->
     myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     @schema.findOne({

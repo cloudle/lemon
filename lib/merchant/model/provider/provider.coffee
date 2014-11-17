@@ -1,4 +1,4 @@
-Schema.add 'providers', class Provider
+Schema.add 'providers', "Provider", class Provider
   @insideMerchant: (merchantId) -> @schema.find({parentMerchant: merchantId}, {sort: {'version.createdAt': -1}})
   @insideBranch: (branchId) -> @schema.find({merchant: branchId}, {sort: {'version.createdAt': -1}})
 

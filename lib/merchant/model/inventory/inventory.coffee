@@ -1,4 +1,4 @@
-Schema.add 'inventories' , class Inventory
+Schema.add 'inventories' , "Inventory", class Inventory
   @findHistory: (starDate, toDate, warehouseId) ->
     @schema.find({$and: [
       {warehouse: warehouseId}

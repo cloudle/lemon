@@ -1,4 +1,4 @@
-Schema.add 'exports', class Exports
+Schema.add 'exports', "Exports", class Exports
   destroy: ->
 #    userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
 #    if userProfile

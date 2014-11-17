@@ -1,4 +1,4 @@
-Schema.add 'productLosts', class ProductLost
+Schema.add 'productLosts', "ProductLost", class ProductLost
   @new: (warehouse, inventoryDetail)->
     option =
       merchant      : warehouse.merchant

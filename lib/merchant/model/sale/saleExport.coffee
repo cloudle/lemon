@@ -1,4 +1,4 @@
-Schema.add 'saleExports', class SaleExport
+Schema.add 'saleExports', "SaleExport", class SaleExport
   @new: (sale ,saleDetail)->
     option =
       merchant      : sale.merchant

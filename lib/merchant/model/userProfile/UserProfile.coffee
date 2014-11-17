@@ -1,4 +1,4 @@
-Schema.add 'userProfiles', class UserProfile
+Schema.add 'userProfiles', "UserProfile", class UserProfile
   @update: (options) ->
     userProfile = @schema.findOne({user: Meteor.userId()})
     @schema.update(userProfile._id, {$set: options})

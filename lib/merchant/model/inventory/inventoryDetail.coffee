@@ -1,1 +1,1 @@
-Schema.add 'inventoryDetails'#, class InventoryDetail
+Schema.add 'inventoryDetails'#, "InventoryDetail", class InventoryDetail

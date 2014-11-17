@@ -1,4 +1,4 @@
-Schema.add 'roles', class Role
+Schema.add 'roles', "Role", class Role
   @addRolesFor: (profileId, roles) ->
     Schema.userProfiles.update profileId, {$set: {roles: roles}}
 

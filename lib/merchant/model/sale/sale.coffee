@@ -14,7 +14,7 @@ createSaleCode = ->
 
 
 
-Schema.add 'sales', class Sale
+Schema.add 'sales', "Sale", class Sale
   @newByOrder: (order)->
     option =
       merchant          : order.merchant

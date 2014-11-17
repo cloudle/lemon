@@ -1,4 +1,4 @@
-Schema.add 'orders', class Order
+Schema.add 'orders', "Order", class Order
   @findBy: (orderId, warehouseId = null, merchantId = null)->
     myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
     @schema.findOne({

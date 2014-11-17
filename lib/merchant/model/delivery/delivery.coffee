@@ -1,4 +1,4 @@
-Schema.add 'deliveries', class Delivery
+Schema.add 'deliveries', "Delivery", class Delivery
   @newBySale: (order, sale)->
     option =
       merchant        : sale.merchant

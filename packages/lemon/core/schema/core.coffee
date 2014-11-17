@@ -11,17 +11,16 @@ generateSchema = (name) ->
   Schema[name].helpers(extensionObj.helpers) if extensionObj?.helpers
   Schema[name].attachSchema simpleSchema[name]
 
-generateModel = (name, extensionObj) ->
-  singularName = extensionObj.name
-  class root[singularName] extends modelBase
-  extendObject extensionObj, root[singularName]
-  root[singularName].schema = Schema[name]
-  root[singularName].prototype.schema = Schema[name]
-  console.log "added #{singularName}",
+generateModel = (name, globalName, extensionObj) ->
+  class root[globalName] extends modelBase
+  extendObject extensionObj, root[globalName]
+  root[globalName].schema = Schema[name]
+  root[globalName].prototype.schema = Schema[name]
+  console.log "added #{globalName}",
 
-Schema.add = (name, extensionObj = undefined) ->
-  generateSchema(name, extensionObj)
-  generateModel(name, extensionObj) if extensionObj
+Schema.add = (name, globalName = undefined, extensionObj = undefined) ->
+  generateSchema(name)
+  generateModel(name, globalName, extensionObj) if extensionObj and globalName
 
 Schema.list = ->
   i = 1

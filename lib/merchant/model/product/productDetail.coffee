@@ -1,4 +1,4 @@
-Schema.add 'productDetails', class ProductDetail
+Schema.add 'productDetails', "ProductDetail", class ProductDetail
   @newProductDetail: (imports, importDetail)->
     option =
       import           : imports._id
