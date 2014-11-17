@@ -47,8 +47,8 @@ lemon.defineApp Template.customerManager,#      $companyName = $(template.find("
             complete: (results, file) ->
               console.log results
               console.log file
-              if file.name is "khach_hang.csv"
-#                if file.type is "text/csv" || file.type is "application/vnd.ms-excel"
-                logics.customerManager.importFileCustomerCSV(results.data)
+#              if file.name is "khach_hang.csv"
+#              if file.type is "text/csv" || file.type is "application/vnd.ms-excel"
+              logics.customerManager.importFileCustomerCSV(results.data)
 
         $excelSource.val("")

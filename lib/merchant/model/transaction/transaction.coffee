@@ -60,13 +60,13 @@ Schema.add 'transactions', "Transaction", class Transaction
     option
 
   @newByUser: (customerId, description, totalCash, depositCash, debtDate)->
-    myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-    customer  = Schema.customers.findOne({_id: customerId, parentMerchant: myProfile.parentMerchant})
-    if myProfile and customer and depositCash >= 0 and totalCash > depositCash
+    profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    customer  = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
+    if profile and customer and depositCash >= 0 and totalCash > depositCash
       option =
-        merchant    : myProfile.currentMerchant
-        warehouse   : myProfile.currentWarehouse
-        creator     : myProfile.user
+        merchant    : profile.currentMerchant
+        warehouse   : profile.currentWarehouse
+        creator     : profile.user
         owner       : customer._id
         group       : 'customer'
         receivable  : true
@@ -83,6 +83,7 @@ Schema.add 'transactions', "Transaction", class Transaction
         option.status = 'tracking'
 
       option._id = Schema.transactions.insert option
+      if option._id then MetroSummary.updateMetroSummaryByNewTransaction(option.merchant, option.debitCash)
       option
 
 
