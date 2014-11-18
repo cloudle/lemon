@@ -97,10 +97,11 @@ lemon.defineWidget Template.merchantWizard,
 
   updateValid: ->
     if !purchase = logics.merchantWizard.purchase then return 'disabled'
-    if !purchase.companyName || purchase.companyName.length is 0 then return 'disabled'
-    if !purchase.contactPhone || purchase.contactPhone.length is 0 then return 'disabled'
-    if !purchase.merchantName || purchase.merchantName.length is 0 then return 'disabled'
-    if !purchase.warehouseName || purchase.warehouseName.length is 0 then return 'disabled'
+    if !purchase.companyName    || purchase.companyName.length is 0 then return 'disabled'
+    if !purchase.contactPhone   || purchase.contactPhone.length is 0 then return 'disabled'
+    if !purchase.contactAddress || purchase.contactAddress.length is 0 then return 'disabled'
+    if !purchase.merchantName   || purchase.merchantName.length is 0 then return 'disabled'
+#    if !purchase.warehouseName || purchase.warehouseName.length is 0 then return 'disabled'
 
   rendered: ->
     self = @
@@ -123,6 +124,13 @@ lemon.defineWidget Template.merchantWizard,
         Schema.merchantPurchases.update logics.merchantWizard.purchase._id, $set: {contactPhone: $companyPhone.val()}
       else
         $companyPhone.notify('số điện thoại không được để trống!', {position: "bottom"})
+
+    "blur #contactAddress" : (event, template) ->
+      $contactAddress = $(template.find("#contactAddress"))
+      if $contactAddress.val().length > 0
+        Schema.merchantPurchases.update logics.merchantWizard.purchase._id, $set: {contactAddress: $contactAddress.val()}
+      else
+        $contactAddress.notify('địa chỉ chi nhánh không được để trống!', {position: "bottom"})
 
     "blur #merchantName" : (event, template) ->
       $merchantName = $(template.find("#merchantName"))

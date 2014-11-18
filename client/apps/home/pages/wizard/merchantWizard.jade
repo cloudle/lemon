@@ -11,11 +11,14 @@ template(name="merchantWizard")
         span.ilabel.optional số điên thoại
         input#companyPhone(type="text" placeholder="số điên thoại *" value="{{purchase.contactPhone}}")
       .editor-wrapper
+        span.ilabel.optional.right địa chỉ
+        input#contactAddress(type="text" placeholder="địa chỉ doanh nghiệp *" value="{{purchase.contactAddress}}")
+      .editor-wrapper
         span.ilabel.optional.right tên chi nhánh chính
         input#merchantName(type="text" placeholder="tên chi nhánh chính *" value="{{purchase.merchantName}}")
-      .editor-wrapper
-        span.ilabel.optional.right tên kho hàng chính
-        input#warehouseName(type="text" placeholder="tên kho hàng chính *" value="{{purchase.warehouseName}}")
+      //.editor-wrapper
+      //  span.ilabel.optional.right tên kho hàng chính
+      //  input#warehouseName(type="text" placeholder="tên kho hàng chính *" value="{{purchase.warehouseName}}")
 
     .price-table-group.row
       .col.col-sm-3

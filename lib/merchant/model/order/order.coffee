@@ -1,20 +1,20 @@
 Schema.add 'orders', "Order", class Order
   @findBy: (orderId, warehouseId = null, merchantId = null)->
-    myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
-    @schema.findOne({
-      _id      : orderId
-      creator  : myProfile.user
-      merchant : merchantId ? myProfile.currentMerchant
-      warehouse: warehouseId ? myProfile.currentWarehouse
-    })
+    if myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
+      @schema.findOne({
+        _id      : orderId
+        creator  : myProfile.user
+        merchant : merchantId ? myProfile.currentMerchant
+        warehouse: warehouseId ? myProfile.currentWarehouse
+      })
 
   @myHistory: (creatorId, warehouseId = null, merchantId = null)->
-    myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
-    @schema.find({
-      creator   : creatorId ? myProfile.user
-      warehouse : warehouseId ? myProfile.currentWarehouse
-      merchant  : merchantId ? myProfile.currentMerchant
-    })
+    if myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
+      @schema.find({
+        creator   : creatorId ? myProfile.user
+        warehouse : warehouseId ? myProfile.currentWarehouse
+        merchant  : merchantId ? myProfile.currentMerchant
+      })
 
   @createdNewBy: (buyer, myProfile = null)->
     if !myProfile then myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})

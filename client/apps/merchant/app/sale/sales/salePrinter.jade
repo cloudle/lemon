@@ -10,11 +10,13 @@ template(name="salePrinter")
                |XEM PHIẾU BÁN HÀNG
          .modal-body.printable-area
             .header
-               span <b>{{timeDMY}}</b> ngày <b>{{fullDay}}</b>, <br/>
+               span ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b>, <br/>
                span <b>{{timeHM}}<sup>{{timeS}}</sup></b> (giờ ăn trưa),<b> {{formatNumberK order.finalPrice}}</b>k
             .merchant-info
-               span.merchant-name C.TY GI DO <br/>
-               span.marchant-address Dia chi cong ty gi do
+               span.merchant-name C.Ty: {{merchant.companyName}} <br/>
+               span.marchant-address Số ĐT: {{merchant.contactPhone}} <br/>
+               //if merchant.contactAddress
+               //   span.marchant-address Đia Chỉ: {{merchant.contactAddress}}
             ul
                each orderDetails
                   li.order-detail

@@ -17,6 +17,10 @@ simpleSchema.merchantPurchases = new SimpleSchema
     type: String
     optional: true
 
+  contactAddress:
+    type: String
+    optional: true
+
   merchantName:
     type: String
     optional: true
