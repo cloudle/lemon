@@ -37,7 +37,7 @@ Meteor.methods
 
       if Schema.transactionDetails.insert TransactionDetail.new(profile.user, transaction, depositCash, paymentDate)
         Schema.transactions.update transaction._id, $inc:{depositCash: depositCash, debitCash: -depositCash}
-        if transaction.group is 'sale' then Schema.sales.update transaction.parent, $inc: {deposit: depositCash, debit:  depositCash}
+        if transaction.group is 'sale' then Schema.sales.update transaction.parent, $inc: {deposit: depositCash, debit: -depositCash}
         MetroSummary.updateMetroSummaryByTransaction(profile.currentMerchant, depositCash)
       else throw 'Thêm trả nợ không thành công'
 
