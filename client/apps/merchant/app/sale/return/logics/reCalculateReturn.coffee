@@ -15,4 +15,5 @@ logics.returns.reCalculateReturn = (returnId)->
 
     option.discountCash = (saleReturn.discountPercent * option.totalPrice)/100
     option.finallyPrice = option.totalPrice - option.discountCash
+    console.log option
   Schema.returns.update saleReturn._id, $set: option

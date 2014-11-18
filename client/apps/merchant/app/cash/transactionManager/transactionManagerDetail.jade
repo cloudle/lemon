@@ -18,7 +18,7 @@ template(name="transactionManagerDetail")
         ul
           each transactionDetail
             li.order-detail
-              .product-name <b>{{formatDate paymentDate}}</b> (tạo bởi: <b>{{userNameFromId creator}} </b>)
+              .product-name <b>{{formatDate paymentDate}}</b> (bởi: <b>{{userNameFromId creator}} </b>)
               .product-price
                 span.individual-price Đã trả: {{formatNumber depositCash}}
                 span.final-price Nợ còn: {{formatNumber debitCash}}

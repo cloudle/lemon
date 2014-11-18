@@ -92,10 +92,4 @@ Meteor.methods
     sale = createSaleAndSaleOrder(currentOrder, orderDetails)
     if sale then removeOrderAndOrderDetail(currentOrder, userProfile)
 
-
-
-
-
-
-
-
+    return sale._id

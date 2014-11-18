@@ -16,5 +16,5 @@ lemon.defineWidget Template.exportAndImportManagerThumbnail,
   events:
     "click .createSaleExport": ->
       Meteor.call 'createSaleExport', @_id, (error, result) ->
-        if error then console.log error.error
+        if error then console.log error
         else console.log result

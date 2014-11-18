@@ -19,6 +19,7 @@ logics.returns.reactiveRun = ->
     Session.set('currentSale')
 
   if logics.returns.currentReturn
+    Session.set('currentReturn', logics.returns.currentReturn)
     Meteor.subscribe('returnDetails',logics.returns.currentReturn._id)
     logics.returns.availableReturnDetails = Schema.returnDetails.find({return: logics.returns.currentReturn._id})
   else

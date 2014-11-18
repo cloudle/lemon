@@ -260,7 +260,6 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
 
   @updateMetroSummaryByTransaction: (merchant, depositCash)->
     metroSummary = Schema.metroSummaries.findOne({merchant: merchant})
-    console.log metroSummary
     Schema.metroSummaries.update metroSummary._id, $inc: {
       saleDepositCash       : depositCash
       saleDebitCash         : -depositCash

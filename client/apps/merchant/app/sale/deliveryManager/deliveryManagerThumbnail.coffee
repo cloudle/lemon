@@ -3,7 +3,11 @@ lemon.defineWidget Template.deliveryManagerThumbnail,
   showStartCommand:   -> @status is 3
   showConfirmCommand: -> @status is 4
   showFinishCommand:  -> @status is 6 or @status is 9
-  showCancelCommand:  -> _.contains([2, 4, 5, 8, 9], @status)
+  showCancelCommand:  -> _.contains([2, 4, 5, 8], @status)
+
+  showAccountingCommand:  -> @status is 5
+  showExportCommand:      -> @status is 2
+  showImportCommand:      -> @status is 8
 
   showStatus: (status) ->
     switch status
@@ -51,3 +55,12 @@ lemon.defineWidget Template.deliveryManagerThumbnail,
 
     "click .cancel-command": (event, template) ->
       Meteor.call "updateDelivery", @_id, 'cancel', (error, result) -> console.log error if error
+
+    "click .accounting-command": ->
+      Meteor.call 'confirmReceiveSale', @sale, (error, result) -> if error then console.log error
+
+    "click .export-command": ->
+      Meteor.call 'createSaleExport', @sale, (error, result) -> if error then console.log error
+
+    "click .import-command": ->
+      Meteor.call 'createSaleImport', @sale, (error, result) -> if error then console.log error

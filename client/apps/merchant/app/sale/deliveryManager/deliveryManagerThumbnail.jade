@@ -16,5 +16,13 @@ template(name="deliveryManagerThumbnail")
         .command-button.animated.bounceIn.success-command.icon-ok-6
       if showFinishCommand
         .command-button.finish-command.icon-award
+
+      if showExportCommand
+        .command-button.export-command.icon-shuffle-4
+      if showAccountingCommand
+        .command-button.accounting-command.icon-money
+      if showImportCommand
+        .command-button.import-command.icon-inbox-1
+
       if showCancelCommand
         .command-button.cancel-command.icon-reply-3

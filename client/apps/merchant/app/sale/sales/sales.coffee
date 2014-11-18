@@ -41,4 +41,13 @@ lemon.defineApp Template.sales,
       )
     "click .print-preview": (event, template) -> $(template.find '#salePrinter').modal()
     'click .finish': (event, template)->
-      Meteor.call "finishOrder", logics.sales.currentOrder._id, (error, result) -> console.log error.error if error
+      Meteor.call "finishOrder", logics.sales.currentOrder._id, (error, result) ->
+        if error
+          console.log error.error
+        else
+          Meteor.call 'confirmReceiveSale', result, (error, result) -> if error then console.log error.error
+          Meteor.call 'createSaleExport', result, (error, result) -> if error then console.log error.error
+
+
+
+

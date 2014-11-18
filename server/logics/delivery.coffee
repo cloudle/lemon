@@ -31,6 +31,11 @@ Meteor.methods
           if currentDelivery.status is 4
             setOptionDelivery = {$set: {status: 3}}
 
+          if currentDelivery.status is 5
+            setOptionDelivery = {$set: {status: 4}}
+            setOptionSale     = {$set: {status: false}}
+            unsetOptionSale   = {$unset:{success: true}}
+
           if currentDelivery.status is 8
             setOptionDelivery = {$set: {status: 4}}
             setOptionSale     = {$set: {status: false}}

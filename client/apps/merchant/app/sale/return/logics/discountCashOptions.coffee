@@ -7,8 +7,8 @@ Apps.Merchant.returnsInit.push (scope) ->
 
       option.finallyPrice = logics.returns.currentReturn.totalPrice - option.discountCash
       Schema.returns.update(logics.returns.currentReturn._id, {$set: option}) if logics.returns.currentReturn
-    reactiveValue: -> logics.returns.currentReturn?.discountCash ? 0
-    reactiveMax: ->  logics.returns.currentReturn?.totalPrice ? 0
+    reactiveValue: -> Session.get('currentReturn')?.discountCash ? 0
+    reactiveMax: ->  Session.get('currentReturn')?.totalPrice ? 0
     reactiveMin: -> 0
     reactiveStep: -> 1000
     others:

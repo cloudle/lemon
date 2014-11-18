@@ -23,4 +23,4 @@ lemon.defineWidget Template.accountingManagerThumbnail,
   showInputText: -> if checkAllow(@) then return 'Đã Nhận Tiền'
 
   events:
-    "click .confirmReceive": -> logics.accountingManager.confirmReceiveSale(@)
+    "click .confirmReceive": -> Meteor.call 'confirmReceiveSale', @_id, (error, result) -> if error then console.log error

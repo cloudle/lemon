@@ -2,7 +2,7 @@ lemon.defineApp Template.transactionManager,
   unSecureMode: -> true
   allowCreate: ->
     newTransaction = Session.get('createNewTransaction')
-    if newTransaction.customerId != 'skyReset' and newTransaction.totalCash > 0 and newTransaction.totalCash > newTransaction.depositCash and newTransaction.description.length > 0
+    if newTransaction.customerId != 'skyReset' and newTransaction.totalCash > 0 and newTransaction.totalCash >= newTransaction.depositCash and newTransaction.description.length > 0
       ''
     else 'disabled'
 

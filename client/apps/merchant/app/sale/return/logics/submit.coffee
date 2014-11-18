@@ -1,4 +1,4 @@
-logics.returns.submitReturn = (returnId)->
+logics.returns. submitReturn = (returnId)->
   zone.run =>
     try
       throw 'Lỗi, Bạn chưa đăng nhập.' if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})

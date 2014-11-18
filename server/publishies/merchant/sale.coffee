@@ -14,7 +14,10 @@ Meteor.publish 'mySaleAndDetail', ->
 Meteor.publish 'saleBillAccounting', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
-  Schema.sales.find {}
+  date = new Date()
+  firstDay = new Date(date.getFullYear(), date.getMonth(), 15)
+  lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+  Sale.findAccountingDetails(firstDay, lastDay, myProfile.currentWarehouse)
 
 Meteor.publishComposite 'billManagerSales', ->
   self = @
