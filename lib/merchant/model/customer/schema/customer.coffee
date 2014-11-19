@@ -17,8 +17,16 @@ simpleSchema.customers = new SimpleSchema
     type: String
     optional: true
 
+  area:
+    type: [String]
+    optional: true
+
   name:
     type: String
+
+  pronoun:
+    type: String
+    optional: true
 
   companyName:
     type: String

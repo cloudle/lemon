@@ -34,11 +34,12 @@ lemon.dependencies.add 'branchManager', ['merchantEssential', 'availableBranch']
 lemon.dependencies.add 'warehouseManager', ['merchantEssential', 'availableWarehouse']
 lemon.dependencies.add 'stockManager', ['merchantEssential', 'allProducts']
 lemon.dependencies.add 'importHistory', ['merchantEssential', 'importHistoryInWarehouse', 'availableBranch', 'allWarehouse']
-lemon.dependencies.add 'warehouseImport', ['merchantEssential',
+lemon.dependencies.add 'importManager', ['merchantEssential',
                                            'myImportHistory',
                                            'allProducts',
                                            'skulls',
-                                           'providers']
+                                           'providers',
+                                           'distributors']
 
 lemon.dependencies.add 'inventoryHistory', ['merchantEssential', 'allInventory']
 lemon.dependencies.add 'inventoryManager', ['merchantEssential', 'allInventoryAndDetail', 'availableBranch', 'allWarehouse']

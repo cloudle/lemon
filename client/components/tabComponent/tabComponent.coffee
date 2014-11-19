@@ -30,5 +30,5 @@ lemon.defineWidget Template.tabComponent,
       template.data.options.navigateAction?(@)
     "click li.new-button": (event, template) ->
       Session.set(template.data.options.currentSource, template.data.options.createAction())
-    "dblclick span.delete-button": (event, template) ->
+    "click span.delete-button": (event, template) ->
       destroyTab(template, @); event.stopPropagation()

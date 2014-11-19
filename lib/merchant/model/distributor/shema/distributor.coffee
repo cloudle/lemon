@@ -19,22 +19,17 @@ simpleSchema.distributors = new SimpleSchema
     type: String
     optional: true
 
-  manufacturer:
-    type: String
-    optional: true
-
-  status:
+  allowDelete:
     type: Boolean
     defaultValue: true
 
-  allowDelete:
+  status:
     type: Boolean
     defaultValue: true
 
   styles:
     type: String
     defaultValue: Helpers.RandomColor()
-    optional: true
 
-  location: { type: Schema.Location, optional: true }
+  location: { type: simpleSchema.Location, optional: true }
   version: { type: simpleSchema.Version }

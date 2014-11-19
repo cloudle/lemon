@@ -8,6 +8,10 @@ simpleSchema.imports = new SimpleSchema
   creator:
     type: String
 
+  distributor:
+    type: String
+    optional: true
+
   description:
     type: String
 

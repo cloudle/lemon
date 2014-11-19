@@ -16,3 +16,11 @@ simpleSchema.skulls = new SimpleSchema
     optional: true
 
   version: { type: simpleSchema.Version }
+
+  specification:
+    type: String
+    optional: true
+
+  unit:
+    type: String
+    optional: true

@@ -24,8 +24,12 @@ template(name="transactionManagerDetail")
                 span.final-price Nợ còn: {{formatNumber debitCash}}
 
         .bill-summary
-          span Tỗng tiền: <b>{{formatNumber transaction.totalCash}}</b> VNĐ <br/>
-          span Đã trả: <b>{{formatNumber transaction.depositCash}}</b> VNĐ
+          .editor-row
+            span Tỗng tiền:
+            span.bill-final <b>{{formatNumber transaction.totalCash}}</b> VNĐ
+          .editor-row
+            span Đã trả:
+            span.bill-final <b>{{formatNumber transaction.depositCash}}</b> VNĐ
 
         .bill-footer
           span Còn nợ:

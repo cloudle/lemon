@@ -33,5 +33,5 @@ lemon.defineWidget Template.iTab,
       template.data.options.navigateAction(@) if template.data.options.navigateAction
     "click li.new-button": (event, template) ->
       Session.set(template.data.options.currentSource, template.data.options.createAction())
-    "dblclick span.fa": (event, template) ->
+    "click span.fa": (event, template) ->
       destroyTab(template.data, @); event.stopPropagation()

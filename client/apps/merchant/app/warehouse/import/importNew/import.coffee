@@ -4,6 +4,7 @@ lemon.defineApp Template.import,
   events:
     "click .add-product": (event, template) -> $(template.find '#addProduct').modal()
     "click .add-provider": (event, template) -> $(template.find '#addProvider').modal()
+    "click .add-distributor": (event, template) -> $(template.find '#addDistributor').modal()
 
     "click .importHistory": (event, template) -> Router.go('/importHistory')
     "change [name='advancedMode']": (event, template) ->

@@ -3,7 +3,7 @@ lemon.defineWidget Template.saleReview,
   timeDMY: -> moment(Session.get('currentBillManagerSale')?.version.createdAt).format("DD/MM/YYYY")
   timeHM: -> moment(Session.get('currentBillManagerSale')?.version.createdAt).format("hh:mm")
   timeS: -> moment(Session.get('currentBillManagerSale')?.version.createdAt).format("ss")
-  soldPrice: -> @price - (@price * @discountPercent)
+  soldPrice: -> @price - (@price * @discountPercent)/100
   discountVisible: -> @discountPercent > 0
 
   events:
