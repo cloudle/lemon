@@ -43,6 +43,7 @@ Schema.add 'transactions', "Transaction", class Transaction
       merchant    : imports.merchant
       warehouse   : imports.warehouse
       parent      : imports._id
+      owner       : imports.distributor
       creator     : Meteor.userId()
       group       : 'import'
       receivable  : false

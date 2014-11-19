@@ -4,6 +4,8 @@ Meteor.publish 'distributors', ->
   Schema.distributors.find({parentMerchant: myProfile.parentMerchant})
 
 Schema.distributors.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
+  insert: (userId, distributor)-> true
+  update: (userId, distributor)-> true
+  remove: (userId, distributor)->
+    if distributor.allowDelete
+      if Schema.imports.findOne({distributor: distributor._id}) then false else true

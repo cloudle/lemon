@@ -8,8 +8,8 @@ lemon.defineWidget Template.addDistributor,
       }) then false else true
 
   events:
-    'click .create-provider': (event, template)-> logics.import.createNewProvider(event, template)
-    'click .delete-provider': (event, template)-> logics.import.removeNewProvider(@_id)
+    'click .create-distributor': (event, template)-> logics.import.createNewDistributor(event, template)
+    'click .delete-distributor': (event, template)-> logics.import.removeNewDistributor(@_id)
 
 
 

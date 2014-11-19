@@ -9,8 +9,8 @@ template(name="import")
       .commands
         if showHistory
           button.lemon.btn.amethyst.icon-history.importHistory(type='submit') LỊCH SỬ
-        button.lemon.btn.lime.icon-building.add-provider(type='submit') Thêm NPP
-        //button.lemon.btn.lime.icon-building.add-provider(type='submit') Thêm NCC
+        button.lemon.btn.lime.icon-building.add-provider(type='submit') Thêm NCC
+        button.lemon.btn.lime.icon-building.add-distributor(type='submit') Thêm C.Ty PP
         button.lemon.btn.lime.icon-tags-2.add-product(type='submit') Thêm Sản Phẩm
         input(binding="switch" type="checkbox" name="advancedMode")
 
@@ -84,7 +84,7 @@ template(name="import")
           span.ilabel description
           input.description(value="{{currentImport.description}}")
         .editor-wrapper.right(style="width:180px")
-          span.ilabel.optional nhà phân phối
+          span.ilabel.optional công ty phân phối
           span.ilabel.optional.right: a(href="#"): i.add-distributor.icon-plus-6(data-toggle="tooltip" data-container="body" data-placement="top" title="Thêm nhà phân phối")
           +iSelect(options=distributorSelectOptions class="field")
 

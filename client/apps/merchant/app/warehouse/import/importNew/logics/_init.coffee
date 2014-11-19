@@ -11,7 +11,7 @@ Apps.Merchant.importInit.push (scope) ->
   logics.import.myHistory            = Import.myHistory(Session.get('myProfile').user, Session.get('myProfile').currentWarehouse, Session.get('myProfile').currentMerchant)
   logics.import.myCreateProduct      = Product.canDeleteByMeInside()
   logics.import.myCreateProvider     = Provider.canDeleteByMe()
-  logics.import.myCreateDistributor  = Provider.canDeleteByMe()
+  logics.import.myCreateDistributor  = Distributor.canDeleteByMe()
 
 
 logics.import.reactiveRun = ->

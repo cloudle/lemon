@@ -2,9 +2,9 @@ formatDistributorSearch = (item) -> "#{item.name}" if item
 
 updateImportAndProduct = (e)->
   if e.added
-    Schema.imports.update(Session.get('currentImport')._id, {$set: {currentDistributor: e.added._id }})
+    Schema.imports.update(Session.get('currentImport')._id, {$set: {distributor: e.added._id }})
   else
-    Schema.imports.update(Session.get('currentImport')._id, {$set: {currentDistributor: 'skyReset' }})
+    Schema.imports.update(Session.get('currentImport')._id, {$set: {distributor: 'skyReset' }})
 
 Apps.Merchant.importInit.push (scope) ->
   logics.import.distributorSelectOptions =
@@ -15,11 +15,11 @@ Apps.Merchant.importInit.push (scope) ->
         unsignedName.indexOf(unsignedTerm) > -1
       text: 'name'
     initSelection: (element, callback) ->
-      callback(Schema.distributors.findOne(Session.get('currentImport')?.currentDistributor) ? 'skyReset')
+      callback(Schema.distributors.findOne(Session.get('currentImport')?.distributor) ? 'skyReset')
     formatSelection: formatDistributorSearch
     formatResult: formatDistributorSearch
     id: '_id'
     placeholder: 'CHỌN NHÀ PHÂN PHỐI'
   #    minimumResultsForSearch: -1
     changeAction: (e) -> updateImportAndProduct(e)
-    reactiveValueGetter: -> Session.get('currentImport')?.currentDistributor ? 'skyReset'
+    reactiveValueGetter: -> Session.get('currentImport')?.distributor ? 'skyReset'
