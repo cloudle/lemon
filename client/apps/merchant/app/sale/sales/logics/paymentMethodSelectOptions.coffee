@@ -18,14 +18,14 @@ changedActionSelectPaymentMethod = (paymentMethod, currentOrder)->
 Apps.Merchant.salesInit.push ->
   logics.sales.paymentMethodSelectOptions =
     query: (query) -> query.callback
-      results: Apps.Merchant.PaymentMethods
+      results: Apps.Merchant.GenderTypes
       text: 'id'
     initSelection: (element, callback) ->
-      callback _.findWhere(Apps.Merchant.PaymentMethods, {_id: Session.get('currentOrder')?.paymentMethod})
+      callback _.findWhere(Apps.Merchant.GenderTypes, {_id: Session.get('currentOrder')?.paymentMethod})
     formatSelection: formatPaymentMethodSearch
     formatResult: formatPaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
     changeAction: (e) -> changedActionSelectPaymentMethod(e.added._id, logics.sales.currentOrder)
-    reactiveValueGetter: -> _.findWhere(Apps.Merchant.PaymentMethods, {_id:Session.get('currentOrder')?.paymentMethod})
+    reactiveValueGetter: -> _.findWhere(Apps.Merchant.GenderTypes, {_id:Session.get('currentOrder')?.paymentMethod})
 

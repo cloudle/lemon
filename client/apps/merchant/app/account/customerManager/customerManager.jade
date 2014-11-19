@@ -1,10 +1,12 @@
 template(name="customerManager")
   +customerProfileManager
+  +addArea(myCustomerAreas=myCustomerAreas)
   #header
     .caption-row
       .title KHÁCH HÀNG <small>CRM</small>
       .commands
-        input(binding="switch" type="checkbox" name="genderMode" checked="true")
+        button.lemon.btn.lime.icon-building.add-area(type='submit') Thêm Khu Vực
+        input(binding="switch" type="checkbox" name="advancedMode" checked="true")
     .editor-row
       .editor-wrapper
         span.ilabel tên khách hàng
@@ -12,13 +14,13 @@ template(name="customerManager")
       .editor-wrapper(style="width: 120px")
         span.ilabel điện thoại
         input(name="phone" maxlength="15")
-      //.editor-wrapper(style="width: 100px")
-      //  span.ilabel.optional khu vực
-      //  +iSelect(options=roleSelectOptions class="field")
-      .editor-wrapper(style="width: 300px")
-        span.ilabel.optional địa chỉ
-        input(name="address")
-      .editor-wrapper(style="width: 120px")
+      .editor-wrapper(style="width: 80px")
+        span.ilabel.optional giới tính
+        +iSelect(options=genderSelectOptions class="field")
+      .editor-wrapper(style="width: 80px")
+        span.ilabel.optional danh xưng
+        input(style="text-align: center" name="pronoun" maxlength="10" value="Anh")
+      .editor-wrapper(style="width: 100px")
         span.ilabel.optional sinh nhật
         input(binding="datePicker" todayHighlight="true" name="dateOfBirth")
       .editor-wrapper
@@ -30,5 +32,17 @@ template(name="customerManager")
       .editor-wrapper.right
         a.lemon.btn.blue(href="/template/khach_hang.csv" target="_blank" data-toggle="tooltip" data-container="body" data-palace-holder="top" title="Tải về file Mẫu")
           span.icon-doc-text-inv-1
+
+    .editor-row
+      .editor-wrapper(style="width: 200px")
+        span.ilabel.optional khu vực
+        +iSelect(options=areaSelectOptions class="field")
+      .editor-wrapper(style="width: 300px")
+        span.ilabel.optional địa chỉ
+        input(name="address")
+      .editor-wrapper(style="width: 300px")
+        span.ilabel.optional ghi chú
+        input(name="description")
+
   #content.customer-manager
     +iGrid(options=gridOptions)

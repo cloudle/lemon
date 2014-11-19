@@ -51,6 +51,5 @@ Schema.add 'products', "Product", class Product
     else
       {error:'Không thể xóa được sản phẩm.'}
 
-  @new
 
 

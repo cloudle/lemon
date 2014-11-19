@@ -17,7 +17,7 @@ simpleSchema.customers = new SimpleSchema
     type: String
     optional: true
 
-  area:
+  areas:
     type: [String]
     optional: true
 
@@ -49,6 +49,10 @@ simpleSchema.customers = new SimpleSchema
 
   gender:
     type: Boolean
+    optional: true
+
+  description:
+    type: String
     optional: true
 
   allowDelete:

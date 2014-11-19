@@ -1,4 +1,5 @@
-lemon.defineApp Template.customerManager,#      $companyName = $(template.find("#companyName"))
+lemon.defineApp Template.customerManager,
+#      $companyName = $(template.find("#companyName"))
 #      if $companyName.val().length > 0
 #        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {companyName: $companyName.val()}
 #      else
@@ -26,12 +27,14 @@ lemon.defineApp Template.customerManager,#      $companyName = $(template.find("
 #        $warehouseName.notify('tên kho hàng không để trống!', {position: "right"})
   created: ->
     Session.setDefault('allowCreateNewCustomer', false)
-    Session.setDefault('genderNewCustomer', true)
 
   events:
     "input input": (event, template) -> logics.customerManager.checkAllowCreate(template)
+    "change [name='advancedMode']": (event, template) -> Session.set 'genderNewCustomer123', event.target.checked
+    "click .add-area": (event, template) -> $(template.find '#addArea').modal()
+
     "click #createCustomerAccount": (event, template) -> logics.customerManager.createNewCustomer(template)
-    "change [name='genderMode']": (event, template) -> Session.set 'genderNewCustomer', event.target.checked
+
     "click .thumbnails": (event, template) ->
 #      Meteor.subscribe('saleAndReturnDetails', @_id)
 #      Session.set('currentBillManagerSale', @)

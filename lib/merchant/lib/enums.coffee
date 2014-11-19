@@ -1,3 +1,11 @@
+Apps.Merchant.GenderTypes = [
+  _id: false
+  display: 'NỮ'
+,
+  _id: true
+  display: 'NAM'
+]
+
 Apps.Merchant.PaymentMethods = [
   _id: 0
   display: 'TIỀN MẶT'

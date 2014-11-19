@@ -1,13 +1,16 @@
-simpleSchema.customerArea = new SimpleSchema
+simpleSchema.customerAreas = new SimpleSchema
   parentMerchant:
     type: String
     optional: true
+
+  creator:
+    type: String
 
   name:
     type: String
 
   description:
-    type: Boolean
+    type: String
     optional: true
 
   allowDelete:

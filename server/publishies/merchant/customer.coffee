@@ -1,8 +1,3 @@
-#Meteor.publish 'availableCustomers', ->
-#  myProfile = Schema.userProfiles.findOne({user: @userId})
-#  return [] if !myProfile
-#  Schema.customers.find({parentMerchant: myProfile.parentMerchant})
-
 Meteor.publishComposite 'availableCustomers', ->
   self = @
   return {
@@ -14,6 +9,11 @@ Meteor.publishComposite 'availableCustomers', ->
       find: (customer) -> AvatarImages.find {_id: customer.avatar}
     ]
   }
+
+Meteor.publish 'availableCustomerAreas', ->
+  myProfile = Schema.userProfiles.findOne({user: @userId})
+  return [] if !myProfile
+  Schema.customerAreas.find({parentMerchant: myProfile.parentMerchant})
 
 Schema.customers.allow
   insert: (userId, customer) ->
@@ -31,3 +31,12 @@ Schema.customers.allow
   remove: (userId, customer) ->
     anySaleFound = Schema.sales.findOne {buyer: customer._id}
     return anySaleFound is undefined
+
+
+Schema.customerAreas.allow
+  insert: -> true
+  update: -> true
+  remove: (userId, customerArea)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      anyCustomerFound = Schema.customers.findOne {parentMerchant: profile.parentMerchant, areas: {$elemMatch: {$in:[customerArea._id]}}}
+      return anyCustomerFound is undefined

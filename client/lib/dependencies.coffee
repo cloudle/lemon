@@ -13,7 +13,7 @@ lemon.dependencies.add 'merchantEssential', ['essentials', 'merchantMessenger', 
 lemon.dependencies.add 'merchantHome', ['merchantEssential']
 lemon.dependencies.add 'roleManager', ['merchantEssential', 'currentMerchantRoles']
 lemon.dependencies.add 'staffManager', ['merchantEssential', 'myMerchantProfiles', 'currentMerchantRoles', 'availableBranch', 'allWarehouse']
-lemon.dependencies.add 'customerManager', ['merchantEssential', 'availableCustomers']
+lemon.dependencies.add 'customerManager', ['merchantEssential', 'availableCustomers', 'availableCustomerAreas']
 lemon.dependencies.add 'transactionManager', ['merchantEssential', 'availableReceivable' ,'availableCustomers']
 
 lemon.dependencies.add 'accountingManager', ['merchantEssential', 'saleBillAccounting']

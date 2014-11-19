@@ -1,0 +1,28 @@
+template(name="addArea")
+   aside.modal.swipe.left#addArea
+      .modal-dialog.sale-bill-preview
+         .modal-header
+            button.close(type="button" data-dismiss="modal")
+               span(aria-hidden="true") &times;
+               span.sr-only Close
+            h4.modal-title
+               i.icon-search-8
+               |THÊM KHU VỰC
+         .modal-body.printable-area
+            .header
+            .merchant-info
+               input.form-control(name='areaName' type='text' placeholder='Tên')
+               input.form-control(name='areaDescription' type='text' placeholder='Mô Tả')
+               div(align="right"): a.btn.btn-danger.create-area Tạo mới
+            ul
+               each myCustomerAreas
+                  li.order-detail
+                     .product-name
+                        | Tên: {{name}}
+                        if allowDelete
+                           button.btn.delete-area(type="button") x
+                     .product-price
+                        span.individual-price {{description}}
+            //.bill-summary
+            //.bill-footer
+         //.modal-footer

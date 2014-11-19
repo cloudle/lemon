@@ -9,8 +9,11 @@ customerManagerRoute =
     logics.customerManager.reactiveRun()
 
     return {
-      gridOptions: logics.customerManager.gridOptions
-      allowCreate: logics.customerManager.allowCreate
+      myCustomerAreas     : logics.customerManager.myCreateCustomerAreas
+      areaSelectOptions   : logics.customerManager.areaSelectOptions
+      genderSelectOptions : logics.customerManager.genderSelectOptions
+      gridOptions         : logics.customerManager.gridOptions
+      allowCreate         : logics.customerManager.allowCreate
     }
 
 lemon.addRoute [customerManagerRoute], Apps.Merchant.RouterBase
