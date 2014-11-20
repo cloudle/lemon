@@ -50,3 +50,60 @@ Meteor.methods
     Schema.userProfiles.insert profile
     MetroSummary.updateMetroSummaryByStaff(userId)
     return user
+
+  resetMerchant: ->
+    profile = Schema.userProfiles.findOne({user: Meteor.userId(), isRoot: true})
+    if profile
+      allMerchant  = Schema.merchants.find({$or:[{_id: profile.parentMerchant }, {parent: profile.parentMerchant}]}).fetch()
+      allWarehouse = Schema.warehouses.find({$or:[{merchant: profile.parentMerchant }, {parentMerchant: profile.parentMerchant}]}).fetch()
+      allMerchantIds = _.pluck(allMerchant, '_id')
+
+      Schema.providers.remove({parentMerchant: profile.parentMerchant})
+      Schema.distributors.remove({parentMerchant: profile.parentMerchant})
+      Schema.customers.remove({parentMerchant: profile.parentMerchant})
+      Schema.customerAreas.remove({parentMerchant: profile.parentMerchant})
+
+      Schema.deliveries.remove({merchant: {$in:allMerchantIds}})
+      Schema.imports.remove({merchant: {$in:allMerchantIds}})
+      Schema.importDetails.remove({merchant: {$in:allMerchantIds}})
+      Schema.inventories.remove({merchant: {$in:allMerchantIds}})
+      Schema.inventoryDetails.remove({merchant: {$in:allMerchantIds}})
+      Schema.products.remove({merchant: {$in:allMerchantIds}})
+      Schema.productDetails.remove({merchant: {$in:allMerchantIds}})
+      Schema.saleExports.remove({merchant: {$in:allMerchantIds}})
+      Schema.transactions.remove({merchant: {$in:allMerchantIds}})
+      Schema.transactionDetails.remove({merchant: {$in:allMerchantIds}})
+
+      for order in Schema.orders.find({merchant: {$in:allMerchantIds}}).fetch()
+        Schema.orders.remove(order._id)
+        Schema.orderDetails.remove({order: order._id})
+
+      for item in Schema.returns.find({merchant: {$in:allMerchantIds}}).fetch()
+        Schema.returns.remove(item._id)
+        Schema.returnDetails.remove({return: item._id})
+
+      for item in Schema.sales.find({merchant: {$in:allMerchantIds}}).fetch()
+        Schema.sales.remove(item._id)
+        Schema.saleDetails.remove({sale: item._id})
+
+      for item in Schema.userProfiles.find({parentMerchant: profile.parentMerchant}).fetch()
+        if item._id != profile._id
+          Schema.userProfiles.remove({user: item.user})
+          Schema.userSessions.remove({user: item.user})
+          Schema.userOptions.remove({user: item.user})
+
+      for warehouse in allWarehouse
+        if warehouse.parentMerchant is warehouse.merchant and warehouse.isRoot is true
+        else Schema.warehouses.remove(warehouse._id)
+
+      Schema.metroSummaries.remove(parentMerchant: profile.parentMerchant)
+      Schema.merchants.remove(parent: profile.parentMerchant)
+
+      Schema.metroSummaries.insert MetroSummary.newByMerchant(profile.parentMerchant)
+
+
+
+
+
+
+

@@ -22,21 +22,22 @@ checkAndAddNewCustomerArea = (customerColumn, data, profile) ->
   areas = []
   customerAreas = []
   for customer in data
-    areas.push(item.trim()) for item in customer[customerColumn.areas].split(",")
+    (areas.push(item.trim()) if item) for item in customer[customerColumn.areas].split(",")
   areas = _.union(areas)
 
-  for item in areas
-    if customerArea = Schema.customerAreas.findOne({
-      parentMerchant: profile.parentMerchant
-      name: item
-    })
-    else
-      customerArea =
-        parentMerchant  : profile.parentMerchant
-        creator         : profile.user
-        name            : item
-      customerArea._id = Schema.customerAreas.insert customerArea, (error, result) -> if error then console.log error
-    customerAreas.push customerArea
+  if areas.length > 0
+    for item in areas
+      if customerArea = Schema.customerAreas.findOne({
+        parentMerchant: profile.parentMerchant
+        name: item
+      })
+      else
+        customerArea =
+          parentMerchant  : profile.parentMerchant
+          creator         : profile.user
+          name            : item
+        customerArea._id = Schema.customerAreas.insert customerArea, (error, result) -> if error then console.log error
+      customerAreas.push customerArea
 
   customerAreas
 
@@ -63,7 +64,7 @@ addNewCustomers = (customerColumn, data, profile, customerAreas) ->
       description     : item[customerColumn.description]
       styles          : Helpers.RandomColor()
     option.pronoun = checkPronoun(option.gender, item[customerColumn.pronoun])
-    option.areas   = findCustomerAreas(customerAreas, item[customerColumn.areas].split(","))
+    option.areas   = findCustomerAreas(customerAreas, item[customerColumn.areas].split(",")) if customerAreas.length > 0 and item[customerColumn.areas].length > 0
 
     if Schema.customers.findOne({
       currentMerchant: profile.parentMerchant

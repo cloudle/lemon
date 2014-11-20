@@ -113,6 +113,28 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 
-
   version: { type: simpleSchema.Version }
+#------------------------------------------
+
+  depositDay:
+    type: Number
+    defaultValue: 0
+
+  debitDay:
+    type: Number
+    defaultValue: 0
+  #doanh thu
+  revenueDay:
+    type: Number
+    defaultValue: 0
+  #tien von
+  paymentCapDay:
+    type: Number
+    defaultValue: 0
+  #loi nhuan
+  profitabilityDay:
+    type: Number
+    defaultValue: 0
+
+
 
