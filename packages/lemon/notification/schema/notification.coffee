@@ -10,6 +10,14 @@ simpleSchema.notifications = new SimpleSchema
   message:
     type: String
 
+  product:
+    type: String
+    optional: true
+
+  group:
+    type: String
+    optional: true
+
   isRequest:
     type: Boolean
     defaultValue: false

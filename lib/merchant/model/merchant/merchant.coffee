@@ -1,15 +1,14 @@
 Schema.add 'merchants', "Merchant", class Merchant
-  checkProductExpireDate: (value, warehouseId = null)->
+  checkProductExpireDate: (value, merchantId)->
     timeOneDay = 86400000
     tempDate = new Date
     currentDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate())
     expireDate  = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate() + value)
-    if warehouseId then optionWarehouse = {warehouse: warehouseId} else optionWarehouse = {}
+
     productDetails = Schema.productDetails.find({$and:[
-        {merchant: @id}
+        {merchant: merchantId}
         {expire:{$lte: expireDate}}
         {inStockQuality:{$gt: 0}}
-        optionWarehouse
       ]}).fetch()
 
     for productDetail in productDetails
@@ -22,8 +21,9 @@ Schema.add 'merchants', "Merchant", class Merchant
         name  : product.name
         day   : date
         place : warehouse.name }
-
       Notification.productExpire(currentProduct)
+      metroSummary = Schema.metroSummaries.findOne({merchant: merchantId})
+      Schema.metroSummaries.update metroSummary._id, $set: {notifyExpire: false}
 
   addDefaultWarehouse: ->
     if Schema.warehouse.findOne({merchant: @id})

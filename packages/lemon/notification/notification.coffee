@@ -10,6 +10,30 @@ saleStatusIsImport = (sale)->
   else
     false
 
+sendNotificationOptional = (message, receiver, product, notificationGroup, notificationType = Apps.Merchant.notificationTypes.notify.key) ->
+  newNotification = {
+    sender  : Meteor.userId()
+    receiver: receiver
+    message : message
+    product : product
+    group   : notificationGroup
+    notificationType: notificationType
+  }
+  findOldNotification = Schema.notifications.findOne({
+    sender  : newNotification.sender
+    receiver: newNotification.receiver
+    product : newNotification.product
+    group   : newNotification.group
+    notificationType  : newNotification.notificationType
+  })
+
+  if findOldNotification
+    Schema.notifications.update findOldNotification._id, $set:{message: newNotification.message}
+  else
+    Schema.notifications.insert newNotification
+
+allUser = (merchantId)-> Schema.userProfiles.find({parentMerchant: merchantId}).fetch()
+
 
 userHasPermission = (permission, userProfile)-> Role.hasPermission(userProfile._id, permission.key)
 userNameBy = (userId)-> (Schema.userProfiles.findOne({user: userId})).fullName ? Meteor.users.findOne(userId).emails[0].address
@@ -184,18 +208,19 @@ sendAllUserHasPermissionInventoryConfirm = (creatorName, inventoryCode, userProf
 
 
 sendAllUserHasPermissionWarehouseManagementByExpire = (product, userProfile)->
-  for warehouseManagement in allUserHasPermissionOf(userProfile.parentMerchant, Apps.Merchant.Permissions.warehouseManagement)
-    unless userProfile.user is warehouseManagement.user
-      Meteor.call("sendNotificationOptional",
-        Apps.Merchant.NotificationMessages.productExpireDate(product.name, product.day, product.place),
-        warehouseManagement.user,
-        product._id,
-        Apps.Merchant.notificationGroup.expireDate.key)
+#  for warehouseManagement in allUserHasPermissionOf(userProfile.parentMerchant, Apps.Merchant.Permissions.warehouseManagement)
+  for warehouseManagement in allUser(userProfile.parentMerchant)
+#    unless userProfile.user is warehouseManagement.user
+    sendNotificationOptional(
+      Apps.Merchant.NotificationMessages.productExpireDate(product.name, product.day, product.place),
+      warehouseManagement.user,
+      product._id,
+      Apps.Merchant.notificationGroup.expireDate.key)
 
 sendAllUserHasPermissionWarehouseManagementAlertQuality = (product, userProfile)->
   for warehouseManagement in allUserHasPermissionOf(userProfile.parentMerchant, Apps.Merchant.Permissions.warehouseManagement)
     unless userProfile.user is warehouseManagement.user
-      Meteor.call("sendNotificationOptional",
+      sendNotificationOptional(
         Apps.Merchant.NotificationMessages.productAlertQuality(product.name, product.quality, product.place),
         warehouseManagement.user,
         product._id,

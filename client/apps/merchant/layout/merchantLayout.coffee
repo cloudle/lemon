@@ -19,7 +19,7 @@ startHomeTracker = ->
 
       Session.set('metroSummary', Schema.metroSummaries.findOne({merchant: Session.get("myProfile").currentMerchant}))
       if Session.get('metroSummary')?.notifyExpire
-        console.log 'het han'
+        Meteor.call('checkProductExpireDate', 60, Session.get('myProfile'.currentMerchant))
 
 destroyHomeTracker = -> Apps.Merchant.homeTracker.stop()
 
