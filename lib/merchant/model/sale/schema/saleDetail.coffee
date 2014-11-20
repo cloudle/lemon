@@ -33,6 +33,9 @@ simpleSchema.saleDetails = new SimpleSchema
   finalPrice:
     type: Number
 
+  totalCogs:
+    type: Number
+
   styles:
     type: String
     optional: true

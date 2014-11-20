@@ -1,3 +1,4 @@
+randomBarcode = -> (Math.floor(Math.random() * 100000000000) + 89 *100000000000).toString()
 checkValidationFileImport = (column)->
   data = []
   data.push(item.trim()) for item in column
@@ -19,37 +20,37 @@ checkValidationFileImport = (column)->
 
   productColumn
 
+findProvider = (providerName, profile)->
+  if providerName
+    provider = Schema.providers.findOne({parentMerchant: profile.parentMerchant, name: providerName})
+    if provider then provider._id else Provider.createNew(providerName)
 
-checkAndAddNewProvider = (column, data, profile)->
-  for item in data
-    if !Schema.providers.findOne({parentMerchant: profile.parentMerchant, name: item[column.providerName]})
-      Provider.createNew(item[column.providerName])
+findProduct = (barcode, name, skull, price, priceSale, profile)->
+  option =
+    merchant    : profile.currentMerchant
+    warehouse   : profile.currentWarehouse
+    productCode : if barcode then barcode else randomBarcode()
+    skulls      : skull
 
-checkAndAddNewProduct = (column, data, profile)->
-  for item in data
-    if !Schema.products.findOne({
-      merchant    : profile.currentMerchant
-      warehouse   : profile.currentWarehouse
-      productCode : item[column.barcode]
-      skulls      : item[column.skull]
-    }) then Product.createNew(item[column.barcode], item[column.name], [item[column.skull]], profile.currentWarehouse)
+  salePrice = if priceSale then priceSale else price
+  if barcode
+    product = Schema.products.findOne(option)
+    if product then product._id else Product.createNew(option.productCode, name, [skull], salePrice, profile.currentWarehouse)
+  else
+    while Schema.products.findOne(option) then option.productCode = randomBarcode()
+    Product.createNew(option.productCode, name, [skull], salePrice, profile.currentWarehouse)
 
 addDetailInImport = (column, data, imports, profile)->
   for item in data
-    provider = Schema.providers.findOne({parentMerchant: profile.parentMerchant, name: item[column.providerName]})
-    product = Schema.products.findOne({
-      merchant    : profile.currentMerchant
-      warehouse   : profile.currentWarehouse
-      productCode : item[column.barcode]
-      skulls      : item[column.skull]
-    })
+    providerId = findProvider(item[column.providerName], profile)
+    productId = findProduct(item[column.barcode], item[column.name], item[column.skull], item[column.price], item[column.priceSale], profile)
 
     importDetail =
       merchant      : imports.merchant
       warehouse     : imports.warehouse
       import        : imports._id
-      product       : product._id
-      provider      : provider._id
+      product       : productId
+      provider      : providerId if providerId
       importQuality : item[column.quality]
       importPrice   : item[column.price]
       salePrice     : item[column.priceSale]
@@ -86,7 +87,8 @@ reCalculateImport = (importId)->
 
 currentImportFind = (profile)->
   importId = Schema.userSessions.findOne({user: profile.user})?.currentImport
-  if importId then Schema.imports.findOne(importId) else logics.import.createImportAndSelected()
+  if !currentImport = Schema.imports.findOne(importId) then currentImport = logics.import.createImportAndSelected()
+  currentImport
 
 Apps.Merchant.importInit.push (scope) ->
   scope.importFileProductCSV = (data)->
@@ -95,9 +97,7 @@ Apps.Merchant.importInit.push (scope) ->
     productColumn = checkValidationFileImport(data[0])
     if _.keys(productColumn).length > 0
       data = _.without(data, data[0])
-      checkAndAddNewProvider(productColumn, data, profile)
-      checkAndAddNewProduct(productColumn, data, profile)
       addDetailInImport(productColumn, data, currentImport, profile)
-  #    reCalculateImport(currentImport._id)
+      reCalculateImport(currentImport._id)
       logics.import.reCalculateImport(currentImport._id)
 

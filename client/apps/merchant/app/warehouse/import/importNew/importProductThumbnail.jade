@@ -2,7 +2,7 @@ template(name="importProductThumbnail")
   .col
     .thumbnails(class="#{styles}")
       .left-caption {{expire}}
-      .right-caption ({{productCodeFromId product}}) - {{productNameFromId product}}
+      .right-caption {{productNameFromId product}}
       //.avatar(style="background-image: url('images/missing.jpg')")
       .short-desc.quality {{pad importQuality}}
       .full-desc.price {{formatNumber totalPrice}} <small>VNĐ</small>

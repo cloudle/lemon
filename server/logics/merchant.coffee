@@ -91,6 +91,7 @@ Meteor.methods
           Schema.userProfiles.remove({user: item.user})
           Schema.userSessions.remove({user: item.user})
           Schema.userOptions.remove({user: item.user})
+          Meteor.users.remove(item.user)
 
       for warehouse in allWarehouse
         if warehouse.parentMerchant is warehouse.merchant and warehouse.isRoot is true

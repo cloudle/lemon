@@ -18,19 +18,19 @@ logics.customerManager.createNewCustomer = (context) ->
     currentMerchant : Session.get('myProfile').currentMerchant
     parentMerchant  : Session.get('myProfile').parentMerchant
     creator         : Session.get('myProfile').user
-    name        : fullName
-    pronoun     : pronoun
-    phone       : phone
-    address     : address
-    description : description
-    dateOfBirth : dateOfBirth
-    areas       : areas if areas.length > 0
-    gender      : Session.get('genderNewCustomer')
-    styles      : Helpers.RandomColor()
+    name            : fullName
+    pronoun         : pronoun
+    phone           : phone
+    address         : address
+    description     : description if description.length > 0
+    dateOfBirth     : dateOfBirth
+    areas           : areas if areas.length > 0
+    gender          : Session.get('genderNewCustomer')
+    styles          : Helpers.RandomColor()
 
   if Schema.customers.findOne({
     name: fullName
-    phone: phone
+    description: description if description.length > 0
     currentMerchant: Session.get('myProfile').currentMerchant})
     console.log 'Trùng tên khách hàng'
   else

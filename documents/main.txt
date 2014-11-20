@@ -1,3 +1,13 @@
 export MONGO_URL=mongodb://localhost:27017/lemon
 export MAIL_URL=smtp://lehaoson@gmail.com:Ultimate7@stmp.gmail.com:465/
 Meteor.call("mailTo", "lelongking2000@gmail.com", "lehaoson@gmail.com", "Look! This is from the EDS System!", "Hi, King. Congratulations! you are awesome!")
+
+
+1-year educational License
+Name: filetie
+===== LICENSE BEGIN =====
+19963-D91266T
+00000wPG1HtMyJU74MU2G9TJedir3w
+MmZ1J2iWKNu6UE8RCLWQ6CMwgLFDVY
+nbiuj1ao7sZQwpgo23ZdEN0GoPYQlN
+===== LICENSE END =====

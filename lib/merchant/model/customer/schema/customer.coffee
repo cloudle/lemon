@@ -34,6 +34,7 @@ simpleSchema.customers = new SimpleSchema
 
   phone:
     type: String
+    optional: true
 
   address:
     type: String

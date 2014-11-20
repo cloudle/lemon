@@ -38,7 +38,6 @@ checkAndAddNewCustomerArea = (customerColumn, data, profile) ->
           name            : item
         customerArea._id = Schema.customerAreas.insert customerArea, (error, result) -> if error then console.log error
       customerAreas.push customerArea
-
   customerAreas
 
 
@@ -64,12 +63,12 @@ addNewCustomers = (customerColumn, data, profile, customerAreas) ->
       description     : item[customerColumn.description]
       styles          : Helpers.RandomColor()
     option.pronoun = checkPronoun(option.gender, item[customerColumn.pronoun])
-    option.areas   = findCustomerAreas(customerAreas, item[customerColumn.areas].split(",")) if customerAreas.length > 0 and item[customerColumn.areas].length > 0
+    option.areas   = findCustomerAreas(customerAreas, item[customerColumn.areas].split(",")) if item[customerColumn.areas]
 
     if Schema.customers.findOne({
       currentMerchant: profile.parentMerchant
-      name: item[customerColumn.name]
-      phone: item[customerColumn.phone]
+      name       : item[customerColumn.name]
+      description: item[customerColumn.description]
     }) then console.log 'Trùng tên khách hàng'
     else Schema.customers.insert option, (error, result) -> if error then console.log error
   MetroSummary.updateMetroSummaryBy(['customer'])

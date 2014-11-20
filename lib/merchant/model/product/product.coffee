@@ -21,7 +21,7 @@ Schema.add 'products', "Product", class Product
         creator     : userProfile.user
         allowDelete : true
 
-  @createNew: (productCode, name, skull, warehouseId)->
+  @createNew: (productCode, name, skull, price, warehouseId)->
     if myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
       warehouse = Schema.warehouses.findOne({_id: warehouseId, merchant: myProfile.currentMerchant}) if warehouseId
       newProduct =
@@ -31,6 +31,7 @@ Schema.add 'products', "Product", class Product
         productCode : productCode
         name        : name
         skulls      : skull
+        price       : price
 
       findProduct =  @schema.findOne({
         merchant    : newProduct.merchant

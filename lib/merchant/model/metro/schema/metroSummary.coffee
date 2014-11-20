@@ -89,6 +89,10 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  saleDiscountCash:
+    type: Number
+    defaultValue: 0
+
   saleDepositCash:
     type: Number
     defaultValue: 0
@@ -116,6 +120,10 @@ simpleSchema.metroSummaries = new SimpleSchema
   version: { type: simpleSchema.Version }
 #------------------------------------------
 
+  discountDay:
+    type: Number
+    defaultValue: 0
+
   depositDay:
     type: Number
     defaultValue: 0
@@ -128,7 +136,7 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
   #tien von
-  paymentCapDay:
+  cogsDay:
     type: Number
     defaultValue: 0
   #loi nhuan
@@ -136,5 +144,8 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 
-
+#------------------------------------------
+  notifyExpire:
+    type: Boolean
+    defaultValue: false
 

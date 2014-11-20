@@ -147,28 +147,36 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
     
 
   @updateMetroSummaryBySale: (saleId)->
-    sale = Schema.sales.findOne({_id: saleId, received: true})
-    if sale
-      saleDetail = Schema.saleDetails.find({sale: sale._id})
+    if sale = Schema.sales.findOne({_id: saleId, received: true})
+      saleDetails = Schema.saleDetails.find({sale: sale._id})
       setOption = {}
       incOption =
         saleCount             : 1
-        saleProductCount      :  sale.saleCount
+        saleProductCount      : sale.saleCount
         availableProductCount : -sale.saleCount
-        saleDepositCash       :  sale.deposit
-        saleDebitCash         :  sale.debit
-        saleRevenueCash       :  sale.totalPrice
+        saleDepositCash       : sale.deposit
+        saleDebitCash         : sale.debit
+        saleDiscountCash      : sale.totalPrice - sale.finalPrice
+        saleRevenueCash       : sale.finalPrice
         stockProductCount     : -sale.saleCount if sale.success == true
+
+        depositDay            : sale.deposit
+        debitDay              : sale.debit
+        discountDay           : sale.totalPrice - sale.finalPrice
+        revenueDay            : sale.finalPrice
+        cogsDay               : 0
 
       if sale.paymentsDelivery is 1
         incOption.deliveryCount        = 1
         incOption.deliveryProductCount = sale.saleCount
 
-      oldSale = Schema.sales.findOne({$and: [
-        {merchant: sale.merchant}
-        {'version.createdAt': {$lt: sale.version.createdAt}}
-      ]}, {sort: {'version.createdAt': -1}})
-
+      incOption.cogsDay += detail.totalCogs for detail in saleDetails.fetch()
+      incOption.profitabilityDay = sale.finalPrice - incOption.cogsDay
+#
+#      oldSale = Schema.sales.findOne({$and: [
+#        {merchant: sale.merchant}
+#        {'version.createdAt': {$lt: sale.version.createdAt}}
+#      ]}, {sort: {'version.createdAt': -1}})
 
       metroSummary = Schema.metroSummaries.findOne({merchant: sale.merchant})
       Schema.metroSummaries.update metroSummary._id, $inc: incOption, $set: setOption
@@ -216,6 +224,9 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
     Schema.metroSummaries.update metroSummary._id, $inc: {
       saleDepositCash       : depositCash
       saleDebitCash         : -depositCash
+      depositDay            : depositCash
+      debitDay              : -depositCash
+
     }
 
   @updateMetroSummaryByNewTransaction: (merchant, debitCash)->

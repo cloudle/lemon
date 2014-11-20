@@ -17,7 +17,7 @@ Meteor.publish 'availableCustomerAreas', ->
 
 Schema.customers.allow
   insert: (userId, customer) ->
-    customerFound = Schema.customers.findOne({currentMerchant: customer.parentMerchant, name: customer.name, phone: customer.phone})
+    customerFound = Schema.customers.findOne({currentMerchant: customer.parentMerchant, name: customer.name, description: customer.description})
     return customerFound is undefined
 
 #    if profile = Schema.userProfiles.findOne({user: userId})

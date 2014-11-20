@@ -18,7 +18,7 @@ Meteor.methods
 
           Schema.products.update saleDetail.product, productOption
           Schema.productDetails.update saleDetail.productDetail, productOption
-          Schema.saleDetails.update saleDetail._id, $set:{exported: true, exportDate: new Date, status: true}
+          Schema.saleDetails.update saleDetail._id, $set:{export: true, exportDate: new Date, status: true}
           Schema.saleExports.insert SaleExport.new(currentSale, saleDetail), (error, result) -> console.log error if error
 
         #    Notification.saleConfirmByExporter(currentSale._id)

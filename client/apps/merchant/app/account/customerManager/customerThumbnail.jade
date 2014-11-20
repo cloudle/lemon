@@ -2,7 +2,7 @@ template(name="customerThumbnail")
   .col
     input.hidden.avatarFile(type="file")
     .thumbnails.click-enable(class="{{styles}}")
-      .left-caption {{dateOfBirth}}
+      //.left-caption {{dateOfBirth}}
       .right-caption {{name}}
       .full-desc.price {{phone}}
       +avatarImageComponent(avatar=avatarUrl alias=name instance=this)

@@ -18,6 +18,8 @@ startHomeTracker = ->
           Router.go('/')
 
       Session.set('metroSummary', Schema.metroSummaries.findOne({merchant: Session.get("myProfile").currentMerchant}))
+      if Session.get('metroSummary')?.notifyExpire
+        console.log 'het han'
 
 destroyHomeTracker = -> Apps.Merchant.homeTracker.stop()
 

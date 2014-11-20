@@ -20,6 +20,7 @@ Schema.add 'saleDetails', "SaleDetail", class SaleDetail
       option.discountPercent = product.discountPercent
     option.finalPrice = option.totalPrice * (100 - option.discountPercent)/100
     option.discountCash   = option.totalPrice - option.finalPrice
+    option.totalCogs = productDetail.importPrice * quality
 
     option._id = @schema.insert option
     option
