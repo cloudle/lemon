@@ -15,6 +15,20 @@ Meteor.publish 'myMerchantAndWarehouse', ->
   [myMerchant, myWarehouse]
 
 
+Meteor.publish 'myMerchantProfiles', ->
+  myProfile = Schema.userProfiles.findOne({user: @userId})
+  return [] if !myProfile
+  myMerchantProfileQuery = {merchant: myProfile.currentMerchant}
+  parentMerchantProfileQuery = {merchant: myProfile.parentMerchant}
+
+  Schema.merchantProfiles.find
+    merchant: { $in: [myProfile.currentMerchant, myProfile.parentMerchant] }
+
+Schema.merchantProfiles.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
 Schema.merchants.allow
   insert: -> true
   update: -> true

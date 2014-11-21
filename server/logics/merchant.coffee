@@ -32,11 +32,9 @@ Meteor.methods
       systemVersion     : Schema.systems.findOne().version
 
     Schema.metroSummaries.insert MetroSummary.newByMerchant(merchantId)
-
-
+    Schema.merchantProfiles.insert { merchant: merchantId }
 
     Schema.userSessions.insert { user: userId }
-
 
     return user
 
