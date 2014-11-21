@@ -1,5 +1,11 @@
 template(name="customerManagement")
   #content
     .dual-content
-      .dual-left
-      .dual-right
+      .dual-detail-wrapper
+        .dual-detail
+      .dual-addon
+        each managedCustomerList
+          .group-wrapper
+            .group.caption {{key}}
+            each childs
+              .inner.caption {{name}}
