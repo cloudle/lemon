@@ -41,3 +41,14 @@
     column(1/5, gutter: 0)
   &.size6 .segments-column
     column(1/6, gutter: 0)
+
+.dual-content
+  .dual-left
+    float left
+    width dualLeftWidth = 200px; min-height 200px
+    background-color red
+  .dual-right
+    float right
+    margin-left dualLeftWidth
+    width 100%;  min-height 200px
+    background-color yellow
