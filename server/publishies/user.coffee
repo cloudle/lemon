@@ -1,6 +1,6 @@
 Meteor.publish 'myProfile', -> Schema.userProfiles.find({user: @userId})
 
-Meteor.publishComposite 'myMerchantProfiles', ->
+Meteor.publishComposite 'myMerchantUserProfiles', ->
   self = @
   return {
     find: ->

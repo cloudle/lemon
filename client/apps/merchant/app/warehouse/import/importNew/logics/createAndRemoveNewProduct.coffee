@@ -5,7 +5,7 @@ Apps.Merchant.importInit.push (scope) ->
     name        = template.find(".name").value
     skulls      = [template.find(".skull").value]
 
-    result = Product.createNew(productCode, name, skulls, warehouseId)
+    result = Product.createNew(productCode, name, skulls, null, warehouseId)
     console.log result
     if result.error
       console.log result.error
