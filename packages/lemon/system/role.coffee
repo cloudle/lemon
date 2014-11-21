@@ -2,7 +2,9 @@ Schema.add 'roles', "Role", class Role
   @addRolesFor: (profileId, roles) ->
     Schema.userProfiles.update profileId, {$set: {roles: roles}}
 
-  @isInRole: (userId, name) ->
+  @isInRole: (profileId, name) ->
+    currentProfile = Schema.userProfiles.findOne profileId
+    return currentProfile isnt undefined && _.contains(currentProfile.roles, name)
 
   @rolesOf: (permissions)->
     roles = []
