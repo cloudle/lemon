@@ -1,5 +1,6 @@
 lemon.defineApp Template.roleManager,
   allowCreate: -> if Session.get('allowCreateNewRole') then '' else 'disabled'
+  allowUpdate: -> if Session.get('currentRoleSelection')?.parent then '' else 'disabled'
   created: ->
     logics.roleManager.rolesTemplateContext = @
 

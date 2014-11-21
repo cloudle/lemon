@@ -6,7 +6,7 @@ template(name="roleManager")
         span.ilabel tên nhóm
         +iSelect(options=roleSelectOptions class="field")
       .editor-wrapper
-        .lemon.btn.lime.icon-ok-6#updateButton ÁP DỤNG
+        .lemon.btn.lime.icon-ok-6#updateButton(class="{{allowUpdate}}") ÁP DỤNG
 
       .editor-wrapper.right(style="display")
         .lemon.btn.lime.icon-plus-circled#newGroupButton(class="{{allowCreate}}") THÊM MỚI

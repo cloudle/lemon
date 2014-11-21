@@ -19,15 +19,15 @@ Meteor.publish 'myMerchantProfiles', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
 
-  parentMerchant = Schema.merchantProfiles.findOne({merchant: myProfile.parentMerchant})
-  if !parentMerchant?.latestCheckExpire || parentMerchant?.latestCheckExpire.toDateString() != (new Date()).toDateString()
-    Apps.Merchant.checkProductExpireDate(myProfile, parentMerchant.notifyProductExpireRange ? 90)
+  parentMerchantProfile = Schema.merchantProfiles.findOne({merchant: myProfile.parentMerchant})
+  if !parentMerchantProfile?.latestCheckExpire || parentMerchantProfile?.latestCheckExpire.toDateString() != (new Date()).toDateString()
+    Apps.Merchant.checkProductExpireDate(myProfile, parentMerchantProfile.notifyProductExpireRange ? 90)
 
-  if !parentMerchant?.latestCheckReceivable || parentMerchant?.latestCheckReceivable.toDateString() != (new Date()).toDateString()
-    Apps.Merchant.checkReceivableExpireDate(myProfile, parentMerchant.notifyReceivableExpireRange ? 90)
+  if !parentMerchantProfile?.latestCheckReceivable || parentMerchantProfile?.latestCheckReceivable.toDateString() != (new Date()).toDateString()
+    Apps.Merchant.checkReceivableExpireDate(myProfile, parentMerchantProfile.notifyReceivableExpireRange ? 90)
 
-  if !parentMerchant?.latestCheckPayable || parentMerchant?.latestCheckPayable.toDateString() != (new Date()).toDateString()
-    Apps.Merchant.checkPayableExpireDate(myProfile, parentMerchant.notifyPayableExpireRange ? 90)
+  if !parentMerchantProfile?.latestCheckPayable || parentMerchantProfile?.latestCheckPayable.toDateString() != (new Date()).toDateString()
+    Apps.Merchant.checkPayableExpireDate(myProfile, parentMerchantProfile.notifyPayableExpireRange ? 90)
 
   myMerchantProfileQuery = {merchant: myProfile.currentMerchant}
   parentMerchantProfileQuery = {merchant: myProfile.parentMerchant}

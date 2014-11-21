@@ -2,6 +2,7 @@ logics.roleManager.createNewRole = (event, template) ->
   newRole = Schema.roles.insert
     group: 'merchant'
     name: template.ui.$newGroupName.val()
+    parent: Session.get("myProfile").parentMerchant
 
   template.ui.$newGroupName.val('')
   logics.roleManager.checkAllowCreate(template)

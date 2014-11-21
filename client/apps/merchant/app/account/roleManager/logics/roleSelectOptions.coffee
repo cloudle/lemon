@@ -1,4 +1,4 @@
-formatRoleSelect = (item) -> "#{item.name}" if item
+formatRoleSelect = (item) -> "#{item.description ? item.name}" if item
 syncSwitchState = (switchery, turnOn) ->
   changeSateHook = switchery.isChecked() isnt turnOn
   switchery.element.click() if changeSateHook
