@@ -100,9 +100,14 @@ Meteor.methods
 
       Schema.metroSummaries.insert MetroSummary.newByMerchant(profile.parentMerchant)
 
+  checkProductExpireDate: (value)->
+    Apps.Merchant.checkProductExpireDate(Schema.userProfiles.findOne({user: Meteor.userId()}), value)
 
+  checkReceivableExpireDate: (value)->
+    Apps.Merchant.checkReceivableExpireDate(Schema.userProfiles.findOne({user: Meteor.userId()}), value)
 
-
+  checkPayableExpireDate: (value)->
+    Apps.Merchant.checkPayableExpireDate(Schema.userProfiles.findOne({user: Meteor.userId()}), value)
 
 
 

@@ -10,6 +10,8 @@ Apps.Merchant.notificationCharacteristics =
 
 Apps.Merchant.notificationGroup =
   expireDate:               {key: 'expireDate'}
+  receivableDate:           {key: 'receivableDate'}
+  payableDate:              {key: 'payableDate'}
   alertQuality:             {key: 'alertQuality'}
 
 
@@ -22,7 +24,14 @@ Apps.Merchant.NotificationMessages.placeChanged      = (creator, place) -> "#{us
 Apps.Merchant.NotificationMessages.managerReturnConfirm = (creator, value) -> "Có một đơn trả hàng #{value} cần duyệt" #Manager, Warehouse, Accounting
 Apps.Merchant.NotificationMessages.saleHelper       = (creator, orderCode, value) -> "#{creator} đã bán dùm bạn một đơn hàng #{orderCode} có giá trị #{value}"
 
-Apps.Merchant.NotificationMessages.productExpireDate   = (productName, date, place)    -> "Sản phẩm #{productName}, tại kho #{place} sắp hết hạn (còn #{date} ngày)."
+Apps.Merchant.NotificationMessages.productExpireDate   = (productName, date, place)    ->
+  if date > 0
+    "Sản phẩm #{productName}, tại kho #{place} sắp hết hạn (còn #{date} ngày)."
+  else
+    "Sản phẩm #{productName}, tại kho #{place} đã hết hạn #{-date} ngày trước."
+
+Apps.Merchant.NotificationMessages.receivableExpireDate= (customerName, date, place)   -> "Khach hang #{customerName} da tre han tra tien #{date} ngày."
+Apps.Merchant.NotificationMessages.payableExpireDate   = (companyName, date, place)    -> "C.Ty da tre han tra tien C.ty #{companyName} #{date} ngày."
 Apps.Merchant.NotificationMessages.productAlertQuality = (productName, quality, place) -> "Sản phẩm #{productName}, tại kho #{place} sắp hết hàng (còn #{quality} sản phẩm)."
 
 Apps.Merchant.NotificationMessages.sendAccountingByNewSale  = (creator, orderCode, place)    -> "Có một đơn hàng mới #{orderCode} của #{creator}, cần bạn xác nhận đã thu tiền"

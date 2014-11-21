@@ -24,10 +24,12 @@ Meteor.users.allow
   insert: (userId, user)-> true
   update: (userId, user)-> true
   remove: (userId, user)->
-    if userId is user._id then return false
+    if userId is user._id or user.isRoot is true then return false
     if Meteor.users.findOne(user._id).status?.online then return false
     if Schema.orders.findOne {creator: user._id} then return false
+    if Schema.orders.findOne {owner: user._id} then return false
     if Schema.sales.findOne {creator: user._id} then return false
+    if Schema.sales.findOne {owner: user._id} then return false
     if Schema.imports.findOne {creator: user._id} then return false
     if Schema.customers.findOne {creator: user._id} then return false
     MetroSummary.updateMetroSummaryByStaffDestroy(userId)
@@ -36,14 +38,14 @@ Meteor.users.allow
 Schema.userProfiles.allow
   insert: (userId, userProfile)-> true
   update: (userId, userProfile)-> true
-  remove: (userId, userProfile)-> true
+  remove: (userId, userProfile)-> if Meteor.users.findOne(userProfile.user) then false else true
 
 Schema.userOptions.allow
   insert: (userId, userOption)-> true
   update: (userId, userOption)-> true
-  remove: (userId, userOption)-> true
+  remove: (userId, userOption)-> if Meteor.users.findOne(userOption.user) then false else true
 
 Schema.userSessions.allow
   insert: (userId, userSession) -> return userSession.user is userId and Schema.userSessions.findOne({user: userId}) is undefined
   update: (userId, userSession) -> return userSession.user is userId
-  remove: (userId, userSession) -> true
+  remove: (userId, userSession) -> if Meteor.users.findOne(userSession.user) then false else true
