@@ -49,3 +49,8 @@ Schema.productGroups.allow
   insert: -> true
   update: -> true
   remove: -> true
+
+Schema.expiringProducts.allow
+  insert: -> true
+  update: -> true
+  remove: -> true

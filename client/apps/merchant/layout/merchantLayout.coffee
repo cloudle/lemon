@@ -17,10 +17,6 @@ startHomeTracker = ->
         else
           Router.go('/')
 
-      Session.set('metroSummary', Schema.metroSummaries.findOne({merchant: Session.get("myProfile").currentMerchant}))
-      if Session.get('metroSummary')?.notifyExpire
-        Meteor.call('checkProductExpireDate', 60, Session.get('myProfile'.currentMerchant))
-
 destroyHomeTracker = -> Apps.Merchant.homeTracker.stop()
 
 lemon.defineWidget Template.merchantLayout,

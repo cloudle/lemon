@@ -18,6 +18,17 @@ Meteor.publish 'myMerchantAndWarehouse', ->
 Meteor.publish 'myMerchantProfiles', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
+
+  parentMerchant = Schema.merchantProfiles.findOne({merchant: myProfile.parentMerchant})
+  if !parentMerchant?.latestCheckExpire || parentMerchant?.latestCheckExpire.toDateString() != (new Date()).toDateString()
+    Apps.Merchant.checkProductExpireDate(myProfile, parentMerchant.notifyProductExpireRange ? 90)
+
+  if !parentMerchant?.latestCheckReceivable || parentMerchant?.latestCheckReceivable.toDateString() != (new Date()).toDateString()
+    Apps.Merchant.checkReceivableExpireDate(myProfile, parentMerchant.notifyReceivableExpireRange ? 90)
+
+  if !parentMerchant?.latestCheckPayable || parentMerchant?.latestCheckPayable.toDateString() != (new Date()).toDateString()
+    Apps.Merchant.checkPayableExpireDate(myProfile, parentMerchant.notifyPayableExpireRange ? 90)
+
   myMerchantProfileQuery = {merchant: myProfile.currentMerchant}
   parentMerchantProfileQuery = {merchant: myProfile.parentMerchant}
 
