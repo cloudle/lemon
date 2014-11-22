@@ -27,9 +27,9 @@ Meteor.users.allow
     if userId is user._id or user.isRoot is true then return false
     if Meteor.users.findOne(user._id).status?.online then return false
     if Schema.orders.findOne {creator: user._id} then return false
-    if Schema.orders.findOne {owner: user._id} then return false
+    if Schema.orders.findOne {seller: user._id} then return false
     if Schema.sales.findOne {creator: user._id} then return false
-    if Schema.sales.findOne {owner: user._id} then return false
+    if Schema.sales.findOne {seller: user._id} then return false
     if Schema.imports.findOne {creator: user._id} then return false
     if Schema.customers.findOne {creator: user._id} then return false
     MetroSummary.updateMetroSummaryByStaffDestroy(userId)

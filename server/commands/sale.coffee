@@ -22,9 +22,7 @@ Meteor.methods
       if currentSale.received == currentSale.imported == currentSale.exported == currentSale.submitted == false and currentSale.status == true
         saleOption     = {received: true}
         customerOption = {totalPurchases: currentSale.finalPrice, totalDebit: currentSale.debit}
-        console.log currentSale.buyer
-        console.log customerOption
-
+        s
         if currentSale.paymentsDelivery == 1
           saleOption.status = false
           Schema.deliveries.update currentSale.delivery, $set: {status: 1}

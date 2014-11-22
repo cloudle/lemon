@@ -46,8 +46,9 @@ createSaleAndSaleOrder = (order, orderDetails)->
   option = {status: true}
   if currentSale.paymentsDelivery == 1
     option.delivery = Delivery.insertBySale(order, currentSale)
+  Schema.userProfiles.update option.creator, $set:{allowDelete: false}
+  Schema.userProfiles.update option.seller, $set:{allowDelete: false} if option.creator isnt option.seller
   Schema.sales.update currentSale._id, $set: option, (error, result) -> if error then console.log error
-
   return currentSale
 
 

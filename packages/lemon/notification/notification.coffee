@@ -208,15 +208,13 @@ sendAllUserHasPermissionInventoryConfirm = (creatorName, inventoryCode, profile)
 
 
 sendAllUserHasPermissionWarehouseManagementByProductExpire = (product, sender)->
-#  for receiver in allUserHasPermissionOf(sender.parentMerchant, Apps.Merchant.Permissions.warehouseManagement)
-  for receiver in allUserProfile(sender.parentMerchant)
-#    unless sender.user is receiver.user
+  for receiver in allUserHasPermissionOf(sender.parentMerchant, Apps.Merchant.Permissions.warehouseManagement)
     sendNotificationOptional(
       sender.user,
       receiver.user,
       Apps.Merchant.NotificationMessages.productExpireDate(product.name, product.day, product.place),
       product._id,
-      Apps.Merchant.notificationGroup.expireDate.key)
+      Apps.Merchant.notificationGroup.expireDate.key) if sender.user isnt receiver.user
 
 
 sendAllUserHasPermissionWarehouseManagementByReceivableExpire = (transaction, sender)->
