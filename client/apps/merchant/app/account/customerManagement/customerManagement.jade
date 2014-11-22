@@ -14,6 +14,6 @@ template(name="customerManagement")
           .group-wrapper
             .group.caption {{key}}
             each childs
-              .inner.caption
+              .inner.caption(class="{{activeClass}}")
                 +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                 span {{name}}
