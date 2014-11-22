@@ -22,7 +22,6 @@ Meteor.methods
       if currentSale.received == currentSale.imported == currentSale.exported == currentSale.submitted == false and currentSale.status == true
         saleOption     = {received: true}
         customerOption = {totalPurchases: currentSale.finalPrice, totalDebit: currentSale.debit}
-        s
         if currentSale.paymentsDelivery == 1
           saleOption.status = false
           Schema.deliveries.update currentSale.delivery, $set: {status: 1}
@@ -31,7 +30,8 @@ Meteor.methods
         updateSale(currentSale._id, saleOption)
         updateCustomer(currentSale.buyer, customerOption)
         MetroSummary.updateMetroSummaryBySale(currentSale._id)
-#        Notification.saleConfirmByAccounting(currentSale._id)
+        Meteor.call 'saleConfirmByAccounting', profile, currentSale._id
+
 
       if currentSale.status == currentSale.success == currentSale.received == currentSale.exported == true and currentSale.submitted == currentSale.imported == false and currentSale.paymentsDelivery == 1
         Schema.deliveries.update currentSale.delivery, $set:{status: 6, cashier: profile.user}
@@ -59,8 +59,7 @@ Meteor.methods
               debit   : transactionDebitCash
               status  : false
             updateSale(transaction.parent, saleOption)
+            Meteor.call 'saleAccountingConfirmByDelivery', profile, currentSale._id
             MetroSummary.updateMetroSummaryByTransaction(transaction.merchant, debitCash)
-#          Notification.saleAccountingConfirmByDelivery(currentSale._id)
-
     catch error
       throw new Meteor.Error('confirmReceiveSale', error)

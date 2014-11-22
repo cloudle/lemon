@@ -30,6 +30,7 @@ Apps.Merchant.staffManagerInit.push (scope) ->
       #        avatar            :
 
       Meteor.call "createMerchantStaff", email, password, newProfile
+      Meteor.call('createNewMember', Session.get("myProfile"), fullName ? email)
 
       newMemberName = fullName ? email
 #      Notification.newMemberJoined(newMemberName, Session.get("merchantPackages").companyName)

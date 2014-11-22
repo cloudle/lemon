@@ -5,7 +5,7 @@ logics.returns.finishReturn = (returnId)->
     throw 'Lỗi, Phiếu trả hàng rỗng, không thể xác nhận.' if Schema.returnDetails.find({return: currentReturn._id}).count() < 1
 #    throw 'Lỗi, Bạn không có quyền.' unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.returnCreate.key)
     if currentReturn.status == 0
-#      Notification.returnConfirm(currentReturn._id)
+      Meteor.call 'returnConfirm', userProfile, returnId
       Schema.returns.update currentReturn._id, $set: {status: 1}
       for returnDetail in Schema.returnDetails.find({return: currentReturn._id, submit: false}).fetch()
         Schema.returnDetails.update returnDetail._id, $set: {submit: true}

@@ -1,11 +1,11 @@
 Meteor.methods
   createSaleExport: (saleId)->
-    if userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       # kiểm tra quyền
 
       if currentSale = Schema.sales.findOne({
           _id       : saleId
-          merchant  : userProfile.currentMerchant
+          merchant  : profile.currentMerchant
           status    : true
           received  : true
           exported  : false
@@ -21,8 +21,9 @@ Meteor.methods
           Schema.saleDetails.update saleDetail._id, $set:{export: true, exportDate: new Date, status: true}
           Schema.saleExports.insert SaleExport.new(currentSale, saleDetail), (error, result) -> console.log error if error
 
-        #    Notification.saleConfirmByExporter(currentSale._id)
         MetroSummary.updateMetroSummaryBySaleExport(currentSale._id)
+        Meteor.call 'saleConfirmByExporter', profile, currentSale._id
+
         switch currentSale.paymentsDelivery
           when 0
             Schema.sales.update currentSale._id, $set:{submitted: true, exported: true}
@@ -35,12 +36,12 @@ Meteor.methods
 
 
   createSaleImport: (saleId)->
-    if userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       # kiểm tra quyền
 
       if currentSale = Schema.sales.findOne({
         _id       : saleId
-        merchant  : userProfile.currentMerchant
+        merchant  : profile.currentMerchant
         status    : true
         received  : true
         exported  : true
@@ -54,7 +55,7 @@ Meteor.methods
           Schema.products.update saleDetail.product, $inc: option
 
   #      Schema.saleExports.insert SaleExport.new(currentSale, saleDetail), (error, result) -> console.log error if error
-  #      Notification.saleConfirmImporter(currentSale._id)
+        Meteor.call 'saleConfirmImporter', profile, currentSale._id
         MetroSummary.updateMetroSummaryBySaleImport(currentSale._id)
         Schema.sales.update currentSale._id, $set:{imported: true, status: false}
         Schema.deliveries.update currentSale.delivery, $set:{status: 9, importer: Meteor.userId()}

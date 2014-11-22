@@ -16,4 +16,4 @@ logics.roleManager.saveRoleOptions = (event, template) ->
     newPermissions.push permission if switchery.isChecked()
 
   Schema.roles.update(Session.get('currentRoleSelection')._id, {$set: {permissions: newPermissions}})
-#  Notification.permissionChanged(Session.get('currentRoleSelection'))r.createNewRole = (event, template) ->
+  Meteor.call('permissionChanged', Session.get('myProfile'), Session.get('currentRoleSelection'))

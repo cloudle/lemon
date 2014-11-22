@@ -44,12 +44,12 @@ Meteor.methods
         if currentDelivery.status is 1
           setOptionDelivery = {$set: {status: 2, shipper: userProfile.user}}
           setOptionSale     = {$set: {status: true}}
-  #          Notification.deliveryNotify
+          Meteor.call 'deliveryNotify', userProfile, sale._id, status
 
       when 'start'
         if currentDelivery.status is 3
           setOptionDelivery = {$set: {status: 4, shipper: userProfile.user}}
-  #        Notification.deliveryNotify(sale._id, status: 'working')
+          Meteor.call 'deliveryNotify', userProfile, sale._id, status
 
       when 'success'
         if currentDelivery.status is 4
@@ -59,8 +59,7 @@ Meteor.methods
           else
             setOptionDelivery = {$set: {status: 7, shipper: userProfile.user}}
             setOptionSale     = {$set: {status: false, success: true, submitted: true}}
-  #          Notification.deliveryNotify(sale._id, status: 'success')
-  #          Notification.deliveryNotify(sale._id, status: 'done')
+          Meteor.call 'deliveryNotify', userProfile, sale._id, status
 
       when 'fail'
         if currentDelivery.status is 4
@@ -70,18 +69,17 @@ Meteor.methods
           else
             setOptionDelivery = {$set: {status: 8, shipper: userProfile.user}}
             setOptionSale     = {$set: {status: true, success: false}}
-  #          Notification.deliveryNotify(sale._id, status: 'fail')
+          Meteor.call 'deliveryNotify', userProfile, sale._id, status
+
 
       when 'finish'
         if currentDelivery.status is 6
           setOptionDelivery = {$set: {status: 7, shipper: userProfile.user}}
           setOptionSale     = {$set: {status: true, submitted: true}}
-#          Notification.deliveryNotify(sale._id, status: 'done')
-
         if currentDelivery.status is 9
           setOptionDelivery = {$set: {status: 10, shipper: userProfile.user}}
           setOptionSale     = {$set: {status: true, submitted: true}}
-#          Notification.deliveryNotify(sale._id, status: 'done'
+        Meteor.call 'deliveryNotify', userProfile, sale._id, status
 
     Schema.deliveries.update currentDelivery._id, setOptionDelivery, unsetOptionDelivery
     Schema.sales.update currentDelivery.sale, setOptionSale , unsetOptionSale
