@@ -1,11 +1,19 @@
 template(name="customerManagement")
+  #header
+    .caption-row
+      .title DANH SÁCH KHÁCH HÀNG
   #content
     .dual-content
       .dual-detail-wrapper
         .dual-detail
+          +customerManagementOverviewSection currentCustomer
+          .section Old debt section
+          .section Auto debt section
       .dual-addon
         each managedCustomerList
           .group-wrapper
             .group.caption {{key}}
             each childs
-              .inner.caption {{name}}
+              .inner.caption
+                +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                span {{name}}

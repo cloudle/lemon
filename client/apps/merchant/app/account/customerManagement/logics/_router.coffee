@@ -10,7 +10,6 @@ lemon.addRoute
     Apps.setup(scope, Apps.Merchant.customerManagementReactive)
 
     return {
-      listingGridOptions: scope.listingGridOptions
       managedCustomerList: scope.managedCustomerList
     }
 , Apps.Merchant.RouterBase

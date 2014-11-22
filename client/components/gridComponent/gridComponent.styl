@@ -42,32 +42,69 @@
   &.size6 .segments-column
     column(1/6, gutter: 0)
 
-dualLeftWidth = 300px
+dualLeftWidth = 245px
 .dual-content
   clearfix()
   background-color #efeff4
   height 100%
   .dual-addon
     float left
-    width dualLeftWidth; height 100%
+    width dualLeftWidth; height 100%; overflow-y scroll
     //background-color red
     margin-left -100%
     border-right solid 1px #C9C9C9
     .group-wrapper
       .caption
-        font-size 18px
+        font-size 14px; font-weight bolder
         padding 5px 0 5px 10px
         &.group
-          padding-right 10px; text-align right
+          padding 0 10px 0 0; text-align right
+          text-transform uppercase
         &.inner
+          cursor pointer
+          position relative
           background-color #ffffff
-          padding-left 50px
+          padding-left 38px
           border-top solid 1px #C9C9C9
           &:last-child
             border-bottom solid 1px #C9C9C9
+          .avatar
+            absolute left 3px top 1px
+            background-color #ddd4d4; color #ffffff
+            width 28px; height @width; line-height @width
+            text-align center
+            border-radius 2px
+            img
+              width 28px; height @width
+              absolute top 0 left 0
+              border-radius 2px
+
+
   .dual-detail-wrapper
     float left; width 100%; height 100%
     .dual-detail
-      margin-left dualLeftWidth
-      height 100%
-      //background-color yellow
+      margin-left dualLeftWidth; padding 20px 15px
+      height 100%; overflow-y scroll
+
+      .section
+        background-color #ffffff
+        border-radius 4px
+        padding 10px; margin-bottom 20px
+        .heading
+          position relative
+          .avatar
+            width 80px; height @width; line-height @width
+            display block; text-align center
+            font-size 65px; border-radius 12px
+            background-color #dddddd; color #ffffff
+            img
+              width 80px; height @width
+              absolute top 0 left 0
+              border-radius 12px
+          .caption
+            absolute left 90px top 5px
+            font-size 20px; font-weight bolder
+          .sub1
+            absolute left 90px top 30px
+          .sub2
+            absolute left 90px top 55px
