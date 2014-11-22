@@ -30,4 +30,4 @@ lemon.defineWidget Template.transactionManagerDetail,
     reactiveValue: -> Session.get('depositCashNewTransactionDetail') ? 0
     reactiveMax: -> Session.get('currentTransaction')?.debitCash ? 0
     reactiveMin: -> 0
-    reactiveStep: -> 10000
+    reactiveStep: -> if Session.get('currentTransaction')?.debitCash > 10000 then 10000 else Session.get('currentTransaction')?.debitCash
