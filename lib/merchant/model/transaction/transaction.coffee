@@ -12,6 +12,7 @@ Schema.add 'transactions', "Transaction", class Transaction
       totalCash   : sale.finalPrice
       depositCash : sale.deposit
       debitCash   : sale.debit
+      allowDelete : false
     if sale.paymentMethod == 0
       option.dueDay = new Date()
       option.status = 'closed'
@@ -34,6 +35,7 @@ Schema.add 'transactions', "Transaction", class Transaction
       depositCash : returns.finallyPrice
       debitCash   : 0
       dueDay      : new Date()
+      allowDelete : false
       status      : 'closed'
     option._id = Schema.transactions.insert option
     option
@@ -50,6 +52,7 @@ Schema.add 'transactions', "Transaction", class Transaction
       totalCash   : imports.totalPrice
       depositCash : imports.deposit
       debitCash   : imports.debit
+      allowDelete : false
 
     if imports.debit == 0
       option.dueDay = new Date()
@@ -84,5 +87,8 @@ Schema.add 'transactions', "Transaction", class Transaction
         option.status = 'tracking'
 
       option._id = Schema.transactions.insert option
-      if option._id then MetroSummary.updateMetroSummaryByNewTransaction(option.merchant, option.debitCash)
+      if option._id
+        TransactionDetail.newByTransaction(option)
+        MetroSummary.updateMetroSummaryByNewTransaction(option.merchant, option.debitCash)
+        Schema.customers.update customer._id, $inc:{totalPurchases: option.totalCash, totalDebit: option.debitCash}
       option

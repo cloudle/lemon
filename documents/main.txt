@@ -3,6 +3,30 @@ export MAIL_URL=smtp://lehaoson@gmail.com:Ultimate7@stmp.gmail.com:465/
 Meteor.call("mailTo", "lelongking2000@gmail.com", "lehaoson@gmail.com", "Look! This is from the EDS System!", "Hi, King. Congratulations! you are awesome!")
 
 
+autoConfirmAccounting
+autoConfirmExport
+autoConfirmImport
+
+
+#------------------------------------------------------------------------------------------------------------------------------
+Commercial License
+Name: filetie
+===== LICENSE BEGIN =====
+56590-D10134T
+00001Lyf!jVseWR6GuiCKvq9EMwMrJ
+gFXXRbWj6C!maOtMJY79Zcl4d2Hq8w
+08el0R6xw2p35C4DaFJlvOXpl58FqY
+===== LICENSE END =====
+
+Open-source License
+Name: filetie
+===== LICENSE BEGIN =====
+60790-D15780T
+00001JWnpSgQHRjiICrhHdhR5bqbjR
+Uq0eLJYFjEZWRB!N9sA3ydy"Kz4nFl
+t90lCFWYpo90"lKF1e7NPcBDHrLAt!
+===== LICENSE END =====
+
 1-year educational License
 Name: filetie
 ===== LICENSE BEGIN =====
@@ -10,4 +34,31 @@ Name: filetie
 00000wPG1HtMyJU74MU2G9TJedir3w
 MmZ1J2iWKNu6UE8RCLWQ6CMwgLFDVY
 nbiuj1ao7sZQwpgo23ZdEN0GoPYQlN
+===== LICENSE END =====
+
+Non-commercial License
+Name: filetie
+===== LICENSE BEGIN =====
+52308-D79999T
+00000AtbGOMcAFpM2"4bq849mTcgIr
+kOqyIKoyw5zB4iBVc!ZJVeHmTzgDul
+kAoFdwaFAtm3QUw9mcGge7HiYVNaZM
+===== LICENSE END =====
+
+Site License
+Name: filetie
+===== LICENSE BEGIN =====
+64837-D59973T
+00002Wmz4f9fUYVtahNvfv8w97VZJJ
+QekD3osmQgiUnm6mGKzQnbKWT969Go
+vqpcADQsdmoNmb62fx9cyq7y4p7a"T
+===== LICENSE END =====
+
+Personal License
+Name: filetie
+===== LICENSE BEGIN =====
+48981-D92616T
+00002xFO!v8I68YHwJySRWFpZP"ZYk
+uOVi8yiY"43GS6momekDEa7S2kDg49
+GzYmGbhoJbbwkStAXoXaMlztlOmzNO
 ===== LICENSE END =====

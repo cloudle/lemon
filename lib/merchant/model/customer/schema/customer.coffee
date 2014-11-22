@@ -67,4 +67,13 @@ simpleSchema.customers = new SimpleSchema
 
   version: { type: simpleSchema.Version }
 
+  totalDebit:
+    type: Number
+    defaultValue: 0
+
+  totalPurchases:
+    type: Number
+    defaultValue: 0
+
+
 

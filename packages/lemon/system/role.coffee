@@ -9,7 +9,7 @@ Schema.add 'roles', "Role", class Role
   @rolesOf: (permissions)->
     roles = []
     for role in @schema.find({permissions: {$elemMatch: {$in:[permissions, Apps.Merchant.Permissions.su.key]}}}).fetch()
-      roles.push role.name
+      roles.push role._id
     roles
 
   @permissionsOf: (profile) ->

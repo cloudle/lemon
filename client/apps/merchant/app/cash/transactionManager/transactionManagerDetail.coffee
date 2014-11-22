@@ -11,7 +11,7 @@ lemon.defineWidget Template.transactionManagerDetail,
 
   allowAddDetail          : -> if @transaction and @transaction.debitCash > 0 then true else false
   showAddDetail           : -> !Session.get('showAddTransactionDetail')
-  showDeleteTransaction   : -> if @transactionDetail and @transactionDetail.count() is 0 and !Session.get('showAddTransactionDetail') then true else false
+  showDeleteTransaction   : -> if @transaction?.allowDelete is true and !Session.get('showAddTransactionDetail') then true else false
   createTransactionDetail : -> if Session.get('showAddTransactionDetail') then 'display: block' else 'display: none'
 
   rendered: -> Session.set('transactionDetailPaymentDate', new Date())

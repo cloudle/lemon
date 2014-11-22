@@ -10,11 +10,11 @@ Meteor.methods
       transaction = Schema.transactions.findOne({_id: id, merchant: profile.currentMerchant})
       if !transaction then throw 'Không tìm thấy transaction'
 
-      transactionDetails = Schema.transactionDetails.find({transaction: transaction._id})
-      if transactionDetails.count() > 0 then throw 'Không thể xóa transaction khi có transactionDetails'
-
-      if (Schema.transactions.remove transaction._id) is 1
+      if transaction.allowDelete is true and transaction.group is 'customer'
+        Schema.transactions.remove transaction._id
+        Schema.transactionDetails.remove {transaction: transaction._id}
         MetroSummary.updateMetroSummaryByDestroyTransaction(transaction.merchant, transaction.debitCash)
+        Schema.customers.update transaction.owner, $inc:{totalPurchases: -transaction.totalCash, totalDebit: -transaction.debitCash}
         return true
       else throw 'Xóa transaction không thành công'
           
@@ -37,7 +37,14 @@ Meteor.methods
 
       if Schema.transactionDetails.insert TransactionDetail.new(profile.user, transaction, depositCash, paymentDate)
         Schema.transactions.update transaction._id, $inc:{depositCash: depositCash, debitCash: -depositCash}
-        if transaction.group is 'sale' then Schema.sales.update transaction.parent, $inc: {deposit: depositCash, debit: -depositCash}
+
+        if transaction.group is 'customer' and transaction.allowDelete is true
+          Schema.transactions.update transaction._id, $set: {allowDelete: false}
+        if transaction.group is 'sale'
+          Schema.sales.update transaction.parent, $inc: {deposit: depositCash, debit: -depositCash}
+        if transaction.group is 'sale' or transaction.group is 'customer'
+          Schema.customers.update transaction.owner, $inc:{totalDebit: -depositCash}
+
         MetroSummary.updateMetroSummaryByTransaction(profile.currentMerchant, depositCash)
       else throw 'Thêm trả nợ không thành công'
 

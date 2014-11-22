@@ -1,3 +1,12 @@
+updateSale        = (saleId, option)        -> Schema.sales.update saleId, $set: option
+updateCustomer    = (customerId, option)    -> Schema.customers.update customerId, $inc: option
+updateTransaction = (transactionId, option) -> Schema.transactions.update transactionId, $set: option
+
+newTransactionAndDetail = (currentSale)->
+  transaction       = Transaction.newBySale(currentSale)
+  transactionDetail = TransactionDetail.newByTransaction(transaction)
+
+
 Meteor.methods
   confirmReceiveSale: (id)->
     try
@@ -11,16 +20,20 @@ Meteor.methods
       if !currentSale then throw 'Không tìm thấy phiếu bán hàng'
 
       if currentSale.received == currentSale.imported == currentSale.exported == currentSale.submitted == false and currentSale.status == true
-        option = {received: true}
+        saleOption     = {received: true}
+        customerOption = {totalPurchases: currentSale.finalPrice, totalDebit: currentSale.debit}
+        console.log currentSale.buyer
+        console.log customerOption
+
         if currentSale.paymentsDelivery == 1
-          option.status = false
+          saleOption.status = false
           Schema.deliveries.update currentSale.delivery, $set: {status: 1}
 
-        transaction =  Transaction.newBySale(currentSale)
-        transactionDetail = TransactionDetail.newByTransaction(transaction)
-        Schema.sales.update currentSale._id, $set: option
-        #      Notification.saleConfirmByAccounting(@id)
+        newTransactionAndDetail(currentSale)
+        updateSale(currentSale._id, saleOption)
+        updateCustomer(currentSale.buyer, customerOption)
         MetroSummary.updateMetroSummaryBySale(currentSale._id)
+#        Notification.saleConfirmByAccounting(currentSale._id)
 
       if currentSale.status == currentSale.success == currentSale.received == currentSale.exported == true and currentSale.submitted == currentSale.imported == false and currentSale.paymentsDelivery == 1
         Schema.deliveries.update currentSale.delivery, $set:{status: 6, cashier: profile.user}
@@ -28,28 +41,28 @@ Meteor.methods
         debitCash = currentSale.debit
 
         if transaction.debitCash >= debitCash and transaction.status is 'tracking'
-          transactionDebitCash = transaction.debitCash - debitCash
+          transactionDebitCash   = transaction.debitCash - debitCash
           transactionDepositCash = transaction.depositCash + debitCash
-
           if transactionDepositCash == transaction.totalCash then status = 'closed' else status = 'tracking'
 
-          option =
-            debitCash: transactionDebitCash
-            depositCash: transactionDepositCash
-            status: status
-
-          Schema.transactions.update transaction._id, $set: option
+          transactionOption =
+            status      : status
+            debitCash   : transactionDebitCash
+            depositCash : transactionDepositCash
+          updateTransaction(transaction._id, transactionOption)
           Schema.transactionDetails.insert TransactionDetail.new(profile.user, transaction, debitCash)
 
           if transaction.group is 'sale'
-            Schema.sales.update transaction.parent, $set:{
+            customerOption = {totalDebit: -debitCash}
+            updateCustomer(transaction.owner, customerOption)
+
+            saleOption =
               deposit : transactionDepositCash
               debit   : transactionDebitCash
               status  : false
-            }
+            updateSale(transaction.parent, saleOption)
             MetroSummary.updateMetroSummaryByTransaction(transaction.merchant, debitCash)
-
-    #      Notification.saleAccountingConfirmByDelivery(currentSale._id)
+#          Notification.saleAccountingConfirmByDelivery(currentSale._id)
 
     catch error
       throw new Meteor.Error('confirmReceiveSale', error)
