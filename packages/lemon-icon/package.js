@@ -12,7 +12,7 @@ Package.onUse(function(api) {
     'lib/font/lemon.svg',
     'lib/font/lemon.ttf',
     'lib/font/lemon.woff',
-    'lib/css/lemon.css',
-    'lib/lemon.overrides.css'
+    'lib/css/lemon-embedded.css'
+    //'lib/lemon.overrides.css'
     ], 'client');
 });

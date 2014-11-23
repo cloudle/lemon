@@ -6,16 +6,18 @@ template(name="customerManagement")
     .dual-content
       .dual-detail-wrapper
         .dual-detail
-          +customerManagementOverviewSection currentCustomer
-          .section Old debt section
-          .section Auto debt section
+          .nano: .nano-content
+            +customerManagementOverviewSection currentCustomer
+            +customerManagementDebitSection currentCustomer
+            .section Auto debt section
       .dual-addon
         .search-filter.icon-search-8
           input(type="text")
-        each managedCustomerList
-          .group-wrapper
-            .group.caption {{key}}
-            each childs
-              .inner.caption(class="{{activeClass}}")
-                +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
-                span {{name}}
+        .nano: .nano-content
+          each managedCustomerList
+            .group-wrapper
+              .group.caption {{key}}
+              each childs
+                .inner.caption(class="{{activeClass}}")
+                  +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                  span {{name}}

@@ -30,6 +30,7 @@ lemon.defineWidget Template.merchantLayout,
     $(window).resize ->
       Helpers.arrangeAppLayout()
       arrangeSideBar(@)
+      $(".nano").nanoScroller()
 
     Helpers.animateUsing("#container", "bounceInDown")
 

@@ -2,6 +2,7 @@
 Component.helpers = {}
 
 Component.helpers.arrangeAppLayout = ->
+  $(".nano").nanoScroller()
   newHeight = $(window).height() - $("#header").outerHeight() - $("#footer").outerHeight() - 6
   $("#container").css('height', newHeight)
 
