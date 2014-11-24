@@ -2,6 +2,30 @@ template(name="customerManagement")
   #header
     .caption-row
       .title DANH SÁCH KHÁCH HÀNG
+
+    .editor-row
+      .editor-wrapper(style="width: 200px")
+        span.ilabel tên khách hàng
+        input(name="fullName" maxlength="40")
+      .editor-wrapper(style="width:200px")
+        span.ilabel.optional ghi chú
+        input(name="description")
+      .editor-wrapper(style="width: 80px")
+        span.ilabel.optional giới tính
+        +iSelect(options=genderSelectOptions class="field")
+      .editor-wrapper(style="width: 80px")
+        span.ilabel.optional danh xưng
+        input(style="text-align: center" name="pronoun" maxlength="10" value="Anh")
+      .editor-wrapper
+        button.lemon.btn.lime.icon-user-add-1#createCustomerAccount(class="{{allowCreate}}") TẠO MỚI
+      .editor-wrapper.right
+        input.hidden.excelFileSource(type="file")
+        button.lemon.btn.blue.right.excel-customer(type='submit' data-toggle="tooltip" data-container="body" data-placement="top" title="Tự động nhập")
+          span.icon-user-add-1
+      .editor-wrapper.right
+        a.lemon.btn.blue(href="/template/khach_hang.csv" target="_blank" data-toggle="tooltip" data-container="body" data-palace-holder="top" title="Tải về file Mẫu")
+          span.icon-doc-text-inv-1
+          
   #content.modern
     .dual-content
       .dual-detail-wrapper

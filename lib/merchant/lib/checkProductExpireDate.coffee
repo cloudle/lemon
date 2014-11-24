@@ -1,6 +1,5 @@
 Apps.Merchant.checkProductExpireDate = (profile, value)->
   if profile
-    console.log 'active checkProductExpireDate'
     timeOneDay  = 86400000
     tempDate    = new Date
     currentDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate())

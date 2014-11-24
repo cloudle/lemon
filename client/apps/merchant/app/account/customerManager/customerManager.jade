@@ -17,6 +17,9 @@ template(name="customerManager")
       .editor-wrapper(style="width: 80px")
         span.ilabel.optional giới tính
         +iSelect(options=genderSelectOptions class="field")
+      .editor-wrapper(style="width: 80px")
+        span.ilabel.optional danh xưng
+        input(style="text-align: center" name="pronoun" maxlength="10" value="Anh")
       .editor-wrapper
         button.lemon.btn.lime.icon-user-add-1#createCustomerAccount(class="{{allowCreate}}") TẠO MỚI
       .editor-wrapper.right

@@ -48,10 +48,7 @@ lemon.defineApp Template.customerManager,
         $excelSource.parse
           config:
             complete: (results, file) ->
-              console.log results
-              console.log file
-#              if file.name is "khach_hang.csv"
-#              if file.type is "text/csv" || file.type is "application/vnd.ms-excel"
+              console.log file, results
               logics.customerManager.importFileCustomerCSV(results.data)
 
         $excelSource.val("")

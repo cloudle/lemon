@@ -1,6 +1,5 @@
 Apps.Merchant.checkReceivableExpireDate = (profile, value)->
   if profile
-    console.log 'active checkReceivableExpireDate'
     timeOneDay  = 86400000
     tempDate    = new Date
     currentDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate())

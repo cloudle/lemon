@@ -1,0 +1,23 @@
+template(name="providerManagement")
+  #header
+    .caption-row
+      .title DANH SÁCH KHÁCH HÀNG
+  #content
+    .dual-content
+      .dual-detail-wrapper
+        .dual-detail
+          .nano: .nano-content
+            +providerManagementOverviewSection currentProvider
+            +providerManagementDebitSection currentProvider
+            .section Auto debt section
+      .dual-addon
+        .search-filter.icon-search-8
+          input(type="text")
+        .nano: .nano-content
+          each managedProviderList
+            .group-wrapper
+              .group.caption {{key}}
+              each childs
+                .inner.caption(class="{{activeClass}}")
+                  +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                  span {{name}}
