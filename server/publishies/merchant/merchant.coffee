@@ -20,6 +20,9 @@ Meteor.publish 'myMerchantProfiles', ->
   return [] if !myProfile
 
   parentMerchantProfile = Schema.merchantProfiles.findOne({merchant: myProfile.parentMerchant})
+  if !parentMerchantProfile?.latestCheckSummaryDate || parentMerchantProfile?.latestCheckSummaryDate.toDateString() != (new Date()).toDateString()
+    Apps.Merchant.checkSummaryDate(myProfile)
+
   if !parentMerchantProfile?.latestCheckExpire || parentMerchantProfile?.latestCheckExpire.toDateString() != (new Date()).toDateString()
     Apps.Merchant.checkProductExpireDate(myProfile, parentMerchantProfile.notifyProductExpireRange ? 90)
 
