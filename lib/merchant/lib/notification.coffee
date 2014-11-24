@@ -30,8 +30,8 @@ Apps.Merchant.NotificationMessages.productExpireDate   = (productName, date, pla
   else
     "Sản phẩm #{productName}, tại kho #{place} đã hết hạn #{-date} ngày trước."
 
-Apps.Merchant.NotificationMessages.receivableExpireDate= (customerName, date, place)   -> "Khach hang #{customerName} da tre han tra tien #{date} ngày."
-Apps.Merchant.NotificationMessages.payableExpireDate   = (companyName, date, place)    -> "C.Ty da tre han tra tien C.ty #{companyName} #{date} ngày."
+Apps.Merchant.NotificationMessages.receivableExpireDate= (customerName, date, place)   -> "Khách hàng #{customerName} đã trể quá han trả tiền #{date} ngày."
+Apps.Merchant.NotificationMessages.payableExpireDate   = (companyName, date, place)    -> "C.Ty đã quá hạn trả tiền C.ty #{companyName} #{date} ngày."
 Apps.Merchant.NotificationMessages.productAlertQuality = (productName, quality, place) -> "Sản phẩm #{productName}, tại kho #{place} sắp hết hàng (còn #{quality} sản phẩm)."
 
 Apps.Merchant.NotificationMessages.sendAccountingByNewSale  = (creator, orderCode, place)    -> "Có một đơn hàng mới #{orderCode} của #{creator}, cần bạn xác nhận đã thu tiền"

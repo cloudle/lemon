@@ -18,6 +18,8 @@ Meteor.methods
         Schema.transactionDetails.remove {transaction: transaction._id}
         MetroSummary.updateMetroSummaryByDestroyTransaction(transaction.merchant, transaction.debitCash)
         Schema.customers.update transaction.owner, $inc:{totalPurchases: -transaction.totalCash, totalDebit: -transaction.debitCash}
+        Schema.notifications.remove {product: transaction._id}
+
         return true
       else throw 'Xóa transaction không thành công'
           

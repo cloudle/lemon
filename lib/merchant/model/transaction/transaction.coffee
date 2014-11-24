@@ -66,7 +66,8 @@ Schema.add 'transactions', "Transaction", class Transaction
   @newByUser: (customerId, description, totalCash, depositCash, debtDate)->
     profile = Schema.userProfiles.findOne({user: Meteor.userId()})
     customer  = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
-    if profile and customer and depositCash >= 0 and totalCash >= depositCash
+    console.log debtDate
+    if profile and customer and depositCash >= 0 and totalCash >= depositCash and (debtDate is undefined or debtDate < (new Date()))
       option =
         merchant    : profile.currentMerchant
         warehouse   : profile.currentWarehouse
@@ -91,4 +92,5 @@ Schema.add 'transactions', "Transaction", class Transaction
         TransactionDetail.newByTransaction(option)
         MetroSummary.updateMetroSummaryByNewTransaction(option.merchant, option.debitCash)
         Schema.customers.update customer._id, $inc:{totalPurchases: option.totalCash, totalDebit: option.debitCash}
+        Meteor.call('checkExpireDateTransaction', option._id)
       option

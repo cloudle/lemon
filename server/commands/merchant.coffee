@@ -110,4 +110,7 @@ Meteor.methods
     Apps.Merchant.checkPayableExpireDate(Schema.userProfiles.findOne({user: Meteor.userId()}), value)
 
 
-
+  checkExpireDateTransaction: (transactionId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if parentMerchantProfile = Schema.merchantProfiles.findOne({merchant: profile.parentMerchant})
+        Apps.Merchant.checkExpireDateCreateTransaction(profile, transactionId, parentMerchantProfile.notifyReceivableExpireRange ? 90)
