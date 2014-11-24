@@ -1,10 +1,9 @@
 template(name="sidebar")
   #sidebar
     .collapse-toggle(class="{{appCollapseClass}}")
-    .nano: .nano-scroller
-      ul.messenger-list
-        +myAvatarItem myProfile
-        each friends
-          +chatAvatarItem
+    ul.messenger-list
+      +myAvatarItem myProfile
+      each friends
+        +chatAvatarItem
 
     +messenger
