@@ -78,7 +78,7 @@ Schema.add 'transactions', "Transaction", class Transaction
         totalCash   : totalCash
         depositCash : depositCash
         debitCash   : (totalCash - depositCash)
-        debtDate    : debtDate
+        debtDate    : debtDate if debtDate
 
       if option.debit is 0
         option.dueDay = new Date()

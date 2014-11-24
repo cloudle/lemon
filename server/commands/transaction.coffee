@@ -10,6 +10,9 @@ Meteor.methods
       transaction = Schema.transactions.findOne({_id: id, merchant: profile.currentMerchant})
       if !transaction then throw 'Không tìm thấy transaction'
 
+      transactionDetails = Schema.transactionDetails.find({transaction: transaction._id})
+      if transactionDetails.count() > 1 then throw 'Không thể xóa transaction khi thêm mới transactionDetails '
+
       if transaction.allowDelete is true and transaction.group is 'customer'
         Schema.transactions.remove transaction._id
         Schema.transactionDetails.remove {transaction: transaction._id}
