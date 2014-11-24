@@ -3,11 +3,14 @@ template(name="customerManagementDebitSection")
     .panel-heading
       span Công nợ
     .panel-body
+      span Nợ cũ:<br />
       each oldTransaction
         span {{_id}} <br />
       span <br />
+
+      span Nợ mới:<br />
       each newTransaction
         span {{_id}} <br />
-      span Nợ mới:
+
     .panel-footer
       span Tiền còn nợ: {{totalDebit}} <br /> Tổng tiền: {{totalPurchases}}

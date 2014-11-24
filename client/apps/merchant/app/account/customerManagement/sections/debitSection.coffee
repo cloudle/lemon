@@ -3,14 +3,12 @@ scope = logics.customerManagement
 lemon.defineWidget Template.customerManagementDebitSection,
   oldTransaction: ->
     Schema.transactions.find({
-      merchant: Session.get('myProfile').currentMerchant
       owner: Session.get("customerManagementCurrentCustomer")._id
       group: 'customer'
     })
 
   newTransaction: ->
     Schema.transactions.find({
-      merchant: Session.get('myProfile').currentMerchant
       owner: Session.get("customerManagementCurrentCustomer")._id
       group: 'sale'
     })

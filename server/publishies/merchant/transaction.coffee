@@ -7,9 +7,12 @@ Meteor.publish 'availableReceivable', ->
 Meteor.publish 'oldReceivable',(customerId) ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
+  allMerchants = Schema.merchants.find({$or:[{_id: myProfile.parentMerchant }, {parent: myProfile.parentMerchant}]})
+
   Schema.transactions.find({
-    merchant: myProfile.currentMerchant
+    merchant: $in: _.union(_.pluck(allMerchants.fetch(), '_id'))
     owner   : customerId
+    status  : 'tracking'
     group   : {$in:['customer', 'sale']} })
 
 
