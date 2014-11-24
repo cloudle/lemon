@@ -37,7 +37,8 @@ Meteor.methods
 
       if Schema.transactionDetails.insert TransactionDetail.new(profile.user, transaction, depositCash, paymentDate)
         Schema.transactions.update transaction._id, $inc:{depositCash: depositCash, debitCash: -depositCash}
-
+        if transaction.debitCash is depositCash
+          Schema.transactions.update transaction._id, $set:{status:'closed', dueDay: new Date()}
         if transaction.group is 'customer' and transaction.allowDelete is true
           Schema.transactions.update transaction._id, $set: {allowDelete: false}
         if transaction.group is 'sale'
