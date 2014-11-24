@@ -13,7 +13,7 @@ template(name="customerManagementDebitSection")
         each oldTransaction
           tr
             td {{momentFormat version.createdAt "DD/MM/YYYY hh:mm"}}
-            td Ghi chu
+            td {{description}}
             td {{formatNumber totalCash}}
             td {{formatNumber depositCash}}
             td {{formatNumber debitCash}}
@@ -25,16 +25,16 @@ template(name="customerManagementDebitSection")
           td: .lemon.btn.lime.icon-bag THEM MOI
 
       table.lemon-grid
-        tr
-          th Ngay
-          th Ghi Chu
-          th Tong tien
-          th Da tra
-          th Con lai
+        tr(style="width:100%")
+          th(style="width:150px") Ngay
+          th(style="width:auto") Ghi Chu
+          th(style="width:150px") Tong tien
+          th(style="width:150px") Da tra
+          th(style="width:150px") Con lai
         each newTransaction
           tr
             td {{momentFormat version.createdAt "DD/MM/YYYY hh:mm"}}
-            td Ghi chu
+            td {{description}}
             td {{formatNumber totalCash}}
             td {{formatNumber depositCash}}
             td {{formatNumber debitCash}}

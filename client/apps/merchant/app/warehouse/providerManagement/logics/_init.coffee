@@ -5,3 +5,7 @@ Apps.Merchant.providerManagementReactive = []
 Apps.Merchant.providerManagementReactive.push (scope) ->
   if Session.get('allowCreateProvider') then allowCreate = '' else allowCreate = 'disabled'
   scope.allowCreateProvider = allowCreate
+
+
+#  if Session.get("providerManagementCurrentProvider")
+#    Meteor.subscribe('allImport', Session.get("customerManagementCurrentCustomer")._id)
