@@ -24,8 +24,8 @@ Schema.add 'providers', "Provider", class Provider
         merchant         : userProfile.currentMerchant
         creator          : userProfile.user
         name             : name
-        phone            : phone
-        location         : {address: [address]}
+        phone            : phone if phone
+        location         : {address: [address]} if address
 
       findProvider =  Schema.providers.findOne({
         parentMerchant: provider.parentMerchant
@@ -33,7 +33,7 @@ Schema.add 'providers', "Provider", class Provider
       })
 
       if findProvider
-        {error:'Tạo mới nhà phân phối bị trùng lặp.'}
+        {error:'Tên nhà phân phối bị trùng lặp.'}
       else
         @schema.insert provider, (error, result)-> if error then {error: error} else {}
 

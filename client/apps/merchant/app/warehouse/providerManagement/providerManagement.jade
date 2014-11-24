@@ -1,0 +1,44 @@
+template(name="providerManagement")
+  #header
+    .caption-row
+      .title DANH SÁCH NHÀ CUNG CẤP
+
+    .editor-row
+      .editor-wrapper(style="width: 150px")
+        span.ilabel tên nhà cung cấp
+        input(name="name" maxlength="40")
+      .editor-wrapper(style="width:200px")
+        span.ilabel.optional địa chỉ
+        input(name="address")
+      .editor-wrapper(style="width:100px")
+        span.ilabel.optional số điện thoại
+        input(name="phone" maxlength="13")
+      .editor-wrapper
+        button.lemon.btn.lime.icon-user-add-1.create-provider(class="{{allowCreateProvider}}") TẠO MỚI
+      .editor-wrapper.right
+        input.hidden.excelFileSource(type="file")
+        button.lemon.btn.blue.right.excel-provider(type='submit' data-toggle="tooltip" data-container="body" data-placement="top" title="Tự động nhập")
+          span.icon-user-add-1
+      .editor-wrapper.right
+        a.lemon.btn.blue(href="/template/nha_cung_capcd .csv" target="_blank" data-toggle="tooltip" data-container="body" data-palace-holder="top" title="Tải về file Mẫu")
+          span.icon-doc-text-inv-1
+
+  #content.modern
+    .dual-content
+      .dual-detail-wrapper
+        .dual-detail
+          .nano: .nano-content
+            +providerManagementOverviewSection currentProvider
+            +providerManagementDebitSection currentProvider
+            .section Auto debt section
+      .dual-addon
+        .search-filter.icon-search-8
+          input(type="text")
+        .nano: .nano-content
+          each managedProviderList
+            .group-wrapper
+              .group.caption {{key}}
+              each childs
+                .inner.caption(class="{{activeClass}}")
+                  +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                  span {{name}}

@@ -20,7 +20,6 @@ logics.customerManagement.createNewCustomer = (context) ->
     description: description if description.length > 0
     currentMerchant: Session.get('myProfile').currentMerchant})
     context.ui.$fullName.notify("Trùng tên khách hàng", {position: "bottom"})
-    console.log 'Trùng tên khách hàng'
   else
     Schema.customers.insert option, (error, result) ->
       if error

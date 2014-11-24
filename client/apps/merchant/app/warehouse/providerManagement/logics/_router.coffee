@@ -1,7 +1,7 @@
 scope = logics.providerManagement
 lemon.addRoute
   template: 'providerManagement'
-  waitOnDependency: 'providerManager'
+  waitOnDependency: 'providerManagement'
   onBeforeAction: ->
     if @ready()
       Apps.setup(scope, Apps.Merchant.providerManagementInit, 'providerManagement')
@@ -10,6 +10,7 @@ lemon.addRoute
     Apps.setup(scope, Apps.Merchant.providerManagementReactive)
 
     return {
-      managedProviderList: scope.managedProviderList
+      managedProviderList : scope.managedProviderList
+      allowCreateProvider : scope.allowCreateProvider
     }
 , Apps.Merchant.RouterBase
