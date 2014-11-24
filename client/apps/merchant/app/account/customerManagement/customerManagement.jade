@@ -43,5 +43,7 @@ template(name="customerManagement")
               .group.caption {{key}}
               each childs
                 .inner.caption(class="{{activeClass}}")
+                  if allowDelete
+                    i.trash.icon-bag
                   +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                   span {{name}}

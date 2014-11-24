@@ -1,5 +1,6 @@
 template(name="customerManagementOverviewSection")
   .section.panel.panel-default
+    input.hidden.avatarFile(type="file")
     .panel-heading
       +avatarImageComponent(avatar=avatarUrl alias=name)
       .caption {{name}}
