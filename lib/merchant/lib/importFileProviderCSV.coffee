@@ -18,6 +18,6 @@ Apps.Merchant.importFileProviderCSV = (data)->
   if _.keys(providerColumn).length > 0
     data = _.without(data, data[0])
     for item in data
-      if item[customerColumn.name]
-        provider = Schema.providers.findOne({parentMerchant: profile.parentMerchant, name: item[customerColumn.name]})
-        if provider then provider._id else Provider.createNew(item[customerColumn.name], item[customerColumn.phone], item[customerColumn.address])
+      if item[providerColumn.name]
+        provider = Schema.providers.findOne({parentMerchant: profile.parentMerchant, name: item[providerColumn.name]})
+        if provider then provider._id else Provider.createNew(item[providerColumn.name], item[providerColumn.phone], item[providerColumn.address])
