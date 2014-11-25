@@ -4,10 +4,10 @@ Apps.Merchant.staffManagementInit.push (scope) ->
   Session.set("staffManagementCurrentStaff", Schema.userProfiles.findOne())
 
   scope.checkAllowCreateStaff = (context) ->
-    email = template.ui.$email.val()
-    password = template.ui.$password.val()
-    confirm = template.ui.$confirm.val()
-    fullName = template.ui.$fullName.val()
+    email = context.ui.$email.val()
+    password = context.ui.$password.val()
+    confirm = context.ui.$confirm.val()
+    fullName = context.ui.$fullName.val()
     if Meteor.users.findOne({'emails.address': email}) then return Session.set('allowCreateStaffAccount', false)
     if email.length > 0 and password.length > 0 and confirm.length > 0 and fullName.length > 0 and password is confirm
       if _.findWhere(Session.get('availableUserProfile'), {fullName: fullName})

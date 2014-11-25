@@ -33,12 +33,17 @@ template(name="staffManagement")
             .section Auto debt section
       .dual-addon
         .search-filter.icon-search-8
-          input(type="text")
+          input(name='searchFilter' type="text")
         .nano: .nano-content
           each managedStaffList
             .group-wrapper
-              .group.caption {{key}}
-              each childs
+              if showFilterSearch
                 .inner.caption(class="{{activeClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                   span {{fullName}}
+              else
+                .group.caption {{key}}
+                each childs
+                  .inner.caption(class="{{activeClass}}")
+                    +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                    span {{fullName}}
