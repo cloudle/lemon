@@ -1,6 +1,6 @@
 scope = logics.customerManagement
 
-lemon.defineHyper Template.customerManagementDebitSection,
+lemon.defineHyper Template.customerManagementSalesHistorySection,
   customSale: ->
     Schema.customSales.find({buyer: Session.get("customerManagementCurrentCustomer")._id})
 

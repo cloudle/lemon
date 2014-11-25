@@ -1,12 +1,14 @@
 template(name="customerManagementSaleDetails")
   tr.header-row
-    td(colspan="5") {{momentFormat version.createdAt "DD/MM/YYYY hh:mm"}} {{orderCode}}
+    td(colspan="5") <b>B</b>án ngày <b>{{momentCalendar version.createdAt}}</b>
   each saleDetails
     tr
-      td ?s
-      td {{productName}} ({{skulls}})
+      td {{productName}}
+      td {{formatNumber quality}}
+      td {{skulls}}
       td.number {{formatNumber price}}
-      td.number {{formatNumber quality}}
       td.number {{formatNumber finalPrice}}
   tr.summary-row
-    td(colspan="5" align="right") TỔNG {{formatNumber finalPrice}} VNĐ
+    td(colspan="3")
+    td(align="right"): span.s5 TỔNG PHIẾU
+    td(align="right"): span.s4 <b>{{formatNumber finalPrice}}</b> VNĐ
