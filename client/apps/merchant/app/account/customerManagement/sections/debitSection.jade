@@ -10,9 +10,9 @@ template(name="customerManagementDebitSection")
           th(style="width:150px") Tong tien
           th(style="width:150px") Da tra
           th(style="width:150px") Con lai
-        each oldTransaction
+        each customSale
           tr
-            td {{momentFormat debtDate "DD/MM/YYYY hh:mm"}}
+            td {{momentFormat version.createdAt "DD/MM/YYYY hh:mm"}}
             td {{description}}
             td {{formatNumber totalCash}}
             td {{formatNumber depositCash}}
@@ -32,11 +32,11 @@ template(name="customerManagementDebitSection")
           th(style="width:150px") Tong tien
           th(style="width:150px") Da tra
           th(style="width:150px") Con lai
-        each newTransaction
+        each defaultSale
           tr
-            td {{momentFormat debtDate "DD/MM/YYYY hh:mm"}}
+            td {{momentFormat version.createdAt "DD/MM/YYYY hh:mm"}}
             td {{description}}
-            td {{formatNumber totalCash}}
+            td {{formatNumber finalPrice}}
             td {{formatNumber depositCash}}
             td {{formatNumber debitCash}}
     .panel-footer

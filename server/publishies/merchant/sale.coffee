@@ -1,3 +1,17 @@
+Meteor.publishComposite 'availableSaleOf', (customerId)->
+  self = @
+  return {
+  find: ->
+    myProfile = Schema.userProfiles.findOne({user: self.userId})
+    return EmptyQueryResult if !myProfile
+    allMerchants = Schema.merchants.find({$or:[{_id: myProfile.parentMerchant }, {parent: myProfile.parentMerchant}]})
+    Schema.sales.find {buyer: customerId, merchant: $in: _.union(_.pluck(allMerchants.fetch(), '_id'))}
+  children: [
+    find: (sale) -> Schema.saleDetails.find {sale: sale._id}
+  ]
+  }
+
+
 Meteor.publish 'mySaleAndDetail', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile

@@ -7,4 +7,5 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
   scope.allowCreate = allowCreate
 
   if Session.get("customerManagementCurrentCustomer")
-    Meteor.subscribe('oldReceivable', Session.get("customerManagementCurrentCustomer")._id)
+    Meteor.subscribe('availableCustomSaleOf', Session.get("customerManagementCurrentCustomer")._id)
+    Meteor.subscribe('availableSaleOf', Session.get("customerManagementCurrentCustomer")._id)

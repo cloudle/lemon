@@ -1,21 +1,11 @@
 scope = logics.customerManagement
 
 lemon.defineWidget Template.customerManagementDebitSection,
-  oldTransaction: ->
-    Schema.transactions.find({
-      owner     : Session.get("customerManagementCurrentCustomer")._id
-      group     : 'customer'
-      status    : 'tracking'
-      receivable: true
-    })
+  customSale: ->
+    Schema.customSales.find({buyer: Session.get("customerManagementCurrentCustomer")._id})
 
-  newTransaction: ->
-    Schema.transactions.find({
-      owner     : Session.get("customerManagementCurrentCustomer")._id
-      group     : 'sale'
-      status    : 'tracking'
-      receivable: true
-    })
+  defaultSale: ->
+    Schema.sales.find({buyer: Session.get("customerManagementCurrentCustomer")._id})
 
   events:
   #click xem chi tiet
