@@ -1,5 +1,6 @@
 resetForm = (context) -> $(item).val('') for item in context.findAll("[name]")
 Apps.Merchant.distributorManagementInit.push (scope) ->
+  Session.set("distributorManagementSearchFilter", "")
   Session.set("distributorManagementCurrentDistributor", Schema.distributors.findOne())
 
   scope.checkAllowCreateDistributor = (context) ->
