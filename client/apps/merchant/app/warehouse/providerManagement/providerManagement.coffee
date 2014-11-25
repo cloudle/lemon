@@ -1,11 +1,13 @@
 scope = logics.providerManagement
 
 lemon.defineApp Template.providerManagement,
+  showFilterSearch: -> Session.get("providerManagementSearchFilter").length > 0
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   currentProvider: -> Session.get("providerManagementCurrentProvider")
   activeClass:-> if Session.get("providerManagementCurrentProvider")?._id is @._id then 'active' else ''
 #  rendered: -> $(".nano").nanoScroller()
   events:
+    "input .search-filter": (event, template) -> Session.set("providerManagementSearchFilter", template.ui.$searchFilter.val())
     "click .inner.caption": (event, template) -> Session.set("providerManagementCurrentProvider", @)
     "input input": (event, template) -> scope.checkAllowCreateProvider(template)
     'click .create-provider': (event, template)-> scope.createProvider(template)
