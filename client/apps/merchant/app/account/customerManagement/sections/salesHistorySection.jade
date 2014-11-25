@@ -20,13 +20,13 @@ template(name="customerManagementSalesHistorySection")
             td.number
               |{{formatNumber debitCash}}
               if allowDelete
-                .lemon.btn.red.delete-transaction: span.icon-bag
+                .lemon.btn.red.delete-customSale: span.icon-bag
         tr
           td: input(name='debtDate' type="text" size="10")
           td: input(name='description' type="text" size="10")
           td: input.number(name='totalCash' type="text" size="10")
           td: input.number(name='depositCash' type="text" size="10")
-          td: .lemon.btn.lime.icon-bag.create-transaction THEM MOI
+          td: .lemon.btn.lime.icon-bag.create-customSale THEM MOI
       table.lemon-grid
         +customerManagementSaleHistoryHeader
         each defaultSale

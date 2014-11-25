@@ -1,12 +1,19 @@
 Apps.Merchant.customerManagementInit.push (scope) ->
   scope.createCustomSale = (event, template) ->
-    option =
-      parentMerchant: Session.get('myProfile').currentMerchant
-      creator       : Session.get('myProfile').user
-      buyer         : Session.get("customerManagementCurrentCustomer")._id
-      debtDate      : moment('25/10/2014', 'DD/MM/YYYY')._d
-      description   : 'no tao lan dau'
-    Schema.customSales.insert option
+    $debtDate = template.ui.$debtDate
+    $description = template.ui.$description
+    debtDate = moment($debtDate.val(), 'DD/MM/YYYY')._d
+    if $description.val().length > 0 and debtDate < (new Date)
+      option =
+        parentMerchant: Session.get('myProfile').currentMerchant
+        creator       : Session.get('myProfile').user
+        buyer         : Session.get("customerManagementCurrentCustomer")._id
+        debtDate      : debtDate
+        description   : $description.val()
+      Schema.customSales.insert option
+
+      $debtDate.val("")
+      $description.val("")
 
   scope.deleteCustomSale = (customSaleId) ->
     customSale = Schema.customSales.findOne({_id: customSaleId, parentMerchant: Session.get('myProfile').currentMerchant})
