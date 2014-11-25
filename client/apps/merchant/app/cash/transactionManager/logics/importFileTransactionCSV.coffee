@@ -49,7 +49,7 @@ addTransactionAndDetail = (transactionColumn, data, profile) ->
       name: item[transactionColumn.name]
       phone: item[transactionColumn.phone]
     })
-    Transaction.newByUser(
+    Transaction.newByCustomer(
       customer._id,
       item[transactionColumn.description],
       item[transactionColumn.totalCash],

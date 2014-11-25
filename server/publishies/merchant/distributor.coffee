@@ -1,4 +1,4 @@
-Meteor.publish 'distributors', ->
+Meteor.publish 'availableDistributors', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
   Schema.distributors.find({parentMerchant: myProfile.parentMerchant})

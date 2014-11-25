@@ -28,8 +28,8 @@ logics.import.reactiveRun = ->
     logics.import.showCreateDetail = !currentImport.submitted
     logics.import.showEdit   = currentImport.submitted
     permission = Role.hasPermission(Session.get('myProfile')._id, Apps.Merchant.Permissions.su.key)
-    logics.import.showSubmit = logics.import.currentImportDetails.count() > 0 and !currentImport.submitted and !permission
-    logics.import.showFinish = logics.import.currentImportDetails.count() > 0 and !logics.import.showSubmit
+    logics.import.showSubmit = currentImport.distributor and logics.import.currentImportDetails.count() > 0 and !currentImport.submitted and !permission
+    logics.import.showFinish = currentImport.distributor and logics.import.currentImportDetails.count() > 0 and !logics.import.showSubmit
 
 
 

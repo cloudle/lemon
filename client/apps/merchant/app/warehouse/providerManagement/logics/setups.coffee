@@ -1,5 +1,6 @@
 resetForm = (context) -> $(item).val('') for item in context.findAll("[name]")
 Apps.Merchant.providerManagementInit.push (scope) ->
+  Meteor.subscribe('availablePayable')
   Session.set("providerManagementCurrentProvider", Schema.providers.findOne())
 
   scope.checkAllowCreateProvider = (context) ->

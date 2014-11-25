@@ -26,7 +26,7 @@ Meteor.methods
 
   importSubmit: (importId)->
     currentImport = Schema.imports.findOne({_id: importId, finish: false, submitted: false})
-    if currentImport
+    if currentImport and currentImport.distributor
       importDetails = Schema.importDetails.find({import: importId}).fetch()
       if importDetails.length > 0
         for importDetail in importDetails
@@ -39,7 +39,7 @@ Meteor.methods
 # kiem tra phan quyen
 #      Role.hasPermission(profile.user, Apps.Merchant.Permissions.su.key)
       currentImport = Schema.imports.findOne({_id: importId, submitted: true, finish: false, merchant: profile.currentMerchant})
-      if currentImport
+      if currentImport and currentImport.distributor
         importDetails = Schema.importDetails.find({import: importId}).fetch()
         for importDetail in importDetails
           if !Schema.products.findOne importDetail.product
@@ -53,22 +53,26 @@ Meteor.methods
           Schema.providers.update(productDetail.provider, $set:{allowDelete: false})
 
           product = Schema.products.findOne importDetail.product
-          option1=
+          incOption=
             totalQuality    : importDetail.importQuality
             availableQuality: importDetail.importQuality
             inStockQuality  : importDetail.importQuality
 
-          option2=
+          setOption=
             provider    : importDetail.provider
             importPrice : importDetail.importPrice
             allowDelete : false
-          option2.price = importDetail.salePrice if importDetail.salePrice
+          setOption.price = importDetail.salePrice if importDetail.salePrice
 
-          Schema.products.update product._id, $inc: option1, $set: option2, (error, result) ->
+          Schema.products.update product._id, $inc: incOption, $set: setOption, (error, result) ->
             if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
 
         navigateNewTab(currentImport._id, profile)
         Schema.imports.update currentImport._id, $set:{finish: true, submitted: true}
+
+        distributorOption = {totalSales: currentImport.totalPrice, totalDebit: currentImport.debit}
+        Schema.distributors.update currentImport.distributor, $inc: distributorOption
+
         warehouseImport = Schema.imports.findOne(importId)
         transaction = Transaction.newByImport(warehouseImport)
         transactionDetail = TransactionDetail.newByTransaction(transaction)

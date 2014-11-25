@@ -3,17 +3,54 @@ Meteor.publish 'availableReceivable', ->
   return [] if !myProfile
   Schema.transactions.find({merchant: myProfile.currentMerchant, warehouse: myProfile.currentWarehouse})
 
-#no cu
-Meteor.publish 'oldReceivable',(customerId) ->
+Meteor.publish 'availablePayable', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
   allMerchants = Schema.merchants.find({$or:[{_id: myProfile.parentMerchant }, {parent: myProfile.parentMerchant}]})
 
   Schema.transactions.find({
     merchant: $in: _.union(_.pluck(allMerchants.fetch(), '_id'))
-    owner   : customerId
     status  : 'tracking'
-    group   : {$in:['customer', 'sale']} })
+    group   : {$in:['import']} })
+
+Meteor.publishComposite 'oldReceivable',(customerId) ->
+  self = @
+  return {
+  find: ->
+    myProfile = Schema.userProfiles.findOne({user: self.userId})
+    return EmptyQueryResult if !myProfile
+    allMerchants = Schema.merchants.find({$or:[{_id: myProfile.parentMerchant }, {parent: myProfile.parentMerchant}]})
+
+    Schema.transactions.find({
+      merchant  : $in: _.union(_.pluck(allMerchants.fetch(), '_id'))
+      owner     : customerId
+      status    : 'tracking'
+      group     : {$in:['customer', 'sale']}
+      receivable: true
+    })
+
+#  children: [
+#    find: (transaction) -> Schema.customers.find {_id: transaction.owner}
+#    children: [
+#      find: (customer, transaction) -> AvatarImages.find {_id: customer.avatar}
+#    ]
+#  ]
+  }
+
+
+Meteor.publish 'oldPayable',(distributorId) ->
+  myProfile = Schema.userProfiles.findOne({user: @userId})
+  return [] if !myProfile
+  allMerchants = Schema.merchants.find({$or:[{_id: myProfile.parentMerchant }, {parent: myProfile.parentMerchant}]})
+
+  Schema.transactions.find({
+    merchant  : $in: _.union(_.pluck(allMerchants.fetch(), '_id'))
+    owner     : distributorId
+    status    : 'tracking'
+    group     : {$in:['distributor', 'import']}
+    receivable: false
+  })
+
 
 
 Meteor.publishComposite 'receivableAndRelates', -> #No phai thu

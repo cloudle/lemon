@@ -1,20 +1,20 @@
-scope = logics.customerManagement
+scope = logics.distributorManagement
 
-lemon.defineWidget Template.customerManagementDebitSection,
+lemon.defineWidget Template.distributorManagementDebitSection,
   oldTransaction: ->
     Schema.transactions.find({
-      owner     : Session.get("customerManagementCurrentCustomer")._id
-      group     : 'customer'
+      owner     : Session.get("distributorManagementCurrentDistributor")._id
+      group     : 'distributor'
       status    : 'tracking'
-      receivable: true
+      receivable: false
     })
 
   newTransaction: ->
     Schema.transactions.find({
-      owner     : Session.get("customerManagementCurrentCustomer")._id
-      group     : 'sale'
+      owner     : Session.get("distributorManagementCurrentDistributor")._id
+      group     : 'import'
       status    : 'tracking'
-      receivable: true
+      receivable: false
     })
 
   events:

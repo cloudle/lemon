@@ -1,7 +1,7 @@
 Apps.Merchant.transactionManagerInit.push (scope) ->
   scope.createTransaction = ()->
     if Session.get('createNewTransaction')?.customerId
-      Transaction.newByUser(
+      Transaction.newByCustomer(
         Session.get('createNewTransaction').customerId,
         Session.get('createNewTransaction').description,
         Session.get('createNewTransaction').totalCash,

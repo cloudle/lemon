@@ -9,7 +9,7 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       $debtDate    = $(template.find('[name=debtDate]'))
 
       if $description.val().length > 0 and $totalCash.val() > 0 and $totalCash.val() >= $depositCash.val() and moment($debtDate.val().toString(), "DD/MM/YYYY")._d < (new Date())
-        Transaction.newByUser(
+        Transaction.newByCustomer(
           customerId,
           $description.val(),
           $totalCash.val(),

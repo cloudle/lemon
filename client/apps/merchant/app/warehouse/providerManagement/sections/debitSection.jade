@@ -1,4 +1,43 @@
 template(name="providerManagementDebitSection")
-  .section
-    h1 Yeah
-    h1 {{totalDebit}}
+  .section.panel.panel-default
+    .panel-heading
+      span Công nợ
+    .panel-body
+      table.lemon-grid
+        tr(style="width:100%")
+          th(style="width:150px") Ngay
+          th(style="width:auto") Ghi Chu
+          th(style="width:150px") Tong tien
+          th(style="width:150px") Da tra
+          th(style="width:150px") Con lai
+        each oldTransaction
+          tr
+            td {{momentFormat debtDate "DD/MM/YYYY hh:mm"}}
+            td {{description}}
+            td {{formatNumber totalCash}}
+            td {{formatNumber depositCash}}
+            td {{formatNumber debitCash}}
+            if allowDelete
+              td: .lemon.btn.red.delete-transaction: span.icon-bag
+        tr
+          td: input(name='debtDate' type="text" size="10")
+          td: input(name='description' type="text" size="10")
+          td: input(name='totalCash' type="text" size="10")
+          td: input(name='depositCash' type="text" size="10")
+          td: .lemon.btn.lime.icon-bag.create-transaction THEM MOI
+      table.lemon-grid
+        tr(style="width:100%")
+          th(style="width:150px") Ngay
+          th(style="width:auto") Ghi Chu
+          th(style="width:150px") Tong tien
+          th(style="width:150px") Da tra
+          th(style="width:150px") Con lai
+      each newTransaction
+        tr
+          td {{momentFormat debtDate "DD/MM/YYYY hh:mm"}}
+          td {{description}}
+          td {{formatNumber totalCash}}
+          td {{formatNumber depositCash}}
+          td {{formatNumber debitCash}}
+    .panel-footer
+      span Tiền còn nợ: {{formatNumber totalDebit}} <br /> Tổng tiền: {{formatNumber totalPurchases}}
