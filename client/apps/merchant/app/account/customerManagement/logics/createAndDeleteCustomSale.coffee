@@ -27,15 +27,17 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     $productName = template.ui.$productName
     $price       = template.ui.$price
     $quality     = template.ui.$quality
+    $skulls      = template.ui.$skulls
     customSale   = Schema.customSales.findOne(customSaleId)
 
-    if customSale and $productName.val().length > 0 and $price.val() > 0 and $quality.val() > 0
+    if customSale and $productName.val().length > 0 and $skulls.val().length > 0 and $price.val() > 0 and $quality.val() > 0
       customSaleDetail =
         parentMerchant: Session.get('myProfile').currentMerchant
         creator       : Session.get('myProfile').user
         buyer         : Session.get("customerManagementCurrentCustomer")._id
         customSale    : customSale._id
         productName   : $productName.val()
+        skulls        : $skulls.val()
         price         : $price.val()
         quality       : $quality.val()
         finalPrice    : $quality.val()*$price.val()
@@ -69,4 +71,4 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       if customSale.depositCash is customSaleDetail.finalPrice
         Schema.customSales.update customSaleDetail.customSale, $set:{allowDelete: true, depositCash: 0}
       else
-      Schema.customSales.update customSaleDetail.customSale, $inc:{depositCash: -customSaleDetail.finalPrice}
+        Schema.customSales.update customSaleDetail.customSale, $inc:{totalCash: -customSaleDetail.finalPrice}

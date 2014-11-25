@@ -23,6 +23,7 @@ template(name="customerManagementSalesHistorySection")
         each customSaleDetail
           tr
             td {{productName}}
+            td {{skulls}}
             td {{formatNumber quality}}
             td.number {{formatNumber price}}
             td.number {{formatNumber finalPrice}}
@@ -35,6 +36,7 @@ template(name="customerManagementSalesHistorySection")
 
         tr
           td: input(name='productName' type="text" size="10")
+          td: input(name='skulls' type="text" size="10")
           td: input.number(name='quality' type="text" size="10")
           td: input.number(name='price' type="text" size="10")
           td: .lemon.btn.lime.icon-bag.create-customSaleDetail THEM DETAIL

@@ -1,5 +1,6 @@
 resetForm = (context) -> $(item).val('') for item in context.findAll("[name]")
 Apps.Merchant.staffManagementInit.push (scope) ->
+  Session.set("staffManagementSearchFilter", "")
   Session.set("staffManagementCurrentStaff", Schema.userProfiles.findOne())
 
   scope.checkAllowCreateStaff = (context) ->

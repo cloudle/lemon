@@ -14,6 +14,9 @@ simpleSchema.customSaleDetails = new SimpleSchema
   productName:
     type: String
 
+  skulls:
+    type: String
+
   price:
     type: Number
 

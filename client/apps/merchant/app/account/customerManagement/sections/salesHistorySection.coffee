@@ -14,8 +14,8 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
     "click .delete-customSale": (event, template) -> scope.deleteCustomSale(@_id)
 
     "click .create-customSaleDetail": (event, template) ->
-      customSaleId = "JDbiv8pZcuE64u6vB"
+      customSaleId = Session.get('customerManagementCustomSaleId')
       scope.createCustomSaleDetail(customSaleId, template)
     "click .pay-customSaleDetail": (event, template) -> scope.payCustomSaleDetail(@_id, true)
     "click .unPay-customSaleDetail": (event, template) -> scope.payCustomSaleDetail(@_id, false)
-    "click .delete-customSaleDetails": (event, template) -> scope.deleteCustomSaleDetail(@_id)
+    "click .delete-customSaleDetail": (event, template) -> scope.deleteCustomSaleDetail(@_id)
