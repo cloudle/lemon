@@ -1,4 +1,4 @@
-template(name="customerManagementDebitSection")
+template(name="customerManagementSalesHistorySection")
   .section.panel.panel-default
     .panel-heading
       div Công nợ
@@ -30,12 +30,13 @@ template(name="customerManagementDebitSection")
       table.lemon-grid
         +customerManagementSaleHistoryHeader
         each defaultSale
-          tr
-            td {{momentFormat version.createdAt "DD/MM/YYYY hh:mm"}}
-            td {{description}}
-            td {{formatNumber finalPrice}}
-            td {{formatNumber depositCash}}
-            td {{formatNumber debitCash}}
+          +customerManagementSaleDetails this
+          //tr
+          //  td {{momentFormat version.createdAt "DD/MM/YYYY hh:mm"}}
+          //  td {{description}}
+          //  td {{formatNumber finalPrice}}
+          //  td {{formatNumber depositCash}}
+          //  td {{formatNumber debitCash}}
     .panel-footer
       h3 Tiền còn nợ: {{formatNumber totalDebit}} VNĐ<br />
       h3 Tổng tiền: {{formatNumber totalPurchases}} VNĐ

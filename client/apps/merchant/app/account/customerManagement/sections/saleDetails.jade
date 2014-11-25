@@ -1,0 +1,12 @@
+template(name="customerManagementSaleDetails")
+  tr.header-row
+    td(colspan="5") {{momentFormat version.createdAt "DD/MM/YYYY hh:mm"}} {{orderCode}}
+  each saleDetails
+    tr
+      td ?s
+      td {{productName}} ({{skulls}})
+      td.number {{formatNumber price}}
+      td.number {{formatNumber quality}}
+      td.number {{formatNumber finalPrice}}
+  tr.summary-row
+    td(colspan="5" align="right") TỔNG {{formatNumber finalPrice}} VNĐ
