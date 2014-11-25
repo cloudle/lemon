@@ -1,8 +1,8 @@
 Schema.add 'customSales', "CustomSale", class CustomSale
-  @newBySale: (order, sale)->
+  @new: (option)->
 
 Schema.add 'customSaleDetails', "CustomSaleDetail", class CustomSaleDetail
-  @newBySale: (order, sale)->
+  @new: (option)->
 
 
 

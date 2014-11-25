@@ -13,12 +13,9 @@ lemon.defineHyper Template.customerManagementDebitSection,
     @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
   events:
-  #click xem chi tiet
-    "click .transactionDetail": (event, template) ->
-#      Meteor.subscribe('transactionDetails', Session.get("currentTransaction")._id)
+    "click .create-customSale": (event, template) -> scope.createCustomSale(event, template)
+#    "click .delete-customSale": (event, template) ->
 
-    "click .create-transaction": (event, template) ->
-      scope.createTransaction(event, template)
-
-    "click .delete-transaction": (event, template) ->
-      Meteor.call 'deleteTransaction', @_id, (error, result) -> if error then console.log error
+    "click .create-customSaleDetail": (event, template) -> scope.createCustomSaleDetail(event, template)
+    "click .pay-customSaleDetail": (event, template) -> scope.createCustomSaleDetail(event, template)
+#    "click .delete-customSaleDetails": (event, template) ->

@@ -11,6 +11,9 @@ simpleSchema.customSaleDetails = new SimpleSchema
   customSale:
     type: String
 
+  productName:
+    type: String
+
   price:
     type: Number
 
@@ -19,6 +22,10 @@ simpleSchema.customSaleDetails = new SimpleSchema
 
   totalPrice:
     type: Number
+
+  pay:
+    type: Boolean
+    defaultValue: false
 
   styles:
     type: String

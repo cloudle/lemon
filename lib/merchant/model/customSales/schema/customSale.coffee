@@ -8,23 +8,31 @@ simpleSchema.customSales = new SimpleSchema
   buyer:
     type: String
 
-  orderCode:
+  customSaleCode:
     type: String
     optional: true
 
-  totalPrice:
-    type: Number
+  debtDate:
+    type: Date
 
-  finalPrice:
-    type: Number
+  description:
+    type: String
 
-  deposit:
+  totalCash:
     type: Number
+    defaultValue: 0
+
+  depositCash:
+    type: Number
+    defaultValue: 0
+
+  allowDelete:
+    type: Boolean
+    defaultValue: true
 
   styles:
     type: String
     defaultValue: Helpers.RandomColor()
-    optional: true
 
   version: { type: simpleSchema.Version }
 
