@@ -7,7 +7,6 @@ template(name="customerManagementSalesHistorySection")
         th(style="width:auto") GHI CHU
         th.number(style="width:150px") TONG TIEN
         th.number(style="width:150px") DA TRA
-        th.number(style="width:150px") CON LAI
     .panel-body
       table.lemon-grid
         +customerManagementSaleHistoryHeader
@@ -18,15 +17,34 @@ template(name="customerManagementSalesHistorySection")
             td.number {{formatNumber totalCash}}
             td.number {{formatNumber depositCash}}
             td.number
-              |{{formatNumber debitCash}}
               if allowDelete
                 .lemon.btn.red.delete-customSale: span.icon-bag
+
+        each customSaleDetail
+          tr
+            td {{productName}}
+            td {{formatNumber quality}}
+            td.number {{formatNumber price}}
+            td.number {{formatNumber finalPrice}}
+            td.number
+              if pay
+                .lemon.btn.red.unPay-customSaleDetail: span huy tra
+              else
+                .lemon.btn.lime.pay-customSaleDetail: span tra
+                .lemon.btn.red.delete-customSaleDetail: span xoa
+
+        tr
+          td: input(name='productName' type="text" size="10")
+          td: input.number(name='quality' type="text" size="10")
+          td: input.number(name='price' type="text" size="10")
+          td: .lemon.btn.lime.icon-bag.create-customSaleDetail THEM DETAIL
+
         tr
           td: input(name='debtDate' type="text" size="10")
           td: input(name='description' type="text" size="10")
           td: input.number(name='totalCash' type="text" size="10")
           td: input.number(name='depositCash' type="text" size="10")
-          td: .lemon.btn.lime.icon-bag.create-customSale THEM MOI
+          td: .lemon.btn.lime.icon-bag.create-customSale THEM MOI 1
       table.lemon-grid
         +customerManagementSaleHistoryHeader
         each defaultSale

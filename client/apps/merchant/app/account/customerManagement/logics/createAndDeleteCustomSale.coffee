@@ -23,36 +23,50 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       Schema.customSales.remove customSale._id
 
 
-  scope.createCustomSaleDetail = (event, template) ->
-    customSaleDetail =
-      parentMerchant: Session.get('myProfile').currentMerchant
-      creator       : Session.get('myProfile').user
-      buyer         : Session.get("customerManagementCurrentCustomer")._id
-      customSale    : "bFi7kn6G3xPDZBEud"
-      productName   : 'Ao Quan'
-      price         : 50000
-      quality       : 10
-      totalPrice    : 500000
-    Schema.customSaleDetails.insert customSaleDetail
+  scope.createCustomSaleDetail = (customSaleId, template) ->
+    $productName = template.ui.$productName
+    $price       = template.ui.$price
+    $quality     = template.ui.$quality
+    customSale   = Schema.customSales.findOne(customSaleId)
 
-    customSaleOption = {totalCash: 0, depositCash: 0}
-    for customSaleDetail in Schema.customSaleDetails.find({customSale: customSaleDetail.customSale}).fetch()
-      customSaleOption.totalCash   += customSaleDetail.totalPrice
-      customSaleOption.depositCash += customSaleDetail.totalPrice if customSaleDetail.pay is true
-    Schema.customSales.update customSaleDetail.customSale, $set: customSaleOption
+    if customSale and $productName.val().length > 0 and $price.val() > 0 and $quality.val() > 0
+      customSaleDetail =
+        parentMerchant: Session.get('myProfile').currentMerchant
+        creator       : Session.get('myProfile').user
+        buyer         : Session.get("customerManagementCurrentCustomer")._id
+        customSale    : customSale._id
+        productName   : $productName.val()
+        price         : $price.val()
+        quality       : $quality.val()
+        finalPrice    : $quality.val()*$price.val()
+      Schema.customSaleDetails.insert customSaleDetail
+
+      customSaleOption = {totalCash: 0, depositCash: 0}
+      for customSaleDetail in Schema.customSaleDetails.find({customSale: customSaleDetail.customSale}).fetch()
+        customSaleOption.totalCash   += customSaleDetail.finalPrice
+        customSaleOption.depositCash += customSaleDetail.finalPrice if customSaleDetail.pay is true
+      Schema.customSales.update customSaleDetail.customSale, $set: customSaleOption
 
   scope.payCustomSaleDetail = (customSaleDetailId, pay) ->
     customSaleDetail = Schema.customSaleDetails.findOne({_id:customSaleDetailId, parentMerchant:Session.get('myProfile').parentMerchant})
     if customSaleDetail and customSaleDetail.pay is false and pay is true
       Schema.customSaleDetails.update customSaleDetail._id, $set:{pay: true}
-      Schema.customSales.update customSaleDetail.customSale, $inc:{depositCash: customSaleDetail.totalPrice}
+      Schema.customSales.update customSaleDetail.customSale, $set:{allowDelete: false}, $inc:{depositCash: customSaleDetail.finalPrice}
 
     if customSaleDetail and customSaleDetail.pay is true and pay is false
       Schema.customSaleDetails.update customSaleDetail._id, $set:{pay: false}
-      Schema.customSales.update customSaleDetail.customSale, $inc:{depositCash: -customSaleDetail.totalPrice}
+      customSale = Schema.customSales.findOne({_id:customSaleDetail.customSale, parentMerchant:Session.get('myProfile').parentMerchant})
+      if customSale.depositCash is customSaleDetail.finalPrice
+        Schema.customSales.update customSaleDetail.customSale, $set:{allowDelete: true, depositCash: 0}
+      else
+        Schema.customSales.update customSaleDetail.customSale, $inc:{depositCash: -customSaleDetail.finalPrice}
 
-  scope.deleteCustomSaleDetail= (customSaleDetailId) ->
+  scope.deleteCustomSaleDetail = (customSaleDetailId) ->
     customSaleDetail = Schema.customSaleDetails.findOne({_id:customSaleDetailId, parentMerchant:Session.get('myProfile').parentMerchant})
+    customSale = Schema.customSales.findOne({_id:customSaleDetail.customSale, parentMerchant:Session.get('myProfile').parentMerchant})
     if customSaleDetail and customSaleDetail.pay is false
       Schema.customSaleDetails.remove customSaleDetail._id
-      Schema.customSales.update customSaleDetail.customSale, $inc:{totalCash: -customSaleDetail.totalPrice}
+      if customSale.depositCash is customSaleDetail.finalPrice
+        Schema.customSales.update customSaleDetail.customSale, $set:{allowDelete: true, depositCash: 0}
+      else
+      Schema.customSales.update customSaleDetail.customSale, $inc:{depositCash: -customSaleDetail.finalPrice}

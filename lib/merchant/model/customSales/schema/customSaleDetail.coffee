@@ -20,7 +20,7 @@ simpleSchema.customSaleDetails = new SimpleSchema
   quality:
     type: Number
 
-  totalPrice:
+  finalPrice:
     type: Number
 
   pay:
