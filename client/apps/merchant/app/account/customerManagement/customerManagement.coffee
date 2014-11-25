@@ -1,6 +1,7 @@
 scope = logics.customerManagement
 
 lemon.defineApp Template.customerManagement,
+  showFilterSearch: -> Session.get("customerManagementSearchFilter").length > 0
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   currentCustomer: -> Session.get("customerManagementCurrentCustomer")
   activeClass:-> if Session.get("customerManagementCurrentCustomer")?._id is @._id then 'active' else ''
@@ -8,6 +9,7 @@ lemon.defineApp Template.customerManagement,
   created: ->
     Session.setDefault('allowCreateNewCustomer', false)
   events:
+    "input .search-filter": (event, template) -> Session.set("customerManagementSearchFilter", template.ui.$searchFilter.val())
     "click .inner.caption": (event, template) -> Session.set("customerManagementCurrentCustomer", @)
     "input input": (event, template) -> scope.checkAllowCreate(template)
     "click #createCustomerAccount": (event, template) -> scope.createNewCustomer(template)

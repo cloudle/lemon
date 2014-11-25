@@ -36,14 +36,19 @@ template(name="customerManagement")
             .section Auto debt section
       .dual-addon
         .search-filter.icon-search-8
-          input(type="text")
+          input(name='searchFilter' type="text")
         .nano: .nano-content
           each managedCustomerList
             .group-wrapper
-              .group.caption {{key}}
-              each childs
+              if showFilterSearch
                 .inner.caption(class="{{activeClass}}")
-                  //if allowDelete
-                  //  i.trash.icon-bag
                   +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                   span {{name}}
+              else
+                .group.caption {{key}}
+                each childs
+                  .inner.caption(class="{{activeClass}}")
+                    //if allowDelete
+                    //  i.trash.icon-bag
+                    +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                    span {{name}}

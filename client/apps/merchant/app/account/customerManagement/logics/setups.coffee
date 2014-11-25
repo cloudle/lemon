@@ -1,4 +1,5 @@
 Apps.Merchant.customerManagementInit.push (scope) ->
+  Session.set("customerManagementSearchFilter", "")
   Session.set("customerManagementCurrentCustomer", Schema.customers.findOne())
 
   scope.checkAllowCreate = (context) ->
