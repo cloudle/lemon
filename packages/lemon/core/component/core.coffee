@@ -12,6 +12,8 @@ Component.helpers.customBinding = (uiOptions, context) ->
   context.ui = {}
   context.ui[name] = context.find(value) for name, value of uiOptions when typeof value is 'string'
 
+Component.helpers.bindingElements = (context)-> bindingElements(context)
+
 Component.helpers.autoBinding = (context) ->
   context.ui = context.ui ? {}
   bindingToolTip(context)

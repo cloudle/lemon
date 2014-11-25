@@ -1,37 +1,34 @@
 template(name="customerManagementDebitSection")
   .section.panel.panel-default
     .panel-heading
-      span Công nợ
+      div Công nợ
+      table.lemon-grid: tr
+        th(style="width:150px") NGAY
+        th(style="width:auto") GHI CHU
+        th.number(style="width:150px") TONG TIEN
+        th.number(style="width:150px") DA TRA
+        th.number(style="width:150px") CON LAI
     .panel-body
       table.lemon-grid
-        tr(style="width:100%")
-          th(style="width:150px") Ngay
-          th(style="width:auto") Ghi Chu
-          th(style="width:150px") Tong tien
-          th(style="width:150px") Da tra
-          th(style="width:150px") Con lai
+        +customerManagementSaleHistoryHeader
         each customSale
           tr
             td {{momentFormat version.createdAt "DD/MM/YYYY hh:mm"}}
             td {{description}}
-            td {{formatNumber totalCash}}
-            td {{formatNumber depositCash}}
-            td {{formatNumber debitCash}}
-            if allowDelete
-              td: .lemon.btn.red.delete-transaction: span.icon-bag
+            td.number {{formatNumber totalCash}}
+            td.number {{formatNumber depositCash}}
+            td.number
+              |{{formatNumber debitCash}}
+              if allowDelete
+                .lemon.btn.red.delete-transaction: span.icon-bag
         tr
           td: input(name='debtDate' type="text" size="10")
           td: input(name='description' type="text" size="10")
-          td: input(name='totalCash' type="text" size="10")
-          td: input(name='depositCash' type="text" size="10")
+          td: input.number(name='totalCash' type="text" size="10")
+          td: input.number(name='depositCash' type="text" size="10")
           td: .lemon.btn.lime.icon-bag.create-transaction THEM MOI
       table.lemon-grid
-        tr(style="width:100%")
-          th(style="width:150px") Ngay
-          th(style="width:auto") Ghi Chu
-          th(style="width:150px") Tong tien
-          th(style="width:150px") Da tra
-          th(style="width:150px") Con lai
+        +customerManagementSaleHistoryHeader
         each defaultSale
           tr
             td {{momentFormat version.createdAt "DD/MM/YYYY hh:mm"}}
@@ -40,4 +37,14 @@ template(name="customerManagementDebitSection")
             td {{formatNumber depositCash}}
             td {{formatNumber debitCash}}
     .panel-footer
-      span Tiền còn nợ: {{formatNumber totalDebit}} <br /> Tổng tiền: {{formatNumber totalPurchases}}
+      h3 Tiền còn nợ: {{formatNumber totalDebit}} VNĐ<br />
+      h3 Tổng tiền: {{formatNumber totalPurchases}} VNĐ
+
+
+template(name="customerManagementSaleHistoryHeader")
+  tr
+    th(style="width:150px")
+    th(style="width:auto")
+    th(style="width:150px")
+    th(style="width:150px")
+    th(style="width:150px")

@@ -37,7 +37,7 @@ checkingAddOrderDetail= (newOrderDetail, orderDetails)->
     insertNewOrderDetail(newOrderDetail)
 
 Apps.Merchant.salesInit.push ->
-  logics.sales.addOrderDetail = (productId, quality, price = null, discountCash = null)->
+  logics.sales.addOrderDetail = (productId, quality = 1, price = null, discountCash = null)->
     zone.run =>
       currentOrder = logics.sales.currentOrder
       if !product = Schema.products.findOne(productId) then return console.log('productId không tồn tại.')

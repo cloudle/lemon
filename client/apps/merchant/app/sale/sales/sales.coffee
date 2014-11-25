@@ -8,11 +8,15 @@ lemon.defineApp Template.sales,
   created: ->
     Session.setDefault('allowAllOrderDetail', false)
     Session.setDefault('allowSuccessOrder', false)
+    Session.setDefault('globalBarcodeInput', '')
 
   rendered: ->
     logics.sales.templateInstance = @
     lemon.ExcuteLogics()
     $("[name=deliveryDate]").datepicker('setDate', logics.sales.deliveryDetail?.deliveryDate)
+    $(document).on "keypress", (e) -> logics.sales.handleGlobalBarcodeInput(e)
+  destroyed: ->
+    $(document).off("keypress")
 
   events:
     "change [name='advancedMode']": (event, template) ->
