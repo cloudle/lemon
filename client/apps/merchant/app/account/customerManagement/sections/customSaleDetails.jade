@@ -1,0 +1,35 @@
+template(name="customerManagementCustomSaleDetails")
+  tr.header-row
+    td(colspan="5")
+      | .
+      .bill-header <b>{{momentCalendar version.createdAt}}</b>
+      .commands
+        if isEditing
+          .lemon.rounded.orange.btn.animated.bounceIn.cancel-edit: span.icon-cancel-7
+        else
+          .lemon.rounded.blue.btn.animated.bounceIn.enter-edit: span.icon-pencil
+
+  each customSaleDetails
+    tr.detail-row
+      td.has-commands
+        |{{productName}}
+        .commands
+          if pay
+            .lemon.rounded.tiny.btn.red.redo-custom-sale: span.icon-plus-6
+          else
+            .lemon.rounded.tiny.btn.red.apply-custom-sale: span.icon-bag
+            .lemon.rounded.tiny.btn.red.delete-custom-sale: span.icon-bag
+      td {{formatNumber quality}}
+      td {{skulls}}
+      td.number {{formatNumber price}}
+      td.number {{formatNumber finalPrice}}
+  if isEditing
+    tr.animated.fadeIn
+      td: input(name='productName' type="text" size="10")
+      td: input(name='skulls' type="text" size="10")
+      td: input.number(name='quality' type="text" size="10")
+      td: input.number(name='price' type="text" size="10")
+      td: .lemon.btn.lime.icon-bag.create-customSaleDetail THEM DETAIL
+  tr.detail-row.summary-row
+    td(colspan="4")
+    td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>

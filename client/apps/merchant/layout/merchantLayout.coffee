@@ -22,7 +22,9 @@ destroyHomeTracker = -> Apps.Merchant.homeTracker.stop()
 lemon.defineWidget Template.merchantLayout,
   collapse: -> Session.get('collapse') ? ''
 
-  created: -> startHomeTracker()
+  created: ->
+    Session.set("collapse", true)
+    startHomeTracker()
 
   rendered: ->
     arrangeSideBar(@)

@@ -19,3 +19,21 @@
   &:active
     box-shadow 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
     padding-top 4px; padding-bottom 4px
+
+.lemon.rounded.btn
+  cursor pointer
+  color #FFFFFF
+  box-shadow 0px 0px 0px 3px rgba(0, 0, 0, 0.2);
+  border-radius 50%
+  padding 3px
+  transition background-color 1s
+  for $color in colors
+    &.{$color[0]}
+      background-color $color[1]
+      &:hover, &:active
+        background-color lighten($color[1], 5)
+
+  &.tiny
+    box-shadow none
+    padding 1px
+    font-size 10px

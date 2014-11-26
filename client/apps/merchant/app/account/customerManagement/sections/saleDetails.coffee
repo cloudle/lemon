@@ -3,5 +3,4 @@ lemon.defineWidget Template.customerManagementSaleDetails,
 
   saleDetails: ->
     saleId = UI._templateInstance().data._id
-    console.log saleId
     Schema.saleDetails.find({sale: saleId})
