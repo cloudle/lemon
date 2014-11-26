@@ -14,22 +14,21 @@ template(name="customerManagementCustomSaleDetails")
       td.has-commands
         |{{productName}}
         .commands
-          if pay
-            .lemon.rounded.tiny.btn.red.redo-custom-sale: span.icon-plus-6
-          else
-            .lemon.rounded.tiny.btn.lime.apply-custom-sale: span.icon-ok-6
-            .lemon.rounded.tiny.btn.red.delete-custom-sale: span.icon-bag
+          .lemon.rounded.tiny.btn.red.deleteCustomSaleDetail: span.icon-bag
       td {{formatNumber quality}}
       td {{skulls}}
       td.number {{formatNumber price}}
       td.number {{formatNumber finalPrice}}
   if isEditing
-    tr.animated.fadeIn
-      td: input(name='productName' type="text" size="10")
-      td: input(name='skulls' type="text" size="10")
-      td: input.number(name='quality' type="text" size="10")
-      td: input.number(name='price' type="text" size="10")
-      td: .lemon.btn.lime.icon-bag.create-customSaleDetail THEM DETAIL
+    +customerManagementCustomSaleDetailCreator
   tr.detail-row.summary-row
     td(colspan="4")
     td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>
+
+template(name="customerManagementCustomSaleDetailCreator")
+  tr.animated.fadeIn
+    td: input(name='productName' type="text" size="10")
+    td: input(name='quality' type="text" size="10")
+    td: input(name='skulls' type="text" size="10")
+    td: input.number(name='price' type="text" size="10")
+    td: .lemon.btn.lime.icon-bag.createCustomSaleDetail THEM DETAIL

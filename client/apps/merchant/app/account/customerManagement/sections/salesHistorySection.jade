@@ -13,21 +13,6 @@ template(name="customerManagementSalesHistorySection")
         each customSale
           +customerManagementCustomSaleDetails this
 
-        each customSaleDetail
-          tr
-            td {{productName}}
-            td {{skulls}}
-            td {{formatNumber quality}}
-            td.number {{formatNumber price}}
-            td.number.has-commands
-              |{{formatNumber finalPrice}}
-              .commands
-                if pay
-                  .lemon.btn.red.unPay-customSaleDetail: span huy tra
-                else
-                  .lemon.btn.lime.pay-customSaleDetail: span tra
-                  .lemon.btn.red.delete-customSaleDetail: span xoa
-
         tr
           td: input(name='productName' type="text" size="10")
           td: input(name='skulls' type="text" size="10")

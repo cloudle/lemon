@@ -23,16 +23,17 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       Schema.customSales.remove customSale._id
 
 
-  scope.createCustomSaleDetail = (customSaleId, template) ->
-    $productName = template.ui.$productName
-    $price       = template.ui.$price
-    $quality     = template.ui.$quality
-    $skulls      = template.ui.$skulls
-    customSale   = Schema.customSales.findOne(customSaleId)
+  scope.createCustomSaleDetail = (customSale, template) ->
+    $productName = $(template.find("[name='productName']"))
+    $price       = $(template.find("[name='price']"))
+    $quality     = $(template.find("[name='quality']"))
+    $skulls      = $(template.find("[name='skulls']"))
+
+    console.log customSale, $productName.val().length > 0, $skulls.val().length > 0, $price.val() > 0, $quality.val() > 0
 
     if customSale and $productName.val().length > 0 and $skulls.val().length > 0 and $price.val() > 0 and $quality.val() > 0
       customSaleDetail =
-        parentMerchant: Session.get('myProfile').currentMerchant
+        parentMerchant: Session.get('myProfile').parentMerchant
         creator       : Session.get('myProfile').user
         buyer         : Session.get("customerManagementCurrentCustomer")._id
         customSale    : customSale._id
@@ -48,8 +49,9 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         customSaleOption.totalCash   += customSaleDetail.finalPrice
         customSaleOption.depositCash += customSaleDetail.finalPrice if customSaleDetail.pay is true
       Schema.customSales.update customSaleDetail.customSale, $set: customSaleOption
-
+      $productName.val(''); $price.val(''); $quality.val(''); $skulls.val('')
   scope.payCustomSaleDetail = (customSaleDetailId, pay) ->
+
     customSaleDetail = Schema.customSaleDetails.findOne({_id:customSaleDetailId, parentMerchant:Session.get('myProfile').parentMerchant})
     if customSaleDetail and customSaleDetail.pay is false and pay is true
       Schema.customSaleDetails.update customSaleDetail._id, $set:{pay: true}

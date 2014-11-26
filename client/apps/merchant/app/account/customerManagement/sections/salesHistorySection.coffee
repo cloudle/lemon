@@ -1,7 +1,6 @@
 scope = logics.customerManagement
 
 lemon.defineHyper Template.customerManagementSalesHistorySection,
-  customSaleDetail: ->Schema.customSaleDetails.find({})
   customSale: -> Schema.customSales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id})
   defaultSale: -> Schema.sales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id})
   rendered: ->
@@ -12,10 +11,3 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
   events:
     "click .create-customSale": (event, template) -> scope.createCustomSale(event, template)
     "click .delete-customSale": (event, template) -> scope.deleteCustomSale(@_id)
-
-    "click .create-customSaleDetail": (event, template) ->
-      customSaleId = Session.get('customerManagementCustomSaleId')
-      scope.createCustomSaleDetail(customSaleId, template)
-    "click .pay-customSaleDetail": (event, template) -> scope.payCustomSaleDetail(@_id, true)
-    "click .unPay-customSaleDetail": (event, template) -> scope.payCustomSaleDetail(@_id, false)
-    "click .delete-customSaleDetail": (event, template) -> scope.deleteCustomSaleDetail(@_id)
