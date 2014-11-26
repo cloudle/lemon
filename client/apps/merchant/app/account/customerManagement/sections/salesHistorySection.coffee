@@ -1,8 +1,8 @@
 scope = logics.customerManagement
 
 lemon.defineHyper Template.customerManagementSalesHistorySection,
-  customSale: -> Schema.customSales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id})
-  defaultSale: -> Schema.sales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id})
+  customSale: -> Schema.customSales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}, {sort: {debtDate: -1}})
+  defaultSale: -> Schema.sales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}, {sort: {'version.createdAt': -1}})
   rendered: ->
     @ui.$debtDate.inputmask("dd/mm/yyyy")
     @ui.$totalCash.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
