@@ -4,13 +4,11 @@ template(name="customerManagementCustomSaleDetails")
     .bill-header <b>{{momentCalendar debtDate}}</b>
     .commands
       if allowDelete
-        .lemon.rounded.red.btn.animated
-      if isNotPaid
-        .lemon.rounded.lime.btn.animated.bounceIn.paid-customSale: span.icon-ok-6
-        if isEditing
-          .lemon.rounded.orange.btn.animated.bounceIn.cancel-edit: span.icon-cancel-7
-        else
-          .lemon.rounded.blue.btn.animated.bounceIn.enter-edit: span.icon-pencil
+        .lemon.rounded.red.btn.animated    
+      if isEditing
+        .lemon.rounded.orange.btn.animated.bounceIn.cancel-edit: span.icon-cancel-7
+      else
+        .lemon.rounded.blue.btn.animated.bounceIn.enter-edit: span.icon-pencil
 
   each customSaleDetails
     tr.detail-row

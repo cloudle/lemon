@@ -3,16 +3,16 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     $debtDate = template.ui.$debtDate
     $description = template.ui.$description
     debtDate = moment($debtDate.val(), 'DD/MM/YYYY')._d
-    if $description.val().length > 0 and debtDate < (new Date)
+    customer = Session.get("customerManagementCurrentCustomer")
+    if debtDate < (new Date) and customer.debtBalance
       option =
-        parentMerchant: Session.get('myProfile').currentMerchant
-        creator       : Session.get('myProfile').user
-        buyer         : Session.get("customerManagementCurrentCustomer")._id
-        debtDate      : debtDate
-        description   : $description.val()
-        latestDebtBalance: Session.get("customerManagementCurrentCustomer").debtBalance ? 0
-      customSaleId = Schema.customSales.insert option
-      Meteor.call('newTransactionByCustomSaleCreate', customSaleId)  if customSaleId
+        parentMerchant   : Session.get('myProfile').currentMerchant
+        creator          : Session.get('myProfile').user
+        buyer            : Session.get("customerManagementCurrentCustomer")._id
+        debtDate         : debtDate
+        description      : $description.val()
+        latestDebtBalance: customer.debtBalance
+      Schema.customSales.insert option
       $debtDate.val(''); $description.val('')
 
   scope.createCustomSaleDetail = (customSale, template) ->
@@ -35,21 +35,15 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         quality       : $quality.val()
         finalPrice    : $quality.val()*$price.val()
       customSaleDetailId = Schema.customSaleDetails.insert customSaleDetail
-      Meteor.call('updateTransactionByCustomSaleDetailCreate', customSaleDetailId) if customSaleDetailId
+      Meteor.call('updateCustomSaleByCustomSaleDetailCreate', customSaleDetailId) if customSaleDetailId
       $productName.val(''); $price.val(''); $quality.val(''); $skulls.val('')
 
   scope.deleteCustomSale = (customSaleId) ->
-    Meteor.call('deleteTransactionByCustomSale', customSaleId)
+    Meteor.call('deleteCustomSale', customSaleId)
 
   scope.deleteCustomSaleDetail = (customSaleDetailId) ->
-    Meteor.call('updateTransactionByCustomSaleDetailDelete', customSaleDetailId)
+    Meteor.call('updateCustomSaleByCustomSaleDetailDelete', customSaleDetailId)
 
   scope.confirmCustomSale = (customSaleId) ->
     customSale = Schema.customSales.findOne({_id:customSaleId, parentMerchant:Session.get('myProfile').parentMerchant})
     Transaction.newByCustomSale(customSale._id) if customSale.allowDelete is false and customSale.confirm is false
-
-  scope.paidCustomSale = (customSaleId) ->
-    Meteor.call('newTransactionByCustomSaleIsPaid', customSaleId)
-
-
-
