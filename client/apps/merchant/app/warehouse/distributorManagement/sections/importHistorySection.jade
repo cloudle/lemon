@@ -13,28 +13,6 @@ template(name="distributorManagementImportsHistorySection")
         each customImport
           +distributorManagementCustomImportDetails this
 
-        each customImportDetail
-          tr
-            td {{productName}}
-            td {{skulls}}
-            td {{formatNumber quality}}
-            td.number {{formatNumber price}}
-            td.number.has-commands
-              |{{formatNumber finalPrice}}
-              .commands
-                if pay
-                  .lemon.btn.red.unPay-customImportDetail: span huy tra
-                else
-                  .lemon.btn.lime.pay-customImportDetail: span tra
-                  .lemon.btn.red.delete-customImportDetail: span xoa
-
-        tr
-          td: input(name='productName' type="text" size="10")
-          td: input(name='skulls' type="text" size="10")
-          td: input.number(name='quality' type="text" size="10")
-          td: input.number(name='price' type="text" size="10")
-          td: .lemon.btn.lime.icon-bag.create-customImportDetail THEM DETAIL
-
         tr
           td: input(name='debtDate' type="text" size="10")
           td: input(name='description' type="text" size="10")
@@ -47,8 +25,8 @@ template(name="distributorManagementImportsHistorySection")
         each defaultImport
           +distributorManagementImportDetails this
     .panel-footer
-      h3 Tiền còn nợ: {{formatNumber totalDebit}} VNĐ<br />
-      h3 Tổng tiền: {{formatNumber totalPurchases}} VNĐ
+      h3 Công ty nợ: {{formatNumber totalDebit}} VNĐ<br />
+      h3 Tổng tiền : {{formatNumber totalPurchases}} VNĐ
 
 
 template(name="distributorManagementImportHistoryHeader")

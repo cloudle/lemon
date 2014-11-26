@@ -1,0 +1,37 @@
+template(name="staffManagementSalesHistorySection")
+  .section.panel.panel-default
+    .panel-heading
+      table.lemon-grid: tr
+        th(style="width:auto") SẢN PHẨM
+        th(style="width:50px") SL
+        th(style="width:80px") QUI CÁCH
+        th.number(style="width:120px") ĐƠN GIÁ
+        th.number(style="width:180px") THÀNH TIỀN
+    .panel-body
+      //table.lemon-grid
+      //  +staffManagementSaleHistoryHeader
+      //  each customSale
+      //    +staffManagementCustomSaleDetails this
+      //  tr
+      //    td: input(name='debtDate' type="text" size="10")
+      //    td: input(name='description' type="text" size="10")
+      //    td: input.number(name='totalCash' type="text" size="10")
+      //    td: input.number(name='depositCash' type="text" size="10")
+      //    td: .lemon.btn.lime.icon-bag.create-customSale THEM MOI 1
+
+      table.lemon-grid.safe
+        +staffManagementSaleHistoryHeader
+        each defaultSale
+          +staffManagementSaleDetails this
+    .panel-footer
+      h3 Tiền còn nợ: {{formatNumber totalDebit}} VNĐ<br />
+      h3 Tổng tiền: {{formatNumber totalPurchases}} VNĐ
+
+
+template(name="staffManagementSaleHistoryHeader")
+  tr
+    th(style="width:auto")
+    th(style="width:50px")
+    th(style="width:80px")
+    th(style="width:120px")
+    th(style="width:180px")

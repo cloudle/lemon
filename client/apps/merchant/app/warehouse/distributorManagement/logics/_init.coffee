@@ -7,4 +7,4 @@ Apps.Merchant.distributorManagementReactive.push (scope) ->
   scope.allowCreateDistributor = allowCreate
 
   if Session.get("distributorManagementCurrentDistributor")
-    Meteor.subscribe('oldPayable', Session.get("distributorManagementCurrentDistributor")._id)
+    Meteor.subscribe('availableImportOf', Session.get("distributorManagementCurrentDistributor")._id)

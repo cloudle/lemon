@@ -4,8 +4,8 @@ template(name="customerManagementCustomSaleDetails")
       | .
       .bill-header <b>{{momentCalendar debtDate}}</b>
       .commands
-        if isNotConfirm
-          .lemon.rounded.lime.btn.animated.bounceIn.confirm-customSale: span.icon-ok-6
+        if isNotPaid
+          .lemon.rounded.lime.btn.animated.bounceIn.paid-customSale: span.icon-ok-6
           if isEditing
             .lemon.rounded.orange.btn.animated.bounceIn.cancel-edit: span.icon-cancel-7
           else

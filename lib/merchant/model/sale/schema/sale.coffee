@@ -59,10 +59,16 @@ simpleSchema.sales = new SimpleSchema
   deposit:
     type: Number
 
-  paymentsDelivery:
+  latestDebtBalance:
+    type: Number
+
+  debtBalanceChange:
     type: Number
 
   debit:
+    type: Number
+
+  paymentsDelivery:
     type: Number
 
   #người xác nhận đà nhận tiền

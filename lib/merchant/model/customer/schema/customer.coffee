@@ -83,6 +83,10 @@ simpleSchema.customers = new SimpleSchema
     type: Number
     defaultValue: 0
 #----------------------------------------------
+  debtBalance:
+    type: Number
+    defaultValue: 0
+
   depositCash:
     type: Number
     defaultValue: 0

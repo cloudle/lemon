@@ -26,11 +26,23 @@ simpleSchema.customSales = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  latestDebtBalance:
+    type: Number
+    defaultValue: 0
+
+  debtBalanceChange:
+    type: Number
+    defaultValue: 0
+
   allowDelete:
     type: Boolean
     defaultValue: true
 
   confirm:
+    type: Boolean
+    defaultValue: false
+
+  paid:
     type: Boolean
     defaultValue: false
 

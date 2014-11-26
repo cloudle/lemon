@@ -17,7 +17,7 @@ Schema.add 'transactions', "Transaction", class Transaction
       option.dueDay = new Date()
       option.status = 'closed'
     else
-  #    transaction.dueDay = new Date()
+      #    transaction.dueDay = new Date()
       option.status = 'tracking'
     option._id = Schema.transactions.insert option
     option

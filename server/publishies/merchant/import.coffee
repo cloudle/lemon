@@ -1,3 +1,21 @@
+Meteor.publishComposite 'availableImportOf', (distributorId)->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      allMerchants = Schema.merchants.find({$or:[{_id: myProfile.parentMerchant }, {parent: myProfile.parentMerchant}]})
+      Schema.imports.find {distributor: distributorId, merchant: $in: _.union(_.pluck(allMerchants.fetch(), '_id'))}
+    children: [
+      find: (currentImport) -> Schema.importDetails.find {import: currentImport._id}
+      children: [
+        find: (importDetail, currentImport) -> Schema.products.find {_id: importDetail.product}
+      ]
+    ]
+  }
+
+
+
 Meteor.publish 'myImportHistory', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile

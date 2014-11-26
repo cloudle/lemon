@@ -22,30 +22,6 @@ simpleSchema.transactions = new SimpleSchema
   receivable:
     type: Boolean
 
-  dueDay:
-    type: Date
-    optional: true
-
-  totalCash:
-      type: Number
-
-  depositCash:
-    type: Number
-
-  debitCash:
-    type: Number
-
-  status:
-    type: String
-
-  description:
-    type: String
-    optional: true
-
-  debtDate:
-    type: Date
-    defaultValue: new Date()
-
   allowDelete:
     type: Boolean
     defaultValue: true
@@ -53,14 +29,40 @@ simpleSchema.transactions = new SimpleSchema
   styles:
     type: String
     defaultValue: Helpers.RandomColor()
-    optional: true
 
   version: {type: simpleSchema.Version}
+#---------------------------------------------
+  description:
+    type: String
+    optional: true
 
+  totalCash:
+    type: Number
 
+  latestDebtBalance:
+    type: Number
 
+  debtBalanceChange:
+    type: Number
 
+  debtDate:
+    type: Date
+    defaultValue: new Date()
 
+  dueDay:
+    type: Date
+    optional: true
 
+  status:
+    type: String
+    optional: true
 
+#---------------------------------------------
+  depositCash:
+    type: Number
+    optional: true
+
+  debitCash:
+    type: Number
+    optional: true
 

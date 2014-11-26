@@ -1,9 +1,8 @@
 scope = logics.distributorManagement
 
 lemon.defineHyper Template.distributorManagementImportsHistorySection,
-  customImportDetail: ->Schema.customImportDetails.find({})
-  customImport: -> Schema.customImports.find({buyer: Session.get("distributorManagementCurrentDistributor")?._id})
-  defaultImport: -> Schema.sales.find({buyer: Session.get("distributorManagementCurrentDistributor")?._id})
+  customImport: -> Schema.imports.find({buyer: Session.get("distributorManagementCurrentDistributor")?._id})
+  defaultImport: -> Schema.imports.find({buyer: Session.get("distributorManagementCurrentDistributor")?._id})
   rendered: ->
     @ui.$debtDate.inputmask("dd/mm/yyyy")
     @ui.$totalCash.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
