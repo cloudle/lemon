@@ -32,7 +32,7 @@ simpleSchema.customSales = new SimpleSchema
 
   confirm:
     type: Boolean
-    defaultValue: true
+    defaultValue: false
 
   styles:
     type: String

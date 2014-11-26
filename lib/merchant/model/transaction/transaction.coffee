@@ -97,7 +97,7 @@ Schema.add 'transactions', "Transaction", class Transaction
   @newByDistributor: (distributorId, description, totalCash, depositCash, debtDate)->
     profile     = Schema.userProfiles.findOne({user: Meteor.userId()})
     distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
-    if profile and customer and depositCash >= 0 and totalCash >= depositCash and (debtDate is undefined or debtDate < (new Date()))
+    if profile and distributor and depositCash >= 0 and totalCash >= depositCash and (debtDate is undefined or debtDate < (new Date()))
       option =
         merchant    : profile.currentMerchant
         warehouse   : profile.currentWarehouse
@@ -127,3 +127,43 @@ Schema.add 'transactions', "Transaction", class Transaction
         Schema.distributors.update distributor._id, $set: setOption, $inc: incOption
         Meteor.call('checkExpireDateTransaction', option._id)
       option
+
+  @newByCustomSale: (customSaleId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if customSale = Schema.customSales.findOne({_id: customSaleId, parentMerchant: profile.parentMerchant})
+        customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
+        if customer and customSale.allowDelete is false and customSale.confirm is false
+          option =
+            merchant    : profile.currentMerchant
+            warehouse   : profile.currentWarehouse
+            creator     : profile.user
+            parent      : customSale._id
+            owner       : customer._id
+            group       : 'customSale'
+            receivable  : true
+            description : customSale.description
+            totalCash   : customSale.totalCash
+            depositCash : customSale.depositCash
+            debitCash   : (customSale.totalCash - customSale.depositCash)
+            debtDate    : customSale.debtDate
+
+          if option.debit is 0
+            option.dueDay = new Date()
+            option.status = 'closed'
+          else
+            option.status = 'tracking'
+
+          if transactionId = Schema.transactions.insert option
+            option._id = transactionId
+            TransactionDetail.newByTransaction(option)
+    #        MetroSummary.updateMetroSummaryByNewTransaction(option.merchant, option.debitCash)
+
+            for customSaleDetail in Schema.customSaleDetails.find({customSale: customSale._id}).fetch()
+              Schema.customSaleDetails.update customSaleDetail._id, $set: {allowDelete: false}
+            Schema.customSales.update customSale._id, $set: {confirm: true}
+
+            incCustomerOption = {totalCustomSaleDeposit: option.depositCash, totalCustomSalePurchases: option.totalCash}
+            Schema.customers.update customer._id, $inc: incCustomerOption
+            Meteor.call('checkExpireDateTransaction', option._id)
+
+        return option

@@ -44,7 +44,7 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         finalPrice    : $quality.val()*$price.val()
       Schema.customSaleDetails.insert customSaleDetail
 
-      customSaleOption = {totalCash: 0, depositCash: 0}
+      customSaleOption = {totalCash: 0, depositCash: 0, allowDelete: false}
       for customSaleDetail in Schema.customSaleDetails.find({customSale: customSaleDetail.customSale}).fetch()
         customSaleOption.totalCash   += customSaleDetail.finalPrice
         customSaleOption.depositCash += customSaleDetail.finalPrice if customSaleDetail.pay is true
@@ -74,3 +74,9 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         Schema.customSales.update customSaleDetail.customSale, $set:{allowDelete: true, depositCash: 0}
       else
         Schema.customSales.update customSaleDetail.customSale, $inc:{totalCash: -customSaleDetail.finalPrice}
+
+  scope.confirmCustomSale = (customSaleId) ->
+    customSale = Schema.customSales.findOne({_id:customSaleId, parentMerchant:Session.get('myProfile').parentMerchant})
+    Transaction.newByCustomSale(customSale._id) if customSale.allowDelete is false and customSale.confirm is false
+
+
