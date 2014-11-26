@@ -1,0 +1,15 @@
+template(name="distributorManagementImportDetails")
+  tr.header-row
+    td(colspan="5")
+      | .
+      .bill-header <b>{{momentCalendar version.createdAt}}</b>
+  each saleDetails
+    tr.detail-row
+      td.first-column {{productName}}
+      td {{formatNumber quality}}
+      td {{skulls}}
+      td.number {{formatNumber price}}
+      td.last-column.number {{formatNumber finalPrice}}
+  tr.detail-row.summary-row
+    td.first-column(colspan="4")
+    td.last-column.summary-total(align="right"): span.s5 <b>{{formatNumber finalPrice}}</b>

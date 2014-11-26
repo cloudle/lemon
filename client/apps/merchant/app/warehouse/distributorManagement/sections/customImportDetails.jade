@@ -1,24 +1,24 @@
-template(name="customerManagementCustomSaleDetails")
+template(name="distributorManagementCustomImportDetails")
   tr.header-row
     td(colspan="5")
       | .
       .bill-header <b>{{momentCalendar version.createdAt}}</b>
       .commands
-        if isConfirm
-          .lemon.rounded.lime.btn.animated.bounceIn.deposit-customSale: span.icon-plus-6
+        if isEditing
+          .lemon.rounded.orange.btn.animated.bounceIn.cancel-edit: span.icon-cancel-7
         else
-          .lemon.rounded.lime.btn.animated.bounceIn.confirm-customSale: span.icon-ok-6
-          if isEditing
-            .lemon.rounded.orange.btn.animated.bounceIn.cancel-edit: span.icon-cancel-7
-          else
-            .lemon.rounded.blue.btn.animated.bounceIn.enter-edit: span.icon-pencil
+          .lemon.rounded.blue.btn.animated.bounceIn.enter-edit: span.icon-pencil
 
   each customSaleDetails
     tr.detail-row
       td.has-commands
         |{{productName}}
         .commands
-          .lemon.rounded.tiny.btn.red.delete-custom-sale: span.icon-bag
+          if pay
+            .lemon.rounded.tiny.btn.red.redo-custom-import: span.icon-plus-6
+          else
+            .lemon.rounded.tiny.btn.lime.apply-custom-import: span.icon-ok-6
+            .lemon.rounded.tiny.btn.red.delete-custom-import: span.icon-bag
       td {{formatNumber quality}}
       td {{skulls}}
       td.number {{formatNumber price}}

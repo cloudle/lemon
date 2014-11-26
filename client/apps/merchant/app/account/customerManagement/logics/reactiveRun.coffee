@@ -2,7 +2,7 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
   if Session.get("myProfile")
     customers = Schema.customers.find({parentMerchant: Session.get("myProfile").parentMerchant}).fetch()
     scope.managedCustomerList = []
-    if Session.get("customerManagementSearchFilter").length > 0
+    if Session.get("customerManagementSearchFilter")?.length > 0
       scope.managedCustomerList = _.filter customers, (item) ->
         unsignedTerm = Helpers.RemoveVnSigns Session.get("customerManagementSearchFilter")
         unsignedName = Helpers.RemoveVnSigns item.name

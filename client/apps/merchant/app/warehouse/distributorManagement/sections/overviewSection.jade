@@ -1,7 +1,10 @@
 template(name="distributorManagementOverviewSection")
-  .section
-    .heading
+  .section.top.panel.panel-default
+    input.hidden.avatarFile(type="file")
+    .panel-heading
       +avatarImageComponent(avatar=avatarUrl alias=name)
       .caption {{name}}
       .sub1 {{phone}}
       .sub2 {{address}}
+    .panel-footer
+      span footer

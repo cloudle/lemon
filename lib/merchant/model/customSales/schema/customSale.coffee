@@ -30,6 +30,10 @@ simpleSchema.customSales = new SimpleSchema
     type: Boolean
     defaultValue: true
 
+  confirm:
+    type: Boolean
+    defaultValue: true
+
   styles:
     type: String
     defaultValue: Helpers.RandomColor()

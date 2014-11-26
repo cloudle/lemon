@@ -1,4 +1,5 @@
 lemon.defineWidget Template.customerManagementCustomSaleDetails,
+  isConfirm: -> Session.get("customerManagementCurrentCustomSale")?.confirm
   isEditing: -> Session.get("customerManagementCurrentCustomSale")?._id is @_id
   customSaleDetails: ->
     customSaleId = UI._templateInstance().data._id
