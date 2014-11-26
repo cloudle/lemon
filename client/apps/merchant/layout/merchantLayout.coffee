@@ -23,7 +23,7 @@ lemon.defineWidget Template.merchantLayout,
   collapse: -> Session.get('collapse') ? ''
 
   created: ->
-    Session.set("collapse", true)
+    Session.set("collapse", 'collapsed')
     startHomeTracker()
 
   rendered: ->

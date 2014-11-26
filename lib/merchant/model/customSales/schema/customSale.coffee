@@ -17,6 +17,7 @@ simpleSchema.customSales = new SimpleSchema
 
   description:
     type: String
+    optional: true
 
   totalCash:
     type: Number
