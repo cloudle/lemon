@@ -14,3 +14,8 @@ lemon.defineWidget Template.customerManagementCustomSaleDetails,
     "click .createCustomSaleDetail": (event, template) -> scope.createCustomSaleDetail(@, template)
     "click .deleteCustomSaleDetail": (event, template) -> scope.deleteCustomSaleDetail(@_id) 
     "click .deleteCustomSale": (event, template) ->   Meteor.call('deleteCustomSale', @_id)
+
+lemon.defineWidget Template.customerManagementCustomSaleDetailCreator,
+  rendered: ->
+    $(@find("[name='price']")).inputmask "numeric",
+      {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11}
