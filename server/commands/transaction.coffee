@@ -89,8 +89,8 @@ Meteor.methods
             incCustomerOption = {customSaleDebt: 0}
             for transaction in transactions
               incCustomerOption.customSaleDebt += transaction.debtBalanceChange
+              Schema.transactions.remove transaction._id
             Schema.customers.update customer._id, $inc: incCustomerOption
-
         else Schema.customSales.remove customSale._id if customSaleDetails.length is 0
 
         if latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
