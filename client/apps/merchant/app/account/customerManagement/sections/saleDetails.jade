@@ -15,7 +15,7 @@ template(name="customerManagementSaleDetails")
     td.number(colspan="3"): span.blured-color CÂN BẰNG NỢ: <b>{{formatNumber latestDebtBalance}}</b>
     td.summary-total(align="right"): span.s5 <b>{{formatNumber finalPrice}}</b>
 
-  each latestPaid
+  each latestPaids
     tr
       td {{momentCalendar debtDate}} - {{description}}
       td {{beforeDebtBalance}}

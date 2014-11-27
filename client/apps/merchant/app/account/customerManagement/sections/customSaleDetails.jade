@@ -28,6 +28,12 @@ template(name="customerManagementCustomSaleDetails")
     td.number(colspan="3"): span.blured-color CÂN BẰNG NỢ: <b>{{formatNumber latestDebtBalance}}</b>
     td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>
 
+  each latestPaids
+    tr
+      td {{momentCalendar debtDate}} - {{description}}
+      td {{beforeDebtBalance}}
+      td {{latestDebtBalance}}
+
 template(name="customerManagementCustomSaleDetailCreator")
   tr.editors.animated.fadeIn
     td: input(name='productName' type="text" size="10" placeholder="tên sản phẩm")

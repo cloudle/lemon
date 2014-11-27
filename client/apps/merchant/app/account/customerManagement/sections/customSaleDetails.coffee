@@ -5,6 +5,7 @@ lemon.defineWidget Template.customerManagementCustomSaleDetails,
   customSaleDetails: ->
     customSaleId = UI._templateInstance().data._id
     Schema.customSaleDetails.find({customSale: customSaleId})
+  latestPaids: -> Schema.transactions.find({latestSale: @_id})
 
   events:
     "click .enter-edit" : (event, template) -> Session.set("customerManagementCurrentCustomSale", @)
