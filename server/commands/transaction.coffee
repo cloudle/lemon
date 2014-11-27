@@ -61,23 +61,30 @@ Meteor.methods
   deleteCustomSale: (customSaleId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       customSale = Schema.customSales.findOne({_id: customSaleId, parentMerchant: profile.parentMerchant})
-      if customSale and customSale.allowDelete is false
-        customer          = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
-        customSaleDetails = Schema.customSaleDetails.find({customSale: customSale._id}).fetch()
-        if customSaleDetails.length > 0
-          incCustomerOption = {
-            customSaleDebt     : -customSale.finalPrice
-            customSaleTotalCash: -customSale.finalPrice
-          }
-          Schema.customers.update customer._id, $inc: incCustomerOption
-          Schema.customSaleDetails.remove customSaleDetail._id for customSaleDetail in customSaleDetails
-        Schema.customSales.remove customSale._id
+      latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
+      if customSale.allowDelete is true
+        countSaleDetails = Schema.customSaleDetails.find({customSale: customSale._id}).count()
+        Schema.customSales.remove customSale._id if countSaleDetails.length is 0
+      else
+        if customSale._id is latestCustomSale._id
+          customer          = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
+          customSaleDetails = Schema.customSaleDetails.find({customSale: customSale._id}).fetch()
+          if customSaleDetails.length > 0
+            incCustomerOption = {
+              customSaleDebt     : -customSale.finalPrice
+              customSaleTotalCash: -customSale.finalPrice
+            }
+            Schema.customers.update customer._id, $inc: incCustomerOption
+            Schema.customSaleDetails.remove customSaleDetail._id for customSaleDetail in customSaleDetails
+          Schema.customSales.remove customSale._id
 
-#        transactions = Schema.transactions.find({latestSale: customSale._id}).fetch()
-#        if transactions.length > 0
-#          incCustomerOption = {customSaleDebt: 0}
-#          for transaction in transactions
-#          Schema.customers.update customer._id, $inc: incCustomerOption
+          transactions = Schema.transactions.find({latestSale: customSale._id}).fetch()
+          if transactions.length > 0
+            incCustomerOption = {customSaleDebt: 0}
+            incCustomerOption.customSaleDebt += transaction.debtBalanceChange for transaction in transactions
+            Schema.customers.update customer._id, $inc: incCustomerOption
+
+
 
 
 
@@ -85,7 +92,8 @@ Meteor.methods
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customSaleDetail = Schema.customSaleDetails.findOne({_id: customSaleDetailId, parentMerchant: profile.parentMerchant})
         customSale = Schema.customSales.findOne({_id: customSaleDetail.customSale, parentMerchant: profile.parentMerchant})
-        if customSale.confirm is false
+        latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
+        if customSale._id is latestCustomSale._id
           incCustomSaleOption = {
             totalCash        : customSaleDetail.finalPrice
             debtBalanceChange: customSaleDetail.finalPrice
@@ -104,7 +112,8 @@ Meteor.methods
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customSaleDetail = Schema.customSaleDetails.findOne({_id: customSaleDetailId, parentMerchant: profile.parentMerchant})
         customSale = Schema.customSales.findOne({_id: customSaleDetail.customSale, parentMerchant: profile.parentMerchant})
-        if customSale.confirm is false
+        latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
+        if customSale._id is latestCustomSale._id
           Schema.customSaleDetails.remove customSaleDetail._id
           setOption = {}
           setOption = {allowDelete: true} if Schema.customSaleDetails.findOne({customSale: customSale._id}) is undefined
