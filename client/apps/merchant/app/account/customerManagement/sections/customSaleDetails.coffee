@@ -13,4 +13,4 @@ lemon.defineWidget Template.customerManagementCustomSaleDetails,
     "click .cancel-edit": (event, template) -> Session.set("customerManagementCurrentCustomSale")
     "click .createCustomSaleDetail": (event, template) -> scope.createCustomSaleDetail(@, template)
     "click .deleteCustomSaleDetail": (event, template) -> scope.deleteCustomSaleDetail(@_id) 
-    "click .deleteCustomSale": (event, template) -> scope.deleteCustomSale(@_id)
+    "click .deleteCustomSale": (event, template) ->   Meteor.call('deleteCustomSale', @_id)

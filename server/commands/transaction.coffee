@@ -24,7 +24,7 @@ Meteor.methods
 
         return true
       else throw 'Xóa transaction không thành công'
-          
+
     catch error
       throw new Meteor.Error('deleteTransaction', error)
 
@@ -58,13 +58,22 @@ Meteor.methods
     catch error
       throw new Meteor.Error('addTransactionDetail', error)
 
+  createCustomSale: (customSale)->
+    latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
+    if latestCustomSale
+      if customSale.debtDate > latestCustomSale.debtDate
+        customSalesId =  Schema.customSales.insert customSale
+        Schema.customSales.update latestCustomSale._id, $set:{allowDelete: false} if customSalesId
+    else
+      Schema.customSales.insert customSale
+
   deleteCustomSale: (customSaleId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       customSale = Schema.customSales.findOne({_id: customSaleId, parentMerchant: profile.parentMerchant})
       latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
       if customSale.allowDelete is true
         countSaleDetails = Schema.customSaleDetails.find({customSale: customSale._id}).count()
-        Schema.customSales.remove customSale._id if countSaleDetails.length is 0
+        Schema.customSales.remove customSale._id if countSaleDetails is 0
       else
         if customSale._id is latestCustomSale._id
           customer          = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
@@ -84,9 +93,8 @@ Meteor.methods
             incCustomerOption.customSaleDebt += transaction.debtBalanceChange for transaction in transactions
             Schema.customers.update customer._id, $inc: incCustomerOption
 
-
-
-
+      latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
+      Schema.customSales.update latestCustomSale._id, $set:{allowDelete: true}
 
   updateCustomSaleByCreateCustomSaleDetail: (customSaleDetailId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})

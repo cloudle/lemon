@@ -14,7 +14,7 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         debtBalanceChange: 0
         beforeDebtBalance: customer.customSaleDebt
         latestDebtBalance: customer.customSaleDebt
-      Schema.customSales.insert option
+      Meteor.call('createCustomSale', option)
       $debtDate.val(''); $description.val('')
 
   scope.createCustomSaleDetail = (customSale, template) ->
@@ -39,9 +39,6 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       customSaleDetailId = Schema.customSaleDetails.insert customSaleDetail
       Meteor.call('updateCustomSaleByCreateCustomSaleDetail', customSaleDetailId) if customSaleDetailId
       $productName.val(''); $price.val(''); $quality.val(''); $skulls.val('')
-
-  scope.deleteCustomSale = (customSaleId) ->
-    Meteor.call('deleteCustomSale', customSaleId)
 
   scope.deleteCustomSaleDetail = (customSaleDetailId) ->
     Meteor.call('updateCustomSaleByDeleteCustomSaleDetail', customSaleDetailId)
