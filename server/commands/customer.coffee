@@ -37,9 +37,9 @@ Meteor.methods
             customSaleTotalCash : -debtCash
           }
 
-        option.debtBalanceChange = option.totalCash
-        option.beforeDebtBalance = customer.debtBalance
-        option.latestDebtBalance = customer.debtBalance - debtCash
+        option.debtBalanceChange = debtCash
+        option.beforeDebtBalance = customer.customSaleDebt
+        option.latestDebtBalance = customer.customSaleDebt + debtCash
         Schema.transactions.insert option
         Schema.customers.update customer._id, $inc: incCustomerOption
 
