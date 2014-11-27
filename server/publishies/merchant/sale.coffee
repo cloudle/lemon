@@ -11,6 +11,8 @@ Meteor.publishComposite 'availableSaleOf', (customerId)->
       children: [
         find: (saleDetail, sale) -> Schema.products.find {_id: saleDetail.product}
       ]
+    ,
+      find: (sale) -> Schema.transactions.find {latestSale: sale._id}
     ]
   }
 
