@@ -24,7 +24,8 @@ template(name="customerManagementCustomSaleDetails")
   if isEditing
     +customerManagementCustomSaleDetailCreator
   tr.detail-row.summary-row
-    td.note(colspan="4") {{description}}
+    td.note {{description}}
+    td(colspan="3") CÂN BẰNG NỢ: <b>{{formatNumber latestDebtBalance}}</b> VNĐ
     td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>
 
 template(name="customerManagementCustomSaleDetailCreator")

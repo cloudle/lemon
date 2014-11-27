@@ -4,3 +4,5 @@ lemon.defineWidget Template.customerManagementSaleDetails,
   saleDetails: ->
     saleId = UI._templateInstance().data._id
     Schema.saleDetails.find({sale: saleId})
+
+  latestPaids: -> Schema.transaction.find({latestSale: @_id})

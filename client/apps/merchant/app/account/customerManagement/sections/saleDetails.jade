@@ -11,5 +11,12 @@ template(name="customerManagementSaleDetails")
       td.number {{formatNumber price}}
       td.last-column.number {{formatNumber finalPrice}}
   tr.detail-row.summary-row
-    td.first-column(colspan="4")
-    td.last-column.summary-total(align="right"): span.s5 <b>{{formatNumber finalPrice}}</b>
+    td.note {{description}}
+    td(colspan="3") CÂN BẰNG NỢ: <b>{{formatNumber latestDebtBalance}}</b> VNĐ
+    td.summary-total(align="right"): span.s5 <b>{{formatNumber finalPrice}}</b>
+
+  each latestPaid
+    tr
+      td {{momentCalendar debtDate}} - {{description}}
+      td {{beforeDebtBalance}}
+      td {{latestDebtBalance}}
