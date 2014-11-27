@@ -29,11 +29,11 @@ template(name="customerManagementCustomSaleDetails")
     td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>
 
   each latestPaids
-    tr.paid-row.top
-      td {{momentCalendar debtDate}} - {{description}}
+    tr.paid-row.top(class="{{receivableClass}}")
+      td: span.note {{description}}, {{momentCalendar debtDate}}.
       td.number(colspan="3"): span(class="{{receivableClass}}") <b>{{formatNumber debtBalanceChange}}</b>
       td
-    tr.paid-row
+    tr.paid-row(class="{{receivableClass}}")
       td
       td.number(colspan="3") CÂN BẰNG NỢ: <b>{{formatNumber latestDebtBalance}}</b>
       td
