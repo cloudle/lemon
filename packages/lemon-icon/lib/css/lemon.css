@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'lemon';
-  src: url('../font/lemon.eot?52382352');
-  src: url('../font/lemon.eot?52382352#iefix') format('embedded-opentype'),
-       url('../font/lemon.woff?52382352') format('woff'),
-       url('../font/lemon.ttf?52382352') format('truetype'),
-       url('../font/lemon.svg?52382352#lemon') format('svg');
+  src: url('../font/lemon.eot?35442033');
+  src: url('../font/lemon.eot?35442033#iefix') format('embedded-opentype'),
+       url('../font/lemon.woff?35442033') format('woff'),
+       url('../font/lemon.ttf?35442033') format('truetype'),
+       url('../font/lemon.svg?35442033#lemon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'lemon';
-    src: url('../font/lemon.svg?52382352#lemon') format('svg');
+    src: url('../font/lemon.svg?35442033#lemon') format('svg');
   }
 }
 */
@@ -249,11 +249,11 @@
 .icon-ok-circled:before { content: '\e8c4'; } /* '' */
 .icon-doc-inv-1:before { content: '\e8c5'; } /* '' */
 .icon-pencil-circled:before { content: '\e8c6'; } /* '' */
+.icon-minus-4:before { content: '\e8c7'; } /* '' */
 .icon-emo-happy:before { content: '\f027'; } /* '' */
 .icon-emo-wink:before { content: '\f028'; } /* '' */
 .icon-emo-wink2:before { content: '\f029'; } /* '' */
 .icon-emo-unhappy:before { content: '\f02a'; } /* '' */
-.icon-emo-sleep:before { content: '\f02b'; } /* '' */
 .icon-emo-thumbsup:before { content: '\f02c'; } /* '' */
 .icon-emo-devil:before { content: '\f02d'; } /* '' */
 .icon-emo-surprised:before { content: '\f02e'; } /* '' */

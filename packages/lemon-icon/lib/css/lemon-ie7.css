@@ -209,11 +209,11 @@
 .icon-ok-circled { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe8c4;&nbsp;'); }
 .icon-doc-inv-1 { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe8c5;&nbsp;'); }
 .icon-pencil-circled { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe8c6;&nbsp;'); }
+.icon-minus-4 { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe8c7;&nbsp;'); }
 .icon-emo-happy { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf027;&nbsp;'); }
 .icon-emo-wink { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf028;&nbsp;'); }
 .icon-emo-wink2 { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf029;&nbsp;'); }
 .icon-emo-unhappy { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf02a;&nbsp;'); }
-.icon-emo-sleep { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf02b;&nbsp;'); }
 .icon-emo-thumbsup { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf02c;&nbsp;'); }
 .icon-emo-devil { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf02d;&nbsp;'); }
 .icon-emo-surprised { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf02e;&nbsp;'); }
