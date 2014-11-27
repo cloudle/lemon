@@ -8,11 +8,13 @@ Meteor.methods
   createNewReceiptCashOfCustomer: (customerId, debtCash, description)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
+        customSale = Schema.customSales.findOne({},{sort: {'version.createdAt': -1}})
         option =
           merchant    : profile.currentMerchant
           warehouse   : profile.currentWarehouse
           creator     : profile.user
           owner       : customer._id
+          latestSale  : customSale._id if customSale
           group       : 'customSale'
           receivable  : false
           description : description ? 'Phiếu Thu'

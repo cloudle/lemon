@@ -36,18 +36,23 @@ simpleSchema.transactions = new SimpleSchema
     type: String
     optional: true
 
-  totalCash:
+  debtBalanceChange:
     type: Number
+
+  latestSale:
+    type: String
+    optional: true
 
   latestDebtBalance:
-    type: Number
-
-  debtBalanceChange:
     type: Number
 
   debtDate:
     type: Date
     defaultValue: new Date()
+
+#---------------------------------------------
+  totalCash:
+    type: Number
 
   dueDay:
     type: Date
@@ -57,7 +62,6 @@ simpleSchema.transactions = new SimpleSchema
     type: String
     optional: true
 
-#---------------------------------------------
   depositCash:
     type: Number
     optional: true
