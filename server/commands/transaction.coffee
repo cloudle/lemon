@@ -125,8 +125,6 @@ Meteor.methods
             Schema.transactions.update transaction._id, $set: {beforeDebtBalance: beforeDebtBalance, latestDebtBalance: latestDebtBalance}
             beforeDebtBalance = latestDebtBalance
 
-
-
   updateCustomSaleByDeleteCustomSaleDetail: (customSaleDetailId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customSaleDetail = Schema.customSaleDetails.findOne({_id: customSaleDetailId, parentMerchant: profile.parentMerchant})
@@ -155,3 +153,10 @@ Meteor.methods
             latestDebtBalance = beforeDebtBalance - transaction.debtBalanceChange
             Schema.transactions.update transaction._id, $set: {beforeDebtBalance: beforeDebtBalance, latestDebtBalance: latestDebtBalance}
             beforeDebtBalance = latestDebtBalance
+
+  confirmTransaction: (transactionId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      role = Role.hasPermission(profile._id, Apps.Merchant.Permissions.cashierSale.key)
+      transaction = Schema.transactions.findOne({_id: transactionId, parentMerchant: profile.parentMerchant})
+      if role and transaction and transaction.confirmed is false
+        Schema.transactions.update transaction._id, $set:{confirmed: true, conformer: profile.user, conformedAt: new Date()}

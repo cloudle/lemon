@@ -10,14 +10,15 @@ Meteor.methods
       if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
         customSale = Schema.customSales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
         option =
-          merchant    : profile.currentMerchant
-          warehouse   : profile.currentWarehouse
-          creator     : profile.user
-          owner       : customer._id
-          latestSale  : customSale._id if customSale
-          group       : 'customSale'
-          dueDay      : paidDate if paidDate
-          totalCash   : debtCash
+          parentMerchant: profile.parentMerchant
+          merchant      : profile.currentMerchant
+          warehouse     : profile.currentWarehouse
+          creator       : profile.user
+          owner         : customer._id
+          latestSale    : customSale._id if customSale
+          group         : 'customSale'
+          debtDate      : paidDate if paidDate
+          totalCash     : debtCash
 
         incCustomerOption = {customSaleDebt: -debtCash }
         if debtCash > 0
@@ -40,14 +41,15 @@ Meteor.methods
       if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
         sale = Schema.sales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
         option =
-          merchant    : profile.currentMerchant
-          warehouse   : profile.currentWarehouse
-          creator     : profile.user
-          owner       : customer._id
-          latestSale  : sale._id if sale
-          group       : 'sales'
-          dueDay      : paidDate if paidDate
-          totalCash   : debtCash
+          parentMerchant: profile.parentMerchant
+          merchant      : profile.currentMerchant
+          warehouse     : profile.currentWarehouse
+          creator       : profile.user
+          owner         : customer._id
+          latestSale    : sale._id if sale
+          group         : 'sales'
+          debtDate      : paidDate if paidDate
+          totalCash     : debtCash
 
         incCustomerOption = {customSaleDebt: -debtCash }
         if debtCash > 0
