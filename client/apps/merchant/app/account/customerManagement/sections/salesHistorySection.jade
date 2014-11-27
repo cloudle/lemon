@@ -22,7 +22,7 @@ template(name="customerManagementSalesHistorySection")
         tr.group-summary-row
           td.number(colspan="5")
             span.s5 NỢ CŨ:
-            span.s3 <b>{{formatNumber currentCustomer.customSaleTotalCash}}</b> VNĐ
+            span.s3 <b>{{formatNumber currentCustomer.customSaleDebt}}</b> VNĐ
 
       table.lemon-grid.safe
         +customerManagementSaleHistoryHeader

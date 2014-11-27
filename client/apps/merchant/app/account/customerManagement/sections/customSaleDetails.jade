@@ -4,7 +4,7 @@ template(name="customerManagementCustomSaleDetails")
     .bill-header <b>{{momentCalendar debtDate}}</b>
     .commands
       if allowDelete
-        .lemon.rounded.red.btn.animated    
+        .lemon.rounded.red.btn.animated.bounceIn.deleteCustomSale: span.icon-minus-4
       if isEditing
         .lemon.rounded.orange.btn.animated.bounceIn.cancel-edit: span.icon-cancel-7
       else
@@ -16,7 +16,7 @@ template(name="customerManagementCustomSaleDetails")
         |{{productName}}
         .commands
           if allowDelete
-            .lemon.rounded.tiny.btn.red.deleteCustomSaleDetail: span.icon-bag
+            .lemon.rounded.tiny.btn.red.deleteCustomSaleDetail: span.icon-minus-4
       td {{formatNumber quality}}
       td {{skulls}}
       td.number {{formatNumber price}}
