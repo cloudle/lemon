@@ -49,13 +49,7 @@ Schema.add 'sales', "Sale", class Sale
       latestDebtBalance : buyer.debtBalance + order.finalPrice
 
   @insertByOrder: (order)->
-    @schema.insert Sale.newByOrder(order), (error, result) ->
-      if error
-        console.log error
-        null
-      else
-        Schema.customers.update order.buyer, $inc:{debtBalance: order.finalPrice}
-        result
+    @schema.insert Sale.newByOrder(order), (error, result) -> if error then console.log error; null else result
 
   @findAccountingDetails: (starDate, toDate, warehouseId)->
     Schema.sales.find({$and: [

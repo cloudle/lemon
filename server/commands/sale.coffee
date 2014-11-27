@@ -30,8 +30,8 @@ Meteor.methods
         updateSale(currentSale._id, saleOption)
         updateCustomer(currentSale.buyer, customerOption)
         MetroSummary.updateMetroSummaryBySale(currentSale._id)
-        Meteor.call 'createNewReceiptCashOfSales', currentSale.buyer, currentSale.deposit
-        Meteor.call 'saleConfirmByAccounting', profile, currentSale._id
+#        Meteor.call 'createNewReceiptCashOfSales', currentSale.buyer, currentSale.deposit
+#        Meteor.call 'saleConfirmByAccounting', profile, currentSale._id
 
 
       if currentSale.status == currentSale.success == currentSale.received == currentSale.exported == true and currentSale.submitted == currentSale.imported == false and currentSale.paymentsDelivery == 1

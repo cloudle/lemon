@@ -11,7 +11,9 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         buyer            : Session.get("customerManagementCurrentCustomer")._id
         debtDate         : debtDate
         description      : $description.val()
-        latestDebtBalance: customer.debtBalance
+        debtBalanceChange: 0
+        beforeDebtBalance: customer.customSaleDebt
+        latestDebtBalance: customer.customSaleDebt
       Schema.customSales.insert option
       $debtDate.val(''); $description.val('')
 
@@ -35,14 +37,14 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         quality       : $quality.val()
         finalPrice    : $quality.val()*$price.val()
       customSaleDetailId = Schema.customSaleDetails.insert customSaleDetail
-      Meteor.call('updateCustomSaleByCustomSaleDetailCreate', customSaleDetailId) if customSaleDetailId
+      Meteor.call('updateCustomSaleByCreateCustomSaleDetail', customSaleDetailId) if customSaleDetailId
       $productName.val(''); $price.val(''); $quality.val(''); $skulls.val('')
 
   scope.deleteCustomSale = (customSaleId) ->
     Meteor.call('deleteCustomSale', customSaleId)
 
   scope.deleteCustomSaleDetail = (customSaleDetailId) ->
-    Meteor.call('updateCustomSaleByCustomSaleDetailDelete', customSaleDetailId)
+    Meteor.call('updateCustomSaleByDeleteCustomSaleDetail', customSaleDetailId)
 
   scope.confirmCustomSale = (customSaleId) ->
     customSale = Schema.customSales.findOne({_id:customSaleId, parentMerchant:Session.get('myProfile').parentMerchant})

@@ -82,12 +82,16 @@ simpleSchema.customers = new SimpleSchema
   totalCustomSalePurchases:
     type: Number
     defaultValue: 0
+
+  depositCash:
+    type: Number
+    defaultValue: 0
 #----------------------------------------------
   debtBalance:
     type: Number
     defaultValue: 0
 
-  depositCash:
+  customSalePaid:
     type: Number
     defaultValue: 0
 
@@ -96,5 +100,17 @@ simpleSchema.customers = new SimpleSchema
     defaultValue: 0
 
   customSaleTotalCash:
+    type: Number
+    defaultValue: 0
+
+  salePaid:
+    type: Number
+    defaultValue: 0
+
+  saleDebt:
+    type: Number
+    defaultValue: 0
+
+  saleTotalCash:
     type: Number
     defaultValue: 0

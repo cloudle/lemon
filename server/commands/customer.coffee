@@ -8,7 +8,7 @@ Meteor.methods
   createNewReceiptCashOfCustomSale: (customerId, debtCash, description)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
-        customSale = Schema.customSales.findOne({},{sort: {'version.createdAt': -1}})
+        customSale = Schema.customSales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
         option =
           merchant    : profile.currentMerchant
           warehouse   : profile.currentWarehouse
@@ -16,35 +16,62 @@ Meteor.methods
           owner       : customer._id
           latestSale  : customSale._id if customSale
           group       : 'customSale'
-          receivable  : false
-          description : description ? 'Phiếu Thu Tự Tạo'
           totalCash   : debtCash
-          status      : 'done'
+
+        if debtCash > 0
+          option.description = description ? 'Thu Tiền'
+          option.receivable  = true
+
+          incCustomerOption = {
+            debtBalance   : -debtCash
+            customSaleDebt: -debtCash
+            customSalePaid: debtCash
+          }
+        else
+          option.description = description ? 'Cho Mượn Tiền'
+          option.receivable  = false
+
+          incCustomerOption = {
+            debtBalance         : -debtCash
+            customSaleDebt      : -debtCash
+            customSaleTotalCash : -debtCash
+          }
 
         option.debtBalanceChange = option.totalCash
         option.beforeDebtBalance = customer.debtBalance
         option.latestDebtBalance = customer.debtBalance - debtCash
         Schema.transactions.insert option
-        Schema.customers.update customer._id, $inc:{debtBalance: -debtCash}
+        Schema.customers.update customer._id, $inc: incCustomerOption
 
   createNewReceiptCashOfSales: (customerId, debtCash, description)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
-        sale = Schema.sales.findOne({},{sort: {'version.createdAt': -1}})
+        sale = Schema.sales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
         option =
           merchant    : profile.currentMerchant
           warehouse   : profile.currentWarehouse
           creator     : profile.user
           owner       : customer._id
           latestSale  : sale._id if sale
-          group       : 'Sales'
-          receivable  : false
-          description : description ? 'Phiếu Thu Bán Hàng'
+          group       : 'sales'
           totalCash   : debtCash
-          status      : 'done'
+
+        if debtCash > 0
+          option.description = description ? 'Thu Tiền'
+          option.receivable  = true
+        else
+          option.description = description ? 'Cho Mượn Tiền'
+          option.receivable  = false
+
 
         option.debtBalanceChange = option.totalCash
         option.beforeDebtBalance = customer.debtBalance
         option.latestDebtBalance = customer.debtBalance - debtCash
         Schema.transactions.insert option
-        Schema.customers.update customer._id, $inc:{debtBalance: -debtCash}
+
+        incCustomerOption = {
+          debtBalance: -debtCash
+          salePaid   : debtCash
+          saleDebt   : -debtCash
+        }
+        Schema.customers.update customer._id, $inc: incCustomerOption

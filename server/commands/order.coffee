@@ -67,7 +67,13 @@ removeOrderAndOrderDetail = (order, userProfile)->
   Order.remove(order._id)
   OrderDetail.remove({order: order._id})
 
-
+updateCustomerByNewSales = (sale, profile)->
+  incCustomerOption = {
+    debtBalance  : sale.debtBalanceChange
+    saleDebt     : sale.debtBalanceChange
+    saleTotalCash: sale.debtBalanceChange
+  }
+  Schema.customers.update sale.buyer, $inc: incCustomerOption
 
 
 Meteor.methods
@@ -91,7 +97,9 @@ Meteor.methods
     if result.error then throw new Meteor.Error(result.error)
 
     sale = createSaleAndSaleOrder(currentOrder, orderDetails)
-    if sale then removeOrderAndOrderDetail(currentOrder, userProfile)
+    if sale
+      removeOrderAndOrderDetail(currentOrder, userProfile)
+      updateCustomerByNewSales(sale, userProfile)
 
     Meteor.call 'newSaleDefault', userProfile, sale._id
     return sale._id
