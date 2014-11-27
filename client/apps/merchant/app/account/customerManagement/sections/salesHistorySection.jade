@@ -14,15 +14,24 @@ template(name="customerManagementSalesHistorySection")
           +customerManagementCustomSaleDetails this
         tr.editors
           td(colspan="3")
-            input(name='description' type="text" size="10" placeholder="ghi chú")
+            input(name='description' type="text" size="10" placeholder="ghi chú đơn hàng")
           td
             input.number(name='debtDate' type="text" size="10" placeholder="ngày mua")
           td
-            .lemon.rounded.btn.lime.icon-doc-text-inv.pull-right.createCustomSale
+            .lemon.rounded.btn.lime.icon-tags-2.pull-right.createCustomSale
+        tr.editors
+          td
+            input(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
+          td(colspan="2")
+            input.number(name='payAmount' type="text" size="10" placeholder="số tiền")
+          td
+            input.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
+          td
+            .lemon.rounded.btn.lime.icon-money.pull-right.createTransaction
         tr.group-summary-row
           td.number(colspan="5")
             span.s5 NỢ CŨ:
-            span.s3 <b>{{formatNumber currentCustomer.customSaleDebt}}</b> VNĐ
+            span.s3 <b>{{formatNumber customSaleDebt}}</b> VNĐ
 
       table.lemon-grid.safe
         +customerManagementSaleHistoryHeader
@@ -31,7 +40,7 @@ template(name="customerManagementSalesHistorySection")
             +customerManagementSaleDetails this
         else
           tr: td(colspan="5")
-            .lemon.rounded.btn.lime.pull-right.expandSaleHistory.icon-angle-right
+            .lemon.rounded.btn.lime.pull-right.expandSaleHistory.icon-down-open-big
 
         each defaultSaleToday
           +customerManagementSaleDetails this

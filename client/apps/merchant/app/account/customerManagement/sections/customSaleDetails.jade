@@ -8,7 +8,7 @@ template(name="customerManagementCustomSaleDetails")
       if isEditing
         .lemon.rounded.orange.btn.animated.bounceIn.cancel-edit: span.icon-cancel-7
       else
-        .lemon.rounded.blue.btn.animated.bounceIn.enter-edit: span.icon-pencil
+        .lemon.rounded.blue.btn.animated.bounceIn.enter-edit: span.icon-cog-6
 
   each customSaleDetails
     tr.detail-row
@@ -31,7 +31,7 @@ template(name="customerManagementCustomSaleDetails")
   each latestPaids
     tr.paid-row.top(class="{{receivableClass}}")
       td: span.note {{description}}, {{momentCalendar debtDate}}.
-      td.number(colspan="3"): span(class="{{receivableClass}}") <b>{{formatNumber debtBalanceChange}}</b>
+      td.number(colspan="3"): span(class="{{receivableClass}}") <b>{{formatNumberAbs debtBalanceChange}}</b>
       td
     tr.paid-row(class="{{receivableClass}}")
       td

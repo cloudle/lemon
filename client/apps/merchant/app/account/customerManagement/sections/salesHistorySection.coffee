@@ -14,8 +14,13 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
       buyer               : Session.get("customerManagementCurrentCustomer")?._id,
       'version.createdAt' : {$gte: new Date((new Date).toDateString())}
     }, {sort: {'version.createdAt': 1}}
+
+  finalDebtBalance: -> @customSaleDebt + @saleDebt
+
   rendered: ->
     @ui.$debtDate.inputmask("dd/mm/yyyy")
+    @ui.$payAmount.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
+    @ui.$paidDate.inputmask("dd/mm/yyyy")
 #    @ui.$totalCash.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 #    @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
