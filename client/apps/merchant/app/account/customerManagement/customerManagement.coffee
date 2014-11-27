@@ -10,7 +10,7 @@ lemon.defineApp Template.customerManagement,
     Session.setDefault('allowCreateNewCustomer', false)
   events:
     "input .search-filter": (event, template) -> Session.set("customerManagementSearchFilter", template.ui.$searchFilter.val())
-    "click .inner.caption": (event, template) -> Session.set("customerManagementCurrentCustomer", @)
+    "click .inner.caption": (event, template) -> Session.set("customerManagementCurrentCustomerId", @_id)
     "input input": (event, template) -> scope.checkAllowCreate(template)
     "click #createCustomerAccount": (event, template) -> scope.createNewCustomer(template)
     "click .excel-customer": (event, template) -> $(".excelFileSource").click()

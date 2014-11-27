@@ -7,6 +7,7 @@ lemon.defineWidget Template.customerManagementCustomSaleDetails,
     Schema.customSaleDetails.find({customSale: customSaleId})
   latestPaids: -> Schema.transactions.find({latestSale: @_id})
   receivableClass: -> if @debtBalanceChange >= 0 then 'receive' else 'paid'
+
   events:
     "click .enter-edit" : (event, template) -> Session.set("customerManagementCurrentCustomSale", @)
     "click .cancel-edit": (event, template) -> Session.set("customerManagementCurrentCustomSale")

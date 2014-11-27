@@ -6,6 +6,9 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
   if Session.get('allowCreateNewCustomer') then allowCreate = '' else allowCreate = 'disabled'
   scope.allowCreate = allowCreate
 
+  if customerId = Session.get("customerManagementCurrentCustomerId")
+    Session.set("customerManagementCurrentCustomer", Schema.customers.findOne(customerId))
+
   if Session.get("customerManagementCurrentCustomer")
     Meteor.subscribe('availableCustomSaleOf', Session.get("customerManagementCurrentCustomer")._id)
     Meteor.subscribe('availableSaleOf', Session.get("customerManagementCurrentCustomer")._id)

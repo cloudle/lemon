@@ -1,6 +1,7 @@
 Apps.Merchant.customerManagementInit.push (scope) ->
   Session.set("customerManagementSearchFilter", "")
-  Session.set("customerManagementCurrentCustomer", Schema.customers.findOne())
+#  Session.set("customerManagementCurrentCustomer", Schema.customers.findOne())
+  scope.currentCustomerId = Schema.customers.findOne()?._id
 
   scope.checkAllowCreate = (context) ->
     fullName = context.ui.$fullName.val()
