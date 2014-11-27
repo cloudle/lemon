@@ -19,7 +19,7 @@ template(name="customerManagementSalesHistorySection")
             input.number(name='debtDate' type="text" size="10" placeholder="ngày mua")
           td
             .lemon.rounded.btn.lime.icon-tags-2.pull-right.createCustomSale
-        tr.editors
+        tr.editors.dual-border
           td
             input(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
           td(colspan="2")
@@ -29,7 +29,7 @@ template(name="customerManagementSalesHistorySection")
           td
             .lemon.rounded.btn.lime.icon-money.pull-right.createTransaction
         tr.group-summary-row
-          td.number(colspan="5")
+          td.number.old-debt-total(colspan="5")
             span.s5 NỢ CŨ:
             span.s3 <b>{{formatNumber customSaleDebt}}</b> VNĐ
 
