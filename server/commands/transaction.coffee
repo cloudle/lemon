@@ -86,9 +86,10 @@ Meteor.methods
 
           transactions = Schema.transactions.find({latestSale: customSale._id}).fetch()
           if transactions.length > 0
-            incCustomerOption = {customSaleDebt: 0}
+            incCustomerOption = {customSaleDebt: 0, customSalePaid: 0}
             for transaction in transactions
               incCustomerOption.customSaleDebt += transaction.debtBalanceChange
+              incCustomerOption.customSalePaid -= transaction.debtBalanceChange
               Schema.transactions.remove transaction._id
             Schema.customers.update customer._id, $inc: incCustomerOption
         else Schema.customSales.remove customSale._id if customSaleDetails.length is 0

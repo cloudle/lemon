@@ -1,8 +1,9 @@
 Apps.Merchant.customerManagementInit.push (scope) ->
   scope.createCustomSale = (event, template) ->
+    newDate = new Date()
     $debtDate = template.ui.$debtDate
     $description = template.ui.$description
-    debtDate = moment($debtDate.val(), 'DD/MM/YYYY')._d
+    debtDate = moment($debtDate.val()+ newDate.getHours() + newDate.getMinutes() + newDate.getSeconds(), 'DD/MM/YYYY h:mm:s')._d
     customer = Session.get("customerManagementCurrentCustomer")
 
     if debtDate < (new Date) and !isNaN(customer.customSaleDebt)
@@ -52,14 +53,15 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     Transaction.newByCustomSale(customSale._id) if customSale.allowDelete is false and customSale.confirm is false
 
   scope.createTransaction = (event, template) ->
+    newDate = new Date()
     $payDescription = template.ui.$payDescription
     payAmount       = $("[name='payAmount']").inputmask('unmaskedvalue')
     $paidDate       = template.ui.$paidDate
-    paidDate        = moment($paidDate.val(), 'DD/MM/YYYY')._d
+    paidDate        = moment($paidDate.val()+ newDate.getHours() + newDate.getMinutes() + newDate.getSeconds(), 'DD/MM/YYYY h:mm:s')._d
     if customer = Session.get("customerManagementCurrentCustomer")
       latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
       console.log $payDescription.val() and paidDate > latestCustomSale.debtDate and payAmount != "" and !isNaN(payAmount)
       if $payDescription.val() and paidDate > latestCustomSale.debtDate and payAmount != "" and !isNaN(payAmount)
-        Meteor.call('createNewReceiptCashOfCustomSale', customer._id, parseInt(payAmount), $payDescription.val())
+        Meteor.call('createNewReceiptCashOfCustomSale', customer._id, parseInt(payAmount), $payDescription.val(), paidDate)
 
 
