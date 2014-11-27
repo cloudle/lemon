@@ -61,9 +61,11 @@ Meteor.methods
   createCustomSale: (customSale)->
     latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
     if latestCustomSale
-      if customSale.debtDate > latestCustomSale.debtDate
+      if customSale.debtDate >= latestCustomSale.debtDate
         customSalesId =  Schema.customSales.insert customSale
         Schema.customSales.update latestCustomSale._id, $set:{allowDelete: false} if customSalesId
+        for customSaleDetail in Schema.customSaleDetails.find({customSale: latestCustomSale._id}).fetch()
+          Schema.customSaleDetails.update customSaleDetail._id, $set:{allowDelete: false}
     else
       Schema.customSales.insert customSale
 
@@ -95,13 +97,15 @@ Meteor.methods
 
       latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
       Schema.customSales.update latestCustomSale._id, $set:{allowDelete: true}
+      for customSaleDetail in Schema.customSaleDetails.find({customSale: latestCustomSale._id}).fetch()
+        Schema.customSaleDetails.update customSaleDetail._id, $set:{allowDelete: true}
 
-  updateCustomSaleByCreateCustomSaleDetail: (customSaleDetailId)->
+  updateCustomSaleByCreateCustomSaleDetail: (customSaleDetail)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      if customSaleDetail = Schema.customSaleDetails.findOne({_id: customSaleDetailId, parentMerchant: profile.parentMerchant})
-        customSale = Schema.customSales.findOne({_id: customSaleDetail.customSale, parentMerchant: profile.parentMerchant})
-        latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
-        if customSale._id is latestCustomSale._id
+      customSale = Schema.customSales.findOne({_id: customSaleDetail.customSale, parentMerchant: profile.parentMerchant})
+      latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
+      if customSale._id is latestCustomSale._id
+        if Schema.customSaleDetails.insert customSaleDetail
           incCustomSaleOption = {
             totalCash        : customSaleDetail.finalPrice
             debtBalanceChange: customSaleDetail.finalPrice
@@ -115,6 +119,14 @@ Meteor.methods
             customSaleTotalCash: customSaleDetail.finalPrice
           }
           Schema.customers.update customer._id, $inc: incCustomerOption
+
+          beforeDebtBalance = Schema.customSales.findOne(customSale._id).latestDebtBalance
+          for transaction in Schema.transactions.find({latestSale: customSale._id}).fetch()
+            latestDebtBalance = beforeDebtBalance - transaction.debtBalanceChange
+            Schema.transactions.update transaction._id, $set: {beforeDebtBalance: beforeDebtBalance, latestDebtBalance: latestDebtBalance}
+            beforeDebtBalance = latestDebtBalance
+
+
 
   updateCustomSaleByDeleteCustomSaleDetail: (customSaleDetailId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
@@ -138,3 +150,9 @@ Meteor.methods
             customSaleTotalCash: -customSaleDetail.finalPrice
           }
           Schema.customers.update customer._id, $inc: incCustomerOption
+
+          beforeDebtBalance = Schema.customSales.findOne(customSale._id).latestDebtBalance
+          for transaction in Schema.transactions.find({latestSale: customSale._id}).fetch()
+            latestDebtBalance = beforeDebtBalance - transaction.debtBalanceChange
+            Schema.transactions.update transaction._id, $set: {beforeDebtBalance: beforeDebtBalance, latestDebtBalance: latestDebtBalance}
+            beforeDebtBalance = latestDebtBalance

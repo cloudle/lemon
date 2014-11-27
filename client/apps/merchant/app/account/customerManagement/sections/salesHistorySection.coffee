@@ -25,5 +25,6 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
 #    @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
   events:
-    "click .createCustomSale": (event, template) -> scope.createCustomSale(event, template)
+    "click .createCustomSale":  (event, template) -> scope.createCustomSale(event, template)
+    "click .createTransaction": (event, template) -> scope.createTransaction(event, template)
     "click .expandSaleHistory": -> Session.set("customerManagementShowHistory", true)

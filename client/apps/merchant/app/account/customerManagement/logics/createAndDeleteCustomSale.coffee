@@ -36,8 +36,10 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         price         : $price.val()
         quality       : $quality.val()
         finalPrice    : $quality.val()*$price.val()
-      customSaleDetailId = Schema.customSaleDetails.insert customSaleDetail
-      Meteor.call('updateCustomSaleByCreateCustomSaleDetail', customSaleDetailId) if customSaleDetailId
+
+      latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
+      if customSale._id is latestCustomSale._id
+        Meteor.call('updateCustomSaleByCreateCustomSaleDetail', customSaleDetail)
       $productName.val(''); $price.val(''); $quality.val(''); $skulls.val('')
 
   scope.deleteCustomSaleDetail = (customSaleDetailId) ->
@@ -46,3 +48,15 @@ Apps.Merchant.customerManagementInit.push (scope) ->
   scope.confirmCustomSale = (customSaleId) ->
     customSale = Schema.customSales.findOne({_id:customSaleId, parentMerchant:Session.get('myProfile').parentMerchant})
     Transaction.newByCustomSale(customSale._id) if customSale.allowDelete is false and customSale.confirm is false
+
+  scope.createTransaction = (event, template) ->
+    $payDescription = template.ui.$payDescription
+    $payAmount = template.ui.$payAmount
+    $paidDate = template.ui.$paidDate
+    paidDate = moment($paidDate.val(), 'DD/MM/YYYY')._d
+    customer = Session.get("customerManagementCurrentCustomer")
+    console.log $payAmount.val()
+#    if customer and paidDate < (new Date) and $payAmount.val()
+#      Meteor.call('createNewReceiptCashOfCustomSale', customer._id, $payAmount.val(), $payDescription.val())
+
+
