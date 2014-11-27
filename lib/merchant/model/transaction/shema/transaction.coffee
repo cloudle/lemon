@@ -43,6 +43,9 @@ simpleSchema.transactions = new SimpleSchema
     type: String
     optional: true
 
+  beforeDebtBalance:
+    type: Number
+
   latestDebtBalance:
     type: Number
 
