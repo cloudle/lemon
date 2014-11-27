@@ -29,10 +29,14 @@ template(name="customerManagementCustomSaleDetails")
     td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>
 
   each latestPaids
-    tr
+    tr.paid-row.top
       td {{momentCalendar debtDate}} - {{description}}
-      td {{beforeDebtBalance}}
-      td {{latestDebtBalance}}
+      td.number(colspan="3"): span(class="{{receivableClass}}") <b>{{formatNumber debtBalanceChange}}</b>
+      td
+    tr.paid-row
+      td
+      td.number(colspan="3") CÂN BẰNG NỢ: <b>{{formatNumber latestDebtBalance}}</b>
+      td
 
 template(name="customerManagementCustomSaleDetailCreator")
   tr.editors.animated.fadeIn

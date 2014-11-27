@@ -9,6 +9,7 @@ Template.registerHelper 'formatNumberK', (context) ->  accounting.formatNumber(c
 
 Template.registerHelper 'pad', (number) -> if number < 10 then '0' + number else number
 Template.registerHelper 'round', (number) -> Math.round(number)
+Template.registerHelper 'abs', (number) -> Math.abs(number)
 Template.registerHelper 'momentFormat', (date, format) -> moment(date).format(format)
 Template.registerHelper 'momentCalendar', (date) -> moment(date).calendar()
 
