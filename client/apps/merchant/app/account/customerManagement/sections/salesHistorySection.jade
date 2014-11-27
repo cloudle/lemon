@@ -31,14 +31,14 @@ template(name="customerManagementSalesHistorySection")
             +customerManagementSaleDetails this
         else
           tr: td(colspan="5")
-            .lemon.rounded.btn.lime.pull-right.expandSaleHistory.icon-
+            .lemon.rounded.btn.lime.pull-right.expandSaleHistory.icon-angle-right
 
         each defaultSaleToday
           +customerManagementSaleDetails this
     .panel-footer
       .right-float
         span.s5 TỔNG NỢ:
-        span.s3 <b>{{formatNumber totalDebit}}</b> VNĐ
+        span.s3 <b>{{formatNumber debtBalance}}</b> VNĐ
         //h3 Tổng tiền: {{formatNumber totalPurchases}} VNĐ
 
 template(name="customerManagementSaleHistoryHeader")
