@@ -2,7 +2,7 @@ scope = logics.customerManagement
 
 lemon.defineHyper Template.customerManagementSalesHistorySection,
   currentCustomer: -> Session.get("customerManagementCurrentCustomer")
-  showSaleHistory: -> true #Session.get("customerManagementShowHistory")
+  showSaleHistory: -> Session.get("customerManagementShowHistory")
 
   customSale: -> Schema.customSales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}, {sort: {debtDate: 1}})
   defaultSale: -> Schema.sales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}, {sort: {'version.createdAt': -1}})
@@ -21,3 +21,4 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
 
   events:
     "click .createCustomSale": (event, template) -> scope.createCustomSale(event, template)
+    "click .expandSaleHistory": -> Session.set("customerManagementShowHistory", true)
