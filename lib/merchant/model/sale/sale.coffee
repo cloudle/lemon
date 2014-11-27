@@ -16,6 +16,7 @@ createSaleCode = ->
 
 Schema.add 'sales', "Sale", class Sale
   @newByOrder: (order)->
+    buyer = Schema.customers.findOne(order.buyer)
     option =
       merchant          : order.merchant
       warehouse         : order.warehouse
@@ -43,9 +44,18 @@ Schema.add 'sales', "Sale", class Sale
       status            : false
       submitted         : false
 
+      debtBalanceChange : order.finalPrice
+      beforeDebtBalance : buyer.debtBalance
+      latestDebtBalance : buyer.debtBalance + order.finalPrice
+
   @insertByOrder: (order)->
     @schema.insert Sale.newByOrder(order), (error, result) ->
-      if error then console.log error; null else result
+      if error
+        console.log error
+        null
+      else
+        Schema.customers.update order.buyer, $inc:{debtBalance: order.finalPrice}
+        result
 
   @findAccountingDetails: (starDate, toDate, warehouseId)->
     Schema.sales.find({$and: [

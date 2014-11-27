@@ -56,6 +56,7 @@ simpleSchema.transactions = new SimpleSchema
 #---------------------------------------------
   totalCash:
     type: Number
+    optional: true
 
   dueDay:
     type: Date

@@ -61,9 +61,15 @@ simpleSchema.sales = new SimpleSchema
 
   latestDebtBalance:
     type: Number
+    defaultValue: 0
 
   debtBalanceChange:
     type: Number
+    defaultValue: 0
+
+  beforeDebtBalance:
+    type: Number
+    defaultValue: 0
 
   debit:
     type: Number
@@ -71,7 +77,7 @@ simpleSchema.sales = new SimpleSchema
   paymentsDelivery:
     type: Number
 
-  #người xác nhận đà nhận tiền
+  #người xác nhận đã nhận tiền
   recipient:
     type: String
     optional: true
@@ -94,6 +100,13 @@ simpleSchema.sales = new SimpleSchema
 
   submitted:
     type: Boolean
+
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
+    optional: true
+
+  version: { type: simpleSchema.Version }
 #----------------------------------------
   currentReturn:
     type: String
@@ -107,12 +120,6 @@ simpleSchema.sales = new SimpleSchema
     type: Number
     optional: true
 
-#----------------------------------------
 
-  styles:
-    type: String
-    defaultValue: Helpers.RandomColor()
-    optional: true
 
-  version: { type: simpleSchema.Version }
 

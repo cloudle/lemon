@@ -35,6 +35,10 @@ simpleSchema.customSales = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  beforeDebtBalance:
+    type: Number
+    defaultValue: 0
+
   allowDelete:
     type: Boolean
     defaultValue: true

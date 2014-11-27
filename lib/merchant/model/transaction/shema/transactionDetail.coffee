@@ -29,11 +29,3 @@ simpleSchema.transactionDetails = new SimpleSchema
     defaultValue: new Date()
 
   version: {type: simpleSchema.Version}
-
-
-
-
-
-
-
-
