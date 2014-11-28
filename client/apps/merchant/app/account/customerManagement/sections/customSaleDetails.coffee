@@ -12,6 +12,7 @@ lemon.defineWidget Template.customerManagementCustomSaleDetails,
     "click .enter-edit" : (event, template) -> Session.set("customerManagementCurrentCustomSale", @)
     "click .cancel-edit": (event, template) -> Session.set("customerManagementCurrentCustomSale")
     "click .deleteCustomSale": (event, template) ->   Meteor.call('deleteCustomSale', @_id)
+    "click .deleteCustomSaleDetail": (event, template) -> scope.deleteCustomSaleDetail(@_id)
 
 lemon.defineWidget Template.customerManagementCustomSaleDetailCreator,
   rendered: ->
@@ -20,5 +21,4 @@ lemon.defineWidget Template.customerManagementCustomSaleDetailCreator,
 
   events:
     "click .createCustomSaleDetail": (event, template) -> scope.createCustomSaleDetail(@, template)
-    "click .deleteCustomSaleDetail": (event, template) -> scope.deleteCustomSaleDetail(@_id)
     "keypress input": (event, template) -> scope.createCustomSaleDetail(@, template) if event.which is 13 #ENTER
