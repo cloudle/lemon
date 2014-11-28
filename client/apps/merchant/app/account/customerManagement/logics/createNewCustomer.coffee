@@ -3,7 +3,7 @@ resetForm = (context) -> $(item).val('') for item in context.findAll("[name]")
 logics.customerManagement.createNewCustomer = (context) ->
   fullName = context.ui.$fullName.val()
   pronoun = context.ui.$pronoun.val()
-  description = context.ui.$description.val()
+  description = context.ui.$customerDescription.val()
 
   option =
     currentMerchant : Session.get('myProfile').currentMerchant
