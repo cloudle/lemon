@@ -19,7 +19,6 @@ Bán Hàng:
 
 
 
-
-
-
-
+1. Bao cao tong quan
+2. Tinh hinh kinh doanh trong ngay
+3.

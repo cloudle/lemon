@@ -109,7 +109,7 @@ Meteor.methods
             debtBalanceChange: customSaleDetail.finalPrice
             latestDebtBalance: customSaleDetail.finalPrice
           }
-          Schema.customSales.update customSaleDetail.customSale, $set:{allowDelete: false}, $inc: incCustomSaleOption
+          Schema.customSales.update customSaleDetail.customSale, $set:{allowDelete: true}, $inc: incCustomSaleOption
 
           customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
           incCustomerOption = {

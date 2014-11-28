@@ -37,17 +37,32 @@ template(name="customerManagement")
         .search-filter.icon-search-8
           input(name='searchFilter' type="text")
         .nano: .nano-content
-          each managedCustomerList
+          if showFilterSearch
             .group-wrapper
-              if showFilterSearch
-                .inner.caption(class="{{activeClass}}")
+              each managedCustomerList
+                .caption.inner(class="{{activeClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
-                  span {{name}}
-              else
-                .group.caption {{key}}
+                  span.text {{name}}
+          else
+            each managedCustomerList
+              .group-wrapper
+                .caption.group {{key}}
                 each childs
-                  .inner.caption(class="{{activeClass}}")
-                    //if allowDelete
-                    //  i.trash.icon-bag
+                  .caption.inner(class="{{activeClass}}")
                     +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
-                    span {{name}}
+                    span.text {{name}}
+          //
+          //each managedCustomerList
+          //  .group-wrapper
+          //    if showFilterSearch
+          //      .inner.caption(class="{{activeClass}}")
+          //        +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+          //        span.text {{name}}
+          //    else
+          //      .group.caption {{key}}
+          //      each childs
+          //        .inner.caption(class="{{activeClass}}")
+          //          //if allowDelete
+          //          //  i.trash.icon-bag
+          //          +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+          //          span.text {{name}}

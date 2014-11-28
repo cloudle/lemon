@@ -14,18 +14,18 @@ template(name="customerManagementSalesHistorySection")
           +customerManagementCustomSaleDetails this
         tr.editors
           td(colspan="3")
-            input(name='description' type="text" size="10" placeholder="ghi chú đơn hàng")
+            input.new-bill-field(name='description' type="text" size="10" placeholder="ghi chú đơn hàng")
           td
-            input.number(name='debtDate' type="text" size="10" placeholder="ngày mua")
+            input.new-bill-field.number(name='debtDate' type="text" size="10" placeholder="ngày bán")
           td
             .lemon.rounded.btn.lime.icon-tags-2.pull-right.createCustomSale
         tr.editors.dual-border
           td
-            input(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
+            input.new-transaction-field(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
           td(colspan="2")
-            input.number(name='payAmount' type="text" size="10" placeholder="số tiền")
+            input.new-transaction-field.number(name='payAmount' type="text" size="10" placeholder="số tiền")
           td
-            input.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
+            input.new-transaction-field.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
           td
             .lemon.rounded.btn.lime.icon-money.pull-right.createTransaction
         tr.group-summary-row
@@ -47,7 +47,7 @@ template(name="customerManagementSalesHistorySection")
     .panel-footer
       .right-float
         span.s5 TỔNG NỢ:
-        span.s3 <b>{{formatNumber debtBalance}}</b> VNĐ
+        span.s3 <b>{{formatNumber finalDebtBalance}}</b> VNĐ
         //h3 Tổng tiền: {{formatNumber totalPurchases}} VNĐ
 
 template(name="customerManagementSaleHistoryHeader")

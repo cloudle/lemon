@@ -1,5 +1,5 @@
 Apps.Merchant.customerManagementInit.push (scope) ->
-  scope.createCustomSale = (event, template) ->
+  scope.createCustomSale = (template) ->
     $debtDate = template.ui.$debtDate
     $description = template.ui.$description
     debtDate = moment($debtDate.val(), 'DD/MM/YYYY')._d
@@ -21,9 +21,11 @@ Apps.Merchant.customerManagementInit.push (scope) ->
 
   scope.createCustomSaleDetail = (customSale, template) ->
     $productName = $(template.find("[name='productName']"))
-    price        = parseInt($("[name='price']").inputmask('unmaskedvalue'))
+    $price       = $(template.find("[name='price']"))
     $quality     = $(template.find("[name='quality']"))
     $skulls      = $(template.find("[name='skulls']"))
+
+    price        = parseInt($price.inputmask('unmaskedvalue'))
 
     console.log customSale, $productName.val().length > 0, $skulls.val().length > 0, price > 0, $quality.val() > 0
 
@@ -43,6 +45,7 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       if customSale._id is latestCustomSale._id
         Meteor.call('updateCustomSaleByCreateCustomSaleDetail', customSaleDetail)
       $productName.val(''); $price.val(''); $quality.val(''); $skulls.val('')
+      $productName.focus()
 
   scope.deleteCustomSaleDetail = (customSaleDetailId) ->
     Meteor.call('updateCustomSaleByDeleteCustomSaleDetail', customSaleDetailId)
@@ -51,7 +54,7 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     customSale = Schema.customSales.findOne({_id:customSaleId, parentMerchant:Session.get('myProfile').parentMerchant})
     Transaction.newByCustomSale(customSale._id) if customSale.allowDelete is false and customSale.confirm is false
 
-  scope.createTransaction = (event, template) ->
+  scope.createTransaction = (template) ->
     $payDescription = template.ui.$payDescription
     payAmount       = $("[name='payAmount']").inputmask('unmaskedvalue')
     $paidDate       = template.ui.$paidDate

@@ -93,7 +93,7 @@
       @type Number
       @default null
      */
-    sliderMaxHeight: null,
+    sliderMaxHeight: 150,
 
     /**
       an alternate document context.

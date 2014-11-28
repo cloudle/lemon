@@ -5,10 +5,6 @@ template(name="customerManagementCustomSaleDetails")
     .commands
       if allowDelete
         .lemon.rounded.red.btn.animated.bounceIn.deleteCustomSale: span.icon-minus-4
-      if isEditing
-        .lemon.rounded.orange.btn.animated.bounceIn.cancel-edit: span.icon-cancel-7
-      else
-        .lemon.rounded.blue.btn.animated.bounceIn.enter-edit: span.icon-cog-6
 
   each customSaleDetails
     tr.detail-row
@@ -21,11 +17,11 @@ template(name="customerManagementCustomSaleDetails")
       td {{skulls}}
       td.number {{formatNumber price}}
       td.number {{formatNumber finalPrice}}
-  if isEditing
+  if allowDelete
     +customerManagementCustomSaleDetailCreator
   tr.detail-row.summary-row
     td.note {{description}}
-    td.number(colspan="3"): span.blured-color CÂN BẰNG NỢ: <b>{{formatNumber latestDebtBalance}}</b>
+    td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber latestDebtBalance}}</b>
     td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>
 
   each latestPaids
@@ -35,7 +31,7 @@ template(name="customerManagementCustomSaleDetails")
       td
     tr.paid-row(class="{{receivableClass}}")
       td
-      td.number(colspan="3") CÂN BẰNG NỢ: <b>{{formatNumber latestDebtBalance}}</b>
+      td.number(colspan="3"): span.icon-feather-1(class="{{finalReceivableClass}}") <b>{{formatNumberAbs latestDebtBalance}}</b>
       td
 
 template(name="customerManagementCustomSaleDetailCreator")

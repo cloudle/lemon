@@ -25,6 +25,10 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
 #    @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
   events:
-    "click .createCustomSale":  (event, template) -> scope.createCustomSale(event, template)
-    "click .createTransaction": (event, template) -> scope.createTransaction(event, template)
+    "click .createCustomSale":  (event, template) -> scope.createCustomSale(template)
+    "click .createTransaction": (event, template) -> scope.createTransaction(template)
     "click .expandSaleHistory": -> Session.set("customerManagementShowHistory", true)
+    "keypress .new-bill-field": (event, template) ->
+      scope.createCustomSaleDetail(template) if event.which is 13
+    "keypress .new-transaction-field": (event, template) ->
+      scope.createTransaction(template) if event.which is 13
