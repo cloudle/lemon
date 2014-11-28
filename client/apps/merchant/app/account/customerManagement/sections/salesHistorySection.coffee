@@ -4,6 +4,8 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
   currentCustomer: -> Session.get("customerManagementCurrentCustomer")
   showSaleHistory: -> Session.get("customerManagementShowHistory")
 
+  isCustomSaleModeEnabled: -> Session.get("customerManagementCurrentCustomer")?.customSaleModeEnabled
+
   customSale: -> Schema.customSales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}, {sort: {debtDate: 1}})
   defaultSale: -> Schema.sales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}, {sort: {'version.createdAt': -1}})
   defaultSaleArchive: -> Schema.sales.find {
@@ -25,6 +27,9 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
 #    @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
   events:
+    "click .customSaleModeDisable":  (event, template) ->
+      if Session.get("customerManagementCurrentCustomer")
+        scope.customSaleModeDisable(Session.get("customerManagementCurrentCustomer")._id)
     "click .createCustomSale":  (event, template) -> scope.createCustomSale(template)
     "click .createTransaction": (event, template) -> scope.createTransaction(template)
     "click .expandSaleHistory": -> Session.set("customerManagementShowHistory", true)

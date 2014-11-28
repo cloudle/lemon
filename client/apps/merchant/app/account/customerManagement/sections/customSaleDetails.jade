@@ -3,7 +3,7 @@ template(name="customerManagementCustomSaleDetails")
     | .
     .bill-header <b>{{momentCalendar debtDate}}</b>
     .commands
-      if allowDelete
+      if isCustomSaleModeEnabled
         .lemon.rounded.red.btn.animated.bounceIn.deleteCustomSale: span.icon-minus-4
 
   each customSaleDetails
@@ -11,13 +11,13 @@ template(name="customerManagementCustomSaleDetails")
       td.has-commands
         |{{productName}}
         .commands
-          if allowDelete
+          if isCustomSaleModeEnabled
             .lemon.rounded.tiny.btn.red.deleteCustomSaleDetail: span.icon-minus-4
       td {{formatNumber quality}}
       td {{skulls}}
       td.number {{formatNumber price}}
       td.number {{formatNumber finalPrice}}
-  if allowDelete
+  if isCustomSaleModeEnabled
     +customerManagementCustomSaleDetailCreator
   tr.detail-row.summary-row
     td.note {{description}}
@@ -29,7 +29,8 @@ template(name="customerManagementCustomSaleDetails")
       td: span.note {{description}}, {{momentCalendar debtDate}}.
       td.number(colspan="3"): span(class="{{receivableClass}}") <b>{{formatNumberAbs debtBalanceChange}}</b>
       td(rowspan="2")
-        .lemon.rounded.btn.red.pull-right.deleteTransaction: span.icon-minus-4
+        if isCustomSaleModeEnabled
+          .lemon.rounded.btn.red.pull-right.deleteTransaction: span.icon-minus-4
     tr.paid-row(class="{{receivableClass}}")
       td
       td.number(colspan="3"): span.icon-feather-1(class="{{finalReceivableClass}}") <b>{{formatNumberAbs latestDebtBalance}}</b>
@@ -42,3 +43,6 @@ template(name="customerManagementCustomSaleDetailCreator")
     td: input(name='skulls' type="text" size="10" placeholder="quy cách")
     td: input.number(name='price' type="text" size="10" placeholder="đơn giá")
     td: .lemon.btn.rounded.lime.pull-right.createCustomSaleDetail.icon-plus-6
+    //td
+    //  .pull-left(style="width: 135px"): input.number(name='totalPrice' type="text" size="10" placeholder="tổng tiền")
+    //  .lemon.btn.rounded.lime.pull-right.createCustomSaleDetail.icon-plus-6

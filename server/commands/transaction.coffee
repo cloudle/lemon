@@ -101,6 +101,31 @@ Meteor.methods
           for customSaleDetail in Schema.customSaleDetails.find({customSale: latestCustomSale._id}).fetch()
             Schema.customSaleDetails.update customSaleDetail._id, $set:{allowDelete: true}
 
+  deleteTransactionOfCustomSale: (transactionId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if transaction = Schema.transactions.findOne({_id: transactionId, parentMerchant: profile.parentMerchant})
+        latestCustomSale = Schema.customSales.findOne({buyer: transaction.owner}, {sort: {debtDate: -1}})
+        latestTransaction = Schema.transactions.findOne({owner: transaction.owner, parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1}})
+
+        console.log transaction.latestSale
+        console.log latestCustomSale._id
+        console.log transaction._id
+        console.log latestTransaction._id
+
+        if transaction.latestSale is latestCustomSale._id and transaction._id is latestTransaction._id
+          incCustomerOption = {customSaleDebt: transaction.debtBalanceChange }
+          if transaction.debtBalanceChange > 0
+            incCustomerOption.customSalePaid= transaction.debtBalanceChange
+          else
+            incCustomerOption.customSaleTotalCash = transaction.debtBalanceChange
+          Schema.customers.update transaction.owner, $inc: incCustomerOption
+          Schema.transactions.remove transaction._id
+
+          latestTransaction = Schema.transactions.findOne({owner: transaction.owner, parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1}})
+          Schema.transactions.update latestTransaction._id, $set:{allowDelete: true} if latestTransaction
+
+
+
   updateCustomSaleByCreateCustomSaleDetail: (customSaleDetail)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       customSale = Schema.customSales.findOne({_id: customSaleDetail.customSale, parentMerchant: profile.parentMerchant})

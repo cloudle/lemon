@@ -25,10 +25,12 @@ Apps.Merchant.customerManagementInit.push (scope) ->
   scope.createCustomSaleDetail = (customSale, template) ->
     $productName = $(template.find("[name='productName']"))
     $price       = $(template.find("[name='price']"))
+#    $totalPrice  = $(template.find("[name='totalPrice']"))
     $quality     = $(template.find("[name='quality']"))
     $skulls      = $(template.find("[name='skulls']"))
 
     price        = parseInt($price.inputmask('unmaskedvalue'))
+#    totalPrice   = parseInt($totalPrice.inputmask('unmaskedvalue'))
 
     console.log customSale, $productName.val().length > 0, $skulls.val().length > 0, price > 0, $quality.val() > 0
 
@@ -40,8 +42,8 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         customSale    : customSale._id
         productName   : $productName.val()
         skulls        : $skulls.val()
-        price         : price
         quality       : $quality.val()
+        price         : price
         finalPrice    : $quality.val()*price
 
       latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
@@ -52,6 +54,14 @@ Apps.Merchant.customerManagementInit.push (scope) ->
 
   scope.deleteCustomSaleDetail = (customSaleDetailId) ->
     Meteor.call('updateCustomSaleByDeleteCustomSaleDetail', customSaleDetailId)
+
+  scope.deleteTransactionCustomSale = (transactionCustomSaleDetailId) ->
+    Meteor.call('deleteTransactionOfCustomSale', transactionCustomSaleDetailId)
+
+  scope.customSaleModeDisable = (customerId) ->
+    customer = Schema.customers.findOne({_id: customerId, parentMerchant:Session.get('myProfile').parentMerchant})
+    if customer and customer.customSaleModeEnabled is true
+      Schema.customers.update customer._id, $set:{customSaleModeEnabled: false}
 
   scope.confirmCustomSale = (customSaleId) ->
     customSale = Schema.customSales.findOne({_id:customSaleId, parentMerchant:Session.get('myProfile').parentMerchant})
@@ -70,8 +80,11 @@ Apps.Merchant.customerManagementInit.push (scope) ->
 
     if customer = Session.get("customerManagementCurrentCustomer")
       latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
-      console.log $payDescription.val() and paidDate > latestCustomSale.debtDate and payAmount != "" and !isNaN(payAmount)
-      if $payDescription.val() and paidDate > latestCustomSale.debtDate and payAmount != "" and !isNaN(payAmount)
+      console.log paidDate
+      console.log latestCustomSale.debtDate
+
+      console.log $payDescription.val() , paidDate > latestCustomSale.debtDate , payAmount != "" , !isNaN(payAmount)
+      if paidDate > latestCustomSale.debtDate and payAmount != "" and !isNaN(payAmount)
         Meteor.call('createNewReceiptCashOfCustomSale', customer._id, parseInt(payAmount), $payDescription.val(), paidDate)
         $payDescription.val(''); $paidDate.val(''); $payAmount.val('')
 

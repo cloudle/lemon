@@ -23,17 +23,20 @@ Meteor.methods
 
         incCustomerOption = {customSaleDebt: -debtCash }
         if debtCash > 0
-          option.description = description ? 'Thu Tiền'
+          option.description = if description?.length > 0 then description else 'Thu Tiền'
           option.receivable  = true
           incCustomerOption.customSalePaid= debtCash
         else
-          option.description = description ? 'Cho Mượn Tiền'
+          option.description = if description?.length > 0 then description else 'Cho Mượn Tiền'
           option.receivable  = false
           incCustomerOption.customSaleTotalCash = -debtCash
 
         option.debtBalanceChange = debtCash
         option.beforeDebtBalance = customer.customSaleDebt
         option.latestDebtBalance = customer.customSaleDebt - debtCash
+
+        latestTransaction = Schema.transactions.findOne({owner: customer._id, latestSale: customSale._id, parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1}})
+        Schema.transactions.update latestTransaction._id, $set:{allowDelete: false} if latestTransaction
 
         Schema.transactions.insert option
         Schema.customers.update customer._id, $inc: incCustomerOption
@@ -56,11 +59,11 @@ Meteor.methods
 
         incCustomerOption = {customSaleDebt: -debtCash }
         if debtCash > 0
-          option.description = description ? 'Thu Tiền'
+          option.description = if description?.length > 0 then description else 'Thu Tiền'
           option.receivable  = true
           incCustomerOption.customSalePaid = debtCash
         else
-          option.description = description ? 'Cho Mượn Tiền'
+          option.description = if description?.length > 0 then description else 'Cho Mượn Tiền'
           option.receivable  = false
           incCustomerOption.customSaleTotalCash = -debtCash
 

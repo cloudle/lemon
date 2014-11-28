@@ -12,13 +12,6 @@ template(name="customerManagementSalesHistorySection")
         +customerManagementSaleHistoryHeader
         each customSale
           +customerManagementCustomSaleDetails this
-        tr.editors
-          td(colspan="3")
-            input.new-bill-field(name='description' type="text" size="10" placeholder="ghi chú đơn hàng")
-          td
-            input.new-bill-field.number(name='debtDate' type="text" size="10" placeholder="ngày bán")
-          td
-            .lemon.rounded.btn.lime.icon-tags-2.pull-right.createCustomSale
         tr.editors.dual-border
           td
             input.new-transaction-field(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
@@ -28,8 +21,17 @@ template(name="customerManagementSalesHistorySection")
             input.new-transaction-field.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
           td
             .lemon.rounded.btn.lime.icon-money.pull-right.createTransaction
+        tr.editors
+          td(colspan="3")
+            input.new-bill-field(name='description' type="text" size="10" placeholder="ghi chú đơn hàng")
+          td
+            input.new-bill-field.number(name='debtDate' type="text" size="10" placeholder="ngày bán")
+          td
+            .lemon.rounded.btn.lime.icon-tags-2.pull-right.createCustomSale
         tr.group-summary-row
           td.number.old-debt-total(colspan="5")
+            if customSaleModeEnabled
+              .lemon.rounded.btn.lime.customSaleModeDisable.icon-ok-6
             span.s5 NỢ CŨ:
             span.s3 <b>{{formatNumber customSaleDebt}}</b> VNĐ
 

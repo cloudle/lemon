@@ -87,6 +87,10 @@ simpleSchema.customers = new SimpleSchema
     type: Number
     defaultValue: 0
 #----------------------------------------------
+  customSaleModeEnabled:
+    type: Boolean
+    defaultValue: true
+
   debtBalance:
     type: Number
     defaultValue: 0

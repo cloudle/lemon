@@ -1,4 +1,8 @@
-formatCustomerSearch = (item) -> "#{item.name}" if item
+formatCustomerSearch = (item) ->
+  if item
+    name = "#{item.name} "
+    desc = if item.description then "(#{item.description})" else ""
+    name + desc
 
 updateCustomerAllowDelete = (customer) -> Schema.customers.update(customer._id, $set:{allowDelete: false}) if customer.allowDelete
 

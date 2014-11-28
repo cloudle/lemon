@@ -42,6 +42,7 @@ simpleSchema.transactions = new SimpleSchema
 
   debtBalanceChange:
     type: Number
+    optional: true
 
   latestSale:
     type: String
@@ -49,9 +50,11 @@ simpleSchema.transactions = new SimpleSchema
 
   beforeDebtBalance:
     type: Number
+    optional: true
 
   latestDebtBalance:
     type: Number
+    optional: true
 
   debtDate:
     type: Date

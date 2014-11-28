@@ -5,5 +5,7 @@ Apps.Merchant.salesInit.push ->
     reactiveMax: -> 999999999
     reactiveMin: -> logics.sales.currentProduct?.price ? 0
     reactiveStep: -> 1000
+    others:
+      forcestepdivisibility: 'none'
 
 
