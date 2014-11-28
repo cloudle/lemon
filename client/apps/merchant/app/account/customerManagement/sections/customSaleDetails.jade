@@ -17,7 +17,7 @@ template(name="customerManagementCustomSaleDetails")
       td {{skulls}}
       td.number {{formatNumber price}}
       td.number {{formatNumber finalPrice}}
-  if isCustomSaleModeEnabled
+  if isCustomSaleDetailCreator
     +customerManagementCustomSaleDetailCreator
   tr.detail-row.summary-row
     td.note {{description}}

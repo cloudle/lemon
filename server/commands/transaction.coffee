@@ -61,16 +61,17 @@ Meteor.methods
       latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
       customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
       if customer.customSaleModeEnabled is true
-        if latestCustomSale and customSale.debtDate >= latestCustomSale.debtDate
-          if Schema.customSales.insert customSale
-            latestCustomSaleDetails = Schema.customSaleDetails.find({customSale: latestCustomSale._id})
-            if latestCustomSaleDetails.count() > 0
-              for customSaleDetail in latestCustomSaleDetails.fetch()
-                Schema.customSaleDetails.update customSaleDetail._id, $set:{allowDelete: false}
-              Schema.customSales.update latestCustomSale._id, $set:{allowDelete: false}
+        if latestCustomSale
+          if customSale.debtDate >= latestCustomSale.debtDate
+            if Schema.customSales.insert customSale
+              latestCustomSaleDetails = Schema.customSaleDetails.find({customSale: latestCustomSale._id})
+              if latestCustomSaleDetails.count() > 0
+                for customSaleDetail in latestCustomSaleDetails.fetch()
+                  Schema.customSaleDetails.update customSaleDetail._id, $set:{allowDelete: false}
+                Schema.customSales.update latestCustomSale._id, $set:{allowDelete: false}
 
-            latestTransactions = Schema.transactions.find({owner: customer._id, allowDelete: true}).fetch()
-            (Schema.transactions.update transaction._id, $set:{allowDelete: false}) for transaction in latestTransactions
+              latestTransactions = Schema.transactions.find({owner: customer._id, allowDelete: true}).fetch()
+              (Schema.transactions.update transaction._id, $set:{allowDelete: false}) for transaction in latestTransactions
         else
           Schema.customSales.insert customSale
 
@@ -100,14 +101,24 @@ Meteor.methods
                 incCustomerOption.customSalePaid -= transaction.debtBalanceChange
                 Schema.transactions.remove transaction._id
               Schema.customers.update customer._id, $inc: incCustomerOption
-
           else
             Schema.customSales.remove customSale._id if customSaleDetails.length is 0
 
           if latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
-            Schema.customSales.update latestCustomSale._id, $set:{allowDelete: true}
             for customSaleDetail in Schema.customSaleDetails.find({customSale: latestCustomSale._id}).fetch()
               Schema.customSaleDetails.update customSaleDetail._id, $set:{allowDelete: true}
+
+            if latestTransaction = Schema.transactions.findOne({latestSale: latestCustomSale._id}, {sort: {debtDate: -1}})
+              Schema.transactions.update latestTransaction._id, $set:{allowDelete: true}
+            else
+              Schema.customSales.update latestCustomSale._id, $set:{allowDelete: true}
+
+
+
+
+
+
+
 
   deleteTransactionOfCustomSale: (transactionId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
@@ -126,7 +137,7 @@ Meteor.methods
             Schema.customers.update transaction.owner, $inc: incCustomerOption
             Schema.transactions.remove transaction._id
 
-            latestTransaction = Schema.transactions.findOne({owner: transaction.owner, parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1}})
+            latestTransaction = Schema.transactions.findOne({latestSale: transaction.latestSale, parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1}})
             if latestTransaction
               Schema.transactions.update latestTransaction._id, $set:{allowDelete: true}
             else
@@ -148,7 +159,7 @@ Meteor.methods
               debtBalanceChange: customSaleDetail.finalPrice
               latestDebtBalance: customSaleDetail.finalPrice
             }
-            Schema.customSales.update customSaleDetail.customSale, $set:{allowDelete: true}, $inc: incCustomSaleOption
+            Schema.customSales.update customSaleDetail.customSale, $inc: incCustomSaleOption
 
             customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
             incCustomerOption = {
