@@ -1,5 +1,6 @@
 Apps.Merchant.customerManagementInit.push (scope) ->
   scope.createCustomSale = (template) ->
+    newDate = new Date()
     $debtDate = template.ui.$debtDate
     $description = template.ui.$description
     debtDate = moment($debtDate.val()+ newDate.getHours() + newDate.getMinutes() + newDate.getSeconds(), 'DD/MM/YYYY h:mm:s')._d
