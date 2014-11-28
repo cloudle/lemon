@@ -7,7 +7,8 @@ Meteor.methods
 
   createNewReceiptCashOfCustomSale: (customerId, debtCash, description, paidDate)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
+      customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
+      if customer and customer.customSaleModeEnabled is true
         customSale = Schema.customSales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
 
         option =
@@ -39,6 +40,7 @@ Meteor.methods
         Schema.transactions.update latestTransaction._id, $set:{allowDelete: false} if latestTransaction
 
         Schema.transactions.insert option
+        Schema.customSales.update customSale._id, $set:{allowDelete: false}
         Schema.customers.update customer._id, $inc: incCustomerOption
 
   createNewReceiptCashOfSales: (customerId, debtCash, description, paidDate)->
