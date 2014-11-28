@@ -17,7 +17,7 @@ lemon.defineWidget Template.customerManagementCustomSaleDetails,
     if customer?.customSaleModeEnabled
       if @allowDelete then true
       else
-        transaction = Schema.transactions.findOne({owner: customer._id}, {sort: {debtDate: -1}})
+        transaction = Schema.transactions.findOne({owner: customer._id, allowDelete: true}, {sort: {debtDate: -1}})
         if transaction?.latestSale is @_id then true else false
     else
       false

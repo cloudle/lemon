@@ -33,7 +33,7 @@ Schema.add 'providers', "Provider", class Provider
       })
 
       if findProvider
-        {error:'Tên nhà phân phối bị trùng lặp.'}
+        {error:'Tên nhà cung cấp bị trùng lặp.'}
       else
         @schema.insert provider, (error, result)-> if error then {error: error} else {}
 

@@ -55,6 +55,18 @@ simpleSchema.imports = new SimpleSchema
   version: { type: simpleSchema.Version }
 
 #----------------------------------
+  latestDebtBalance:
+    type: Number
+    defaultValue: 0
+
+  debtBalanceChange:
+    type: Number
+    defaultValue: 0
+
+  beforeDebtBalance:
+    type: Number
+    defaultValue: 0
+#----------------------------------
   currentProduct:
     type: String
     optional: true

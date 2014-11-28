@@ -41,3 +41,32 @@ simpleSchema.distributors = new SimpleSchema
 
   location: { type: simpleSchema.Location, optional: true }
   version: { type: simpleSchema.Version }
+
+#-------------------------------------------------------------------
+  customImportModeEnabled:
+    type: Boolean
+    defaultValue: true
+
+  customImportPaid:
+    type: Number
+    defaultValue: 0
+
+  customImportDebt:
+    type: Number
+    defaultValue: 0
+
+  customImportTotalCash:
+    type: Number
+    defaultValue: 0
+
+  importPaid:
+    type: Number
+    defaultValue: 0
+
+  importDebt:
+    type: Number
+    defaultValue: 0
+
+  importTotalCash:
+    type: Number
+    defaultValue: 0
