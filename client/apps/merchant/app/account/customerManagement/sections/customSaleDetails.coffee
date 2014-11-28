@@ -21,4 +21,11 @@ lemon.defineWidget Template.customerManagementCustomSaleDetailCreator,
 
   events:
     "click .createCustomSaleDetail": (event, template) -> scope.createCustomSaleDetail(@, template)
-    "keypress input": (event, template) -> scope.createCustomSaleDetail(@, template) if event.which is 13 #ENTER
+    "keypress input": (event, template) ->
+      if event.which is 13 #ENTER
+        scope.createCustomSaleDetail(@, template)
+      else if event.which is 27
+        $(template.find("[name='productName']")).val('')
+        $(template.find("[name='price']")).val('')
+        $(template.find("[name='quality']")).val('')
+        $(template.find("[name='skulls']")).val('')

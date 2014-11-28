@@ -28,7 +28,8 @@ template(name="customerManagementCustomSaleDetails")
     tr.paid-row.top(class="{{receivableClass}}")
       td: span.note {{description}}, {{momentCalendar debtDate}}.
       td.number(colspan="3"): span(class="{{receivableClass}}") <b>{{formatNumberAbs debtBalanceChange}}</b>
-      td
+      td(rowspan="2")
+        .lemon.rounded.btn.red.pull-right.deleteTransaction: span.icon-minus-4
     tr.paid-row(class="{{receivableClass}}")
       td
       td.number(colspan="3"): span.icon-feather-1(class="{{finalReceivableClass}}") <b>{{formatNumberAbs latestDebtBalance}}</b>
