@@ -4,7 +4,7 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
   currentCustomer: -> Session.get("customerManagementCurrentCustomer")
   showSaleHistory: -> Session.get("customerManagementShowHistory")
 
-  isCustomSaleModeEnabled: -> Session.get("customerManagementCurrentCustomer")?.customSaleModeEnabled
+  isCustomSaleModeEnabled: -> if Session.get("customerManagementCurrentCustomer")?.customSaleModeEnabled then "" else "display: none;"
 
   customSale: -> Schema.customSales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}, {sort: {debtDate: 1}})
   defaultSale: -> Schema.sales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}, {sort: {'version.createdAt': -1}})
