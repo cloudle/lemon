@@ -59,19 +59,19 @@ Meteor.methods
           debtDate      : paidDate if paidDate
           totalCash     : debtCash
 
-        incCustomerOption = {customSaleDebt: -debtCash }
+        incCustomerOption = {saleDebt: -debtCash }
         if debtCash > 0
           option.description = if description?.length > 0 then description else 'Thu Tiền'
           option.receivable  = true
-          incCustomerOption.customSalePaid = debtCash
+          incCustomerOption.salePaid = debtCash
         else
           option.description = if description?.length > 0 then description else 'Cho Mượn Tiền'
           option.receivable  = false
-          incCustomerOption.customSaleTotalCash = -debtCash
+          incCustomerOption.saleTotalCash = -debtCash
 
         option.debtBalanceChange = debtCash
-        option.beforeDebtBalance = customer.debtBalance
-        option.latestDebtBalance = customer.debtBalance - debtCash
+        option.beforeDebtBalance = customer.saleDebt
+        option.latestDebtBalance = customer.saleDebt - debtCash
         
         Schema.transactions.insert option
         Schema.customers.update customer._id, $inc: incCustomerOption

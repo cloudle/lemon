@@ -36,7 +36,7 @@ Schema.add 'sales', "Sale", class Sale
       discountCash      : order.discountCash
       totalPrice        : order.totalPrice
       finalPrice        : order.finalPrice
-      deposit           : order.deposit
+      deposit           : order.currentDeposit
       debit             : order.debit
       imported          : false
       exported          : false
@@ -45,8 +45,8 @@ Schema.add 'sales', "Sale", class Sale
       submitted         : false
 
       debtBalanceChange : order.finalPrice
-      beforeDebtBalance : buyer.customSaleDebt
-      latestDebtBalance : buyer.customSaleDebt + order.finalPrice
+      beforeDebtBalance : buyer.saleDebt
+      latestDebtBalance : buyer.saleDebt + order.finalPrice
 
   @insertByOrder: (order)->
     @schema.insert Sale.newByOrder(order), (error, result) -> if error then console.log error; null else result
