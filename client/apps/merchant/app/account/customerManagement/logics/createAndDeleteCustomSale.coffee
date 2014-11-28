@@ -58,13 +58,16 @@ Apps.Merchant.customerManagementInit.push (scope) ->
   scope.createTransaction = (template) ->
     newDate = new Date()
     $payDescription = template.ui.$payDescription
-    payAmount       = $("[name='payAmount']").inputmask('unmaskedvalue')
+    $payAmount      = $(template.find("[name='payAmount']"))
     $paidDate       = template.ui.$paidDate
+
+    payAmount       = $payAmount.inputmask('unmaskedvalue')
     paidDate        = moment($paidDate.val()+ newDate.getHours() + newDate.getMinutes() + newDate.getSeconds(), 'DD/MM/YYYY h:mm:s')._d
+
     if customer = Session.get("customerManagementCurrentCustomer")
       latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
       console.log $payDescription.val() and paidDate > latestCustomSale.debtDate and payAmount != "" and !isNaN(payAmount)
       if $payDescription.val() and paidDate > latestCustomSale.debtDate and payAmount != "" and !isNaN(payAmount)
         Meteor.call('createNewReceiptCashOfCustomSale', customer._id, parseInt(payAmount), $payDescription.val(), paidDate)
-
+        $payDescription.val(''); $paidDate.val(''); $payAmount.val('')
 
