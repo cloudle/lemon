@@ -12,7 +12,7 @@ template(name="customerManagementSalesHistorySection")
         +customerManagementSaleHistoryHeader
         each customSale
           +customerManagementCustomSaleDetails this
-        tr.editors.dual-border
+        tr.editors
           td
             input.new-transaction-field(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
           td(colspan="2")
@@ -21,7 +21,7 @@ template(name="customerManagementSalesHistorySection")
             input.new-transaction-field.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
           td
             .lemon.rounded.btn.lime.icon-money.pull-right.createTransaction
-        tr.editors
+        tr.editors.dual-border
           td(colspan="3")
             input.new-bill-field(name='description' type="text" size="10" placeholder="ghi chú đơn hàng")
           td
