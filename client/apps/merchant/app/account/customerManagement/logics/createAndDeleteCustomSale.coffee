@@ -1,9 +1,11 @@
 Apps.Merchant.customerManagementInit.push (scope) ->
   scope.createCustomSale = (template) ->
-    newDate = new Date()
+    currentTime = new Date()
+
     $debtDate = template.ui.$debtDate
     $description = template.ui.$description
-    debtDate = moment($debtDate.val()+ newDate.getHours() + newDate.getMinutes() + newDate.getSeconds(), 'DD/MM/YYYY h:mm:s')._d
+    tempDate = moment($debtDate.val(), 'DD/MM/YYYY')._d
+    debtDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds())
     customer = Session.get("customerManagementCurrentCustomer")
 
     if debtDate < (new Date) and !isNaN(customer.customSaleDebt)
@@ -56,13 +58,15 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     Transaction.newByCustomSale(customSale._id) if customSale.allowDelete is false and customSale.confirm is false
 
   scope.createTransaction = (template) ->
-    newDate = new Date()
+    currentTime         = new Date()
+
     $payDescription = template.ui.$payDescription
     $payAmount      = $(template.find("[name='payAmount']"))
     $paidDate       = template.ui.$paidDate
 
     payAmount       = $payAmount.inputmask('unmaskedvalue')
-    paidDate        = moment($paidDate.val()+ newDate.getHours() + newDate.getMinutes() + newDate.getSeconds(), 'DD/MM/YYYY h:mm:s')._d
+    tempPaidDate    = moment($paidDate.val(), 'DD/MM/YYYY')._d
+    paidDate        = new Date(tempPaidDate.getFullYear(), tempPaidDate.getMonth(), tempPaidDate.getDate(), currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds())
 
     if customer = Session.get("customerManagementCurrentCustomer")
       latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})

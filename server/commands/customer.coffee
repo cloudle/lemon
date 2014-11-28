@@ -9,6 +9,7 @@ Meteor.methods
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
         customSale = Schema.customSales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
+
         option =
           parentMerchant: profile.parentMerchant
           merchant      : profile.currentMerchant
@@ -33,6 +34,7 @@ Meteor.methods
         option.debtBalanceChange = debtCash
         option.beforeDebtBalance = customer.customSaleDebt
         option.latestDebtBalance = customer.customSaleDebt - debtCash
+
         Schema.transactions.insert option
         Schema.customers.update customer._id, $inc: incCustomerOption
 
@@ -40,6 +42,7 @@ Meteor.methods
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
         sale = Schema.sales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
+
         option =
           parentMerchant: profile.parentMerchant
           merchant      : profile.currentMerchant
@@ -64,5 +67,6 @@ Meteor.methods
         option.debtBalanceChange = debtCash
         option.beforeDebtBalance = customer.debtBalance
         option.latestDebtBalance = customer.debtBalance - debtCash
+        
         Schema.transactions.insert option
         Schema.customers.update customer._id, $inc: incCustomerOption
