@@ -86,11 +86,12 @@ Meteor.methods
 
           transactions = Schema.transactions.find({latestSale: customSale._id}).fetch()
           if transactions.length > 0
-            incCustomerOption = {customSaleDebt: 0}
+            incCustomerOption = {customSaleDebt: 0, customSalePaid: 0}
             for transaction in transactions
               incCustomerOption.customSaleDebt += transaction.debtBalanceChange
+              incCustomerOption.customSalePaid -= transaction.debtBalanceChange
+              Schema.transactions.remove transaction._id
             Schema.customers.update customer._id, $inc: incCustomerOption
-
         else Schema.customSales.remove customSale._id if customSaleDetails.length is 0
 
         if latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
@@ -124,8 +125,6 @@ Meteor.methods
             Schema.transactions.update transaction._id, $set: {beforeDebtBalance: beforeDebtBalance, latestDebtBalance: latestDebtBalance}
             beforeDebtBalance = latestDebtBalance
 
-
-
   updateCustomSaleByDeleteCustomSaleDetail: (customSaleDetailId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customSaleDetail = Schema.customSaleDetails.findOne({_id: customSaleDetailId, parentMerchant: profile.parentMerchant})
@@ -154,3 +153,10 @@ Meteor.methods
             latestDebtBalance = beforeDebtBalance - transaction.debtBalanceChange
             Schema.transactions.update transaction._id, $set: {beforeDebtBalance: beforeDebtBalance, latestDebtBalance: latestDebtBalance}
             beforeDebtBalance = latestDebtBalance
+
+  confirmTransaction: (transactionId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      role = Role.hasPermission(profile._id, Apps.Merchant.Permissions.cashierSale.key)
+      transaction = Schema.transactions.findOne({_id: transactionId, parentMerchant: profile.parentMerchant})
+      if role and transaction and transaction.confirmed is false
+        Schema.transactions.update transaction._id, $set:{confirmed: true, conformer: profile.user, conformedAt: new Date()}

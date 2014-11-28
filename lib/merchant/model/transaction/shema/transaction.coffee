@@ -1,4 +1,8 @@
 simpleSchema.transactions = new SimpleSchema
+  parentMerchant:
+    type: String
+    optional: true
+
   merchant:
     type: String
 
@@ -52,6 +56,18 @@ simpleSchema.transactions = new SimpleSchema
   debtDate:
     type: Date
     defaultValue: new Date()
+
+  confirmed:
+    type: Boolean
+    defaultValue: false
+
+  conformer:
+    type: String
+    optional: true
+
+  conformedAt:
+    type: Date
+    optional: true
 
 #---------------------------------------------
   totalCash:
