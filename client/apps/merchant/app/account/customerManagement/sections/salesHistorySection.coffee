@@ -31,9 +31,9 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
       if Session.get("customerManagementCurrentCustomer")
         scope.customSaleModeDisable(Session.get("customerManagementCurrentCustomer")._id)
     "click .createCustomSale":  (event, template) -> scope.createCustomSale(template)
-    "click .createTransaction": (event, template) -> scope.createTransaction(template)
+    "click .createTransactionOfCustomSale": (event, template) -> scope.createTransactionOfCustomSale(template)
     "click .expandSaleHistory": -> Session.set("customerManagementShowHistory", true)
     "keypress input.new-bill-field": (event, template) ->
       scope.createCustomSale(template) if event.which is 13
     "keypress input.new-transaction-field": (event, template) ->
-      scope.createTransaction(template) if event.which is 13
+      scope.createTransactionOfCustomSale(template) if event.which is 13

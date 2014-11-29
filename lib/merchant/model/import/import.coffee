@@ -21,10 +21,11 @@ Schema.add 'imports', "Import", class Import
   @createdNewBy: (description, myProfile = null)->
     myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     @schema.insert
-      merchant   : myProfile.currentMerchant
-      warehouse  : myProfile.currentWarehouse
-      creator    : myProfile.user
-      description: description ? 'New Import'
+      parentMerchant: myProfile.parentMerchant
+      merchant      : myProfile.currentMerchant
+      warehouse     : myProfile.currentWarehouse
+      creator       : myProfile.user
+      description   : description ? 'New Import'
 
 
   @findHistory: (starDate, toDate, warehouseId) ->

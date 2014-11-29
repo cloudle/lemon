@@ -35,15 +35,23 @@ template(name="distributorManagement")
         .search-filter.icon-search-8
           input(name='searchFilter' type="text")
         .nano: .nano-content
-          each managedDistributorList
+          if showFilterSearch
             .group-wrapper
-              if showFilterSearch
-                .inner.caption(class="{{activeClass}}")
+              each managedDistributorList
+                .caption.inner(class="{{activeClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
-                  span {{name}}
-              else
-                .group.caption {{key}}
+                  span.text
+                    |{{name}}
+                    if description
+                        |({{description}})
+          else
+            each managedDistributorList
+              .group-wrapper
+                .caption.group {{key}}
                 each childs
-                  .inner.caption(class="{{activeClass}}")
+                  .caption.inner(class="{{activeClass}}")
                     +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
-                    span {{name}}
+                    span.text
+                      |{{name}}
+                      if description
+                          |({{description}})

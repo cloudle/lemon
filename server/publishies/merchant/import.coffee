@@ -11,6 +11,8 @@ Meteor.publishComposite 'availableImportOf', (distributorId)->
       children: [
         find: (importDetail, currentImport) -> Schema.products.find {_id: importDetail.product}
       ]
+    ,
+      find: (currentImport) -> Schema.transactions.find {lastImport: currentImport._id}
     ]
   }
 

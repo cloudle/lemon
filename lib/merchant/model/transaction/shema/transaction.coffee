@@ -48,6 +48,10 @@ simpleSchema.transactions = new SimpleSchema
     type: String
     optional: true
 
+  latestImport:
+    type: String
+    optional: true
+
   beforeDebtBalance:
     type: Number
     optional: true

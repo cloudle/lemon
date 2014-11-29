@@ -15,6 +15,38 @@ Meteor.publish 'availableCustomerAreas', ->
   return [] if !myProfile
   Schema.customerAreas.find({parentMerchant: myProfile.parentMerchant})
 
+Meteor.publishComposite 'customerManagementData', (customerId, currentRecords = 0)->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.customers.find {_id: customerId, parentMerchant: myProfile.parentMerchant}
+    children: [
+      find: (customer) -> Schema.sales.find {buyer: customer._id}
+      children: [
+        find: (sale, customer) -> Schema.saleDetails.find {sale: sale._id}
+        children: [
+          find: (saleDetail, customer) -> Schema.products.find {_id: saleDetail.product}
+        ]
+      ,
+        find: (sale, customer) -> Schema.returns.find {sale: sale._id}
+        children: [
+          find: (returns, customer) -> Schema.returnDetails.find {return: returns._id}
+        ]
+      ]
+    ,
+      find: (customer) -> Schema.customSales.find {buyer: customer._id}
+      children: [
+        find: (customSale, customer) -> Schema.customSaleDetails.find {customSale: customSale._id}
+      ]
+    ,
+      find: (customer) -> Schema.transactions.find {owner: customer._id}
+    ]
+  }
+
+#  customerManagementData
+
 Schema.customers.allow
   insert: (userId, customer) ->
     customerFound = Schema.customers.findOne({currentMerchant: customer.parentMerchant, name: customer.name, description: customer.description})

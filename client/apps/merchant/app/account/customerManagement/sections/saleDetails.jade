@@ -12,11 +12,13 @@ template(name="customerManagementSaleDetails")
       td.last-column.number {{formatNumber finalPrice}}
   tr.detail-row.summary-row
     td.note {{description}}
-    td.number(colspan="3"): span.blured-color CÂN BẰNG NỢ: <b>{{formatNumber totalDebtBalance}}</b>
+    td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
     td.summary-total(align="right"): span.s5 <b>{{formatNumber finalPrice}}</b>
 
   each latestPaids
-    tr
-      td {{momentCalendar debtDate}} - {{description}}
-      td {{beforeDebtBalance}}
-      td {{latestDebtBalance}}
+    tr.paid-row.top(class="{{receivableClass}}")
+      td: span.note {{description}}, {{momentCalendar debtDate}}.
+      td.number(colspan="3")
+        span.icon-feather-1
+        span.s4(class="{{finalReceivableClass}}") <b>{{formatNumberAbs totalDebtBalance}}</b>
+      td.number: span(class="{{receivableClass}}") <b>{{formatNumberAbs debtBalanceChange}}</b>

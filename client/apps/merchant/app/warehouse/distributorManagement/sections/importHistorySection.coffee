@@ -1,20 +1,34 @@
 scope = logics.distributorManagement
 
 lemon.defineHyper Template.distributorManagementImportsHistorySection,
+  showImportHistory: -> Session.get("distributorManagementShowHistory")
+  isCustomImportModeEnabled: ->
+    if Session.get("distributorManagementCurrentDistributor")?.customImportModeEnabled then "" else "display: none;"
+  
+  
   customImport: -> Schema.imports.find({buyer: Session.get("distributorManagementCurrentDistributor")?._id})
   defaultImport: -> Schema.imports.find({buyer: Session.get("distributorManagementCurrentDistributor")?._id})
+
   rendered: ->
     @ui.$debtDate.inputmask("dd/mm/yyyy")
     @ui.$totalCash.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
     @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
   events:
-    "click .create-customImport": (event, template) -> scope.createCustomImport(event, template)
-    "click .delete-customImport": (event, template) -> scope.deleteCustomImport(@_id)
+    "click .customImportModeDisable":  (event, template) ->
+      if Session.get("distributorManagementCurrentDistributor")
+        scope.customImportModeDisable(Session.get("distributorManagementCurrentDistributor")._id)
 
-    "click .create-customImportDetail": (event, template) ->
-      customImportId = Session.get('distributorManagementCustomImportId')
-      scope.createCustomImportDetail(customImportId, template)
-    "click .pay-customImportDetail": (event, template) -> scope.payCustomImportDetail(@_id, true)
-    "click .unPay-customImportDetail": (event, template) -> scope.payCustomImportDetail(@_id, false)
-    "click .delete-customImportDetail": (event, template) -> scope.deleteCustomImportDetail(@_id)
+    "click .expandImportHistory": -> Session.set("distributorManagementShowHistory", true)
+
+    "click .createCustomImport":  (event, template) -> scope.createCustomImport(template)
+    "keypress input.new-bill-field": (event, template) ->
+      scope.createCustomImport(template) if event.which is 13
+
+    "click .createTransaction": (event, template) -> scope.createTransaction(template)
+    "keypress input.new-transaction-field": (event, template) ->
+      scope.createTransaction(template) if event.which is 13
+
+
+
+

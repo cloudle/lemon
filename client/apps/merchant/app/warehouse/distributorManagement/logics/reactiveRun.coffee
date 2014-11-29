@@ -9,6 +9,5 @@ Apps.Merchant.distributorManagementReactive.push (scope) ->
         unsignedName.indexOf(unsignedTerm) > -1
     else
       groupedStaffs = _.groupBy distributors, (distributor) -> distributor.name.split(' ').pop().substr(0, 1) if distributor.name
-      console.log groupedStaffs
       scope.managedDistributorList.push {key: key, childs: childs} for key, childs of groupedStaffs
       scope.managedDistributorList = _.sortBy(scope.managedDistributorList, (num)-> num.key)

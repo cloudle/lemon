@@ -1,35 +1,47 @@
 template(name="distributorManagementCustomImportDetails")
-  tr.header-row
-    td(colspan="5")
-      | .
-      .bill-header <b>{{momentCalendar version.createdAt}}</b>
-      .commands
-        if isEditing
-          .lemon.rounded.orange.btn.animated.bounceIn.cancel-edit: span.icon-cancel-7
-        else
-          .lemon.rounded.blue.btn.animated.bounceIn.enter-edit: span.icon-pencil
+  tr.header-row: td(colspan="5")
+    | .
+    .bill-header <b>{{momentCalendar debtDate}}</b>
+    .commands
+      if isCustomImportModeEnabled
+        .lemon.rounded.red.btn.animated.bounceIn.deleteCustomImport: span.icon-minus-4
 
-  each customSaleDetails
+  each customImportDetails
     tr.detail-row
       td.has-commands
-        |{{productName}}
+        | {{productName}}
         .commands
-          if pay
-            .lemon.rounded.tiny.btn.red.redo-custom-import: span.icon-plus-6
-          else
-            .lemon.rounded.tiny.btn.lime.apply-custom-import: span.icon-ok-6
-            .lemon.rounded.tiny.btn.red.delete-custom-import: span.icon-bag
+          if isCustomImportModeEnabled
+            .lemon.rounded.tiny.btn.red.deleteCustomImportDetail: span.icon-minus-4
       td {{formatNumber quality}}
       td {{skulls}}
       td.number {{formatNumber price}}
       td.number {{formatNumber finalPrice}}
-  if isEditing
-    tr.animated.fadeIn
-      td: input(name='productName' type="text" size="10")
-      td: input(name='skulls' type="text" size="10")
-      td: input.number(name='quality' type="text" size="10")
-      td: input.number(name='price' type="text" size="10")
-      td: .lemon.btn.lime.icon-bag.create-customSaleDetail THEM DETAIL
+  if isCustomImportDetailCreator
+    +customerManagementCustomImportDetailCreator
   tr.detail-row.summary-row
-    td(colspan="4")
+    td.note {{description}}
+    td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber latestDebtBalance}}</b>
     td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>
+
+  each latestPaids
+    tr.paid-row.top(class="{{receivableClass}}")
+      td: span.note {{description}}, {{momentCalendar debtDate}}.
+      td.number(colspan="3"): span(class="{{receivableClass}}") <b>{{formatNumberAbs debtBalanceChange}}</b>
+      td(rowspan="2")
+        if isCustomImportModeEnabled
+          .lemon.rounded.btn.red.pull-right.deleteTransaction: span.icon-minus-4
+    tr.paid-row(class="{{receivableClass}}")
+      td
+      td.number(colspan="3"): span.icon-feather-1(class="{{finalReceivableClass}}") <b>{{formatNumberAbs latestDebtBalance}}</b>
+      
+template(name="customerManagementCustomImportDetailCreator")
+    tr.editors.animated.fadeIn
+      td: input(name='productName' type="text" size="10" placeholder="tên sản phẩm")
+      td: input(name='quality' type="text" size="10" placeholder="sl")
+      td: input(name='skulls' type="text" size="10" placeholder="quy cách")
+      td: input.number(name='price' type="text" size="10" placeholder="đơn giá")
+      td: .lemon.btn.rounded.lime.pull-right.createCustomImportDetail.icon-plus-6
+      //td
+      //  .pull-left(style="width: 135px"): input.number(name='totalPrice' type="text" size="10" placeholder="tổng tiền")
+      //  .lemon.btn.rounded.lime.pull-right.createCustomImportDetail.icon-plus-6

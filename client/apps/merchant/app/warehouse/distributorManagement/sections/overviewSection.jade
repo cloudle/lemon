@@ -3,7 +3,10 @@ template(name="distributorManagementOverviewSection")
     input.hidden.avatarFile(type="file")
     .panel-heading
       +avatarImageComponent(avatar=avatarUrl alias=name)
-      .caption {{name}}
+      .caption
+        |{{name}}
+        if description
+            |({{description}})
       .sub1 {{phone}}
       .sub2 {{address}}
     .panel-footer

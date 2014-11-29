@@ -4,7 +4,7 @@
     {
       "host": "gera.vn",
       "username": "sysadmin",
-      "pem": "~/.ssh/gera.vn" //9
+      "password": "Ultimate9" //9
     }
   ],
 

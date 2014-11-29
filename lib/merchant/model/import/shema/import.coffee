@@ -1,4 +1,7 @@
 simpleSchema.imports = new SimpleSchema
+  parentMerchant:
+    type: String
+
   merchant:
     type: String
 

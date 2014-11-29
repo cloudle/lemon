@@ -6,11 +6,19 @@ lemon.defineApp Template.distributorManagement,
   currentDistributor: -> Session.get("distributorManagementCurrentDistributor")
   activeClass:-> if Session.get("distributorManagementCurrentDistributor")?._id is @._id then 'active' else ''
 #  rendered: -> $(".nano").nanoScroller()
+  created: ->
+    Session.setDefault('allowCreateDistributor', false)
+
   events:
-    "input .search-filter": (event, template) -> Session.set("distributorManagementSearchFilter", template.ui.$searchFilter.val())
-    "click .inner.caption": (event, template) -> Session.set("distributorManagementCurrentDistributor", @)
     "input input": (event, template) -> scope.checkAllowCreateDistributor(template)
     'click .create-distributor': (event, template)-> scope.createDistributor(template)
+
+    "input .search-filter": (event, template) ->
+      Session.set("distributorManagementSearchFilter", template.ui.$searchFilter.val())
+    "click .inner.caption": (event, template) ->
+      Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentDistributorManagementSelection: @_id}})
+
+
     "click .excel-distributor": (event, template) -> $(".excelFileSource").click()
     "change .excelFileSource": (event, template) ->
       if event.target.files.length > 0

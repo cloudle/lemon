@@ -17,12 +17,12 @@ Schema.add 'distributors', "Distributor", class Distributor
         phone            : phone if phone
         location         : {address: [address]} if address
 
-      findProvider =  Schema.providers.findOne({
+      findDistributor =  Schema.providers.findOne({
         parentMerchant: distributor.parentMerchant
         name          : distributor.name
       })
 
-      if findProvider
+      if findDistributor
         {error:'Tên nhà phân phối bị trùng lặp.'}
       else
         @schema.insert distributor, (error, result)-> if error then {error: error} else {}

@@ -12,6 +12,7 @@ template(name="customerManagementSalesHistorySection")
         +customerManagementSaleHistoryHeader
         each customSale
           +customerManagementCustomSaleDetails this
+
         tr.editors(style="{{isCustomSaleModeEnabled}}")
           td
             input.new-transaction-field(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
@@ -20,20 +21,23 @@ template(name="customerManagementSalesHistorySection")
           td
             input.new-transaction-field.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
           td
-            .lemon.rounded.btn.lime.icon-money.pull-right.createTransaction
+            .lemon.rounded.btn.orange.icon-money.pull-right.createTransactionOfCustomSale
+
         tr.editors.dual-border(style="{{isCustomSaleModeEnabled}}")
           td(colspan="3")
             input.new-bill-field(name='description' type="text" size="10" placeholder="ghi chú đơn hàng")
           td
             input.new-bill-field.number(name='debtDate' type="text" size="10" placeholder="ngày bán")
           td
-            .lemon.rounded.btn.lime.icon-tags-2.pull-right.createCustomSale
-        tr.group-summary-row
-          td.number.old-debt-total(colspan="5")
-            if customSaleModeEnabled
-              .lemon.rounded.btn.lime.customSaleModeDisable.icon-ok-6
-            span.s5 NỢ CŨ:
-            span.s3 <b>{{formatNumber customSaleDebt}}</b> VNĐ
+            .lemon.rounded.btn.orange.icon-tags-2.pull-right.createCustomSale
+
+        if customSaleModeEnabled
+          tr.group-summary-row
+            td
+              //.lemon.btn.lime.customSaleModeDisable.icon-ok-6 Kết Sổ Cũ
+            td.number.old-debt-total(colspan="4")
+              span.s5 NỢ CŨ:
+              span.s3 <b>{{formatNumber customSaleDebt}}</b> VNĐ
 
       table.lemon-grid.safe
         +customerManagementSaleHistoryHeader
@@ -43,9 +47,19 @@ template(name="customerManagementSalesHistorySection")
         else
           tr: td(colspan="5")
             .lemon.rounded.btn.lime.pull-right.expandSaleHistory.icon-down-open-big
-
         each defaultSaleToday
           +customerManagementSaleDetails this
+
+        //tr.editors
+        //  td
+        //    input.new-transaction-field(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
+        //  td(colspan="2")
+        //    input.new-transaction-field.number(name='payAmount' type="text" size="10" placeholder="số tiền")
+        //  td
+        //    input.new-transaction-field.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
+        //  td
+        //    .lemon.rounded.btn.lime.icon-money.pull-right.createTransaction
+
     .panel-footer
       .right-float
         span.s5 TỔNG NỢ:

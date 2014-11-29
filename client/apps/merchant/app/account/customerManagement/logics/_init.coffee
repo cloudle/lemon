@@ -10,6 +10,8 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
     Session.set("customerManagementCurrentCustomer", Schema.customers.findOne(customerId))
 
   if Session.get("customerManagementCurrentCustomer")
-    Meteor.subscribe('availableCustomSaleOf', Session.get("customerManagementCurrentCustomer")._id)
-    Meteor.subscribe('availableSaleOf', Session.get("customerManagementCurrentCustomer")._id)
-    Meteor.subscribe('availableReturnOf', Session.get("customerManagementCurrentCustomer")._id)
+    #customerManagementData
+    Meteor.subscribe('customerManagementData', Session.get("customerManagementCurrentCustomer")._id)
+#    Meteor.subscribe('availableCustomSaleOf', Session.get("customerManagementCurrentCustomer")._id)
+#    Meteor.subscribe('availableSaleOf', Session.get("customerManagementCurrentCustomer")._id)
+#    Meteor.subscribe('availableReturnOf', Session.get("customerManagementCurrentCustomer")._id)

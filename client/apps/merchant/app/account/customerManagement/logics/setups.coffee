@@ -4,6 +4,8 @@ Apps.Merchant.customerManagementInit.push (scope) ->
   if !Session.get("mySession").currentCustomerManagementSelection
     UserSession.set("currentCustomerManagementSelection", Schema.customers.findOne()?._id)
 
+
+
   scope.checkAllowCreate = (context) ->
     fullName = context.ui.$fullName.val()
     description = context.ui.$description.val()

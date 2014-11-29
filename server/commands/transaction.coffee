@@ -114,12 +114,6 @@ Meteor.methods
               Schema.customSales.update latestCustomSale._id, $set:{allowDelete: true}
 
 
-
-
-
-
-
-
   deleteTransactionOfCustomSale: (transactionId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if transaction = Schema.transactions.findOne({_id: transactionId, parentMerchant: profile.parentMerchant})
@@ -142,9 +136,6 @@ Meteor.methods
               Schema.transactions.update latestTransaction._id, $set:{allowDelete: true}
             else
               Schema.customSales.update latestCustomSale._id, $set:{allowDelete: true}
-
-
-
 
   updateCustomSaleByCreateCustomSaleDetail: (customSaleDetail)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})

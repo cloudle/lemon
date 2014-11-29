@@ -67,7 +67,7 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     customSale = Schema.customSales.findOne({_id:customSaleId, parentMerchant:Session.get('myProfile').parentMerchant})
     Transaction.newByCustomSale(customSale._id) if customSale.allowDelete is false and customSale.confirm is false
 
-  scope.createTransaction = (template) ->
+  scope.createTransactionOfCustomSale = (template) ->
     currentTime         = new Date()
 
     $payDescription = template.ui.$payDescription
@@ -80,11 +80,8 @@ Apps.Merchant.customerManagementInit.push (scope) ->
 
     if customer = Session.get("customerManagementCurrentCustomer")
       latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
-      console.log paidDate
-      console.log latestCustomSale.debtDate
+      console.log $payDescription.val() , (paidDate > latestCustomSale.debtDate if latestCustomSale) , payAmount != "" , !isNaN(payAmount)
 
-      console.log $payDescription.val() , paidDate > latestCustomSale.debtDate , payAmount != "" , !isNaN(payAmount)
-      if paidDate > latestCustomSale.debtDate and payAmount != "" and !isNaN(payAmount)
+      if latestCustomSale is undefined || (paidDate >= latestCustomSale.debtDate and payAmount != "" and !isNaN(payAmount))
         Meteor.call('createNewReceiptCashOfCustomSale', customer._id, parseInt(payAmount), $payDescription.val(), paidDate)
         $payDescription.val(''); $paidDate.val(''); $payAmount.val('')
-

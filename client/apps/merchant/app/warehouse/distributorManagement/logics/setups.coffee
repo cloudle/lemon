@@ -16,15 +16,6 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
     $phone   = context.ui.$phone
     $address = context.ui.$address
 
-    option =
-      parentMerchant: Session.get('myProfile').parentMerchant
-      merchant      : Session.get('myProfile').currentMerchant
-      creator       : Session.get('myProfile').user
-      name          : name
-      phone         : phone
-      location      : {address: [address]}
-
-
     result = Distributor.createNew($name.val(), $phone.val(), $address.val())
     if result.error then $name.notify(result.error, {position: "bottom"})
     else Session.set('allowCreateDistributor', false)

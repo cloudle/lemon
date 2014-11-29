@@ -7,26 +7,50 @@ template(name="distributorManagementImportsHistorySection")
         th(style="width:80px") QUI CÁCH
         th.number(style="width:120px") ĐƠN GIÁ
         th.number(style="width:180px") THÀNH TIỀN
-    .panel-body
+    .panel-body.debt-details
       table.lemon-grid
         +distributorManagementImportHistoryHeader
         each customImport
           +distributorManagementCustomImportDetails this
 
-        tr
-          td: input(name='debtDate' type="text" size="10")
-          td: input(name='description' type="text" size="10")
-          td: input.number(name='totalCash' type="text" size="10")
-          td: input.number(name='depositCash' type="text" size="10")
-          td: .lemon.btn.lime.icon-bag.create-customImport THEM MOI 1
+        tr.editors(style="{{isCustomImportModeEnabled}}")
+          td
+            input.new-transaction-field(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
+          td(colspan="2")
+            input.new-transaction-field.number(name='payAmount' type="text" size="10" placeholder="số tiền")
+          td
+            input.new-transaction-field.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
+          td
+            .lemon.rounded.btn.lime.icon-money.pull-right.createTransaction
+
+        tr.editors.dual-border(style="{{isCustomImportModeEnabled}}")
+          td(colspan="3")
+            input.new-bill-field(name='description' type="text" size="10" placeholder="ghi chú đơn hàng")
+          td
+            input.new-bill-field.number(name='debtDate' type="text" size="10" placeholder="ngày bán")
+          td
+            .lemon.rounded.btn.lime.icon-tags-2.pull-right.createCustomImport
+
+        tr.group-summary-row
+          td.number.old-debt-total(colspan="5")
+            if customImportModeEnabled
+              .lemon.rounded.btn.lime.customImportModeDisable.icon-ok-6
+            span.s5 NỢ CŨ:
+            span.s3 <b>{{formatNumber customImportDebt}}</b> VNĐ
 
       table.lemon-grid.safe
         +distributorManagementImportHistoryHeader
-        each defaultImport
-          +distributorManagementImportDetails this
+        if showImportHistory
+          each defaultImport
+            +distributorManagementImportDetails this
+        else
+          tr: td(colspan="5")
+            .lemon.rounded.btn.lime.pull-right.expandImportHistory.icon-down-open-big
+
     .panel-footer
-      h3 Công ty nợ: {{formatNumber totalDebit}} VNĐ<br />
-      h3 Tổng tiền : {{formatNumber totalPurchases}} VNĐ
+      .right-float
+        span.s5 TỔNG NỢ:
+        span.s3 <b>{{formatNumber finalDebtBalance}}</b> VNĐ
 
 
 template(name="distributorManagementImportHistoryHeader")
