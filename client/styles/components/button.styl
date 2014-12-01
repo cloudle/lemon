@@ -27,6 +27,9 @@
   border-radius 50%
   padding 3px
   transition background-color 1s
+  &:before
+    margin-right 3px
+    margin-left 3px
   for $color in colors
     &.{$color[0]}
       background-color $color[1]
@@ -37,3 +40,6 @@
     box-shadow none
     padding 1px
     font-size 10px
+    &:before
+      margin-right 2px
+      margin-left 2px

@@ -26,7 +26,7 @@ template(name="customerManagement")
         a.lemon.btn.blue(href="/template/khach_hang.csv" target="_blank" data-toggle="tooltip" data-container="body" data-palace-holder="top" title="Tải về file Mẫu")
           span.icon-doc-text-inv-1
           
-  #content.modern
+  #content.modern.customer-management
     .dual-content
       .dual-detail-wrapper
         .dual-detail
@@ -36,6 +36,8 @@ template(name="customerManagement")
       .dual-addon
         .search-filter.icon-search-8
           input(name='searchFilter' type="text")
+          if creationMode
+            .lemon.btn.rounded.tiny.lime.icon-plus-6.createCustomerBtn
         .nano: .nano-content
           if showFilterSearch
             .group-wrapper
