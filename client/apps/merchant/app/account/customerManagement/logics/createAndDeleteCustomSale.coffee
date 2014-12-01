@@ -63,12 +63,8 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     if customer and customer.customSaleModeEnabled is true
       Schema.customers.update customer._id, $set:{customSaleModeEnabled: false}
 
-  scope.confirmCustomSale = (customSaleId) ->
-    customSale = Schema.customSales.findOne({_id:customSaleId, parentMerchant:Session.get('myProfile').parentMerchant})
-    Transaction.newByCustomSale(customSale._id) if customSale.allowDelete is false and customSale.confirm is false
-
   scope.createTransactionOfCustomSale = (template) ->
-    currentTime         = new Date()
+    currentTime     = new Date()
 
     $payDescription = template.ui.$payDescription
     $payAmount      = $(template.find("[name='payAmount']"))

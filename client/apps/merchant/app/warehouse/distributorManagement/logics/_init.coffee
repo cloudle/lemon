@@ -10,4 +10,4 @@ Apps.Merchant.distributorManagementReactive.push (scope) ->
     Session.set("distributorManagementCurrentDistributor", Schema.distributors.findOne(distributorId))
 
   if Session.get("distributorManagementCurrentDistributor")
-    Meteor.subscribe('availableImportOf', Session.get("distributorManagementCurrentDistributor")._id)
+    Meteor.subscribe('distributorManagementData', Session.get("distributorManagementCurrentDistributor")._id)

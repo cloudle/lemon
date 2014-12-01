@@ -1,19 +1,19 @@
-scope = logics.customerManagement
+scope = logics.distributorManagement
 
 lemon.defineWidget Template.distributorManagementCustomImportDetails,
+  receivableClass: -> if @debtBalanceChange >= 0 then 'receive' else 'paid'
+  finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
+  latestPaids: -> Schema.transactions.find {latestImport: @_id}, {sort: {'version.createdAt': 1}}
   customImportDetails: ->
     customImportId = UI._templateInstance().data._id
     Schema.customImportDetails.find({customImport: customImportId})
-  latestPaids: -> Schema.transactions.find {latestImport: @_id}, {sort: {'version.createdAt': 1}}
-  receivableClass: -> if @debtBalanceChange >= 0 then 'receive' else 'paid'
-  finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
 
   isCustomImportModeEnabled: ->
-    distributor = Session.get("customerManagementCurrentDistributor")
+    distributor = Session.get("distributorManagementCurrentDistributor")
     if @allowDelete and distributor?.customImportModeEnabled then true else false
 
   isCustomImportDetailCreator: ->
-    distributor = Session.get("customerManagementCurrentDistributor")
+    distributor = Session.get("distributorManagementCurrentDistributor")
     if distributor?.customImportModeEnabled
       if @allowDelete then true
       else
@@ -32,7 +32,7 @@ lemon.defineWidget Template.distributorManagementCustomImportDetails,
 
 
 
-lemon.defineWidget Template.customerManagementCustomImportDetailCreator,
+lemon.defineWidget Template.distributorManagementCustomImportDetailCreator,
   rendered: ->
     if $(@find("[name='price']"))
       $(@find("[name='price']")).inputmask "numeric",

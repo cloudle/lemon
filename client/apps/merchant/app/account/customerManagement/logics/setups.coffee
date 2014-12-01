@@ -2,9 +2,11 @@ Apps.Merchant.customerManagementInit.push (scope) ->
   Session.set("customerManagementSearchFilter", "")
 
   if !Session.get("mySession").currentCustomerManagementSelection
-    UserSession.set("currentCustomerManagementSelection", Schema.customers.findOne()?._id)
-
-
+    if customer = Schema.customers.findOne()
+      UserSession.set("currentCustomerManagementSelection", customer._id)
+      Meteor.subscribe('customerManagementData', customer._id)
+  else
+    Meteor.subscribe('customerManagementData', Session.get("mySession").currentCustomerManagementSelection)
 
   scope.checkAllowCreate = (context) ->
     fullName = context.ui.$fullName.val()

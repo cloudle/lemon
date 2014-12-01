@@ -17,6 +17,7 @@ lemon.defineApp Template.customerManagement,
 
     "click .inner.caption": (event, template) ->
       Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentCustomerManagementSelection: @_id}})
+      Meteor.subscribe('customerManagementData', @_id)
 #      UserSession.set("currentCustomerManagementSelection", @_id)
 
     "input input": (event, template) -> scope.checkAllowCreate(template)

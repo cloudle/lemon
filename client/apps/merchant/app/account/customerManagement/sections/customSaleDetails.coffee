@@ -14,13 +14,9 @@ lemon.defineWidget Template.customerManagementCustomSaleDetails,
 
   isCustomSaleDetailCreator: ->
     customer = Session.get("customerManagementCurrentCustomer")
-    if customer?.customSaleModeEnabled
-      if @allowDelete then true
-      else
-        transaction = Schema.transactions.findOne({owner: customer._id, allowDelete: true}, {sort: {debtDate: -1}})
-        if transaction?.latestSale is @_id then true else false
-    else
-      false
+    latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
+    if customer?.customSaleModeEnabled and @_id is latestCustomSale?._id then true else false
+
 
   events:
     "click .enter-edit" : (event, template) -> Session.set("customerManagementCurrentCustomSale", @)

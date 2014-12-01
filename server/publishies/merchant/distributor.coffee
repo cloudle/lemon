@@ -3,6 +3,32 @@ Meteor.publish 'availableDistributors', ->
   return [] if !myProfile
   Schema.distributors.find({parentMerchant: myProfile.parentMerchant})
 
+
+Meteor.publishComposite 'distributorManagementData', (distributorId, currentRecords = 0)->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.distributors.find {_id: distributorId, parentMerchant: myProfile.parentMerchant}
+    children: [
+      find: (distributor) -> Schema.imports.find {buyer: distributor._id}
+      children: [
+        find: (currentImport, distributor) -> Schema.importDetails.find {import: currentImport._id}
+        children: [
+          find: (importDetail, distributor) -> Schema.products.find {_id: importDetail.product}
+        ]
+      ]
+    ,
+      find: (distributor) -> Schema.customImports.find {buyer: distributor._id}
+      children: [
+        find: (customImport, distributor) -> Schema.customImportDetails.find {customImport: customImport._id}
+      ]
+    ,
+      find: (distributor) -> Schema.transactions.find {owner: distributor._id}
+    ]
+  }
+
 Schema.distributors.allow
   insert: (userId, distributor)-> true
   update: (userId, distributor)-> true

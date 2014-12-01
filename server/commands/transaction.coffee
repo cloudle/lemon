@@ -56,64 +56,6 @@ Meteor.methods
     catch error
       throw new Meteor.Error('addTransactionDetail', error)
 
-  createCustomSale: (customSale)->
-    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
-      customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
-      if customer.customSaleModeEnabled is true
-        if latestCustomSale
-          if customSale.debtDate >= latestCustomSale.debtDate
-            if Schema.customSales.insert customSale
-              latestCustomSaleDetails = Schema.customSaleDetails.find({customSale: latestCustomSale._id})
-              if latestCustomSaleDetails.count() > 0
-                for customSaleDetail in latestCustomSaleDetails.fetch()
-                  Schema.customSaleDetails.update customSaleDetail._id, $set:{allowDelete: false}
-                Schema.customSales.update latestCustomSale._id, $set:{allowDelete: false}
-
-              latestTransactions = Schema.transactions.find({owner: customer._id, allowDelete: true}).fetch()
-              (Schema.transactions.update transaction._id, $set:{allowDelete: false}) for transaction in latestTransactions
-        else
-          Schema.customSales.insert customSale
-
-  deleteCustomSale: (customSaleId)->
-    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      if customSale = Schema.customSales.findOne({_id: customSaleId, parentMerchant: profile.parentMerchant})
-        customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
-        if customer.customSaleModeEnabled is true
-          latestCustomSale  = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
-          customSaleDetails = Schema.customSaleDetails.find({customSale: customSale._id}).fetch()
-
-          if customSale._id is latestCustomSale._id
-            if customSaleDetails.length > 0
-              incCustomerOption = {
-                customSaleDebt     : -customSale.debtBalanceChange
-                customSaleTotalCash: -customSale.debtBalanceChange
-              }
-              Schema.customers.update customer._id, $inc: incCustomerOption
-              Schema.customSaleDetails.remove customSaleDetail._id for customSaleDetail in customSaleDetails
-            Schema.customSales.remove customSale._id
-
-            transactions = Schema.transactions.find({latestSale: customSale._id}).fetch()
-            if transactions.length > 0
-              incCustomerOption = {customSaleDebt: 0, customSalePaid: 0}
-              for transaction in transactions
-                incCustomerOption.customSaleDebt += transaction.debtBalanceChange
-                incCustomerOption.customSalePaid -= transaction.debtBalanceChange
-                Schema.transactions.remove transaction._id
-              Schema.customers.update customer._id, $inc: incCustomerOption
-          else
-            Schema.customSales.remove customSale._id if customSaleDetails.length is 0
-
-          if latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
-            for customSaleDetail in Schema.customSaleDetails.find({customSale: latestCustomSale._id}).fetch()
-              Schema.customSaleDetails.update customSaleDetail._id, $set:{allowDelete: true}
-
-            if latestTransaction = Schema.transactions.findOne({latestSale: latestCustomSale._id}, {sort: {debtDate: -1}})
-              Schema.transactions.update latestTransaction._id, $set:{allowDelete: true}
-            else
-              Schema.customSales.update latestCustomSale._id, $set:{allowDelete: true}
-
-
   deleteTransactionOfCustomSale: (transactionId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if transaction = Schema.transactions.findOne({_id: transactionId, parentMerchant: profile.parentMerchant})
@@ -137,69 +79,144 @@ Meteor.methods
             else
               Schema.customSales.update latestCustomSale._id, $set:{allowDelete: true}
 
-  updateCustomSaleByCreateCustomSaleDetail: (customSaleDetail)->
-    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      customSale = Schema.customSales.findOne({_id: customSaleDetail.customSale, parentMerchant: profile.parentMerchant})
-      latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
-      if customSale._id is latestCustomSale._id
-        customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
-        if customer.customSaleModeEnabled is true
-          if Schema.customSaleDetails.insert customSaleDetail
-            incCustomSaleOption = {
-              totalCash        : customSaleDetail.finalPrice
-              debtBalanceChange: customSaleDetail.finalPrice
-              latestDebtBalance: customSaleDetail.finalPrice
-            }
-            Schema.customSales.update customSaleDetail.customSale, $inc: incCustomSaleOption
-
-            customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
-            incCustomerOption = {
-              customSaleDebt     : customSaleDetail.finalPrice
-              customSaleTotalCash: customSaleDetail.finalPrice
-            }
-            Schema.customers.update customer._id, $inc: incCustomerOption
-
-            beforeDebtBalance = Schema.customSales.findOne(customSale._id).latestDebtBalance
-            for transaction in Schema.transactions.find({latestSale: customSale._id}).fetch()
-              latestDebtBalance = beforeDebtBalance - transaction.debtBalanceChange
-              Schema.transactions.update transaction._id, $set: {beforeDebtBalance: beforeDebtBalance, latestDebtBalance: latestDebtBalance}
-              beforeDebtBalance = latestDebtBalance
-
-  updateCustomSaleByDeleteCustomSaleDetail: (customSaleDetailId)->
-    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      if customSaleDetail = Schema.customSaleDetails.findOne({_id: customSaleDetailId, parentMerchant: profile.parentMerchant})
-        customSale = Schema.customSales.findOne({_id: customSaleDetail.customSale, parentMerchant: profile.parentMerchant})
-        latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
-        if customSale._id is latestCustomSale._id
-          customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
-          if customer.customSaleModeEnabled is true
-            Schema.customSaleDetails.remove customSaleDetail._id
-
-            setOption = {}
-            setOption = {allowDelete: true} if Schema.customSaleDetails.findOne({customSale: customSale._id}) is undefined
-            incCustomSaleOption = {
-              totalCash        : -customSaleDetail.finalPrice
-              debtBalanceChange: -customSaleDetail.finalPrice
-              latestDebtBalance: -customSaleDetail.finalPrice
-            }
-            Schema.customSales.update customSaleDetail.customSale, $set: setOption, $inc: incCustomSaleOption
-
-            customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
-            incCustomerOption = {
-              customSaleDebt     : -customSaleDetail.finalPrice
-              customSaleTotalCash: -customSaleDetail.finalPrice
-            }
-            Schema.customers.update customer._id, $inc: incCustomerOption
-
-            beforeDebtBalance = Schema.customSales.findOne(customSale._id).latestDebtBalance
-            for transaction in Schema.transactions.find({latestSale: customSale._id}).fetch()
-              latestDebtBalance = beforeDebtBalance - transaction.debtBalanceChange
-              Schema.transactions.update transaction._id, $set: {beforeDebtBalance: beforeDebtBalance, latestDebtBalance: latestDebtBalance}
-              beforeDebtBalance = latestDebtBalance
-
   confirmTransaction: (transactionId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       role = Role.hasPermission(profile._id, Apps.Merchant.Permissions.cashierSale.key)
       transaction = Schema.transactions.findOne({_id: transactionId, parentMerchant: profile.parentMerchant})
       if role and transaction and transaction.confirmed is false
         Schema.transactions.update transaction._id, $set:{confirmed: true, conformer: profile.user, conformedAt: new Date()}
+
+  createNewReceiptCashOfCustomSale: (customerId, debtCash, description, paidDate)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
+      if customer and customer.customSaleModeEnabled is true and paidDate < (new Date)
+        latestCustomSale = Schema.customSales.findOne({buyer: customer._id},{sort: {debtDate: -1}})
+        if latestCustomSale is undefined
+          option =
+            parentMerchant   : profile.currentMerchant
+            creator          : profile.user
+            buyer            : customer._id
+            debtDate         : paidDate
+            description      : ''
+            debtBalanceChange: 0
+            beforeDebtBalance: customer.customSaleDebt
+            latestDebtBalance: customer.customSaleDebt
+          Meteor.call('createCustomSale', option)
+          latestCustomSale = Schema.customSales.findOne({buyer: customer._id},{sort: {debtDate: -1}})
+
+        if paidDate >= latestCustomSale.debtDate
+          option =
+            parentMerchant: profile.parentMerchant
+            merchant      : profile.currentMerchant
+            warehouse     : profile.currentWarehouse
+            creator       : profile.user
+            owner         : customer._id
+            latestSale    : latestCustomSale._id
+            group         : 'customSale'
+            debtDate      : paidDate if paidDate
+            totalCash     : debtCash
+
+          incCustomerOption = {customSaleDebt: -debtCash }
+          if debtCash > 0
+            option.description = if description?.length > 0 then description else 'Thu Tiền'
+            option.receivable  = true
+            incCustomerOption.customSalePaid= debtCash
+          else
+            option.description = if description?.length > 0 then description else 'Cho Mượn Tiền'
+            option.receivable  = false
+            incCustomerOption.customSaleTotalCash = -debtCash
+
+          option.debtBalanceChange = debtCash
+          option.beforeDebtBalance = customer.customSaleDebt
+          option.latestDebtBalance = customer.customSaleDebt - debtCash
+
+          latestTransaction = Schema.transactions.findOne({owner: customer._id, latestSale: latestCustomSale._id, parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1}})
+          Schema.transactions.update latestTransaction._id, $set:{allowDelete: false} if latestTransaction
+
+          Schema.transactions.insert option
+          Schema.customSales.update latestCustomSale._id, $set:{allowDelete: false}
+          Schema.customers.update customer._id, $inc: incCustomerOption
+
+  createNewReceiptCashOfSales: (customerId, debtCash, description, paidDate)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
+        sale = Schema.sales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
+
+        option =
+          parentMerchant: profile.parentMerchant
+          merchant      : profile.currentMerchant
+          warehouse     : profile.currentWarehouse
+          creator       : profile.user
+          owner         : customer._id
+          latestSale    : sale._id if sale
+          group         : 'sales'
+          debtDate      : paidDate if paidDate
+          totalCash     : debtCash
+
+        incCustomerOption = {saleDebt: -debtCash }
+        if debtCash > 0
+          option.description = if description?.length > 0 then description else 'Thu Tiền'
+          option.receivable  = true
+          incCustomerOption.salePaid = debtCash
+        else
+          option.description = if description?.length > 0 then description else 'Cho Mượn Tiền'
+          option.receivable  = false
+          incCustomerOption.saleTotalCash = -debtCash
+
+        option.debtBalanceChange = debtCash
+        option.beforeDebtBalance = customer.saleDebt
+        option.latestDebtBalance = customer.saleDebt - debtCash
+
+        Schema.transactions.insert option
+        Schema.customers.update customer._id, $inc: incCustomerOption
+
+  createNewReceiptCashOfCustomImport: (distributorId, debtCash, description, paidDate)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
+      if distributor and distributor.customImportModeEnabled is true and paidDate < (new Date)
+        latestCustomImport = Schema.customImports.findOne({buyer: distributor._id},{sort: {debtDate: -1}})
+        if latestCustomImport is undefined
+          option =
+            parentMerchant   : profile.currentMerchant
+            creator          : profile.user
+            buyer            : distributor._id
+            debtDate         : paidDate
+            description      : ''
+            debtBalanceChange: 0
+            beforeDebtBalance: distributor.customImportDebt
+            latestDebtBalance: distributor.customImportDebt
+          Meteor.call('createCustomImport', option)
+          latestCustomImport = Schema.customImports.findOne({buyer: distributor._id},{sort: {debtDate: -1}})
+
+        if paidDate >= latestCustomImport.debtDate
+          option =
+            parentMerchant: profile.parentMerchant
+            merchant      : profile.currentMerchant
+            warehouse     : profile.currentWarehouse
+            creator       : profile.user
+            owner         : distributor._id
+            latestImport  : latestCustomImport._id
+            group         : 'customImport'
+            debtDate      : paidDate if paidDate
+            totalCash     : debtCash
+
+          incCustomerOption = {customImportDebt: -debtCash }
+          if debtCash > 0
+            option.description = if description?.length > 0 then description else 'Thu Tiền'
+            option.receivable  = false
+            incCustomerOption.customImportPaid= debtCash
+          else
+            option.description = if description?.length > 0 then description else 'Cho Mượn Tiền'
+            option.receivable  = true
+            incCustomerOption.customImportTotalCash = -debtCash
+
+          option.debtBalanceChange = debtCash
+          option.beforeDebtBalance = distributor.customImportDebt
+          option.latestDebtBalance = distributor.customImportDebt - debtCash
+
+          latestTransaction = Schema.transactions.findOne({owner: distributor._id, latestImport: latestCustomImport._id, parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1}})
+          Schema.transactions.update latestTransaction._id, $set:{allowDelete: false} if latestTransaction
+
+          Schema.transactions.insert option
+          Schema.customImports.update latestCustomImport._id, $set:{allowDelete: false}
+          Schema.distributors.update distributor._id, $inc: incCustomerOption

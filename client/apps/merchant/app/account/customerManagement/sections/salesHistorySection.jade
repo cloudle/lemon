@@ -39,6 +39,9 @@ template(name="customerManagementSalesHistorySection")
               span.s5 NỢ CŨ:
               span.s3 <b>{{formatNumber customSaleDebt}}</b> VNĐ
 
+        tr: td(colspan="5")
+          .lemon.btn.lime.pull-right.expandSaleAndCustomSale.icon-ok-6 Xem Thêm
+
       table.lemon-grid.safe
         +customerManagementSaleHistoryHeader
         if showSaleHistory
