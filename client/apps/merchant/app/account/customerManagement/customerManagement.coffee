@@ -44,8 +44,10 @@ lemon.defineApp Template.customerManagement,
             Session.set("customerManagementDataMaxCurrentRecords", limitExpand)
           else
             Session.set("customerManagementDataMaxCurrentRecords", countRecords)
-
           Session.set("customerManagementCurrentCustomer", customer)
+
+        Session.set("allowCreateCustomSale", false)
+        Session.set("allowCreateTransactionOfCustomSale", false)
 
     "input input": (event, template) -> scope.checkAllowCreate(template)
     "click #createCustomerAccount": (event, template) -> scope.createNewCustomer(template)

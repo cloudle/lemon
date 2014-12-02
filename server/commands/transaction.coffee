@@ -62,12 +62,12 @@ Meteor.methods
         customer = Schema.customers.findOne({_id: transaction.owner, parentMerchant: profile.parentMerchant})
         if customer.customSaleModeEnabled is true
           latestCustomSale = Schema.customSales.findOne({buyer: transaction.owner}, {sort: {debtDate: -1}})
-          latestTransaction = Schema.transactions.findOne({owner: transaction.owner, parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1}})
+          latestTransaction = Schema.transactions.findOne({owner: transaction.owner, group: 'customSale', parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1}})
 
           if transaction.latestSale is latestCustomSale._id and transaction._id is latestTransaction._id
             incCustomerOption = {customSaleDebt: transaction.debtBalanceChange }
             if transaction.debtBalanceChange > 0
-              incCustomerOption.customSalePaid= transaction.debtBalanceChange
+              incCustomerOption.customSalePaid = transaction.debtBalanceChange
             else
               incCustomerOption.customSaleTotalCash = transaction.debtBalanceChange
             Schema.customers.update transaction.owner, $inc: incCustomerOption

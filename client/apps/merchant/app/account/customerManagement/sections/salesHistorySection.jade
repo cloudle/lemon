@@ -29,7 +29,7 @@ template(name="customerManagementSalesHistorySection")
           td
             input.new-bill-field.number(name='debtDate' type="text" size="10" placeholder="ngày bán")
           td
-            .lemon.rounded.btn.orange.icon-tags-2.pull-right.createCustomSale
+            .lemon.rounded.btn.orange.icon-tags-2.pull-right.createCustomSale(class="{{allowCreateCustomSale}}")
 
         if customSaleModeEnabled
           tr.group-summary-row
