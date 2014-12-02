@@ -64,9 +64,13 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       template.ui.$searchFilter.val(''); Session.set("customerManagementSearchFilter", "")
 
   scope.editCustomer = (template) ->
-    newName = template.ui.$customerName.val()
+    newName  = template.ui.$customerName.val()
+    newPhone = template.ui.$customerPhone.val()
+    newAddress = template.ui.$customerAddress.val()
     return if newName.replace("(", "").replace(")", "").trim().length < 2
     editOptions = splitName(newName)
+    editOptions.phone = newPhone if newPhone.length > 0
+    editOptions.address = newAddress if newAddress.length > 0
 
     template.ui.$customerName.val editOptions.name
     Session.set "customerManagementShowEditCommand", false

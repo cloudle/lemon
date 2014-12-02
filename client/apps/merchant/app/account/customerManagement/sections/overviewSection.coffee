@@ -4,7 +4,7 @@ lemon.defineHyper Template.customerManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showEditCommand: -> Session.get "customerManagementShowEditCommand"
   name: ->
-    Meteor.setTimeout(scope.overviewTemplateInstance?.ui.$customerName.change(), 50)
+    Meteor.setTimeout(scope.overviewTemplateInstance?.ui?.$customerName?.change(), 50)
     @name
 
   rendered: ->
@@ -21,6 +21,19 @@ lemon.defineHyper Template.customerManagementOverviewSection,
           AvatarImages.findOne(Session.get('customerManagementCurrentCustomer').avatar)?.remove()
     "input .editable": (event, template) ->
       Session.set "customerManagementShowEditCommand",
-        template.ui.$customerName.val() isnt Session.get("customerManagementCurrentCustomer").name
+        template.ui.$customerName.val() isnt Session.get("customerManagementCurrentCustomer").name or
+        template.ui.$customerPhone.val() isnt (Session.get("customerManagementCurrentCustomer").phone ? '') or
+        template.ui.$customerAddress.val() isnt (Session.get("customerManagementCurrentCustomer").address ? '')
+    "keyup input.editable": (event, template) ->
+      scope.editCustomer(template) if event.which is 13
+
+      if event.which is 27
+        if $(event.currentTarget).attr('name') is 'customerName'
+          $(event.currentTarget).val(Session.get("customerManagementCurrentCustomer").name)
+          $(event.currentTarget).change()
+        else if $(event.currentTarget).attr('name') is 'customerPhone'
+          $(event.currentTarget).val(Session.get("customerManagementCurrentCustomer").phone)
+        else if $(event.currentTarget).attr('name') is 'customerAddress'
+          $(event.currentTarget).val(Session.get("customerManagementCurrentCustomer").address)
+
     "click .syncCustomerEdit": (event, template) -> scope.editCustomer(template)
-    "keypress [name='customerName']": (event, template) -> scope.editCustomer(template) if event.which is 13
