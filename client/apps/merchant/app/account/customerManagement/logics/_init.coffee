@@ -20,11 +20,8 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
       else
         $("[name=paidDate]").val(moment(latestCustomSale.debtDate).format('DDMMYYY'))
 
-
-
-
-#  if customerId = Session.get("mySession")?.currentCustomerManagementSelection
-#    Session.set("customerManagementCurrentCustomer", Schema.customers.findOne(customerId))
+  if customerId = Session.get("mySession")?.currentCustomerManagementSelection
+    Session.set("customerManagementCurrentCustomer", Schema.customers.findOne(customerId))
 
 #  if Session.get("customerManagementCurrentCustomer")
     #customerManagementData

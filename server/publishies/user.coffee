@@ -17,9 +17,6 @@ Meteor.publishComposite 'myMerchantUserProfiles', ->
 Meteor.publish 'myOption', -> Schema.userOptions.find({user: @userId})
 Meteor.publish 'mySession', -> Schema.userSessions.find({user: @userId})
 
-
-
-
 Meteor.users.allow
   insert: (userId, user)-> true
   update: (userId, user)-> true

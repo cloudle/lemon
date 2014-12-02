@@ -4,10 +4,12 @@ template(name="customerManagementOverviewSection")
     .panel-heading
       +avatarImageComponent(avatar=avatarUrl alias=name)
       .caption
-        |{{name}}
-        if description
-            |({{description}})
+        input.editable(name="customerName" value="{{name}}" maxlength="50")
+        span.blured {{description}}
       .sub1 {{phone}}
       .sub2 {{address}}
+      .commands
+        if showEditCommand
+          .lemon.btn.rounded.lime.icon-ok-6.syncCustomerEdit
     .panel-footer
       span.icon-angle-right

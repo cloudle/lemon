@@ -1,4 +1,14 @@
 resetForm = (context) -> $(item).val('') for item in context.findAll("[name]")
+splitName = (fullText) ->
+  if fullText.indexOf("(") > 0
+    namePart    = fullText.substr(0, fullText.indexOf("(")).trim()
+    descPart    = fullText.substr(fullText.indexOf("(")).replace("(", "").replace(")", "").trim()
+  else
+    namePart    = fullText
+    descPart    = ""
+
+  return { name: namePart, description: descPart }
+
 
 logics.customerManagement.createNewCustomer = (context) ->
   fullName = context.ui.$fullName.val()
@@ -32,23 +42,16 @@ logics.customerManagement.createNewCustomer = (context) ->
 Apps.Merchant.customerManagementInit.push (scope) ->
   scope.createCustomer = (template) ->
     fullText    = Session.get("customerManagementSearchFilter")
+    nameOptions = splitName(fullText)
 
-    if fullText.indexOf("(") > 0
-      namePart    = fullText.substr(0, fullText.indexOf("(")).trim()
-      descPart    = fullText.substr(fullText.indexOf("(")).replace("(", "").replace(")", "").trim()
-    else
-      namePart    = fullText
-      descPart    = ""
-
-    console.log(namePart, descPart)
     customer =
       currentMerchant : Session.get('myProfile').currentMerchant
       parentMerchant  : Session.get('myProfile').parentMerchant
       creator         : Session.get('myProfile').user
-      name            : namePart
+      name            : nameOptions.name
+      description     : nameOptions.description
       gender          : true
       styles          : Helpers.RandomColor()
-    customer.description = descPart if descPart.length > 0
 
     existedQuery = {name: namePart, currentMerchant: Session.get('myProfile').currentMerchant}
     existedQuery.description = descPart if descPart.length > 0
@@ -59,3 +62,13 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         console.log error if error
         MetroSummary.updateMetroSummaryBy(['customer'])
       template.ui.$searchFilter.val(''); Session.set("customerManagementSearchFilter", "")
+
+  scope.editCustomer = (template) ->
+    newName = template.ui.$customerName.val()
+    return if newName.replace("(", "").replace(")", "").trim().length < 2
+    editOptions = splitName(newName)
+    Schema.customers.update Session.get("customerManagementCurrentCustomer")._id, {$set: editOptions}, (error, result) ->
+      if error then console.log error
+      else
+        template.ui.$customerName.val editOptions.name
+        Session.set "customerManagementShowEditCommand", false
