@@ -10,14 +10,20 @@ lemon.defineApp Template.customerManagement,
   created: ->
     Session.setDefault('allowCreateNewCustomer', false)
     Session.set("customerManagementSearchFilter", "")
-    currentCustomer = Session.get("mySession").currentCustomerManagementSelection
-    limitExpand = Session.get("mySession").limitExpandSaleAndCustomSale ? 5
-    if !currentCustomer
-      if customer = Schema.customers.findOne()
-        UserSession.set("currentCustomerManagementSelection", customer._id)
-        Meteor.subscribe('customerManagementData', customer._id, 0, limitExpand)
-    else
-      Meteor.subscribe('customerManagementData', currentCustomer, 0, limitExpand)
+    if Session.get("mySession")
+      console.log Session.get("mySession")
+      currentCustomer = Session.get("mySession").currentCustomerManagementSelection
+      limitExpand = Session.get("mySession").limitExpandSaleAndCustomSale ? 5
+      if !currentCustomer
+        if customer = Schema.customers.findOne()
+          UserSession.set("currentCustomerManagementSelection", customer._id)
+          Meteor.subscribe('customerManagementData', customer._id, 0, limitExpand)
+          Session.set("customerManagementDataMaxCurrentRecords", limitExpand)
+          Session.set("customerManagementCurrentCustomer", customer)
+      else
+        Meteor.subscribe('customerManagementData', currentCustomer, 0, limitExpand)
+        Session.set("customerManagementDataMaxCurrentRecords", limitExpand)
+        Session.set("customerManagementCurrentCustomer", Schema.customers.findOne(currentCustomer))
 
 
   events:
@@ -33,7 +39,12 @@ lemon.defineApp Template.customerManagement,
         if customer = Schema.customers.findOne(@_id)
           countRecords = Schema.customSales.find({buyer: customer._id}).count()
           countRecords += Schema.sales.find({buyer: customer._id}).count() if customer.customSaleModeEnabled is false
-          Meteor.subscribe('customerManagementData', customer._id, 0, limitExpand) if countRecords is 0
+          if countRecords is 0
+            Meteor.subscribe('customerManagementData', customer._id, 0, limitExpand)
+            Session.set("customerManagementDataMaxCurrentRecords", limitExpand)
+          else
+            Session.set("customerManagementDataMaxCurrentRecords", countRecords)
+
           Session.set("customerManagementCurrentCustomer", customer)
 
     "input input": (event, template) -> scope.checkAllowCreate(template)

@@ -79,7 +79,8 @@ Apps.Merchant.customerManagementInit.push (scope) ->
 
       if latestCustomSale is undefined || (paidDate >= latestCustomSale.debtDate and !isNaN(payAmount))
         Meteor.call('createNewReceiptCashOfCustomSale', customer._id, payAmount, $payDescription.val(), paidDate)
-        $payDescription.val(''); $paidDate.val(''); $payAmount.val('')
+        Session.set("allowCreateTransactionOfCustomSale", false)
+        $payDescription.val(''); $payAmount.val('');# $paidDate.val('')
 
   scope.createTransactionOfSale = (template) ->
     currentTime     = new Date()

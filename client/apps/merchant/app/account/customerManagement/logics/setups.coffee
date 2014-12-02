@@ -10,7 +10,7 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       else Session.set('allowCreateNewCustomer', true)
     else Session.set('allowCreateNewCustomer', false)
 
-  scope.checkAllowCreateTransactionOfCustomSale = (customer)->
+  scope.checkAllowCreateTransactionOfCustomSale = (template, customer)->
     latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
 
     payAmount = parseInt($(template.find("[name='payAmount']")).inputmask('unmaskedvalue'))
@@ -21,10 +21,3 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       Session.set("allowCreateTransactionOfCustomSale", true)
     else
       Session.set("allowCreateTransactionOfCustomSale", false)
-
-  scope.subscribeSaleAndCustomSale = (customer)->
-    if customer.customSaleModeEnabled
-      currentRecords = Schema.customSales.find({buyer: customer._id}).count()
-    else
-      currentRecords = Schema.customSales.find({buyer: customer._id}).count() + Schema.sales.find({buyer: customer._id}).count()
-    Meteor.subscribe('customerManagementData', Session.get("customerManagementCurrentCustomer")._id, currentRecords, )
