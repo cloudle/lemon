@@ -1,4 +1,4 @@
-updateCustomerDenyDelete = (customerId)-> Schema.customers.update customerId, $set: {allowDelete: false}
+updateCustomerDenyDelete = (id)-> Schema.customers.update id, $set: {allowDelete: false}
 updateCustomSaleDetailDenyDelete = (latestCustomSaleId)->
   latestCustomSaleDetails = Schema.customSaleDetails.find({customSale: latestCustomSaleId})
   if latestCustomSaleDetails.count() > 0
@@ -6,8 +6,8 @@ updateCustomSaleDetailDenyDelete = (latestCustomSaleId)->
       Schema.customSaleDetails.update customSaleDetail._id, $set:{allowDelete: false}
     Schema.customSales.update latestCustomSaleId, $set:{allowDelete: false}
 
-updateLatestTransactionDenyDelete = (customerId)->
-  latestTransactions = Schema.transactions.find({owner: customerId, allowDelete: true}).fetch()
+updateLatestTransactionDenyDelete = (ownerId)->
+  latestTransactions = Schema.transactions.find({owner: ownerId, allowDelete: true}).fetch()
   (Schema.transactions.update transaction._id, $set:{allowDelete: false}) for transaction in latestTransactions
 
 update=(buyerId)->
@@ -62,11 +62,11 @@ Meteor.methods
         if latestCustomSale
           if customSale.debtDate >= latestCustomSale.debtDate
             if Schema.customSales.insert customSale
-              Schema.customers.update customer._id, $set: {allowDelete: false}
+              updateCustomerDenyDelete(customer._id)
               updateCustomSaleDetailDenyDelete(latestCustomSale._id)
               updateLatestTransactionDenyDelete(customer._id)
         else
-          Schema.customers.update customer._id, $set: {allowDelete: false} if Schema.customSales.insert customSale
+          updateCustomerDenyDelete(customer._id) if Schema.customSales.insert customSale
 
   deleteCustomSale: (customSaleId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})

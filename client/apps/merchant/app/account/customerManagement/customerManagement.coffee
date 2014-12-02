@@ -27,9 +27,11 @@ lemon.defineApp Template.customerManagement,
 
 
   events:
-    "input .search-filter": (event, template) -> Session.set("customerManagementSearchFilter", template.ui.$searchFilter.val())
+    "input .search-filter": (event, template) ->
+      Session.set("customerManagementSearchFilter", template.ui.$searchFilter.val())
     "keypress input[name='searchFilter']": (event, template)->
-      scope.createCustomer(template) if event.which is 13 and Session.get("customerManagementSearchFilter")?.trim().length > 1
+      if event.which is 13 and Session.get("customerManagementSearchFilter")?.trim().length > 1
+        scope.createCustomer(template)
     "click .createCustomerBtn": (event, template) -> scope.createCustomer(template)
 
     "click .inner.caption": (event, template) ->

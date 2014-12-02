@@ -14,8 +14,10 @@ Schema.add 'distributors', "Distributor", class Distributor
         merchant         : userProfile.currentMerchant
         creator          : userProfile.user
         name             : name
-        phone            : phone if phone
-        location         : {address: [address]} if address
+
+      distributor.phone    = phone if phone
+      distributor.location = {address: [address]} if address
+
 
       findDistributor =  Schema.providers.findOne({
         parentMerchant: distributor.parentMerchant
@@ -25,4 +27,4 @@ Schema.add 'distributors', "Distributor", class Distributor
       if findDistributor
         {error:'Tên nhà phân phối bị trùng lặp.'}
       else
-        @schema.insert distributor, (error, result)-> if error then {error: error} else {}
+        @schema.insert distributor, (error, result)-> if error then {error: error} else {result: result}

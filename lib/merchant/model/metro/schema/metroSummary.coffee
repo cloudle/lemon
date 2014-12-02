@@ -25,6 +25,10 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  distributorCount:
+    type: Number
+    defaultValue: 0
+
   staffCountAll:
     type: Number
     defaultValue: 1

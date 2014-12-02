@@ -30,7 +30,10 @@ Meteor.publishComposite 'distributorManagementData', (distributorId, currentReco
   }
 
 Schema.distributors.allow
-  insert: (userId, distributor)-> true
+  insert: (userId, distributor)->
+    findDistributor = Schema.providers.findOne({name: distributor.name, parentMerchant: distributor.parentMerchant})
+    if findDistributor then false else true
+
   update: (userId, distributor)-> true
   remove: (userId, distributor)->
     if distributor.allowDelete

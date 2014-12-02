@@ -11,6 +11,10 @@ simpleSchema.distributors = new SimpleSchema
   name:
     type: String
 
+  description:
+    type: String
+    optional: true
+
   representative:
     type: String
     optional: true

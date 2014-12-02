@@ -6,13 +6,13 @@ template(name="distributorManagement")
     .editor-row
       .editor-wrapper(style="width: 150px")
         span.ilabel tên nhà phân phối
-        input(name="name" maxlength="40")
+        input.add-distributor(name="distributorName" maxlength="40")
       .editor-wrapper(style="width:200px")
         span.ilabel.optional địa chỉ
-        input(name="address")
+        input.add-distributor(name="distributorAddress")
       .editor-wrapper(style="width:100px")
         span.ilabel.optional số điện thoại
-        input(name="phone" maxlength="13")
+        input.add-distributor(name="distributorPhone" maxlength="13")
       .editor-wrapper
         button.lemon.btn.lime.icon-user-add-1.create-distributor(class="{{allowCreateDistributor}}") TẠO MỚI
       .editor-wrapper.right
@@ -34,6 +34,8 @@ template(name="distributorManagement")
       .dual-addon
         .search-filter.icon-search-8
           input(name='searchFilter' type="text")
+          if creationMode
+            .lemon.btn.rounded.tiny.lime.icon-plus-6.createDistributorBtn
         .nano: .nano-content
           if showFilterSearch
             .group-wrapper

@@ -341,6 +341,8 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
       if _.contains(context,'customer')
         customerCount    = Schema.customers.find({currentMerchant: profile.currentMerchant})
         customerCountAll = Schema.customers.find({parentMerchant: profile.parentMerchant})
+      if _.contains(context,'distributor')
+        distributorCount = Schema.distributors.find({parentMerchant: profile.parentMerchant})
 
       metroSummary = Schema.metroSummaries.find({parentMerchant: profile.parentMerchant})
       for item in metroSummary.fetch()
@@ -356,7 +358,7 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
         if _.contains(context,'customer')
           option.customerCount    = customerCount.count() if item.merchant == profile.currentMerchant
           option.customerCountAll = customerCountAll.count()
+        if _.contains(context,'distributor')
+          option.distributorCount = distributorCount.count()
 
         Schema.metroSummaries.update item._id, $set: option
-
-
