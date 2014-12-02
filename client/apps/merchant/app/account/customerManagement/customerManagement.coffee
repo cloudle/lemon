@@ -1,7 +1,7 @@
 scope = logics.customerManagement
 
 lemon.defineApp Template.customerManagement,
-  showFilterSearch: -> Session.get("customerManagementSearchFilter").length > 0
+  showFilterSearch: -> Session.get("customerManagementSearchFilter")?.length > 0
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   currentCustomer: -> Session.get("customerManagementCurrentCustomer")
   activeClass:-> if Session.get("customerManagementCurrentCustomer")?._id is @._id then 'active' else ''
@@ -9,6 +9,17 @@ lemon.defineApp Template.customerManagement,
 #  rendered: -> $(".nano").nanoScroller()
   created: ->
     Session.setDefault('allowCreateNewCustomer', false)
+    Session.set("customerManagementSearchFilter", "")
+    currentCustomer = Session.get("mySession").currentCustomerManagementSelection
+    limitExpand = Session.get("mySession").limitExpandSaleAndCustomSale ? 5
+    if !currentCustomer
+      if customer = Schema.customers.findOne()
+        UserSession.set("currentCustomerManagementSelection", customer._id)
+        Meteor.subscribe('customerManagementData', customer._id, 0, limitExpand)
+    else
+      Meteor.subscribe('customerManagementData', currentCustomer, 0, limitExpand)
+
+
   events:
     "input .search-filter": (event, template) -> Session.set("customerManagementSearchFilter", template.ui.$searchFilter.val())
     "keypress input[name='searchFilter']": (event, template)->
@@ -16,12 +27,18 @@ lemon.defineApp Template.customerManagement,
     "click .createCustomerBtn": (event, template) -> scope.createCustomer(template)
 
     "click .inner.caption": (event, template) ->
-      Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentCustomerManagementSelection: @_id}})
-      Meteor.subscribe('customerManagementData', @_id)
-#      UserSession.set("currentCustomerManagementSelection", @_id)
+      if Session.get("mySession")
+        Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentCustomerManagementSelection: @_id}})
+        limitExpand = Session.get("mySession").limitExpandSaleAndCustomSale ? 5
+        if customer = Schema.customers.findOne(@_id)
+          countRecords = Schema.customSales.find({buyer: customer._id}).count()
+          countRecords += Schema.sales.find({buyer: customer._id}).count() if customer.customSaleModeEnabled is false
+          Meteor.subscribe('customerManagementData', customer._id, 0, limitExpand) if countRecords is 0
+          Session.set("customerManagementCurrentCustomer", customer)
 
     "input input": (event, template) -> scope.checkAllowCreate(template)
     "click #createCustomerAccount": (event, template) -> scope.createNewCustomer(template)
+
     "click .excel-customer": (event, template) -> $(".excelFileSource").click()
     "change .excelFileSource": (event, template) ->
       if event.target.files.length > 0

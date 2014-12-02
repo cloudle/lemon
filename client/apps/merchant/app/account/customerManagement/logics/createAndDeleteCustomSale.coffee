@@ -70,14 +70,32 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     $payAmount      = $(template.find("[name='payAmount']"))
     $paidDate       = template.ui.$paidDate
 
-    payAmount       = $payAmount.inputmask('unmaskedvalue')
+    payAmount       = parseInt($payAmount.inputmask('unmaskedvalue'))
     tempPaidDate    = moment($paidDate.val(), 'DD/MM/YYYY')._d
     paidDate        = new Date(tempPaidDate.getFullYear(), tempPaidDate.getMonth(), tempPaidDate.getDate(), currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds())
 
     if customer = Session.get("customerManagementCurrentCustomer")
       latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
-      console.log $payDescription.val() , (paidDate > latestCustomSale.debtDate if latestCustomSale) , payAmount != "" , !isNaN(payAmount)
 
-      if latestCustomSale is undefined || (paidDate >= latestCustomSale.debtDate and payAmount != "" and !isNaN(payAmount))
-        Meteor.call('createNewReceiptCashOfCustomSale', customer._id, parseInt(payAmount), $payDescription.val(), paidDate)
+      if latestCustomSale is undefined || (paidDate >= latestCustomSale.debtDate and !isNaN(payAmount))
+        Meteor.call('createNewReceiptCashOfCustomSale', customer._id, payAmount, $payDescription.val(), paidDate)
+        $payDescription.val(''); $paidDate.val(''); $payAmount.val('')
+
+  scope.createTransactionOfSale = (template) ->
+    currentTime     = new Date()
+
+    $payDescription = template.ui.$paySaleDescription
+    $payAmount      = $(template.find("[name='paySaleAmount']"))
+    $paidDate       = template.ui.$paidSaleDate
+
+    payAmount       = $payAmount.inputmask('unmaskedvalue')
+    tempPaidDate    = moment($paidDate.val(), 'DD/MM/YYYY')._d
+    paidDate        = new Date(tempPaidDate.getFullYear(), tempPaidDate.getMonth(), tempPaidDate.getDate(), currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds())
+
+    if customer = Session.get("customerManagementCurrentCustomer")
+      latestSale = Schema.sales.findOne({buyer: customer._id}, {sort: {'version.createdAt': -1}})
+      console.log $payDescription.val() , (paidDate > latestSale.version.createdAt if latestSale) , payAmount != "" , !isNaN(payAmount)
+
+      if paidDate >= latestSale?.version.createdAt and payAmount != "" and !isNaN(payAmount)
+        Meteor.call('createNewReceiptCashOfSales', customer._id, parseInt(payAmount), $payDescription.val(), paidDate)
         $payDescription.val(''); $paidDate.val(''); $payAmount.val('')

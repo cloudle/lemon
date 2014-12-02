@@ -15,13 +15,13 @@ template(name="customerManagementSalesHistorySection")
 
         tr.editors(style="{{isCustomSaleModeEnabled}}")
           td
-            input.new-transaction-field(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
+            input.new-transaction-custom-sale-field(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
           td(colspan="2")
-            input.new-transaction-field.number(name='payAmount' type="text" size="10" placeholder="số tiền")
+            input.new-transaction-custom-sale-field.number(name='payAmount' type="text" size="10" placeholder="số tiền")
           td
-            input.new-transaction-field.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
+            input.new-transaction-custom-sale-field.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
           td
-            .lemon.rounded.btn.orange.icon-money.pull-right.createTransactionOfCustomSale
+            .lemon.rounded.btn.orange.icon-money.pull-right.createTransactionOfCustomSale(class="{{allowCreateTransactionOfCustomSale}}")
 
         tr.editors.dual-border(style="{{isCustomSaleModeEnabled}}")
           td(colspan="3")
@@ -44,24 +44,21 @@ template(name="customerManagementSalesHistorySection")
 
       table.lemon-grid.safe
         +customerManagementSaleHistoryHeader
-        if showSaleHistory
-          each defaultSaleArchive
-            +customerManagementSaleDetails this
-        else
-          tr: td(colspan="5")
-            .lemon.rounded.btn.lime.pull-right.expandSaleHistory.icon-down-open-big
+        each defaultSaleArchive
+          +customerManagementSaleDetails this
+
         each defaultSaleToday
           +customerManagementSaleDetails this
 
-        //tr.editors
-        //  td
-        //    input.new-transaction-field(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
-        //  td(colspan="2")
-        //    input.new-transaction-field.number(name='payAmount' type="text" size="10" placeholder="số tiền")
-        //  td
-        //    input.new-transaction-field.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
-        //  td
-        //    .lemon.rounded.btn.lime.icon-money.pull-right.createTransaction
+        tr.editors
+          td
+            input.new-transaction-sale-field(name='paySaleDescription' type="text" size="10" placeholder="ghi chú thu chi")
+          td(colspan="2")
+            input.new-transaction-sale-field.number(name='paySaleAmount' type="text" size="10" placeholder="số tiền")
+          td
+            input.new-transaction-sale-field.number(name='paidSaleDate' type="text" size="10" placeholder="ngày giao dịch")
+          td
+            .lemon.rounded.btn.lime.icon-money.pull-right.createTransactionOfSale
 
     .panel-footer
       .right-float

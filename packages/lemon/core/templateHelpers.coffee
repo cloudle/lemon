@@ -19,6 +19,8 @@ Template.registerHelper 'skullsNameFromId', (id) -> Schema.products.findOne(id)?
 Template.registerHelper 'userNameFromId', (id) -> Schema.userProfiles.findOne({user: id})?.fullName ? Meteor.users.findOne(id)?.emails[0].address
 Template.registerHelper 'ownerNameFromId', (id) -> Schema.customers.findOne(id)?.name
 
+Template.registerHelper 'allowAction', (val) -> if val then '' else 'disabled'
+
 Template.registerHelper 'aliasLetter', (fullAlias) -> fullAlias?.split(' ').pop().substring(0,1)
 
 Template.registerHelper 'activeClassByCount', (count) -> if count > 0 then 'active' else ''
