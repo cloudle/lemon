@@ -3,8 +3,12 @@ scope = logics.customerManagement
 lemon.defineHyper Template.customerManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showEditCommand: -> Session.get "customerManagementShowEditCommand"
+  name: ->
+    Meteor.setTimeout(scope.overviewTemplateInstance?.ui.$customerName.change(), 50)
+    @name
 
   rendered: ->
+    scope.overviewTemplateInstance = @
     @ui.$customerName.autosizeInput({space: 10})
 
   events:

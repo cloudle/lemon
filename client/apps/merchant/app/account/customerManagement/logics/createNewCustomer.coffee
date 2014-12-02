@@ -53,8 +53,8 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       gender          : true
       styles          : Helpers.RandomColor()
 
-    existedQuery = {name: namePart, currentMerchant: Session.get('myProfile').currentMerchant}
-    existedQuery.description = descPart if descPart.length > 0
+    existedQuery = {name: nameOptions.name, currentMerchant: Session.get('myProfile').currentMerchant}
+    existedQuery.description = nameOptions.description if nameOptions.description.length > 0
     if Schema.customers.findOne existedQuery
       template.ui.$searchFilter.notify("Khách hàng đã tồn tại.", {position: "bottom"})
     else
@@ -67,8 +67,9 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     newName = template.ui.$customerName.val()
     return if newName.replace("(", "").replace(")", "").trim().length < 2
     editOptions = splitName(newName)
+
+    template.ui.$customerName.val editOptions.name
+    Session.set "customerManagementShowEditCommand", false
+
     Schema.customers.update Session.get("customerManagementCurrentCustomer")._id, {$set: editOptions}, (error, result) ->
-      if error then console.log error
-      else
-        template.ui.$customerName.val editOptions.name
-        Session.set "customerManagementShowEditCommand", false
+      if error then console.log error else template.ui.$customerName.val Session.get("customerManagementCurrentCustomer").name

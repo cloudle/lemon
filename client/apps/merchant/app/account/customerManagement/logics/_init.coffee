@@ -3,7 +3,7 @@ Apps.Merchant.customerManagementInit = []
 Apps.Merchant.customerManagementReactive = []
 
 Apps.Merchant.customerManagementReactive.push (scope) ->
-  if Session.get('allowCreateNewCustomer') then allowCreate = '' else allowCreate = 'disabled'
+  allowCreate = if Session.get('allowCreateNewCustomer') then '' else 'disabled'
   scope.allowCreate = allowCreate
 
   if customer = Session.get("customerManagementCurrentCustomer")
@@ -11,7 +11,6 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
     countRecords = Schema.customSales.find({buyer: customer._id}).count()
     countRecords += Schema.sales.find({buyer: customer._id}).count() if customer.customSaleModeEnabled is false
     Session.set("showExpandSaleAndCustomSale", (maxRecords is countRecords))
-
 
     latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
     if latestCustomSale
