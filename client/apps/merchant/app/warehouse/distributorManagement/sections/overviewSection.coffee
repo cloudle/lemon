@@ -1,6 +1,6 @@
 scope = logics.distributorManagement
 
-lemon.defineWidget Template.distributorManagementOverviewSection,
+lemon.defineHyper Template.distributorManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   events:
     "click .avatar": (event, template) -> template.find('.avatarFile').click()

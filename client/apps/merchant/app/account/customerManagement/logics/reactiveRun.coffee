@@ -8,7 +8,7 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
         unsignedName = Helpers.RemoveVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
     else
-      groupedCustomers = _.groupBy customers, (customer) -> customer.name.split(' ').pop().substr(0, 1)
+      groupedCustomers = _.groupBy customers, (customer) -> customer.name.split(' ').pop().substr(0, 1).toLowerCase()
       scope.managedCustomerList.push {key: key, childs: childs} for key, childs of groupedCustomers
       scope.managedCustomerList = _.sortBy(scope.managedCustomerList, (num)-> num.key)
 

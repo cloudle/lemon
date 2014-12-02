@@ -5,19 +5,26 @@ lemon.defineApp Template.distributorManagement,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   currentDistributor: -> Session.get("distributorManagementCurrentDistributor")
   activeClass:-> if Session.get("distributorManagementCurrentDistributor")?._id is @._id then 'active' else ''
+  creationMode: -> Session.get("distributorManagementCreationMode")
 #  rendered: -> $(".nano").nanoScroller()
   created: ->
     Session.setDefault('allowCreateDistributor', false)
 
   events:
-    "input input": (event, template) -> scope.checkAllowCreateDistributor(template)
-    'click .create-distributor': (event, template)-> scope.createDistributor(template)
-
     "input .search-filter": (event, template) ->
       Session.set("distributorManagementSearchFilter", template.ui.$searchFilter.val())
+    "keypress input[name='searchFilter']": (event, template)->
+      if event.which is 13 and Session.get("distributorManagementSearchFilter")?.trim().length > 1
+        scope.createDistributorBySearchFilter(template)
+    "click .createDistributorBtn": (event, template) -> scope.createDistributorBySearchFilter(template)
+
+
     "click .inner.caption": (event, template) ->
       Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentDistributorManagementSelection: @_id}})
 
+
+    "input .add-distributor": (event, template) -> scope.checkAllowCreateDistributor(template)
+    'click .create-distributor': (event, template)-> scope.createDistributor(template)
 
     "click .excel-distributor": (event, template) -> $(".excelFileSource").click()
     "change .excelFileSource": (event, template) ->

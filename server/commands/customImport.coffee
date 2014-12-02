@@ -1,3 +1,12 @@
+updateDistributorDenyDelete = (id)-> Schema.distributors.update id, $set: {allowDelete: false}
+
+updateLatestTransactionDenyDelete = (ownerId)->
+  latestTransactions = Schema.transactions.find({owner: ownerId, allowDelete: true}).fetch()
+  (Schema.transactions.update transaction._id, $set:{allowDelete: false}) for transaction in latestTransactions
+
+updateCustomImportDetailDenyDelete = (latestCustomSaleId)->
+
+
 Meteor.methods
   createNewCustomImport: (customImport)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
@@ -13,10 +22,9 @@ Meteor.methods
                   Schema.customImportDetails.update customImportDetail._id, $set:{allowDelete: false}
                 Schema.customImports.update latestCustomImport._id, $set:{allowDelete: false}
 
-              latestTransactions = Schema.transactions.find({owner: distributor._id, allowDelete: true}).fetch()
-              (Schema.transactions.update transaction._id, $set:{allowDelete: false}) for transaction in latestTransactions
+              updateLatestTransactionDenyDelete(distributor._id)
         else
-          Schema.customImports.insert customImport
+          updateDistributorDenyDelete(distributor._id) if Schema.customImports.insert customImport
 
   deleteCustomImport: (customImportId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
