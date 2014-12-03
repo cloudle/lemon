@@ -9,7 +9,7 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
   showExpandImportAndCustomImport: -> Session.get("showExpandImportAndCustomImport")
   isCustomImportModeEnabled: -> if Session.get("distributorManagementCurrentDistributor")?.customImportModeEnabled then "" else "display: none;"
 
-  customImport: -> Schema.customImports.find({buyer: Session.get("distributorManagementCurrentDistributor")?._id})
+  customImport: -> Schema.customImports.find({seller: Session.get("distributorManagementCurrentDistributor")?._id})
   defaultImport: -> Schema.imports.find({buyer: Session.get("distributorManagementCurrentDistributor")?._id})
 
   rendered: ->
@@ -33,16 +33,20 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
         scope.customImportModeDisable(distributor._id)
 
 #----Create-Custom-Import-----------------------------------------------------------------------------------------------
-    "keydown .new-transaction-custom-import-field": (event, template) ->
+    "keydown .new-bill-field.number": (event, template) ->
+      if distributor = Session.get("distributorManagementCurrentDistributor") and event.which is 8
+        scope.checkAllowCreateCustomImport(template, distributor)
+
+    "input .new-bill-field.number": (event, template) ->
       if distributor = Session.get("distributorManagementCurrentDistributor")
         scope.checkAllowCreateCustomImport(template, distributor)
 
     "click .createCustomImport":  (event, template) ->
-      if Session.get("allowCreateTransactionOfCustomImport")
+      if Session.get("allowCreateCustomImport")
         scope.createCustomImport(template)
 
     "keypress input.new-bill-field": (event, template) ->
-      if  Session.get("allowCreateTransactionOfCustomImport") and event.which is 13
+      if  Session.get("allowCreateCustomImport") and event.which is 13
         scope.createCustomImport(template)
 
 #-----Create-Transaction-Of-Custom-Import-------------------------------------------------------------------------------
@@ -50,11 +54,11 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
       if distributor = Session.get("distributorManagementCurrentDistributor")
         scope.checkAllowCreateTransactionOfCustomImport(template, distributor)
 
-    "click .createTransaction": (event, template) ->
+    "click .createTransactionOfCustomImport": (event, template) ->
       if Session.get("allowCreateTransactionOfCustomImport")
         scope.createTransactionOfCustomImport(template)
 
-    "keypress input.new-transaction-import-field": (event, template) ->
+    "keypress input.new-transaction-custom-import-field": (event, template) ->
       if Session.get("allowCreateTransactionOfCustomImport") and event.which is 13
         scope.createTransactionOfCustomImport(template)
 

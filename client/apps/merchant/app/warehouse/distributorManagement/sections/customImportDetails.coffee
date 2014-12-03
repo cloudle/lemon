@@ -26,9 +26,9 @@ lemon.defineWidget Template.distributorManagementCustomImportDetails,
     "click .enter-edit": (event, template) -> Session.set("distributorManagementCurrentCustomImport", @)
     "click .cancel-edit": (event, template) -> Session.set("distributorManagementCurrentCustomImport")
 
-    "click .deleteCustomImport": (event, template) ->   Meteor.call('deleteCustomImport', @_id)
-    "click .deleteCustomImportDetail": (event, template) -> scope.deleteCustomImportDetail(@_id)
-    "click .deleteTransaction": (event, template) -> scope.deleteTransactionCustomImport(@_id)
+    "click .deleteCustomImport": (event, template) -> Meteor.call('deleteCustomImport', @_id)
+    "click .deleteCustomImportDetail": (event, template) -> Meteor.call('updateCustomImportByDeleteCustomImportDetail', @_id)
+    "click .deleteTransaction": (event, template) -> Meteor.call('deleteTransactionOfCustomImport', @_id)
 
 
 
@@ -43,10 +43,10 @@ lemon.defineWidget Template.distributorManagementCustomImportDetailCreator,
         {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11}
 
   events:
-    "click .createCustomImportDetail": (event, template) -> scope.createCustomImportDetail(@, template)
+    "click .createCustomImportDetail": (event, template) -> scope.createCustomImportDetail(template, @)
     "keypress input": (event, template) ->
       if event.which is 13 #ENTER
-        scope.createCustomImportDetail(@, template)
+        scope.createCustomImportDetail(template, @)
       else if event.which is 27
         $(template.find("[name='productName']")).val('')
         $(template.find("[name='price']")).val('')

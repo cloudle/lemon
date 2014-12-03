@@ -5,7 +5,7 @@ simpleSchema.customImportDetails = new SimpleSchema
   creator:
     type: String
 
-  buyer:
+  seller:
     type: String
 
   customImport:

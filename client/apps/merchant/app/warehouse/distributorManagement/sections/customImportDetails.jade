@@ -18,7 +18,7 @@ template(name="distributorManagementCustomImportDetails")
       td.number {{formatNumber price}}
       td.number {{formatNumber finalPrice}}
   if isCustomImportDetailCreator
-    +customerManagementCustomImportDetailCreator
+    +distributorManagementCustomImportDetailCreator
   tr.detail-row.summary-row
     td.note {{description}}
     td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber latestDebtBalance}}</b>

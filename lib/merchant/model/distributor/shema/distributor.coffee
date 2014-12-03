@@ -55,6 +55,10 @@ simpleSchema.distributors = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  customImportLoan:
+    type: Number
+    defaultValue: 0
+
   customImportDebt:
     type: Number
     defaultValue: 0
