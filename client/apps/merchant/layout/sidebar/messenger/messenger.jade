@@ -3,7 +3,7 @@ template(name="messenger")
     .target-caption
       if hasTarget
         .animated.bounceInRight
-          +avatarImageComponent(avatar=avatarUrl alias=shortAlias)
+          +avatarImageComponent(avatar=avatarUrl alias=firstName)
           span.chat-target-name {{targetName}}
     .conversation-wrapper
       each currentMessages

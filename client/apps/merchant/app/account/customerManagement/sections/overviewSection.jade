@@ -2,7 +2,7 @@ template(name="customerManagementOverviewSection")
   .section.top.panel.panel-default
     input.hidden.avatarFile(type="file")
     .panel-heading
-      +avatarImageComponent(avatar=avatarUrl alias=name)
+      +avatarImageComponent(avatar=avatarUrl alias=firstName)
       .caption
         input.editable(name="customerName" value="{{name}}" maxlength="50")
         if description

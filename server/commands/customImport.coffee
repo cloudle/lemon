@@ -112,7 +112,7 @@ createTransactionOfCustomImport = (profile, distributor, latestCustomImportId, d
     option.description = if description?.length > 0 then description else 'Mượn Tiền'
     option.receivable  = true
 
-  console.log Schema.transactions.insert option
+  Schema.transactions.insert option
 
 createTransactionOfImport = (profile, distributor, latestImportId, debtCash, paidDate, description)->
   option =
@@ -136,7 +136,7 @@ createTransactionOfImport = (profile, distributor, latestImportId, debtCash, pai
     option.description = if description?.length > 0 then description else 'Mượn Tiền'
     option.receivable  = true
 
-  console.log Schema.transactions.insert option
+  Schema.transactions.insert option
 
 
 Meteor.methods

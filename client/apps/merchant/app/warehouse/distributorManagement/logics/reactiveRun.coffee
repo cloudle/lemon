@@ -8,7 +8,7 @@ Apps.Merchant.distributorManagementReactive.push (scope) ->
         unsignedName = Helpers.RemoveVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
     else
-      groupedStaffs = _.groupBy distributors, (distributor) -> distributor.name.split(' ').pop().substr(0, 1).toLowerCase() if distributor.name
+      groupedStaffs = _.groupBy distributors, (distributor) -> distributor.name.substr(0, 1).toLowerCase() if distributor.name
       scope.managedDistributorList.push {key: key, childs: childs} for key, childs of groupedStaffs
       scope.managedDistributorList = _.sortBy(scope.managedDistributorList, (num)-> num.key)
 

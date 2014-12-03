@@ -1,0 +1,38 @@
+template(name="stockManagement")
+  #header
+    .caption-row
+      .title DANH SÁCH SẢN PHẨM
+          
+  #content.modern.stock-management
+    .dual-content
+      .dual-detail-wrapper
+        .dual-detail
+          .nano: .nano-content
+            +stockManagementOverviewSection currentProduct
+            +stockManagementSalesHistorySection currentProduct
+      .dual-addon
+        .search-filter.icon-search-8
+          input(name='searchFilter' type="text")
+          if creationMode
+            .lemon.btn.rounded.tiny.lime.icon-plus-6.createStockBtn
+        .nano: .nano-content
+          if showFilterSearch
+            .group-wrapper
+              each managedProductList
+                .caption.inner(class="{{activeClass}}")
+                  +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                  span.text
+                    |{{name}}
+                    if skulls
+                      |({{skulls}})
+          else
+            each managedProductList
+              .group-wrapper
+                .caption.group {{key}}
+                each childs
+                  .caption.inner(class="{{activeClass}}")
+                    +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                    span.text
+                      |{{name}}
+                      if skulls
+                        |({{skulls}})

@@ -1,0 +1,13 @@
+template(name="stockManagementImportDetails")
+  tr.header-row
+    td(colspan="6")
+      | .
+      .bill-header <b>{{momentCalendar version.createdAt}}</b> ({{description}})
+  each importDetails
+    tr.detail-row
+      td.first-column {{productName}}
+      td {{skulls}}
+      td {{providerName}}
+      td.number {{formatNumber importQuality}}
+      td.number {{formatNumber inStockQuality}}
+      td.number {{formatNumber importPrice}}

@@ -1,0 +1,31 @@
+template(name="stockManagementSalesHistorySection")
+  .section.panel.panel-default
+    .panel-heading
+      table.lemon-grid: tr
+        th(style="width:auto") SẢN PHẨM
+        th(style="width:100px") QUI CÁCH
+        th(style="width:140px") NHÀ SẢN XUẤT
+        th.number(style="width:50px") NHẬP
+        th.number(style="width:50px") TỒN
+        th.number(style="width:90px") GIÁ NHẬP
+
+    .panel-body.debt-details
+      table.lemon-grid.safe
+        +stockManagementImportHistoryHeader
+        each defaultImport
+          +stockManagementImportDetails this
+
+    .panel-footer
+      .right-float
+        span.s5 TỔNG NHẬP
+        span.s3 <b>{{formatNumber finalDebtBalance}}</b>
+        //h3 Tổng tiền: {{formatNumber totalPurchases}} VNĐ
+
+template(name="stockManagementImportHistoryHeader")
+  tr
+    th(style="width:auto")
+    th(style="width:100px")
+    th(style="width:150px")
+    th(style="width:40px")
+    th(style="width:40px")
+    th(style="width:100px")

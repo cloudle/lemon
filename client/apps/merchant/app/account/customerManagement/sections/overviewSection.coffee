@@ -6,6 +6,7 @@ lemon.defineHyper Template.customerManagementOverviewSection,
   name: ->
     Meteor.setTimeout(scope.overviewTemplateInstance.ui.$customerName.change(), 50) if scope.overviewTemplateInstance
     @name
+  firstName: -> Helpers.firstName(@name)
 
   rendered: ->
     scope.overviewTemplateInstance = @

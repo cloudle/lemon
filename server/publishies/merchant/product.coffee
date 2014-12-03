@@ -20,6 +20,28 @@ Meteor.publish 'productDetails', (productId) ->
   return [] if !profile or !currentProduct
   Schema.productDetails.find {product: currentProduct._id}
 
+Meteor.publish 'availableProducts', ->
+  profile = Schema.userProfiles.findOne({user: @userId})
+  return [] if !profile
+  Schema.products.find({merchant: profile.currentMerchant})
+
+Meteor.publishComposite 'stockManagementData', (productId, currentRecords = 0)->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.products.find {_id: productId, merchant: myProfile.currentMerchant}
+    children: [
+      find: (product) -> Schema.productDetails.find {product: product._id}
+      children: [
+        find: (productDetail, product) -> Schema.imports.find {_id: productDetail.import}
+      ,
+        find: (productDetail, product) -> Schema.providers.find {_id: productDetail.provider}
+      ]
+    ]
+  }
+
 
 Schema.products.allow
   insert: (userId, product) ->

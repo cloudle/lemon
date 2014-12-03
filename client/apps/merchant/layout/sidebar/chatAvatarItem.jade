@@ -2,5 +2,5 @@ template(name="chatAvatarItem")
   li.chat-avatar(class="{{myAvatar}}")
     .online-status-orb(class="{{onlineStatus user}}")
     i.icon-chat-5.has-message-status(class="{{hasUnreadMessage}}")
-    .alias {{shortAlias}}
-    +avatarImageComponent(avatar=avatarUrl alias=fullName)
+    .alias {{alias.shortName}}
+    +avatarImageComponent(avatar=avatarUrl alias=alias.firstName)

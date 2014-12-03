@@ -20,7 +20,7 @@ template(name="productEdit")
                   li.order-detail
                      .product-name <b>Ngày: {{formatDate version.createdAt}}</b>
                      .product-price
-                        span.individual-price Đã nhập: {{formatNumber importQuality}} {{product.skulls}}
+                        span.individual-price Đã nhập: {{formatNumber importQuality}} [{{product.skulls}}]
                         span.final-price Giá nhập: {{formatNumber importPrice}}
 
             .bill-summary

@@ -6,3 +6,4 @@ Helpers.shortName = (fullName, maxlength = 6) ->
   "#{if middle then middle + '.' else ''} #{name}"
 
 Helpers.respectName = (fullName, gender) -> "#{if gender then 'Anh' else 'Chị'} #{fullName.split(' ').pop()}"
+Helpers.firstName = (fullName) -> fullName?.split(' ').pop()

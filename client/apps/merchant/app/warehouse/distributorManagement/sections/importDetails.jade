@@ -11,7 +11,7 @@ template(name="distributorManagementImportDetails")
       td.number {{formatNumber importPrice}}
       td.last-column.number {{formatNumber totalPrice}}
   tr.detail-row.summary-row
-    td.note {{description}}
+    td: span.note {{description}}
     td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
     td.summary-total(align="right"): span.s5 <b>{{formatNumber debtBalanceChange}}</b>
 

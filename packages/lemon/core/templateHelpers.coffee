@@ -21,7 +21,7 @@ Template.registerHelper 'ownerNameFromId', (id) -> Schema.customers.findOne(id)?
 
 Template.registerHelper 'allowAction', (val) -> if val then '' else 'disabled'
 
-Template.registerHelper 'aliasLetter', (fullAlias) -> fullAlias?.split(' ').pop().substring(0,1)
+Template.registerHelper 'aliasLetter', (fullAlias) -> fullAlias?.substring(0,1)
 
 Template.registerHelper 'activeClassByCount', (count) -> if count > 0 then 'active' else ''
 Template.registerHelper 'onlineStatus', (userId)->
@@ -39,4 +39,4 @@ Template.registerHelper 'notificationSenderAvatar', ->
   return undefined if !profile?.avatar
   AvatarImages.findOne(profile.avatar)?.url()
 Template.registerHelper 'notificationSenderAlias', ->
-  Schema.userProfiles.findOne({user: @sender})?.fullName ? '?'
+  Schema.userProfiles.findOne({user: @sender})?.fullName.split(' ').pop() ? '?'

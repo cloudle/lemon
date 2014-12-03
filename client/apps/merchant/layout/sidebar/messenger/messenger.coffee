@@ -3,9 +3,9 @@ scope = logics.messenger
 lemon.defineWidget Template.messenger,
   currentMessages: -> scope.messengerDeps?.depend(); scope.currentMessages
   messageClass: -> if @sender is Meteor.userId() then 'me' else 'friend'
-  shortAlias: ->
+  firstName: ->
     profile = Schema.userProfiles.findOne({user: Session.get('currentChatTarget')})
-    Helpers.shortName(profile.fullName ? Meteor.users.findOne(profile.user)?.emails[0].address)
+    Helpers.firstName(profile.fullName ? Meteor.users.findOne(profile.user)?.emails[0].address)
   avatarUrl: ->
     profile = Schema.userProfiles.findOne({user: Session.get('currentChatTarget')})
     if profile.avatar then AvatarImages.findOne(profile.avatar)?.url() else undefined

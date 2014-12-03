@@ -43,7 +43,7 @@ template(name="customerManagement")
             .group-wrapper
               each managedCustomerList
                 .caption.inner(class="{{activeClass}}")
-                  +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                  +avatarImageComponent(avatar=avatarUrl alias=firstName instance=this)
                   span.text
                     |{{name}}
                     if description
@@ -54,23 +54,8 @@ template(name="customerManagement")
                 .caption.group {{key}}
                 each childs
                   .caption.inner(class="{{activeClass}}")
-                    +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                    +avatarImageComponent(avatar=avatarUrl alias=firstName instance=this)
                     span.text
                       |{{name}}
                       if description
                         |({{description}})
-          //
-          //each managedCustomerList
-          //  .group-wrapper
-          //    if showFilterSearch
-          //      .inner.caption(class="{{activeClass}}")
-          //        +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
-          //        span.text {{name}}
-          //    else
-          //      .group.caption {{key}}
-          //      each childs
-          //        .inner.caption(class="{{activeClass}}")
-          //          //if allowDelete
-          //          //  i.trash.icon-bag
-          //          +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
-          //          span.text {{name}}

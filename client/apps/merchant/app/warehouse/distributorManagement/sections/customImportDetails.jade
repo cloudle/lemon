@@ -20,9 +20,9 @@ template(name="distributorManagementCustomImportDetails")
   if isCustomImportDetailCreator
     +distributorManagementCustomImportDetailCreator
   tr.detail-row.summary-row
-    td.note {{description}}
+    td: span.note {{description}}
     td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber latestDebtBalance}}</b>
-    td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>
+    td.summary-total(align="right"): span.s5 <b>{{formatNumber debtBalanceChange}}</b>
 
   each latestPaids
     tr.paid-row.top(class="{{receivableClass}}")
