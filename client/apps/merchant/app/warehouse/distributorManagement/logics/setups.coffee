@@ -81,3 +81,18 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
       Session.set("allowCreateTransactionOfCustomImport", true)
     else
       Session.set("allowCreateTransactionOfCustomImport", false)
+
+  scope.checkAllowCreateTransactionOfImport = (template, distributor)->
+    latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
+
+    $paidDate = $(template.find("[name='paidSaleDate']")).inputmask('unmaskedvalue')
+    paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
+    currentPaidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
+    limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
+    isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and currentPaidDate > limitCurrentPaidDate and currentPaidDate >= latestImport.version.createdAt
+    payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+
+    if latestImport and isValidDate and !isNaN(payAmount) and payAmount != 0
+      Session.set("allowCreateTransactionOfImport", true)
+    else
+      Session.set("allowCreateTransactionOfImport", false)

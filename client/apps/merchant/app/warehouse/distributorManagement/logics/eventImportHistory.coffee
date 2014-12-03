@@ -71,10 +71,26 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 
     if distributor = Session.get("distributorManagementCurrentDistributor")
       latestCustomImport = Schema.customImports.findOne({buyer: distributor._id}, {sort: {debtDate: -1}})
-      console.log paidDate
-      console.log latestCustomImport.debtDate if latestCustomImport
 
       if latestCustomImport is undefined || (paidDate >= latestCustomImport.debtDate and payAmount != "" and !isNaN(payAmount))
         Meteor.call('createNewReceiptCashOfCustomImport', distributor._id, parseInt(payAmount), $payDescription.val(), paidDate)
         $payDescription.val(''); $paidDate.val(''); $payAmount.val('')
 
+  scope.createTransactionOfImport = (template, distributor)->
+    $payDescription = template.ui.$paySaleDescription
+
+    latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
+
+    $paidDate = $(template.find("[name='paidSaleDate']")).inputmask('unmaskedvalue')
+    paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
+    limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
+    currentPaidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
+    isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and currentPaidDate > limitCurrentPaidDate and currentPaidDate >= latestImport.version.createdAt
+
+    $payAmount = template.ui.$paySaleAmount
+    payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+
+    if latestImport and isValidDate and !isNaN(payAmount) and payAmount != 0
+      Meteor.call('createNewReceiptCashOfImport', distributor._id, payAmount, $payDescription.val(), currentPaidDate)
+      Session.set("allowCreateTransactionOfImport", false)
+      $payDescription.val(''); $payAmount.val('')

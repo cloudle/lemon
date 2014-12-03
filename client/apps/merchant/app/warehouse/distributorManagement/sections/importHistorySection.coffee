@@ -1,21 +1,26 @@
 scope = logics.distributorManagement
 
 lemon.defineHyper Template.distributorManagementImportsHistorySection,
-  finalDebtBalance: -> @customSaleDebt + @saleDebt
+  finalDebtBalance: -> @customImportDebt + @importDebt
   allowCreateCustomImport: -> if Session.get("allowCreateCustomImport") then '' else 'disabled'
-#  allowCreateTransactionOfImport: -> if Session.get("allowCreateTransactionOfImport") then '' else 'disabled'
+  allowCreateTransactionOfImport: -> if Session.get("allowCreateTransactionOfImport") then '' else 'disabled'
   allowCreateTransactionOfCustomImport: -> if Session.get("allowCreateTransactionOfCustomImport") then '' else 'disabled'
 
   showExpandImportAndCustomImport: -> Session.get("showExpandImportAndCustomImport")
   isCustomImportModeEnabled: -> if Session.get("distributorManagementCurrentDistributor")?.customImportModeEnabled then "" else "display: none;"
 
-  customImport: -> Schema.customImports.find({seller: Session.get("distributorManagementCurrentDistributor")?._id})
-  defaultImport: -> Schema.imports.find({buyer: Session.get("distributorManagementCurrentDistributor")?._id})
+  customImport: -> Schema.customImports.find({seller: Session.get("distributorManagementCurrentDistributor")?._id}, {sort: {'version.createdAt': 1}})
+  defaultImport: ->
+    if distributor = Session.get("distributorManagementCurrentDistributor")
+      Schema.imports.find({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': 1}})
 
   rendered: ->
     @ui.$customImportDebtDate.inputmask("dd/mm/yyyy")
     @ui.$paidDate.inputmask("dd/mm/yyyy")
     @ui.$payAmount.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
+
+    @ui.$paidSaleDate.inputmask("dd/mm/yyyy")
+    @ui.$paySaleAmount.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
   events:
     "click .expandImportAndCustomImport": ->
@@ -63,7 +68,20 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
         scope.createTransactionOfCustomImport(template)
 
 #----Create-Transaction-Of-Import-----------------------------------------------------------------------------------------
+    "keydown .new-transaction-import-field": (event, template) ->
+      if distributor = Session.get("distributorManagementCurrentDistributor") and event.which is 8
+        scope.checkAllowCreateTransactionOfImport(template, distributor)
 
+    "click .createTransactionOfCustomImport": (event, template) ->
+      if distributor = Session.get("distributorManagementCurrentDistributor")
+        if Session.get("allowCreateTransactionOfImport")
+          scope.createTransactionOfImport(template, distributor)
+
+    "keypress input.new-transaction-import-field": (event, template) ->
+      if distributor = Session.get("distributorManagementCurrentDistributor")
+        scope.checkAllowCreateTransactionOfImport(template, distributor)
+        if Session.get("allowCreateTransactionOfImport") and event.which is 13
+          scope.createTransactionOfImport(template, distributor)
 
 
 

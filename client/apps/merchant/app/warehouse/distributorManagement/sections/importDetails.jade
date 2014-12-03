@@ -3,20 +3,22 @@ template(name="distributorManagementImportDetails")
     td(colspan="5")
       | .
       .bill-header <b>{{momentCalendar version.createdAt}}</b>
-  each saleDetails
+  each importDetails
     tr.detail-row
       td.first-column {{productName}}
-      td {{formatNumber quality}}
+      td {{formatNumber importQuality}}
       td {{skulls}}
-      td.number {{formatNumber price}}
-      td.last-column.number {{formatNumber finalPrice}}
+      td.number {{formatNumber importPrice}}
+      td.last-column.number {{formatNumber totalPrice}}
   tr.detail-row.summary-row
     td.note {{description}}
-    td.number(colspan="3"): span.blured-color CÂN BẰNG NỢ: <b>{{formatNumber totalDebtBalance}}</b>
-    td.summary-total(align="right"): span.s5 <b>{{formatNumber finalPrice}}</b>
+    td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
+    td.summary-total(align="right"): span.s5 <b>{{formatNumber debtBalanceChange}}</b>
 
   each latestPaids
-    tr
-      td {{momentCalendar debtDate}} - {{description}}
-      td {{beforeDebtBalance}}
-      td {{latestDebtBalance}}
+    tr.paid-row.top(class="{{receivableClass}}")
+      td: span.note {{description}}, {{momentCalendar debtDate}}.
+      td.number(colspan="3")
+        span.icon-feather-1
+        span.s4(class="{{finalReceivableClass}}") <b>{{formatNumberAbs totalDebtBalance}}</b>
+      td.number: span(class="{{receivableClass}}") <b>{{formatNumberAbs debtBalanceChange}}</b>

@@ -60,35 +60,34 @@ Meteor.methods
   createNewReceiptCashOfSales: (customerId, debtCash, description, paidDate)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
-        sale = Schema.sales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
+        if sale = Schema.sales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
+          option =
+            parentMerchant: profile.parentMerchant
+            merchant      : profile.currentMerchant
+            warehouse     : profile.currentWarehouse
+            creator       : profile.user
+            owner         : customer._id
+            latestSale    : sale._id
+            group         : 'sales'
+            totalCash     : debtCash
+            debtDate      : if paidDate then paidDate else (new Date())
 
-        option =
-          parentMerchant: profile.parentMerchant
-          merchant      : profile.currentMerchant
-          warehouse     : profile.currentWarehouse
-          creator       : profile.user
-          owner         : customer._id
-          latestSale    : sale._id if sale
-          group         : 'sales'
-          debtDate      : paidDate if paidDate
-          totalCash     : debtCash
+          incCustomerOption = {saleDebt: -debtCash }
+          if debtCash > 0
+            option.description = if description?.length > 0 then description else 'Thu Tiền'
+            option.receivable  = true
+            incCustomerOption.salePaid = debtCash
+          else
+            option.description = if description?.length > 0 then description else 'Cho Mượn Tiền'
+            option.receivable  = false
+            incCustomerOption.saleTotalCash = -debtCash
 
-        incCustomerOption = {saleDebt: -debtCash }
-        if debtCash > 0
-          option.description = if description?.length > 0 then description else 'Thu Tiền'
-          option.receivable  = true
-          incCustomerOption.salePaid = debtCash
-        else
-          option.description = if description?.length > 0 then description else 'Cho Mượn Tiền'
-          option.receivable  = false
-          incCustomerOption.saleTotalCash = -debtCash
+          option.debtBalanceChange = debtCash
+          option.beforeDebtBalance = customer.saleDebt
+          option.latestDebtBalance = customer.saleDebt - debtCash
 
-        option.debtBalanceChange = debtCash
-        option.beforeDebtBalance = customer.saleDebt
-        option.latestDebtBalance = customer.saleDebt - debtCash
-
-        Schema.transactions.insert option
-        Schema.customers.update customer._id, $inc: incCustomerOption
+          Schema.transactions.insert option
+          Schema.customers.update customer._id, $inc: incCustomerOption
 
   createNewReceiptCashOfCustomSale: (customerId, debtCash, description, paidDate)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
@@ -117,7 +116,7 @@ Meteor.methods
             owner         : customer._id
             latestSale    : latestCustomSale._id
             group         : 'customSale'
-            debtDate      : paidDate if paidDate
+            debtDate      : paidDate
             totalCash     : debtCash
 
           incCustomerOption = {customSaleDebt: -debtCash }

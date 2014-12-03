@@ -5,13 +5,14 @@ Schema.add 'productDetails', "ProductDetail", class ProductDetail
       merchant         : imports.merchant
       warehouse        : imports.warehouse
       product          : importDetail.product
-      provider         : importDetail.provider if importDetail.provider
       importQuality    : importDetail.importQuality
       availableQuality : importDetail.importQuality
       inStockQuality   : importDetail.importQuality
       importPrice      : importDetail.importPrice
       checkingInventory: false
-    option.expire = importDetail.expire if importDetail.expire
+
+    option.provider = importDetail.provider if importDetail.provider
+    option.expire   = importDetail.expire if importDetail.expire
     option
 
 

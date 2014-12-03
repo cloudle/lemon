@@ -2,12 +2,13 @@ Meteor.methods
   createNewBranch: (name, address)->
     myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     if myProfile and name
-      merchantId = Schema.merchants.insert({
+      option =
         parent  : myProfile.parentMerchant
         creator : myProfile.user
         name    : name
-        address : address if address
-      })
+      option.address = address if address
+
+      merchantId = Schema.merchants.insert(option)
       Schema.warehouses.insert Warehouse.newDefault({merchantId: merchantId})
       Schema.metroSummaries.insert MetroSummary.newByMerchant(merchantId)
       MetroSummary.updateMetroSummaryBy(['branch'])

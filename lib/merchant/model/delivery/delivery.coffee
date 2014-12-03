@@ -10,8 +10,10 @@ Schema.add 'deliveries', "Delivery", class Delivery
       contactPhone    : order.contactPhone
       deliveryAddress : order.deliveryAddress
       comment         : order.comment
-      deliveryDate    : order.deliveryDate if order.deliveryDate
       status          : 0
+
+    option.deliveryDate = order.deliveryDate if order.deliveryDate
+
 
   @insertBySale: (order, sale)-> @schema.insert Delivery.newBySale(order, sale)
 

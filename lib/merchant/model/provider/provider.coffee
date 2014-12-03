@@ -24,8 +24,8 @@ Schema.add 'providers', "Provider", class Provider
         merchant         : userProfile.currentMerchant
         creator          : userProfile.user
         name             : name
-        phone            : phone if phone
-        location         : {address: [address]} if address
+      provider.phone    = phone if phone
+      provider.location = {address: [address]} if address
 
       findProvider =  Schema.providers.findOne({
         parentMerchant: provider.parentMerchant

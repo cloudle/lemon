@@ -114,6 +114,30 @@ createTransactionOfCustomImport = (profile, distributor, latestCustomImportId, d
 
   console.log Schema.transactions.insert option
 
+createTransactionOfImport = (profile, distributor, latestImportId, debtCash, paidDate, description)->
+  option =
+    parentMerchant    : profile.parentMerchant
+    merchant          : profile.currentMerchant
+    warehouse         : profile.currentWarehouse
+    creator           : profile.user
+    owner             : distributor._id
+    latestImport      : latestImportId
+    group             : 'import'
+    totalCash         : debtCash
+    debtDate          : paidDate
+    debtBalanceChange : debtCash
+    beforeDebtBalance : distributor.importDebt
+    latestDebtBalance : distributor.importDebt - debtCash
+
+  if debtCash > 0
+    option.description = if description?.length > 0 then description else 'Trả Tiền'
+    option.receivable  = false
+  else
+    option.description = if description?.length > 0 then description else 'Mượn Tiền'
+    option.receivable  = true
+
+  console.log Schema.transactions.insert option
+
 
 Meteor.methods
   createNewCustomImport: (customImport)->
@@ -215,3 +239,27 @@ Meteor.methods
               Schema.transactions.update latestTransaction._id, $set:{allowDelete: true}
             else
               Schema.customImports.update latestCustomImport._id, $set:{allowDelete: true}
+
+
+  createNewReceiptCashOfImport: (distributorId, debtCash, description, paidDate = new Date())->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
+      if distributor and paidDate < (new Date)
+        latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
+        if latestImport and paidDate >= latestImport.version.createdAt
+          if latestTransaction = Schema.transactions.findOne({
+            owner: distributor._id
+            latestImport: latestImport._id
+            parentMerchant: profile.parentMerchant
+          }, {sort: {debtDate: -1}}) then updateTransactionAllowDelete(latestTransaction._id)
+
+          createTransactionOfImport(profile, distributor, latestImport._id, debtCash, paidDate, description)
+          updateCustomImportDenyDelete(latestImport._id)
+
+          incCustomerOption = {importDebt: -debtCash}
+          if debtCash > 0
+            incCustomerOption.importPaid = debtCash
+          else
+            incCustomerOption.importLoan     = -debtCash
+            incCustomerOption.importTotalCash = -debtCash
+          Schema.distributors.update distributor._id, $inc: incCustomerOption

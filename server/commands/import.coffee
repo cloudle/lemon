@@ -13,6 +13,22 @@ navigateNewTab=(currentImportId, profile)->
     Schema.imports.findOne(importId)
 
 
+updateImportAndDistributor = (currentImport, distributor)->
+  distributorOption = {
+    importDebt     : currentImport.totalPrice
+    importTotalCash: currentImport.totalPrice
+  }
+  Schema.distributors.update distributor._id, $inc: distributorOption
+
+  importOption = {
+    beforeDebtBalance: distributor.importDebt
+    debtBalanceChange: currentImport.totalPrice
+    latestDebtBalance: distributor.importDebt + currentImport.totalPrice
+    finish           : true
+    submitted        : true
+  }
+  Schema.imports.update currentImport._id, $set: importOption
+
 Meteor.methods
   importEnabledEdit: (importId) ->
     currentImport = Schema.imports.findOne({_id: importId, finish: false, submitted: true})
@@ -68,10 +84,9 @@ Meteor.methods
             if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
 
         navigateNewTab(currentImport._id, profile)
-        Schema.imports.update currentImport._id, $set:{finish: true, submitted: true}
-
-        distributorOption = {totalSales: currentImport.totalPrice, totalDebit: currentImport.debit}
-        Schema.distributors.update currentImport.distributor, $inc: distributorOption
+        if distributor = Schema.distributors.findOne(currentImport.distributor)
+          updateImportAndDistributor(currentImport, distributor)
+          Meteor.call('createNewReceiptCashOfImport', distributor._id, currentImport.deposit, new Date())
 
         warehouseImport = Schema.imports.findOne(importId)
         transaction = Transaction.newByImport(warehouseImport)

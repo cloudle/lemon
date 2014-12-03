@@ -15,7 +15,7 @@ Schema.add 'transactionDetails', "TransactionDetail", class TransactionDetail
     myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     transaction  = Schema.transactions.findOne({_id: transactionId, merchant: myProfile.currentMerchant})
     if myProfile and transaction and depositCash > 0 and transaction.debitCash >= depositCash
-      option=
+      option =
         merchant    : transaction.merchant
         warehouse   : transaction.warehouse
         creator     : myProfile.user
@@ -23,7 +23,8 @@ Schema.add 'transactionDetails', "TransactionDetail", class TransactionDetail
         totalCash   : transaction.debitCash
         depositCash : depositCash
         debitCash   : transaction.debitCash - depositCash
-        paymentDate : paymentDate if paymentDate
+
+      option.paymentDate = paymentDate if paymentDate
       Schema.transactionDetails.insert option
       Schema.transactions.update transaction._id, $inc:{depositCash: depositCash, debitCash: -depositCash}
       return true
@@ -37,7 +38,8 @@ Schema.add 'transactionDetails', "TransactionDetail", class TransactionDetail
       totalCash   : transaction.debitCash
       depositCash : depositCash
       debitCash   : transaction.debitCash - depositCash
-      paymentDate : paymentDate if paymentDate
+
+    option.paymentDate = paymentDate if paymentDate
 
 
 

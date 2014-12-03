@@ -9,9 +9,9 @@ logics.warehouseManager.createWarehouse = (context) ->
     merchant          : Session.get('myProfile').currentMerchant
     creator           : Session.get('myProfile').user
     name              : name
-    location          : {address: [address] if address}
     isRoot            : false
     checkingInventory : false
+  option.location = {address: [address]} if address
 
   Schema.warehouses.insert option, (error, result)->
     if error then console.log error
