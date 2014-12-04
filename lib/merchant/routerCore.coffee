@@ -3,5 +3,5 @@ Apps.Merchant.RouterBase =
   loadingTemplate: 'silentLoadingLayout'
   fastRender: true
   onAfterAction: ->
-    Helpers.animateUsing("#container", "bounceInDown")
+    Helpers.animateUsing("#container", "fadeInDown")
     Apps.currentTour?.end()
