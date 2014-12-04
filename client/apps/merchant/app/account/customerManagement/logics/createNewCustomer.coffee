@@ -3,12 +3,9 @@ splitName = (fullText) ->
   if fullText.indexOf("(") > 0
     namePart    = fullText.substr(0, fullText.indexOf("(")).trim()
     descPart    = fullText.substr(fullText.indexOf("(")).replace("(", "").replace(")", "").trim()
+    return { name: namePart, description: descPart }
   else
-    namePart    = fullText
-    descPart    = ""
-
-  return { name: namePart, description: descPart }
-
+    return { name: fullText }
 
 #logics.customerManagement.createNewCustomer = (context) ->
 #  fullName = context.ui.$fullName.val()

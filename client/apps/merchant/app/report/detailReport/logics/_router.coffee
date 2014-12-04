@@ -8,6 +8,10 @@ lemon.addRoute
       Session.set "currentAppInfo",
         name: "báo cáo"
       @next()
-#  data: ->
+  data: ->
 #    Apps.setup(scope, Apps.Merchant.merchantReportReactive)
+    return {
+      branchList: Schema.merchants.find
+        $or: [{_id: Session.get('myProfile')?.parentMerchant}, {parent: Session.get('myProfile')?.parentMerchant}]
+    }
 , Apps.Merchant.RouterBase

@@ -1,5 +1,6 @@
 Apps.Merchant.merchantReportInit.push (scope) ->
-  Meteor.subscribe('merchantReportData')
+  Session.setDefault "merchantReportBranchSelection",
+    Schema.merchants.findOne Session.get("myProfile").parentMerchant
 
   scope.groupReportByDay = [
     _id: ''
