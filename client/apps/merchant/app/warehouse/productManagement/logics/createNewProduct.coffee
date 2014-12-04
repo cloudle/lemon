@@ -10,10 +10,10 @@
 #  return { name: namePart, description: descPart }
 #
 #
-#logics.stockManagement.createNewStock = (context) ->
+#logics.productManagement.createNewProduct = (context) ->
 #  fullName = context.ui.$fullName.val()
 #  pronoun = context.ui.$pronoun.val()
-#  description = context.ui.$stockDescription.val()
+#  description = context.ui.$productDescription.val()
 #
 #  option =
 #    currentMerchant : Session.get('myProfile').currentMerchant
@@ -22,29 +22,29 @@
 #    name            : fullName
 #    pronoun         : pronoun
 #    description     : description if description.length > 0
-#    gender          : Session.get('genderNewStock')
+#    gender          : Session.get('genderNewProduct')
 #    styles          : Helpers.RandomColor()
 #
-#  if Schema.stocks.findOne({
+#  if Schema.products.findOne({
 #    name: fullName
 #    description: description if description.length > 0
 #    currentMerchant: Session.get('myProfile').currentMerchant})
 #    context.ui.$fullName.notify("Trùng tên khách hàng", {position: "bottom"})
 #  else
-#    Schema.stocks.insert option, (error, result) ->
+#    Schema.products.insert option, (error, result) ->
 #      if error
 #        console.log error
 #      else
-#        MetroSummary.updateMetroSummaryBy(['stock'])
+#        MetroSummary.updateMetroSummaryBy(['product'])
 #    resetForm(context)
-#    Session.set('allowCreateNewStock', false)
+#    Session.set('allowCreateNewProduct', false)
 #
-#Apps.Merchant.stockManagementInit.push (scope) ->
-#  scope.createStock = (template) ->
-#    fullText    = Session.get("stockManagementSearchFilter")
+#Apps.Merchant.productManagementInit.push (scope) ->
+#  scope.createProduct = (template) ->
+#    fullText    = Session.get("productManagementSearchFilter")
 #    nameOptions = splitName(fullText)
 #
-#    stock =
+#    product =
 #      currentMerchant : Session.get('myProfile').currentMerchant
 #      parentMerchant  : Session.get('myProfile').parentMerchant
 #      creator         : Session.get('myProfile').user
@@ -55,25 +55,25 @@
 #
 #    existedQuery = {name: nameOptions.name, currentMerchant: Session.get('myProfile').currentMerchant}
 #    existedQuery.description = nameOptions.description if nameOptions.description.length > 0
-#    if Schema.stocks.findOne existedQuery
+#    if Schema.products.findOne existedQuery
 #      template.ui.$searchFilter.notify("Khách hàng đã tồn tại.", {position: "bottom"})
 #    else
-#      Schema.stocks.insert stock, (error, result) ->
+#      Schema.products.insert product, (error, result) ->
 #        console.log error if error
-#        MetroSummary.updateMetroSummaryBy(['stock'])
-#      template.ui.$searchFilter.val(''); Session.set("stockManagementSearchFilter", "")
+#        MetroSummary.updateMetroSummaryBy(['product'])
+#      template.ui.$searchFilter.val(''); Session.set("productManagementSearchFilter", "")
 #
-#  scope.editStock = (template) ->
-#    newName  = template.ui.$stockName.val()
-#    newPhone = template.ui.$stockPhone.val()
-#    newAddress = template.ui.$stockAddress.val()
+#  scope.editProduct = (template) ->
+#    newName  = template.ui.$productName.val()
+#    newPhone = template.ui.$productPhone.val()
+#    newAddress = template.ui.$productAddress.val()
 #    return if newName.replace("(", "").replace(")", "").trim().length < 2
 #    editOptions = splitName(newName)
 #    editOptions.phone = newPhone if newPhone.length > 0
 #    editOptions.address = newAddress if newAddress.length > 0
 #
-#    template.ui.$stockName.val editOptions.name
-#    Session.set "stockManagementShowEditCommand", false
+#    template.ui.$productName.val editOptions.name
+#    Session.set "productManagementShowEditCommand", false
 #
-#    Schema.stocks.update Session.get("stockManagementCurrentStock")._id, {$set: editOptions}, (error, result) ->
-#      if error then console.log error else template.ui.$stockName.val Session.get("stockManagementCurrentStock").name
+#    Schema.products.update Session.get("productManagementCurrentProduct")._id, {$set: editOptions}, (error, result) ->
+#      if error then console.log error else template.ui.$productName.val Session.get("productManagementCurrentProduct").name

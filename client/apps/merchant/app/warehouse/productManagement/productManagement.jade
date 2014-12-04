@@ -1,15 +1,15 @@
-template(name="stockManagement")
+template(name="productManagement")
   #header
     .caption-row
       .title DANH SÁCH SẢN PHẨM
           
-  #content.modern.stock-management
+  #content.modern.product-management
     .dual-content
       .dual-detail-wrapper
         .dual-detail
           .nano: .nano-content
-            +stockManagementOverviewSection currentProduct
-            +stockManagementSalesHistorySection currentProduct
+            +productManagementOverviewSection currentProduct
+            +productManagementSalesHistorySection currentProduct
       .dual-addon
         .search-filter.icon-search-8
           input(name='searchFilter' type="text")

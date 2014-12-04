@@ -1,29 +1,38 @@
-scope = logics.stockManagement
+scope = logics.productManagement
 
-lemon.defineHyper Template.stockManagementSalesHistorySection,
+lemon.defineHyper Template.productManagementSalesHistorySection,
   defaultImport: ->
-    if product = Session.get("stockManagementCurrentProduct")
+    if product = Session.get("productManagementCurrentProduct")
       allProductDetail = Schema.productDetails.find({product: product._id}).fetch()
-      Schema.imports.find {_id: {$in: _.union(_.pluck(allProductDetail, 'import'))}}
+      currentImport = Schema.imports.find {_id: {$in: _.union(_.pluck(allProductDetail, 'import'))}}
 
+      return {
+        detail: currentImport
+        importQuality: 0
+        inStockQuality: 0
+      }
+
+
+  totalImportQuality: ->
+  totalInStockQuality: ->
 
 #  events:
 #    "click .expandSaleAndCustomSale": ->
-#      if stock = Session.get("stockManagementCurrentProduct")
+#      if product = Session.get("productManagementCurrentProduct")
 #        limitExpand = Session.get("mySession").limitExpandSaleAndCustomSale ? 5
-#        if stock.customSaleModeEnabled
-#          currentRecords = Schema.customSales.find({buyer: stock._id}).count()
+#        if product.customSaleModeEnabled
+#          currentRecords = Schema.customSales.find({buyer: product._id}).count()
 #        else
-#          currentRecords = Schema.customSales.find({buyer: stock._id}).count() + Schema.sales.find({buyer: stock._id}).count()
-#        Meteor.subscribe('stockManagementData', stock._id, currentRecords, limitExpand)
-#        Session.set("stockManagementDataMaxCurrentRecords", currentRecords + limitExpand)
+#          currentRecords = Schema.customSales.find({buyer: product._id}).count() + Schema.sales.find({buyer: product._id}).count()
+#        Meteor.subscribe('productManagementData', product._id, currentRecords, limitExpand)
+#        Session.set("productManagementDataMaxCurrentRecords", currentRecords + limitExpand)
 #
 #    "click .customSaleModeDisable":  (event, template) ->
-#      scope.customSaleModeDisable(stock._id) if stock = Session.get("stockManagementCurrentProduct")
+#      scope.customSaleModeDisable(product._id) if product = Session.get("productManagementCurrentProduct")
 #
 ##----Create-Transaction-Of-CustomSale-----------------------------------------------------------------------
 #    "keydown input.new-bill-field.number": (event, template) ->
-#      scope.checkAllowCreateCustomSale(template, stock) if stock = Session.get("stockManagementCurrentProduct")
+#      scope.checkAllowCreateCustomSale(template, product) if product = Session.get("productManagementCurrentProduct")
 #
 #    "click .createCustomSale":  (event, template) ->
 #      scope.createCustomSale(template) if Session.get("allowCreateCustomSale")
@@ -33,7 +42,7 @@ lemon.defineHyper Template.stockManagementSalesHistorySection,
 #
 ##----Create-Transaction-Of-CustomSale-----------------------------------------------------------------------
 #    "keydown .new-transaction-custom-sale-field": (event, template) ->
-#      scope.checkAllowCreateTransactionOfCustomSale(template, stock) if stock = Session.get("stockManagementCurrentProduct")
+#      scope.checkAllowCreateTransactionOfCustomSale(template, product) if product = Session.get("productManagementCurrentProduct")
 #
 #    "click .createTransactionOfCustomSale": (event, template) ->
 #      scope.createTransactionOfCustomSale(template) if Session.get("allowCreateTransactionOfCustomSale")

@@ -1,4 +1,4 @@
-template(name="stockManagementSalesHistorySection")
+template(name="productManagementSalesHistorySection")
   .section.panel.panel-default
     .panel-heading
       table.lemon-grid: tr
@@ -11,17 +11,19 @@ template(name="stockManagementSalesHistorySection")
 
     .panel-body.debt-details
       table.lemon-grid.safe
-        +stockManagementImportHistoryHeader
-        each defaultImport
-          +stockManagementImportDetails this
+        +productManagementImportHistoryHeader
+        each defaultImport.detail
+          +productManagementImportDetails this
 
     .panel-footer
       .right-float
         span.s5 TỔNG NHẬP
-        span.s3 <b>{{formatNumber finalDebtBalance}}</b>
+        span.s3 <b>{{formatNumber totalImportQuality}}</b>
+        span.s5 TỔNG TỒN
+        span.s3 <b>{{formatNumber totalInStockQuality}}</b>
         //h3 Tổng tiền: {{formatNumber totalPurchases}} VNĐ
 
-template(name="stockManagementImportHistoryHeader")
+template(name="productManagementImportHistoryHeader")
   tr
     th(style="width:auto")
     th(style="width:100px")

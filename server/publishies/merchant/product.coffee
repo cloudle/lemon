@@ -25,7 +25,7 @@ Meteor.publish 'availableProducts', ->
   return [] if !profile
   Schema.products.find({merchant: profile.currentMerchant})
 
-Meteor.publishComposite 'stockManagementData', (productId, currentRecords = 0)->
+Meteor.publishComposite 'productManagementData', (productId, currentRecords = 0)->
   self = @
   return {
     find: ->

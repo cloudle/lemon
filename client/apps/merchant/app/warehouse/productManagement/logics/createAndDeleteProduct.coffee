@@ -1,4 +1,4 @@
-Apps.Merchant.stockManagementInit.push (scope) ->
+Apps.Merchant.productManagementInit.push (scope) ->
 #  scope.createCustomSale = (template) ->
 #    currentTime = new Date()
 #
@@ -6,18 +6,18 @@ Apps.Merchant.stockManagementInit.push (scope) ->
 #    $description = template.ui.$description
 #    tempDate = moment($debtDate.val(), 'DD/MM/YYYY')._d
 #    debtDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds())
-#    stock = Session.get("stockManagementCurrentStock")
+#    product = Session.get("productManagementCurrentProduct")
 #
-#    if debtDate < (new Date) and !isNaN(stock.customSaleDebt)
+#    if debtDate < (new Date) and !isNaN(product.customSaleDebt)
 #      option =
 #        parentMerchant   : Session.get('myProfile').currentMerchant
 #        creator          : Session.get('myProfile').user
-#        buyer            : stock._id
+#        buyer            : product._id
 #        debtDate         : debtDate
 #        description      : $description.val()
 #        debtBalanceChange: 0
-#        beforeDebtBalance: stock.customSaleDebt
-#        latestDebtBalance: stock.customSaleDebt
+#        beforeDebtBalance: product.customSaleDebt
+#        latestDebtBalance: product.customSaleDebt
 #
 #      Meteor.call('createCustomSale', option)
 #      $debtDate.val(''); $description.val('')
@@ -38,7 +38,7 @@ Apps.Merchant.stockManagementInit.push (scope) ->
 #      customSaleDetail =
 #        parentMerchant: Session.get('myProfile').parentMerchant
 #        creator       : Session.get('myProfile').user
-#        buyer         : Session.get("stockManagementCurrentStock")._id
+#        buyer         : Session.get("productManagementCurrentProduct")._id
 #        customSale    : customSale._id
 #        productName   : $productName.val()
 #        skulls        : $skulls.val()
@@ -58,10 +58,10 @@ Apps.Merchant.stockManagementInit.push (scope) ->
 #  scope.deleteTransactionCustomSale = (transactionCustomSaleDetailId) ->
 #    Meteor.call('deleteTransactionOfCustomSale', transactionCustomSaleDetailId)
 #
-#  scope.customSaleModeDisable = (stockId) ->
-#    stock = Schema.stocks.findOne({_id: stockId, parentMerchant:Session.get('myProfile').parentMerchant})
-#    if stock and stock.customSaleModeEnabled is true
-#      Schema.stocks.update stock._id, $set:{customSaleModeEnabled: false}
+#  scope.customSaleModeDisable = (productId) ->
+#    product = Schema.products.findOne({_id: productId, parentMerchant:Session.get('myProfile').parentMerchant})
+#    if product and product.customSaleModeEnabled is true
+#      Schema.products.update product._id, $set:{customSaleModeEnabled: false}
 #
 #  scope.createTransactionOfCustomSale = (template) ->
 #    currentTime     = new Date()
@@ -74,11 +74,11 @@ Apps.Merchant.stockManagementInit.push (scope) ->
 #    tempPaidDate    = moment($paidDate.val(), 'DD/MM/YYYY')._d
 #    paidDate        = new Date(tempPaidDate.getFullYear(), tempPaidDate.getMonth(), tempPaidDate.getDate(), currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds())
 #
-#    if stock = Session.get("stockManagementCurrentStock")
-#      latestCustomSale = Schema.customSales.findOne({buyer: stock._id}, {sort: {debtDate: -1}})
+#    if product = Session.get("productManagementCurrentProduct")
+#      latestCustomSale = Schema.customSales.findOne({buyer: product._id}, {sort: {debtDate: -1}})
 #
 #      if latestCustomSale is undefined || (paidDate >= latestCustomSale.debtDate and !isNaN(payAmount))
-#        Meteor.call('createNewReceiptCashOfCustomSale', stock._id, payAmount, $payDescription.val(), paidDate)
+#        Meteor.call('createNewReceiptCashOfCustomSale', product._id, payAmount, $payDescription.val(), paidDate)
 #        Session.set("allowCreateTransactionOfCustomSale", false)
 #        $payDescription.val(''); $payAmount.val('');# $paidDate.val('')
 #
@@ -93,10 +93,10 @@ Apps.Merchant.stockManagementInit.push (scope) ->
 #    tempPaidDate    = moment($paidDate.val(), 'DD/MM/YYYY')._d
 #    paidDate        = new Date(tempPaidDate.getFullYear(), tempPaidDate.getMonth(), tempPaidDate.getDate(), currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds())
 #
-#    if stock = Session.get("stockManagementCurrentStock")
-#      latestSale = Schema.sales.findOne({buyer: stock._id}, {sort: {'version.createdAt': -1}})
+#    if product = Session.get("productManagementCurrentProduct")
+#      latestSale = Schema.sales.findOne({buyer: product._id}, {sort: {'version.createdAt': -1}})
 #      console.log $payDescription.val() , (paidDate > latestSale.version.createdAt if latestSale) , payAmount != "" , !isNaN(payAmount)
 #
 #      if paidDate >= latestSale?.version.createdAt and payAmount != "" and !isNaN(payAmount)
-#        Meteor.call('createNewReceiptCashOfSales', stock._id, parseInt(payAmount), $payDescription.val(), paidDate)
+#        Meteor.call('createNewReceiptCashOfSales', product._id, parseInt(payAmount), $payDescription.val(), paidDate)
 #        $payDescription.val(''); $paidDate.val(''); $payAmount.val('')

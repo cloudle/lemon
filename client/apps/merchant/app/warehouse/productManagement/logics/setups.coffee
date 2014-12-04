@@ -1,6 +1,6 @@
-Apps.Merchant.customerManagementInit.push (scope) ->
-#  scope.checkAllowCreateTransactionOfCustomSale = (template, customer)->
-#    latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
+Apps.Merchant.productManagementInit.push (scope) ->
+#  scope.checkAllowCreateTransactionOfCustomSale = (template, product)->
+#    latestCustomSale = Schema.customSales.findOne({buyer: product._id}, {sort: {debtDate: -1}})
 #
 #    $paidDate = $(template.find("[name='paidDate']")).inputmask('unmaskedvalue')
 #    paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
@@ -14,8 +14,8 @@ Apps.Merchant.customerManagementInit.push (scope) ->
 #    else
 #      Session.set("allowCreateTransactionOfCustomSale", false)
 #
-#  scope.checkAllowCreateCustomSale = (template, customer)->
-#    latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
+#  scope.checkAllowCreateCustomSale = (template, product)->
+#    latestCustomSale = Schema.customSales.findOne({buyer: product._id}, {sort: {debtDate: -1}})
 #
 #    $debtDate = $(template.find("[name='debtDate']")).inputmask('unmaskedvalue')
 #    tempDate = moment($debtDate, 'DD/MM/YYYY')._d
