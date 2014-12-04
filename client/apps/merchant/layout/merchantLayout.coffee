@@ -33,10 +33,6 @@ lemon.defineWidget Template.merchantLayout,
       arrangeSideBar(@)
       $(".nano").nanoScroller()
 
-#    animation = if Router.current().url is '/merchant' then 'fadeInRight' else 'fadeInDown'
-#    console.log animation
-#    Helpers.animateUsing("#container", animation)
-
   destroyed: ->
     $(window).off("resize")
     destroyHomeTracker()

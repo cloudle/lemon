@@ -3,6 +3,5 @@ Apps.Merchant.RouterBase =
   loadingTemplate: 'silentLoadingLayout'
   fastRender: true
   onAfterAction: ->
-    animation = if Router.current().url is '/merchant' then 'fadeInLeft' else 'fadeInDown'
-    Helpers.animateUsing("#container", animation)
+    Helpers.animateUsing("#container", 'fadeInDown')
     Apps.currentTour?.end()

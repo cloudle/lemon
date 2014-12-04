@@ -13,5 +13,10 @@ lemon.addRoute
     return {
       branchList: Schema.merchants.find
         $or: [{_id: Session.get('myProfile')?.parentMerchant}, {parent: Session.get('myProfile')?.parentMerchant}]
+      dayRecords:
+        transactions: Schema.transactions.find().fetch()
+        sales: Schema.sales.find().fetch()
+        imports: Schema.imports.find().fetch()
+        returns: Schema.returns.find().fetch()
     }
 , Apps.Merchant.RouterBase

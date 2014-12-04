@@ -6,8 +6,8 @@ simpleSchema.Version = new SimpleSchema
         return new Date
       else if @isUpsert
         return { $setOnInsert: new Date }
-      else
-        @unset(); return
+
+      return
 
   updateAt:
     type: Date

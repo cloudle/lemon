@@ -1,0 +1,9 @@
+template(name="merchantReportDayTimeline")
+   .section.panel.top.panel-default
+      .panel-heading
+         span nhật ký ngày ?/?/2014
+      .panel-body
+         each timelineRecords
+            div {{version.createdAt}}, {{group}}, {{finalPrice}}, {{emailCreator}}
+      .panel-footer
+         span.icon-angle-right

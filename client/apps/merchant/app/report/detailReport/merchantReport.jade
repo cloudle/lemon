@@ -4,7 +4,8 @@ template(name="merchantReport")
          .dual-detail-wrapper
             .dual-detail
                .nano: .nano-content
-                  span details
+                  +merchantReportDayOverview
+                  +merchantReportDayTimeline dayRecords
          .dual-addon
             .search-filter.icon-search-8
                input(name='searchFilter' type="text")
