@@ -10,7 +10,6 @@ startHomeTracker = ->
     if Session.get("myProfile")
       purchase = Schema.merchantPurchases.findOne({merchant: Session.get("myProfile").currentMerchant})
       return if !purchase
-
       if !purchase.merchantRegistered
         if purchase.user is Meteor.userId()
           Router.go('/merchantWizard')

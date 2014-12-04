@@ -9,7 +9,7 @@ lemon.defineApp Template.customerManagement,
   firstName: -> Helpers.firstName(@name)
 #  rendered: -> $(".nano").nanoScroller()
   created: ->
-    Session.setDefault('allowCreateNewCustomer', false)
+#    Session.setDefault('allowCreateNewCustomer', false)
     Session.set("customerManagementSearchFilter", "")
     if Session.get("mySession")
       console.log Session.get("mySession")
@@ -26,13 +26,11 @@ lemon.defineApp Template.customerManagement,
         Session.set("customerManagementDataMaxCurrentRecords", limitExpand)
         Session.set("customerManagementCurrentCustomer", Schema.customers.findOne(currentCustomer))
 
-
   events:
     "input .search-filter": (event, template) ->
       Session.set("customerManagementSearchFilter", template.ui.$searchFilter.val())
     "keypress input[name='searchFilter']": (event, template)->
-      if event.which is 13 and Session.get("customerManagementSearchFilter")?.trim().length > 1
-        scope.createCustomer(template)
+      scope.createCustomer(template) if event.which is 13 and Session.get("customerManagementCreationMode")
     "click .createCustomerBtn": (event, template) -> scope.createCustomer(template)
 
     "click .inner.caption": (event, template) ->
@@ -52,17 +50,17 @@ lemon.defineApp Template.customerManagement,
         Session.set("allowCreateCustomSale", false)
         Session.set("allowCreateTransactionOfCustomSale", false)
 
-    "input input": (event, template) -> scope.checkAllowCreate(template)
-    "click #createCustomerAccount": (event, template) -> scope.createNewCustomer(template)
-
-    "click .excel-customer": (event, template) -> $(".excelFileSource").click()
-    "change .excelFileSource": (event, template) ->
-      if event.target.files.length > 0
-        console.log 'importing'
-        $excelSource = $(".excelFileSource")
-        $excelSource.parse
-          config:
-            complete: (results, file) ->
-              console.log file, results
-              Apps.Merchant.importFileCustomerCSV(results.data)
-        $excelSource.val("")
+#    "input input": (event, template) -> scope.checkAllowCreate(template)
+#    "click #createCustomerAccount": (event, template) -> scope.createNewCustomer(template)
+#
+#    "click .excel-customer": (event, template) -> $(".excelFileSource").click()
+#    "change .excelFileSource": (event, template) ->
+#      if event.target.files.length > 0
+#        console.log 'importing'
+#        $excelSource = $(".excelFileSource")
+#        $excelSource.parse
+#          config:
+#            complete: (results, file) ->
+#              console.log file, results
+#              Apps.Merchant.importFileCustomerCSV(results.data)
+#        $excelSource.val("")

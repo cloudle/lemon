@@ -3,7 +3,7 @@ Component.helpers = {}
 
 Component.helpers.arrangeAppLayout = ->
   $(".nano").nanoScroller()
-  newHeight = $(window).height() - $("#header").outerHeight() - $("#footer").outerHeight() - 6
+  newHeight = $(window).height() - $("#header").outerHeight() - $("#footer").outerHeight()
   $("#container").css('height', newHeight)
 
 Component.helpers.invokeIfNeccessary = (method, context) -> method.apply(context, arguments) if method

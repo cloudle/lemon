@@ -1,4 +1,5 @@
 Template.registerHelper 'systemVersion', -> Schema.systems.findOne()?.version ? '?'
+Template.registerHelper 'currentAppInfo', -> Session.get("currentAppInfo")
 Template.registerHelper 'appCollapseClass', -> if Session.get('collapse') then 'icon-angle-double-left' else 'icon-angle-double-right'
 
 Template.registerHelper 'sessionGet', (name) -> Session.get(name)

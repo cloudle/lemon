@@ -1,14 +1,14 @@
 Apps.Merchant.customerManagementInit.push (scope) ->
-  scope.checkAllowCreate = (context) ->
-    fullName = context.ui.$fullName.val()
-    description = context.ui.$description.val()
-    if fullName.length > 0
-      option =
-        name: fullName
-        description: description if description.length > 0
-      if _.findWhere(Session.get("availableCustomers"), option) then Session.set('allowCreateNewCustomer', false)
-      else Session.set('allowCreateNewCustomer', true)
-    else Session.set('allowCreateNewCustomer', false)
+#  scope.checkAllowCreate = (context) ->
+#    fullName = context.ui.$fullName.val()
+#    description = context.ui.$description.val()
+#    if fullName.length > 0
+#      option =
+#        name: fullName
+#        description: description if description.length > 0
+#      if _.findWhere(Session.get("availableCustomers"), option) then Session.set('allowCreateNewCustomer', false)
+#      else Session.set('allowCreateNewCustomer', true)
+#    else Session.set('allowCreateNewCustomer', false)
 
   scope.checkAllowCreateTransactionOfCustomSale = (template, customer)->
     latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
@@ -38,3 +38,9 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       Session.set("allowCreateCustomSale", true)
     else
       Session.set("allowCreateCustomSale", false)
+
+  scope.checkAllowUpdateOverview = (template) ->
+    Session.set "customerManagementShowEditCommand",
+      template.ui.$customerName.val() isnt Session.get("customerManagementCurrentCustomer").name or
+      template.ui.$customerPhone.val() isnt (Session.get("customerManagementCurrentCustomer").phone ? '') or
+      template.ui.$customerAddress.val() isnt (Session.get("customerManagementCurrentCustomer").address ? '')

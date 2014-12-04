@@ -1,5 +1,5 @@
 template(name="navigation")
-  nav(role="navigation").navbar.main.navbar-fixed-top
+  nav(role="navigation").navbar.main.navbar-fixed-top(class="{{appInfo.color}}")
     .wrapper
       a.branding
         span.logo EDS
@@ -7,26 +7,31 @@ template(name="navigation")
 
       ul.nav.navbar-nav.navbar-right.notifications
         if tourVisible
-          li.inav
-            span.tour-toggle: i.icon-light-up
-        li.inav
+          li.inav.icon-light-up.tour-toggle
+        li.inav.icon-chat-6
           +messageNotifications
           .notification-counts(class="{{activeClassByCount unreadMessageCount}}") {{unreadMessageCount}}
-          span.dropdown-toggle(data-toggle="dropdown"): i.icon-chat-6
-        li.inav
+          span.dropdown-toggle(data-toggle="dropdown")
+        li.inav.icon-globe-6
           +notificationDetails
           .notification-counts(class="{{activeClassByCount unreadNotifiesCount}}") {{unreadNotifiesCount}}
-          span.dropdown-toggle(data-toggle="dropdown"): i.icon-globe-6
-        li.inav
+          span.dropdown-toggle(data-toggle="dropdown")
+        li.inav.icon-share-3
           +requestDetails
           .notification-counts(class="{{activeClassByCount unreadRequestCount}}") {{unreadRequestCount}}
-          span.dropdown-toggle(data-toggle="dropdown"): i.icon-share-3
+          span.dropdown-toggle(data-toggle="dropdown")
 
       ul.nav.navbar-nav
-        li.inav: span#logoutButton: i.icon-off-1
-        li.home(class="{{isActiveRoute regex='merchantHome'}}"): a(href="{{pathFor 'merchantHome'}}"): i.icon-home-4
+        li.app-name
+          |{{currentAppInfo.name}}
+          span.icon-off-1#logoutButton
+        if isntMerchantHome
+          li.inav.home.icon-left-open-big.animated.fadeInRightBig trở về
+        //li.inav.icon-home-4(class="{{isActiveRoute regex='merchantHome'}}"): a(href="{{pathFor 'merchantHome'}}")
         //li.inav(class="{{isActiveRoute regex='taskManager'}}")
           a(href="{{pathFor 'taskManager'}}"): i.icon-clipboard-2
+        if navigationPartial
+          +UI.dynamic(template=navigationPartial.template data=navigationPartial.data)
         each subMenus
           li.inav(class="{{isActiveRoute regex=route}}")
             a(href="{{pathFor route}}"): i.fa(class="{{icon}}")

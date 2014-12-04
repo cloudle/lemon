@@ -1,18 +1,28 @@
 @import "../../../../styles/lib.import.styl"
 
+default-navigation-color = #ffffff
 nav.main
   background-color #fff
-  min-height 40px
+  height navigation-height
   border none
-  border-bottom solid nav-bottom-border-size navigation-alternative-color
+  border-bottom solid navigation-bottom-border-size #d7d7d7
   z-index 999
+
+  for $color in colors
+    &.{$color[0]}
+      background-color $color[1]
+      if lightness($color[1]) > 90
+        .inav, .inav:before, .app-name
+          color #888888
+      else
+        background linear-gradient(top, $color[1], darken($color[1], 3))
 
   .branding
     width sidebar-size
     background-color lighten(sidebar-background-color, 3)
     position relative
     float right
-    height 40px
+    height navigation-height
     text-align center
 
     if sidebar-border-size > 0
@@ -39,21 +49,68 @@ nav.main
         placeholder(#dedede)
         border-radius 0
 
-  .navbar-header
-    width sidebar-size
-
   .notifications
     margin-right 0
     > li
-      border-left solid 1px #F0F0F0
-      border-right none
       i { font-size: 15px; }
 
   li
-    border-right solid 1px #F0F0F0
+    /*border-right solid 1px #F0F0F0*/
+    &.inav
+      cursor pointer
+      position relative
+      height navigation-height
+      padding 0 12px
+      color default-navigation-color; font-weight lighter
+      &:before
+        margin-top 33px
+        color default-navigation-color
 
-    &.home a
-      font-size 20px; padding 10px 10px
+      .dropdown-toggle
+        absolute top 0 left 0
+        height navigation-height
+        width 43px
+      span
+        color default-navigation-color
+        line-height 39px
+        padding 12px 15px
+
+      .notification-counts
+        pointer-events none
+        absolute right 6px top 22px
+        font-size 11px
+        padding 0 3px
+        height 17px; line-height 15px
+        text-align center
+        border-radius 3px
+        background-color #F35112
+        border solid 1px #ECECEC
+        color #ffffff
+        z-index 10
+        visibility hidden
+        font-weight bold
+
+        &.active
+          visibility visible
+
+    &.home
+      font-size 20px
+      padding-left 0
+      color nephritis !important
+      &:before
+        margin-top 28px
+        color nephritis !important
+
+    &.app-name
+      position relative
+      width 245px
+      padding 24px 10px 7px 10px
+      font-size 20px; font-weight lighter; color default-navigation-color
+      border-right solid 1px #f0f0f0
+      text-align right
+      #logoutButton
+        absolute right 9px top 5px
+        font-size 12px
 
     a { color: #696969; padding: 10px 15px; }
     a:hover
@@ -70,37 +127,3 @@ nav.main
         background-color navigation-alternative-color
         &:hover
           background-color #f0f0f0 !important
-
-    &.inav
-      cursor pointer
-      span
-        color #888888
-        line-height 39px
-        padding 12px 15px
-
-      .notification-counts
-        pointer-events none
-        absolute right 10px top 2px
-        font-size 11px
-        padding 0 3px
-        height 17px; line-height 15px
-        text-align center
-        border-radius 3px
-        background-color #F35112
-        border solid 1px #ECECEC
-        color #ffffff
-        z-index 10
-        visibility hidden
-        font-weight bold
-
-        &.active
-          visibility visible
-
-ul.iconic
-  margin-left 6px
-
-nav.secondary
-  margin-left sidebar-size
-  margin-top 51px
-  background-color #149FBE
-  z-index 998

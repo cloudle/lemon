@@ -20,11 +20,7 @@ lemon.defineHyper Template.customerManagementOverviewSection,
         AvatarImages.insert files[0], (error, fileObj) ->
           Schema.customers.update(Session.get('customerManagementCurrentCustomer')._id, {$set: {avatar: fileObj._id}})
           AvatarImages.findOne(Session.get('customerManagementCurrentCustomer').avatar)?.remove()
-    "input .editable": (event, template) ->
-      Session.set "customerManagementShowEditCommand",
-        template.ui.$customerName.val() isnt Session.get("customerManagementCurrentCustomer").name or
-        template.ui.$customerPhone.val() isnt (Session.get("customerManagementCurrentCustomer").phone ? '') or
-        template.ui.$customerAddress.val() isnt (Session.get("customerManagementCurrentCustomer").address ? '')
+    "input .editable": (event, template) -> scope.checkAllowUpdateOverview(template)
     "keyup input.editable": (event, template) ->
       scope.editCustomer(template) if event.which is 13
 
@@ -36,5 +32,7 @@ lemon.defineHyper Template.customerManagementOverviewSection,
           $(event.currentTarget).val(Session.get("customerManagementCurrentCustomer").phone)
         else if $(event.currentTarget).attr('name') is 'customerAddress'
           $(event.currentTarget).val(Session.get("customerManagementCurrentCustomer").address)
+
+        scope.checkAllowUpdateOverview(template)
 
     "click .syncCustomerEdit": (event, template) -> scope.editCustomer(template)

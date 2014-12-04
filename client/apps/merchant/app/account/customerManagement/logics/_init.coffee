@@ -3,8 +3,8 @@ Apps.Merchant.customerManagementInit = []
 Apps.Merchant.customerManagementReactive = []
 
 Apps.Merchant.customerManagementReactive.push (scope) ->
-  allowCreate = if Session.get('allowCreateNewCustomer') then '' else 'disabled'
-  scope.allowCreate = allowCreate
+#  allowCreate = if Session.get('allowCreateNewCustomer') then '' else 'disabled'
+#  scope.allowCreate = allowCreate
 
   if customer = Session.get("customerManagementCurrentCustomer")
     maxRecords = Session.get("customerManagementDataMaxCurrentRecords")
