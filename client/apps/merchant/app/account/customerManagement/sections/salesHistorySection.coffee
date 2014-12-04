@@ -42,23 +42,29 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
 
 #----Create-Transaction-Of-CustomSale-----------------------------------------------------------------------
     "keydown input.new-bill-field.number": (event, template) ->
-      scope.checkAllowCreateCustomSale(template, customer) if customer = Session.get("customerManagementCurrentCustomer")
+      if customer = Session.get("customerManagementCurrentCustomer")
+        scope.checkAllowCreateCustomSale(template, customer) if event.which is 8
 
     "click .createCustomSale":  (event, template) ->
       scope.createCustomSale(template) if Session.get("allowCreateCustomSale")
 
     "keypress input.new-bill-field": (event, template) ->
-      scope.createCustomSale(template) if event.which is 13 and Session.get("allowCreateCustomSale")
+      if customer = Session.get("customerManagementCurrentCustomer")
+        scope.checkAllowCreateCustomSale(template, customer)
+        scope.createCustomSale(template) if event.which is 13 and Session.get("allowCreateCustomSale")
 
 #----Create-Transaction-Of-CustomSale-----------------------------------------------------------------------
     "keydown .new-transaction-custom-sale-field": (event, template) ->
-      scope.checkAllowCreateTransactionOfCustomSale(template, customer) if customer = Session.get("customerManagementCurrentCustomer")
+      if customer = Session.get("customerManagementCurrentCustomer")
+        scope.checkAllowCreateTransactionOfCustomSale(template, customer) if event.which is 8
 
     "click .createTransactionOfCustomSale": (event, template) ->
       scope.createTransactionOfCustomSale(template) if Session.get("allowCreateTransactionOfCustomSale")
 
     "keypress input.new-transaction-custom-sale-field": (event, template) ->
-      scope.createTransactionOfCustomSale(template) if event.which is 13 and Session.get("allowCreateTransactionOfCustomSale")
+      if customer = Session.get("customerManagementCurrentCustomer")
+        scope.checkAllowCreateTransactionOfCustomSale(template, customer)
+        scope.createTransactionOfCustomSale(template) if event.which is 13 and Session.get("allowCreateTransactionOfCustomSale")
 
 #----Create-Transaction-Of-Sale-----------------------------------------------------------------------
     "click .createTransactionOfSale": (event, template) ->

@@ -17,7 +17,7 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
     currentPaidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
     limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
-    isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and currentPaidDate > limitCurrentPaidDate
+    isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and currentPaidDate > limitCurrentPaidDate and currentPaidDate < new Date()
     payAmount = parseInt($(template.find("[name='payAmount']")).inputmask('unmaskedvalue'))
 
     if isValidDate and payAmount != 0 and (latestCustomSale is undefined  || currentPaidDate >= latestCustomSale?.debtDate and !isNaN(payAmount))
@@ -32,7 +32,7 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     tempDate = moment($debtDate, 'DD/MM/YYYY')._d
     debtDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
     limitDebtDate = new Date(tempDate.getFullYear() - 20, tempDate.getMonth(), tempDate.getDate())
-    isValidDate = $debtDate.length is 8 and moment($debtDate, 'DD/MM/YYYY').isValid() and debtDate > limitDebtDate
+    isValidDate = $debtDate.length is 8 and moment($debtDate, 'DD/MM/YYYY').isValid() and debtDate > limitDebtDate and debtDate < new Date()
 
     if isValidDate and (latestCustomSale is undefined || debtDate >= latestCustomSale.debtDate)
       Session.set("allowCreateCustomSale", true)

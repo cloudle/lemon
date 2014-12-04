@@ -34,7 +34,7 @@ calculateCustomSale = (customSaleId, customSaleDetailFinalPrice)->
   Schema.customSales.update customSaleId, $set: setOption, $inc: incCustomSaleOption
 
 calculateCustomer = (customerId, customSaleDetailFinalPrice)->
-  customer = Schema.customers.findOne(customSale.buyer)
+  customer = Schema.customers.findOne(customerId)
   incCustomerOption = {
     customSaleDebt     : customSaleDetailFinalPrice
     customSaleTotalCash: customSaleDetailFinalPrice
@@ -94,6 +94,9 @@ Meteor.methods
           if latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
             updateCustomSaleDetailAllowDeleteBy(latestCustomSale._id)
             updateTransactionOrCustomSalesAllowDeleteBy(latestCustomSale._id)
+          else
+            Schema.customers.update customer._id, $set: {customSaleDebt: 0, customSalePaid: 0, customSaleTotalCash: 0}
+
 
   updateCustomSaleByCreateCustomSaleDetail: (customSaleDetail)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
@@ -103,6 +106,7 @@ Meteor.methods
       if customSale._id is latestCustomSale._id
         customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
         if customer.customSaleModeEnabled is true and Schema.customSaleDetails.insert customSaleDetail
+          console.log customSale
           calculateCustomSale(customSale._id, customSaleDetail.finalPrice)
           calculateCustomer(customSale.buyer, customSaleDetail.finalPrice)
           calculateDebtBalanceTransactionOf(customSale._id)
