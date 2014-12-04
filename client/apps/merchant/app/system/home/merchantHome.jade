@@ -1,5 +1,7 @@
 template(name="merchantHome")
   .metro: .metro-wrapper
+    +metroDecoratorTiles
+
     .tile-group-1
       .tile.wisteria(class="{{metroUnLocker Summary.data.staffCount}}"
       data-app='roleManager')
@@ -105,3 +107,5 @@ template(name="merchantHome")
       .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}")
         span.center.middle.caption: span.table: i.ico.icon-book
         span.bottom.middle.caption NHẬT KÝ
+
+    +metroDecoratorTiles

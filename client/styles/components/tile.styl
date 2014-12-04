@@ -8,18 +8,26 @@ tile-radius-phone = 1px
 tile-caption-padding = 5px
 tile-double-size = tile-size * 2 + tile-space
 
+//3D!
+/*tile-background(color)*/
+  /*background-color color*/
+  /*box-shadow inset 0px 1px 0px lighten(color, 5), 0px 3px 0px 0px darken(color, 10), 0px 5px 2px #999*/
+  /*&:hover*/
+    /*background-color darken(color, 5)*/
+    /*box-shadow inset 0px 1px 0px color, 0px 3px 0px 0px darken(color, 15), 0px 5px 2px #999*/
+
+//Flat!
 tile-background(color)
   background-color color
-  box-shadow inset 0px 1px 0px lighten(color, 5), 0px 3px 0px 0px darken(color, 10), 0px 5px 2px #999
+  border solid 1px darken(color, 5)
   &:hover
     background-color darken(color, 5)
-    box-shadow inset 0px 1px 0px color, 0px 3px 0px 0px darken(color, 15), 0px 5px 2px #999
 
 .tile
   cursor pointer
   position relative; float left
   height tile-size; width tile-size
-  margin 0 tile-space (tile-space + 3) 0
+  margin 0 tile-space (tile-space) 0
   background-color #eeeeee
   color #ffffff
   border-radius 2px
@@ -36,7 +44,7 @@ tile-background(color)
     width tile-double-size
   &.quatro
     width tile-double-size
-    height (tile-double-size + 3)
+    height tile-double-size
   &.menu
     margin 0 !important
     box-shadow none
@@ -87,10 +95,8 @@ tile-background(color)
 
 .tile.locked, .tile:not([data-app])
   background-color #808080 !important
-  box-shadow inset 0px 1px 0px lighten(#808080, 5), 0px 3px 0px 0px darken(#808080, 10), 0px 5px 2px #999
   &:hover
     background-color darken(#808080, 15) !important
-    box-shadow inset 0px 1px 0px #808080, 0px 3px 0px 0px darken(#808080, 35), 0px 5px 2px #999
     * { opacity: 0.2; }
     &:before
       font-family 'lemon'
@@ -99,6 +105,10 @@ tile-background(color)
       absolute left 50% top 50%
       margin-left -10px; margin-top -20px
     * { color: #B4B4B4; }
+
+.tile.decoration
+  pointer-events none
+  background-color #DBDBDB !important
 
 for size in (1..6)
   .tile-group-{size}
