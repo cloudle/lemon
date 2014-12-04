@@ -1,27 +1,27 @@
 template(name="distributorManagement")
-  #header
-    .caption-row
-      .title DANH SÁCH NHÀ PHÂN PHỐI
-
-    .editor-row
-      .editor-wrapper(style="width: 150px")
-        span.ilabel tên nhà phân phối
-        input.add-distributor(name="distributorName" maxlength="40")
-      .editor-wrapper(style="width:200px")
-        span.ilabel.optional địa chỉ
-        input.add-distributor(name="distributorAddress")
-      .editor-wrapper(style="width:100px")
-        span.ilabel.optional số điện thoại
-        input.add-distributor(name="distributorPhone" maxlength="13")
-      .editor-wrapper
-        button.lemon.btn.lime.icon-user-add-1.create-distributor(class="{{allowCreateDistributor}}") TẠO MỚI
-      .editor-wrapper.right
-        input.hidden.excelFileSource(type="file")
-        button.lemon.btn.blue.right.excel-distributor(type='submit' data-toggle="tooltip" data-container="body" data-placement="top" title="Tự động nhập")
-          span.icon-user-add-1
-      .editor-wrapper.right
-        a.lemon.btn.blue(href="/template/nha_phan_phoi.csv" target="_blank" data-toggle="tooltip" data-container="body" data-palace-holder="top" title="Tải về file Mẫu")
-          span.icon-doc-text-inv-1
+  //#header
+  //  .caption-row
+  //    .title DANH SÁCH NHÀ PHÂN PHỐI
+  //
+  //  .editor-row
+  //    .editor-wrapper(style="width: 150px")
+  //      span.ilabel tên nhà phân phối
+  //      input.add-distributor(name="distributorName" maxlength="40")
+  //    .editor-wrapper(style="width:200px")
+  //      span.ilabel.optional địa chỉ
+  //      input.add-distributor(name="distributorAddress")
+  //    .editor-wrapper(style="width:100px")
+  //      span.ilabel.optional số điện thoại
+  //      input.add-distributor(name="distributorPhone" maxlength="13")
+  //    .editor-wrapper
+  //      button.lemon.btn.lime.icon-user-add-1.create-distributor(class="{{allowCreateDistributor}}") TẠO MỚI
+  //    .editor-wrapper.right
+  //      input.hidden.excelFileSource(type="file")
+  //      button.lemon.btn.blue.right.excel-distributor(type='submit' data-toggle="tooltip" data-container="body" data-placement="top" title="Tự động nhập")
+  //        span.icon-user-add-1
+  //    .editor-wrapper.right
+  //      a.lemon.btn.blue(href="/template/nha_phan_phoi.csv" target="_blank" data-toggle="tooltip" data-container="body" data-palace-holder="top" title="Tải về file Mẫu")
+  //        span.icon-doc-text-inv-1
 
   #content.modern
     .dual-content
@@ -30,12 +30,11 @@ template(name="distributorManagement")
           .nano: .nano-content
             +distributorManagementOverviewSection currentDistributor
             +distributorManagementImportsHistorySection currentDistributor
-            .section Auto debt section
       .dual-addon
         .search-filter.icon-search-8
           input(name='searchFilter' type="text")
           if creationMode
-            .lemon.btn.rounded.tiny.lime.icon-plus-6.createDistributorBtn
+            .lemon.btn.rounded.tiny.lime.icon-plus-6.create-command.createDistributorBtn
         .nano: .nano-content
           if showFilterSearch
             .group-wrapper

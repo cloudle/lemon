@@ -49,23 +49,23 @@ calculateDebtBalanceTransactionOf = (customSaleId)->
     beforeDebtBalance = latestDebtBalance
 
 checkAndRemoveCustomSales = (customSaleId, latestCustomSaleId, customerId, debtBalanceChange)->
+  customSaleDetails = Schema.customSaleDetails.find({customSale: customSaleId})
   if customSaleId is latestCustomSaleId
-    customSaleDetails = Schema.customSaleDetails.find({customSale: customSale._id}).fetch()
-    if customSaleDetails.length > 0
+    if customSaleDetails.count() > 0
       Schema.customers.update customerId, $inc:{customSaleDebt: -debtBalanceChange, customSaleTotalCash: -debtBalanceChange}
-      Schema.customSaleDetails.remove customSaleDetail._id for customSaleDetail in customSaleDetails
+      Schema.customSaleDetails.remove customSaleDetail._id for customSaleDetail in customSaleDetails.fetch()
     Schema.customSales.remove customSaleId
 
-    transactions = Schema.transactions.find({latestSale: customSaleId}).fetch()
-    if transactions.length > 0
+    transactions = Schema.transactions.find({latestSale: customSaleId})
+    if transactions.count() > 0
       incCustomerOption = {customSaleDebt: 0, customSalePaid: 0}
-      for transaction in transactions
+      for transaction in transactions.fetch()
         incCustomerOption.customSaleDebt += transaction.debtBalanceChange
         incCustomerOption.customSalePaid -= transaction.debtBalanceChange
         Schema.transactions.remove transaction._id
       Schema.customers.update customerId, $inc: incCustomerOption
   else
-    Schema.customSales.remove customSaleId if customSaleDetails.length is 0
+    Schema.customSales.remove customSaleId if customSaleDetails.count() is 0
 
 
 Meteor.methods
@@ -88,8 +88,8 @@ Meteor.methods
       if customSale = Schema.customSales.findOne({_id: customSaleId, parentMerchant: profile.parentMerchant})
         customer = Schema.customers.findOne({_id: customSale.buyer, parentMerchant: profile.parentMerchant})
         if customer.customSaleModeEnabled is true
-          if latestCustomSale  = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
-            checkAndRemoveCustomSales(customSale._id, latestCustomSale._id, customer._id, customSale.debtBalanceChange)
+          latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
+          checkAndRemoveCustomSales(customSale._id, latestCustomSale._id, customer._id, customSale.debtBalanceChange)
 
           if latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
             updateCustomSaleDetailAllowDeleteBy(latestCustomSale._id)

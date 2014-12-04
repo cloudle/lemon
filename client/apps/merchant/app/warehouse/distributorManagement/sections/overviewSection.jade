@@ -4,10 +4,13 @@ template(name="distributorManagementOverviewSection")
     .panel-heading
       +avatarImageComponent(avatar=avatarUrl alias=name)
       .caption
-        |{{name}}
+        input.editable(name="distributorName" value="{{name}}" maxlength="50")
         if description
-            |({{description}})
-      .sub1 {{phone}}
-      .sub2 {{address}}
+          span.blured-color ({{description}})
+      .sub1: input.editable(name="distributorPhone" value="{{phone}}" maxlength="20" size="15" placeholder="điện thoại")
+      .sub2: input.editable(name="distributorAddress" value="{{address}}" maxlength="100" size="50" placeholder="địa chỉ")
+      .commands
+        if showEditCommand
+          .lemon.btn.rounded.lime.icon-ok-6.syncCustomerEdit
     .panel-footer
-      span footer
+      span.icon-angle-right

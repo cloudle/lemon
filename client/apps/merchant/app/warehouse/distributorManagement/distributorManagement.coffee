@@ -8,7 +8,17 @@ lemon.defineApp Template.distributorManagement,
   creationMode: -> Session.get("distributorManagementCreationMode")
 #  rendered: -> $(".nano").nanoScroller()
   created: ->
-    Session.setDefault('allowCreateDistributor', false)
+#    Session.setDefault('allowCreateDistributor', false)
+    if Session.get("mySession")
+      currentDistributor = Session.get("mySession").currentDistributorManagementSelection
+      if !currentDistributor
+        if distributor = Schema.distributors.findOne()
+          UserSession.set("currentCustomerManagementSelection", distributor._id)
+          Meteor.subscribe('distributorManagementData', distributor._id)
+          Session.set("distributorManagementCurrentCustomer", distributor)
+      else
+        Meteor.subscribe('distributorManagementData', currentDistributor)
+        Session.set("distributorManagementCurrentCustomer", Schema.distributors.findOne(currentDistributor))
 
   events:
     "input .search-filter": (event, template) ->
@@ -20,20 +30,22 @@ lemon.defineApp Template.distributorManagement,
 
 
     "click .inner.caption": (event, template) ->
-      Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentDistributorManagementSelection: @_id}})
+      if Session.get("mySession")
+        UserSession.set("currentDistributorManagementSelection", @_id)
+        Meteor.subscribe('distributorManagementData', @_id)
 
 
-    "input .add-distributor": (event, template) -> scope.checkAllowCreateDistributor(template)
-    'click .create-distributor': (event, template)-> scope.createDistributor(template)
-
-    "click .excel-distributor": (event, template) -> $(".excelFileSource").click()
-    "change .excelFileSource": (event, template) ->
-      if event.target.files.length > 0
-        console.log 'importing'
-        $excelSource = $(".excelFileSource")
-        $excelSource.parse
-          config:
-            complete: (results, file) ->
-              console.log file, results
-              Apps.Merchant.importFileDistributorCSV(results.data)
-        $excelSource.val("")
+#    "input .add-distributor": (event, template) -> scope.checkAllowCreateDistributor(template)
+#    'click .create-distributor': (event, template)-> scope.createDistributor(template)
+#
+#    "click .excel-distributor": (event, template) -> $(".excelFileSource").click()
+#    "change .excelFileSource": (event, template) ->
+#      if event.target.files.length > 0
+#        console.log 'importing'
+#        $excelSource = $(".excelFileSource")
+#        $excelSource.parse
+#          config:
+#            complete: (results, file) ->
+#              console.log file, results
+#              Apps.Merchant.importFileDistributorCSV(results.data)
+#        $excelSource.val("")
