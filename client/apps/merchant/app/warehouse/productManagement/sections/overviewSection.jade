@@ -7,8 +7,11 @@ template(name="productManagementOverviewSection")
         input.editable(name="productName" value="{{name}}" maxlength="50")
         if skulls
           span.blured-color ({{skulls}})
-      .sub1: input.editable(name="productPrice" value="{{price}}" maxlength="20" size="15" placeholder="giá bán")
-      .sub2: input.editable(name="productAddress" value="{{address}}" maxlength="100" size="50" placeholder="địa chỉ")
+      .sub1
+        span.blured-color Tồn kho: {{formatNumber inStockQuality}}
+        input.editable(name="productPrice" value="{{price}}" maxlength="20" style="width: 85px; text-align: right;")
+        span.blured-color vnđ
+      .sub2: span.blured-color Giá nhập: {{formatNumber importPrice}} vnđ - Giá trung bình: {{formatNumber averagePrice}} vnđ
       .commands
         if showEditCommand
           .lemon.btn.rounded.lime.icon-ok-6.syncProductEdit

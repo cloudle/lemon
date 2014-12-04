@@ -59,6 +59,10 @@ simpleSchema.sales = new SimpleSchema
   deposit:
     type: Number
 
+  soldAt:
+    type: Date
+    optional: true
+
   latestDebtBalance:
     type: Number
     defaultValue: 0

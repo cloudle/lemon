@@ -21,11 +21,12 @@ updateImportAndDistributor = (currentImport, distributor)->
   Schema.distributors.update distributor._id, $inc: distributorOption
 
   importOption = {
-    beforeDebtBalance: distributor.importDebt
-    debtBalanceChange: currentImport.totalPrice
-    latestDebtBalance: distributor.importDebt + currentImport.totalPrice
-    finish           : true
-    submitted        : true
+    beforeDebtBalance   : distributor.importDebt
+    debtBalanceChange   : currentImport.totalPrice
+    latestDebtBalance   : distributor.importDebt + currentImport.totalPrice
+    finish              : true
+    submitted           : true
+    'version.createdAt' : new Date()
   }
   Schema.imports.update currentImport._id, $set: importOption
 

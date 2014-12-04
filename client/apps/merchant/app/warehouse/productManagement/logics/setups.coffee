@@ -1,4 +1,26 @@
+splitName = (fullText) ->
+  if fullText.indexOf("(") > 0
+    namePart    = fullText.substr(0, fullText.indexOf("(")).trim()
+    descPart    = fullText.substr(fullText.indexOf("(")).replace("(", "").replace(")", "").trim()
+    return { name: namePart, description: descPart }
+  else
+    return { name: fullText }
+
 Apps.Merchant.productManagementInit.push (scope) ->
+  scope.editProduct = (template) ->
+    newName  = template.ui.$productName.val()
+    newPrice = template.ui.$productPrice.val()
+    console.log newPrice
+    return if newName.replace("(", "").replace(")", "").trim().length < 2
+    editOptions = splitName(newName)
+    editOptions.price = newPrice if newPrice.length > 0
+
+    template.ui.$productName.val editOptions.name
+    Session.set "productManagementShowEditCommand", false
+
+    Schema.products.update Session.get("productManagementCurrentProduct")._id, {$set: editOptions}, (error, result) ->
+      if error then console.log error else template.ui.$productName.val Session.get("productManagementCurrentProduct").name
+
 #  scope.checkAllowCreateTransactionOfCustomSale = (template, product)->
 #    latestCustomSale = Schema.customSales.findOne({buyer: product._id}, {sort: {debtDate: -1}})
 #
