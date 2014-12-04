@@ -51,7 +51,7 @@ template(name="customerManagementSalesHistorySection")
         each defaultSaleToday
           +customerManagementSaleDetails this
 
-        tr.editors
+        tr.editors(style="{{showIsFoundSale}}")
           td
             input.new-transaction-sale-field(name='paySaleDescription' type="text" size="10" placeholder="ghi chú thu chi")
           td(colspan="2")
@@ -59,7 +59,7 @@ template(name="customerManagementSalesHistorySection")
           td
             input.new-transaction-sale-field.number(name='paidSaleDate' type="text" size="10" placeholder="ngày giao dịch")
           td
-            .lemon.rounded.btn.lime.icon-money.pull-right.createTransactionOfSale
+            .lemon.rounded.btn.lime.icon-money.pull-right.createTransactionOfSale(class="{{allowCreateTransactionOfSale}}")
 
     .panel-footer
       .right-float

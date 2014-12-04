@@ -126,3 +126,81 @@ Meteor.methods
             calculateCustomSale(customSale._id, -customSaleDetail.finalPrice)
             calculateCustomer(customSale.buyer, -customSaleDetail.finalPrice)
             calculateDebtBalanceTransactionOf(customSale._id)
+
+
+  calculateCustomSaleByCustomer: (customerId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
+        customerOption = {
+          customSaleDebt     : 0
+          customSalePaid     : 0
+          customSaleTotalCash: 0
+        }
+        allCustomSale = Schema.customSales.find({buyer: customer._id}, {sort: {'version.createdAt': 1}})
+        allCustomSale.forEach(
+          (customSale)->
+            customSaleOption = {
+              beforeDebtBalance: customerOption.customSaleDebt
+              latestDebtBalance: customerOption.customSaleDebt + customSale.debtBalanceChange
+            }
+            Schema.customSales.update customSale._id, $set: customSaleOption
+
+            customerOption.customSaleDebt      += customSale.debtBalanceChange
+            customerOption.customSaleTotalCash += customSale.debtBalanceChange
+
+            Schema.transactions.find({owner: customer._id, latestSale: customSale._id, group: "customSale"}, {sort: {debtDate: 1}}).forEach(
+              (transaction)->
+                transactionOption = {
+                  beforeDebtBalance: customerOption.customSaleDebt
+                  latestDebtBalance: customerOption.customSaleDebt - transaction.debtBalanceChange
+                }
+                Schema.transactions.update transaction._id, $set: transactionOption
+
+                customerOption.customSaleDebt = transactionOption.latestDebtBalance
+                if transaction.debtBalanceChange > 0
+                  customerOption.customSalePaid += transaction.debtBalanceChange
+                else
+                  customerOption.customSaleTotalCash += -transaction.debtBalanceChange
+            )
+        )
+        Schema.customers.update customer._id, $set: customerOption
+
+  calculateSaleByCustomer: (customerId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
+        customerOption = {
+          saleDebt: 0
+          salePaid: 0
+          saleTotalCash: 0
+        }
+
+        allSale = Schema.sales.find({buyer: customer._id}, {sort: {'version.createdAt': 1}})
+        allSale.forEach(
+          (sale)->
+            saleOption = {
+              beforeDebtBalance: customerOption.saleDebt
+              debtBalanceChange: sale.finalPrice
+              latestDebtBalance: customerOption.saleDebt + sale.finalPrice
+            }
+            Schema.sales.update sale._id, $set: saleOption
+
+            customerOption.saleDebt      += sale.finalPrice
+            customerOption.saleTotalCash += sale.finalPrice
+
+            Schema.transactions.find({owner: customer._id, latestSale: sale._id, group: "sales"}, {sort: {debtDate: 1}}).forEach(
+              (transaction)->
+                transactionOption = {
+                  beforeDebtBalance: customerOption.saleDebt
+                  latestDebtBalance: customerOption.saleDebt - transaction.debtBalanceChange
+                }
+                Schema.transactions.update transaction._id, $set: transactionOption
+
+                customerOption.saleDebt = transactionOption.latestDebtBalance
+                if transaction.debtBalanceChange > 0
+                  customerOption.salePaid += transaction.debtBalanceChange
+                else
+                  customerOption.saleTotalCash += -transaction.debtBalanceChange
+            )
+        )
+        Schema.customers.update customer._id, $set: customerOption
+

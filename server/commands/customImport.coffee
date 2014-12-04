@@ -240,7 +240,6 @@ Meteor.methods
             else
               Schema.customImports.update latestCustomImport._id, $set:{allowDelete: true}
 
-
   createNewReceiptCashOfImport: (distributorId, debtCash, description, paidDate = new Date())->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
@@ -263,3 +262,81 @@ Meteor.methods
             incCustomerOption.importLoan     = -debtCash
             incCustomerOption.importTotalCash = -debtCash
           Schema.distributors.update distributor._id, $inc: incCustomerOption
+
+
+  calculateCustomImportByDistributor: (distributorId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
+        distributorOption = {
+          customImportDebt     : 0
+          customImportPaid     : 0
+          customImportTotalCash: 0
+        }
+        allCustomImport = Schema.customImports.find({seller: distributor._id}, {sort: {'version.createdAt': 1}})
+        allCustomImport.forEach(
+          (customImport)->
+            customImportOption = {
+              beforeDebtBalance: distributorOption.customImportDebt
+              latestDebtBalance: distributorOption.customImportDebt + customImport.debtBalanceChange
+            }
+            Schema.customImports.update customImport._id, $set: customImportOption
+
+            distributorOption.customImportDebt      += customImport.debtBalanceChange
+            distributorOption.customImportTotalCash += customImport.debtBalanceChange
+
+            Schema.transactions.find({owner: distributor._id, latestImport: customImport._id, group: "customImport"}, {sort: {debtDate: 1}}).forEach(
+              (transaction)->
+                transactionOption = {
+                  beforeDebtBalance: distributorOption.customImportDebt
+                  latestDebtBalance: distributorOption.customImportDebt - transaction.debtBalanceChange
+                }
+                Schema.transactions.update transaction._id, $set: transactionOption
+
+                distributorOption.customImportDebt = transactionOption.latestDebtBalance
+                if transaction.debtBalanceChange > 0
+                  distributorOption.customImportPaid += transaction.debtBalanceChange
+                else
+                  distributorOption.customImportLoan      += -transaction.debtBalanceChange
+                  distributorOption.customImportTotalCash += -transaction.debtBalanceChange
+            )
+        )
+        Schema.distributors.update distributor._id, $set: distributorOption
+
+  calculateImportByDistributor: (distributorId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
+        distributorOption = {
+          importDebt: 0
+          importPaid: 0
+          importTotalCash: 0
+        }
+
+        allImport = Schema.imports.find({distributor: distributor._id}, {sort: {'version.createdAt': 1}})
+        allImport.forEach(
+          (currentImport)->
+            importOption = {
+              beforeDebtBalance: distributorOption.importDebt
+              debtBalanceChange: currentImport.debtBalanceChange
+              latestDebtBalance: distributorOption.importDebt + currentImport.debtBalanceChange
+            }
+            Schema.imports.update currentImport._id, $set: importOption
+
+            distributorOption.importDebt      += currentImport.debtBalanceChange
+            distributorOption.importTotalCash += currentImport.debtBalanceChange
+
+            Schema.transactions.find({owner: distributor._id, latestImport: currentImport._id, group: "import"}, {sort: {debtDate: 1}}).forEach(
+              (transaction)->
+                transactionOption = {
+                  beforeDebtBalance: distributorOption.importDebt
+                  latestDebtBalance: distributorOption.importDebt - transaction.debtBalanceChange
+                }
+                Schema.transactions.update transaction._id, $set: transactionOption
+
+                distributorOption.importDebt = transactionOption.latestDebtBalance
+                if transaction.debtBalanceChange > 0
+                  distributorOption.importPaid += transaction.debtBalanceChange
+                else
+                  distributorOption.importTotalCash += -transaction.debtBalanceChange
+            )
+        )
+        Schema.distributors.update distributor._id, $set: distributorOption
