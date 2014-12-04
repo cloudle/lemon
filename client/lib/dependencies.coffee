@@ -1,5 +1,5 @@
 lemon.dependencies.add 'userInfo', ['myOption', 'myProfile', 'mySession']
-lemon.dependencies.add 'essentials', ['userInfo', 'myPurchase']
+lemon.dependencies.add 'essentials', ['userInfo', 'myPurchase']#, 'fake']
 
 lemon.dependencies.add 'home', ['essentials']
 lemon.dependencies.add 'merchantPurchase', ['essentials']

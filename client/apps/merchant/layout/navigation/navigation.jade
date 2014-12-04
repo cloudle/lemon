@@ -24,7 +24,7 @@ template(name="navigation")
       ul.nav.navbar-nav
         li.app-name
           |{{currentAppInfo.name}}
-          span.icon-off-1#logoutButton
+          span.click-enable.icon-off-1#logoutButton
         if isntMerchantHome
           li.blue.inav.home.icon-left-open-big.animated.fadeInRight trở về
         //li.inav.icon-home-4(class="{{isActiveRoute regex='merchantHome'}}"): a(href="{{pathFor 'merchantHome'}}")
