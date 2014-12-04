@@ -45,7 +45,7 @@ template(name="customerManagement")
             .group-wrapper
               each managedCustomerList
                 .caption.inner(class="{{activeClass}}")
-                  +avatarImageComponent(avatar=avatarUrl alias=firstName instance=this)
+                  +avatarImageComponent(avatar=avatarUrl alias=firstName)
                   span.text
                     |{{name}}
                     if description
@@ -56,7 +56,7 @@ template(name="customerManagement")
                 .caption.group {{key}}
                 each childs
                   .caption.inner(class="{{activeClass}}")
-                    +avatarImageComponent(avatar=avatarUrl alias=firstName instance=this)
+                    +avatarImageComponent(avatar=avatarUrl alias=firstName)
                     span.text
                       |{{name}}
                       if description

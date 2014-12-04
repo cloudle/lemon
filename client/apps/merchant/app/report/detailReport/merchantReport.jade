@@ -1,0 +1,21 @@
+template(name="merchantReport")
+   #content.modern
+      .dual-content
+         .dual-detail-wrapper
+            .dual-detail
+               .nano: .nano-content
+                  span details
+         .dual-addon
+            .search-filter.icon-search-8
+               input(name='searchFilter' type="text")
+            .nano: .nano-content
+               if multipleBranch
+                  .group-wrapper
+                     .caption.group Chi nhánh
+                     each branchList
+                        .caption.inner.merchant-selection(class="{{branchActiveClass}}")
+                           +avatarImageComponent(avatar=undefined alias=name)
+                           span.text {{name}}
+                           if isRootBranch
+                              .commands
+                                 span.icon-crown
