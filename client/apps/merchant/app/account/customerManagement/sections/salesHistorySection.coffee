@@ -1,14 +1,14 @@
 scope = logics.customerManagement
 
 lemon.defineHyper Template.customerManagementSalesHistorySection,
+  showExpandSaleAndCustomSale: -> Session.get("showExpandSaleAndCustomSale")
   finalDebtBalance: -> @customSaleDebt + @saleDebt
   allowCreateCustomSale: -> if Session.get("allowCreateCustomSale") then '' else 'disabled'
-#  allowCreateTransactionOfSale: -> if Session.get("allowCreateTransactionOfSale") then '' else 'disabled'
+  allowCreateTransactionOfSale: -> if Session.get("allowCreateTransactionOfSale") then '' else 'disabled'
   allowCreateTransactionOfCustomSale: -> if Session.get("allowCreateTransactionOfCustomSale") then '' else 'disabled'
 
-  showExpandSaleAndCustomSale: -> Session.get("showExpandSaleAndCustomSale")
+  showIsFoundSale: -> if Schema.sales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}).count() > 0 then "" else "display: none;"
   isCustomSaleModeEnabled: -> if Session.get("customerManagementCurrentCustomer")?.customSaleModeEnabled then "" else "display: none;"
-
 
   customSale: -> Schema.customSales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}, {sort: {debtDate: 1}})
   defaultSale: -> Schema.sales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}, {sort: {'version.createdAt': -1}})
@@ -25,6 +25,9 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
     @ui.$debtDate.inputmask("dd/mm/yyyy")
     @ui.$payAmount.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
     @ui.$paidDate.inputmask("dd/mm/yyyy")
+
+    @ui.$paySaleAmount.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
+    @ui.$paidSaleDate.inputmask("dd/mm/yyyy")
 
   events:
     "click .expandSaleAndCustomSale": ->
@@ -67,8 +70,14 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
         scope.createTransactionOfCustomSale(template) if event.which is 13 and Session.get("allowCreateTransactionOfCustomSale")
 
 #----Create-Transaction-Of-Sale-----------------------------------------------------------------------
+    "keydown .new-transaction-custom-sale-field": (event, template) ->
+      if customer = Session.get("customerManagementCurrentCustomer")
+        scope.checkAllowCreateTransactionOfSale(template, customer) if event.which is 8
+
     "click .createTransactionOfSale": (event, template) ->
       scope.createTransactionOfSale(template) if Session.get("allowCreateTransactionOfSale")
 
     "keypress input.new-transaction-sale-field": (event, template) ->
-      scope.createTransactionOfSale(template) if event.which is 13 and Session.get("allowCreateTransactionOfSale")
+      if customer = Session.get("customerManagementCurrentCustomer")
+        scope.checkAllowCreateTransactionOfSale(template, customer)
+        scope.createTransactionOfSale(template) if event.which is 13 and Session.get("allowCreateTransactionOfSale")

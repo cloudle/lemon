@@ -99,4 +99,5 @@ Apps.Merchant.customerManagementInit.push (scope) ->
 
       if paidDate >= latestSale?.version.createdAt and payAmount != "" and !isNaN(payAmount)
         Meteor.call('createNewReceiptCashOfSales', customer._id, parseInt(payAmount), $payDescription.val(), paidDate)
-        $payDescription.val(''); $paidDate.val(''); $payAmount.val('')
+        Session.set("allowCreateTransactionOfSale", false)
+        $payDescription.val(''); $payAmount.val('')
