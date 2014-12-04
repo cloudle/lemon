@@ -25,9 +25,9 @@ template(name="distributorManagementImportsHistorySection")
 
         tr.editors.dual-border(style="{{isCustomImportModeEnabled}}")
           td(colspan="3")
-            input.new-bill-field(name='customImportDescription' type="text" size="10" placeholder="ghi chú đơn hàng")
+            input.new-bill-field(name='customImportDescription' type="text" size="10" placeholder="ghi chú đơn hàng nhập")
           td
-            input.new-bill-field.number(name='customImportDebtDate' type="text" size="10" placeholder="ngày bán")
+            input.new-bill-field.number(name='customImportDebtDate' type="text" size="10" placeholder="ngày nhập")
           td
             .lemon.rounded.btn.lime.icon-tags-2.pull-right.createCustomImport(class="{{allowCreateCustomImport}}")
 

@@ -55,8 +55,8 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
         scope.createCustomImport(template)
 
 #-----Create-Transaction-Of-Custom-Import-------------------------------------------------------------------------------
-    "keydown .new-transaction-custom-import-field": (event, template) ->
-      if distributor = Session.get("distributorManagementCurrentDistributor")
+    "keydown input.new-transaction-custom-import-field": (event, template) ->
+      if distributor = Session.get("distributorManagementCurrentDistributor") and event.which is 8
         scope.checkAllowCreateTransactionOfCustomImport(template, distributor)
 
     "click .createTransactionOfCustomImport": (event, template) ->
@@ -64,15 +64,17 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
         scope.createTransactionOfCustomImport(template)
 
     "keypress input.new-transaction-custom-import-field": (event, template) ->
-      if Session.get("allowCreateTransactionOfCustomImport") and event.which is 13
-        scope.createTransactionOfCustomImport(template)
+      if distributor = Session.get("distributorManagementCurrentDistributor")
+        scope.checkAllowCreateTransactionOfCustomImport(template, distributor)
+        if Session.get("allowCreateTransactionOfCustomImport") and event.which is 13
+          scope.createTransactionOfCustomImport(template)
 
 #----Create-Transaction-Of-Import-----------------------------------------------------------------------------------------
-    "keydown .new-transaction-import-field": (event, template) ->
-      if distributor = Session.get("distributorManagementCurrentDistributor") and event.which is 8
-        scope.checkAllowCreateTransactionOfImport(template, distributor)
+    "keydown input.new-transaction-import-field": (event, template) ->
+      if distributor = Session.get("distributorManagementCurrentDistributor")
+        scope.checkAllowCreateTransactionOfImport(template, distributor) if event.which is 8
 
-    "click .createTransactionOfCustomImport": (event, template) ->
+    "click .createTransactionOfImport": (event, template) ->
       if distributor = Session.get("distributorManagementCurrentDistributor")
         if Session.get("allowCreateTransactionOfImport")
           scope.createTransactionOfImport(template, distributor)

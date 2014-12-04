@@ -5,6 +5,8 @@ lemon.addRoute
   onBeforeAction: ->
     if @ready()
       Apps.setup(scope, Apps.Merchant.productManagementInit, 'productManagement')
+      Session.set "currentAppInfo",
+        name: "sản phẩm"
       @next()
   data: ->
     Apps.setup(scope, Apps.Merchant.productManagementReactive)
