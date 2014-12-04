@@ -27,6 +27,7 @@ lemon.dependencies.add 'billManager', ['merchantEssential', 'billManagerSales']
 lemon.dependencies.add 'deliveryManager', ['merchantEssential', 'availableDeliveries']
 lemon.dependencies.add 'returnManager', ['merchantEssential', 'availableSales']
 
+lemon.dependencies.add 'merchantReport', ['merchantEssential', 'merchantReportData']
 lemon.dependencies.add 'salesReport', ['merchantEssential', 'saleBills']
 lemon.dependencies.add 'saleOrder', ['merchantEssential',
                                      'myOrderHistory',

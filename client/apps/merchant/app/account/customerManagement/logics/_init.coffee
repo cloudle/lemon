@@ -18,6 +18,8 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
         $("[name=paidDate]").val(moment(latestTransaction.debtDate).format('DDMMYYY'))
       else
         $("[name=paidDate]").val(moment(latestCustomSale.debtDate).format('DDMMYYY'))
+    else
+      $("[name=paidDate]").val('')
 
   if customerId = Session.get("mySession")?.currentCustomerManagementSelection
     Session.set("customerManagementCurrentCustomer", Schema.customers.findOne(customerId))

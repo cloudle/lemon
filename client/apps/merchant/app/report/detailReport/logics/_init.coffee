@@ -1,3 +1,3 @@
-logics.detailReport = {}
-Apps.Merchant.detailReportInit = []
-Apps.Merchant.detailReportReactive = []
+logics.merchantReport = {}
+Apps.Merchant.merchantReportInit = []
+Apps.Merchant.merchantReportReactive = []
