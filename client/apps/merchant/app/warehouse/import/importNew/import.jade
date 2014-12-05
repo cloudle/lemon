@@ -55,8 +55,40 @@ template(name="import")
       //  span.ilabel.optional ngày hết hạn
       //  input(binding="datePicker" todayHighlight="true" name="expire")
 
-  #content
-    +iGrid(options=importDetailOptions)
+  #content.modern
+    .dual-content
+      .dual-detail-wrapper
+        .dual-detail
+          .nano: .nano-content
+            +iGrid(options=importDetailOptions)
+
+      .dual-addon
+        .search-filter.icon-search-8
+          input(name='searchFilter' type="text")
+          //if creationMode
+            .lemon.btn.rounded.tiny.lime.icon-plus-6.create-command.createCustomerBtn
+        .nano: .nano-content
+          if showFilterSearch
+            .group-wrapper
+              each managedProductList
+                .caption.inner(class="{{activeClass}}")
+                  +avatarImageComponent(avatar=avatarUrl alias=firstName)
+                  span.text
+                    |{{name}}
+                    if description
+                      |({{description}})
+          else
+            each managedProductList
+              .group-wrapper
+                .caption.group {{key}}
+                each childs
+                  .caption.inner(class="{{activeClass}}")
+                    +avatarImageComponent(avatar=avatarUrl alias=firstName)
+                    span.text
+                      |{{name}}
+                      if description
+                        |({{description}})
+
 
   #footer
     if currentImport

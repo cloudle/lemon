@@ -17,7 +17,7 @@ logics.returns. submitReturn = (returnId)->
         saleDetail = Schema.saleDetails.findOne(returnDetail.saleDetail)
         unless saleDetail.quality is saleDetail.returnQuality then unLockReturn = true
 
-      Schema.returns.update currentReturn._id, $set: {status: 2}
+      Schema.returns.update currentReturn._id, $set: {status: 2, 'version.createdAt': new Date()}
       Schema.sales.update currentReturn.sale, $set:{status: true, return: true, returnLock: !unLockReturn}, $inc:{returnCount: 1, returnQuality: returnQuality}
 
       transaction =  Transaction.newByReturn(currentReturn)

@@ -1,36 +1,42 @@
+scope = logics.import
+
 importRoute =
   template: 'import',
   waitOnDependency: 'importManager'
   onBeforeAction: ->
     if @ready()
-      Apps.setup(logics.import, Apps.Merchant.importInit, 'import')
+      Apps.setup(scope, Apps.Merchant.importInit, 'import')
+      Session.set "currentAppInfo",
+        name: "nhập kho"
       @next()
   data: ->
-    logics.import.reactiveRun()
+    Apps.setup(scope, Apps.Merchant.importReactive)
 
     return{
-      showCreateDetail: logics.import.showCreateDetail
-      showSubmit      : logics.import.showSubmit
-      showFinish      : logics.import.showFinish
-      showEdit        : logics.import.showEdit
-      hidePriceSale   : logics.import.hidePriceSale
+      showCreateDetail: scope.showCreateDetail
+      showSubmit      : scope.showSubmit
+      showFinish      : scope.showFinish
+      showEdit        : scope.showEdit
+      hidePriceSale   : scope.hidePriceSale
 
-      myCreateProduct     : logics.import.myCreateProduct
-      myCreateProvider    : logics.import.myCreateProvider
-      myCreateDistributor : logics.import.myCreateDistributor
+      myCreateProduct     : scope.myCreateProduct
+      myCreateProvider    : scope.myCreateProvider
+      myCreateDistributor : scope.myCreateDistributor
 
-      tabOptions          : logics.import.tabOptions
-      importDetailOptions : logics.import.importDetailOptions
+      tabOptions          : scope.tabOptions
+      importDetailOptions : scope.importDetailOptions
 
-      currentImport            : logics.import.currentImport
-      productSelectOptions     : logics.import.productSelectOptions
-      providerSelectOptions    : logics.import.providerSelectOptions
-      distributorSelectOptions : logics.import.distributorSelectOptions
-      timeUseSelectOptions     : logics.import.timeUseSelectOptions
+      currentImport            : scope.currentImport
+      productSelectOptions     : scope.productSelectOptions
+      providerSelectOptions    : scope.providerSelectOptions
+      distributorSelectOptions : scope.distributorSelectOptions
+      timeUseSelectOptions     : scope.timeUseSelectOptions
 
-      qualityOptions    : logics.import.qualityOptions
-      importPriceOptions: logics.import.importPriceOptions
-      salePriceOptions  : logics.import.salePriceOptions
+      qualityOptions    : scope.qualityOptions
+      importPriceOptions: scope.importPriceOptions
+      salePriceOptions  : scope.salePriceOptions
+
+      managedProductList: scope.managedProductList
     }
 
 lemon.addRoute [importRoute], Apps.Merchant.RouterBase

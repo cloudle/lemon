@@ -12,6 +12,10 @@ simpleSchema.productDetails = new SimpleSchema
     type: String
     optional: true
 
+  distributor:
+    type: String
+    optional: true
+
   product:
     type: String
 

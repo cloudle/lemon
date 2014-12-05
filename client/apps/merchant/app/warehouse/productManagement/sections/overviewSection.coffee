@@ -3,6 +3,16 @@ scope = logics.productManagement
 lemon.defineHyper Template.productManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showEditCommand: -> Session.get "productManagementShowEditCommand"
+  averagePrice: ->
+    if product = Session.get('productManagementCurrentProduct')
+      productDetails = Schema.productDetails.find({product: product._id}).fetch()
+      totalQuality = 0
+      totalPrice = 0
+      for productDetail in productDetails
+        totalQuality += productDetail.importQuality
+        totalPrice += productDetail.importQuality * productDetail.importPrice
+      totalPrice/totalQuality
+
   name: ->
     Meteor.setTimeout(scope.overviewTemplateInstance.ui.$productName.change(), 50) if scope.overviewTemplateInstance
     @name
@@ -10,6 +20,8 @@ lemon.defineHyper Template.productManagementOverviewSection,
   rendered: ->
     scope.overviewTemplateInstance = @
     @ui.$productName.autosizeInput({space: 10})
+    @ui.$productPrice.autosizeInput({space: 10})
+    @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
   events:
     "click .avatar": (event, template) -> template.find('.avatarFile').click()
@@ -19,11 +31,14 @@ lemon.defineHyper Template.productManagementOverviewSection,
         AvatarImages.insert files[0], (error, fileObj) ->
           Schema.products.update(Session.get('productManagementCurrentProduct')._id, {$set: {avatar: fileObj._id}})
           AvatarImages.findOne(Session.get('productManagementCurrentProduct').avatar)?.remove()
+
     "input .editable": (event, template) ->
       Session.set "productManagementShowEditCommand",
         template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
-        template.ui.$productPrice.val() isnt (Session.get("productManagementCurrentProduct").phone ? '') or
-        template.ui.$productAddress.val() isnt (Session.get("productManagementCurrentProduct").address ? '')
+        template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '')
+
+      console.log template.ui.$productPrice.inputmask('unmaskedvalue')
+
     "keyup input.editable": (event, template) ->
       scope.editProduct(template) if event.which is 13
 
@@ -32,8 +47,10 @@ lemon.defineHyper Template.productManagementOverviewSection,
           $(event.currentTarget).val(Session.get("productManagementCurrentProduct").name)
           $(event.currentTarget).change()
         else if $(event.currentTarget).attr('name') is 'productPrice'
-          $(event.currentTarget).val(Session.get("productManagementCurrentProduct").phone)
-        else if $(event.currentTarget).attr('name') is 'productAddress'
-          $(event.currentTarget).val(Session.get("productManagementCurrentProduct").address)
+          $(event.currentTarget).val(Session.get("productManagementCurrentProduct").price)
+
+      Session.set "productManagementShowEditCommand",
+        template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
+        template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '')
 
     "click .syncProductEdit": (event, template) -> scope.editProduct(template)

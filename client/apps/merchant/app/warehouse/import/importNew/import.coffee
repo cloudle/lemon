@@ -1,7 +1,41 @@
 lemon.defineApp Template.import,
+  showFilterSearch: -> Session.get("importManagementSearchFilter")?.length > 0
+  avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
+  firstName: -> Helpers.firstName(@name)
+  activeClass:-> if Session.get("importManagementCurrentProduct")?._id is @._id then 'active' else ''
+
   showHistory: -> Session.get("metroSummary")?.importCount > 0
   rendered: -> logics.import.templateInstance = @
+  created: ->
+    Session.set("importManagementSearchFilter", "")
+#    if Session.get("mySession")
+#      currentImport = Session.get("mySession").currentImport  ManagementSelection
+#      if !currentImport
+#        if  = Schema.customers.findOne()
+
   events:
+    "click .inner.caption": (event, template) ->
+      if Session.get("mySession")
+        Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentImportProductManagementSelection: @_id}})
+        if product = Schema.products.findOne(@_id)
+          option =
+            currentProduct     : product._id
+            currentProvider    : product.provider ? 'skyReset'
+            currentQuality     : 1
+            currentImportPrice : product.importPrice ? 0
+          if product.price > 0 and product.inStockQuality > 0
+            Import.update(Session.get('currentImport')._id, $set: option, $unset: {currentPrice: ""})
+          else
+            option.currentPrice = product.importPrice ? 0
+            Import.update(Session.get('currentImport')._id, {$set: option})
+          #    $("[name=expire]").datepicker('setDate', undefined)
+          $("[name=productionDate]").datepicker('setDate', undefined)
+
+          Session.set("importManagementCurrentProduct", product)
+
+
+
+
     "click .add-product": (event, template) -> $(template.find '#addProduct').modal()
     "click .add-provider": (event, template) -> $(template.find '#addProvider').modal()
     "click .add-distributor": (event, template) -> $(template.find '#addDistributor').modal()

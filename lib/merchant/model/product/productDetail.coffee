@@ -11,8 +11,9 @@ Schema.add 'productDetails', "ProductDetail", class ProductDetail
       importPrice      : importDetail.importPrice
       checkingInventory: false
 
-    option.provider = importDetail.provider if importDetail.provider
-    option.expire   = importDetail.expire if importDetail.expire
+    option.distributor = imports.distributor if imports.distributor
+    option.provider    = importDetail.provider if importDetail.provider
+    option.expire      = importDetail.expire if importDetail.expire
     option
 
 

@@ -2,12 +2,12 @@ template(name="productManagementSalesHistorySection")
   .section.panel.panel-default
     .panel-heading
       table.lemon-grid: tr
-        th(style="width:auto") SẢN PHẨM
-        th(style="width:100px") QUI CÁCH
-        th(style="width:140px") NHÀ SẢN XUẤT
-        th.number(style="width:50px") NHẬP
-        th.number(style="width:50px") TỒN
+        th(style="width:auto") NHÀ CUNG CẤP
+        th(style="width:110px") HẠN SD
+        th.number(style="width:70px") T.KHO
+        th.number(style="width:70px") ĐÃ BÁN
         th.number(style="width:90px") GIÁ NHẬP
+        th.number(style="width:100px") TỔNG TIỀN
 
     .panel-body.debt-details
       table.lemon-grid.safe
@@ -17,17 +17,16 @@ template(name="productManagementSalesHistorySection")
 
     .panel-footer
       .right-float
-        span.s5 TỔNG NHẬP
-        span.s3 <b>{{formatNumber totalImportQuality}}</b>
         span.s5 TỔNG TỒN
-        span.s3 <b>{{formatNumber totalInStockQuality}}</b>
-        //h3 Tổng tiền: {{formatNumber totalPurchases}} VNĐ
+        span.s3 <b>{{formatNumber inStockQuality}}</b>
+        span.s5 TỔNG NHẬP
+        span.s3 <b>{{formatNumber totalQuality}}</b>
 
 template(name="productManagementImportHistoryHeader")
   tr
     th(style="width:auto")
     th(style="width:100px")
-    th(style="width:150px")
-    th(style="width:40px")
-    th(style="width:40px")
-    th(style="width:100px")
+    th(style="width:60px")
+    th(style="width:70px")
+    th(style="width:85px")
+    th(style="width:115px")

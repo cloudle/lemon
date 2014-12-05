@@ -263,6 +263,8 @@ Meteor.methods
             incCustomerOption.importTotalCash = -debtCash
           Schema.distributors.update distributor._id, $inc: incCustomerOption
 
+        return {client: paidDate, server: latestImport.version.createdAt}
+
 
   calculateCustomImportByDistributor: (distributorId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})

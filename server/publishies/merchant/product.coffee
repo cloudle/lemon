@@ -36,6 +36,9 @@ Meteor.publishComposite 'productManagementData', (productId, currentRecords = 0)
       find: (product) -> Schema.productDetails.find {product: product._id}
       children: [
         find: (productDetail, product) -> Schema.imports.find {_id: productDetail.import}
+        children: [
+          find: (currentImport, product) -> Schema.distributors.find {_id: currentImport.distributor}
+        ]
       ,
         find: (productDetail, product) -> Schema.providers.find {_id: productDetail.provider}
       ]

@@ -5,9 +5,9 @@ template(name="productManagementImportDetails")
       .bill-header <b>{{momentCalendar version.createdAt}}</b> ({{description}})
   each importDetails
     tr.detail-row
-      td.first-column {{productName}}
-      td {{skulls}}
-      td {{providerName}}
-      td.number {{formatNumber importQuality}}
-      td.number {{formatNumber inStockQuality}}
+      td.first-column {{distributorName}}
+      td {{momentFormat expire "DD/MM/YYYY"}}
+      td.number {{formatNumber inStockQuality}}/{{formatNumber importQuality}}
+      td.number {{formatNumber soldQuality}}
       td.number {{formatNumber importPrice}}
+      td.number {{formatNumber totalPrice}}

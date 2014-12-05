@@ -32,6 +32,8 @@ Meteor.publishComposite 'merchantReportData', (branchIds, startDate = new Date()
       find: (branch) -> Schema.imports.find {
         $and: [
           {merchant: branch._id}
+          {finish: true}
+          {submitted: true}
           {'version.createdAt': {$gt: startDate}}
           {'version.createdAt': {$lt: toDate}}
         ]
@@ -48,6 +50,7 @@ Meteor.publishComposite 'merchantReportData', (branchIds, startDate = new Date()
       find: (branch) -> Schema.returns.find {
         $and: [
           {merchant: branch._id}
+          {status  : 2}
           {'version.createdAt': {$gt: startDate}}
           {'version.createdAt': {$lt: toDate}}
         ]
@@ -55,7 +58,7 @@ Meteor.publishComposite 'merchantReportData', (branchIds, startDate = new Date()
     ,
       find: (branch) -> Schema.transactions.find {
           $and: [
-            { merchant: branch._id}
+            { merchant: branch._id }
             { dueDay: {$gt: startDate} }
             { dueDay: {$lt: toDate} }
           ]
