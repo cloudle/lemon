@@ -37,6 +37,7 @@ subtractQualityOnSales = (stockingItems, sellingItem , currentSale) ->
 
 createSaleAndSaleOrder = (order, orderDetails)->
   currentSale = Schema.sales.findOne(Sale.insertByOrder(order))
+  console.log currentSale
   if !currentSale then throw new Meteor.Error("Create sale fail.")
 
   for currentOrderDetail in orderDetails

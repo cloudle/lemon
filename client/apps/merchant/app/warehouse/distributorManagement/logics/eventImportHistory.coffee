@@ -91,6 +91,6 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
     payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
 
     if latestImport and isValidDate and !isNaN(payAmount) and payAmount != 0
-      Meteor.call('createNewReceiptCashOfImport', distributor._id, payAmount, $payDescription.val(), currentPaidDate)
+      Meteor.call('createNewReceiptCashOfImport', distributor._id, payAmount, $payDescription.val(), currentPaidDate, (error, result)-> console.log error, result)
       Session.set("allowCreateTransactionOfImport", false)
       $payDescription.val(''); $payAmount.val('')

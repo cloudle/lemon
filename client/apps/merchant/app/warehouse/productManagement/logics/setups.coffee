@@ -9,7 +9,7 @@ splitName = (fullText) ->
 Apps.Merchant.productManagementInit.push (scope) ->
   scope.editProduct = (template) ->
     newName  = template.ui.$productName.val()
-    newPrice = template.ui.$productPrice.val()
+    newPrice = template.ui.$productPrice.inputmask('unmaskedvalue')
     console.log newPrice
     return if newName.replace("(", "").replace(")", "").trim().length < 2
     editOptions = splitName(newName)

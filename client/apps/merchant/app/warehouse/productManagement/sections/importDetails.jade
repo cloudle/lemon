@@ -7,7 +7,7 @@ template(name="productManagementImportDetails")
     tr.detail-row
       td.first-column {{distributorName}}
       td {{momentFormat expire "DD/MM/YYYY"}}
-      td.number {{formatNumber inStockQuality}}
+      td.number {{formatNumber inStockQuality}}/{{formatNumber importQuality}}
       td.number {{formatNumber soldQuality}}
       td.number {{formatNumber importPrice}}
       td.number {{formatNumber totalPrice}}

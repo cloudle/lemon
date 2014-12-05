@@ -1,35 +1,29 @@
 logics.import = {}
 Apps.Merchant.importInit = []
 Apps.Merchant.importReload = []
+Apps.Merchant.importReactive = []
 
-Apps.Merchant.importInit.push (scope) ->
-  logics.import.availableProducts    = Product.insideWarehouse(Session.get('myProfile').currentWarehouse)
-  logics.import.availableSkulls      = Skull.insideMerchant(Session.get('myProfile').parentMerchant)
-  logics.import.availableProviders   = Provider.insideMerchant(Session.get('myProfile').parentMerchant)
-  logics.import.branchProviders      = Provider.insideBranch(Session.get('myProfile').currentMerchant)
-  logics.import.availableDistributor = Distributor.insideMerchant(Session.get('myProfile').currentMerchant)
-  logics.import.myHistory            = Import.myHistory(Session.get('myProfile').user, Session.get('myProfile').currentWarehouse, Session.get('myProfile').currentMerchant)
-  logics.import.myCreateProduct      = Product.canDeleteByMeInside()
-  logics.import.myCreateProvider     = Provider.canDeleteByMe()
-  logics.import.myCreateDistributor  = Distributor.canDeleteByMe()
+Apps.Merchant.importReactive.push (scope) ->
+  if productId = Session.get("mySession")?.currentImportProductManagementSelection
+    Session.set("importManagementCurrentProduct", Schema.products.findOne(productId))
 
 
-logics.import.reactiveRun = ->
   if Session.get('mySession') and Session.get('myProfile')
-    logics.import.currentImport = Import.findBy(Session.get('mySession').currentImport,
-                                                Session.get('myProfile').currentWarehouse,
-                                                Session.get('myProfile').currentMerchant)
-  if currentImport = logics.import.currentImport
-    Session.set('currentImport', logics.import.currentImport)
-    Meteor.subscribe('importDetails', logics.import.currentImport._id)
-    logics.import.currentImportDetails = ImportDetail.findBy(logics.import.currentImport._id)
+    scope.currentImport = Import.findBy(Session.get('mySession').currentImport,
+      Session.get('myProfile').currentWarehouse,
+      Session.get('myProfile').currentMerchant)
 
-    logics.import.hidePriceSale = logics.import.currentImport.currentPrice > 0
-    logics.import.showCreateDetail = !currentImport.submitted
-    logics.import.showEdit   = currentImport.submitted
+  if currentImport = scope.currentImport
+    Session.set('currentImport', scope.currentImport)
+    Meteor.subscribe('importDetails', scope.currentImport._id)
+    scope.currentImportDetails = ImportDetail.findBy(scope.currentImport._id)
+
+    scope.hidePriceSale = scope.currentImport.currentPrice > 0
+    scope.showCreateDetail = !currentImport.submitted
+    scope.showEdit   = currentImport.submitted
     permission = Role.hasPermission(Session.get('myProfile')._id, Apps.Merchant.Permissions.su.key)
-    logics.import.showSubmit = currentImport.distributor and logics.import.currentImportDetails.count() > 0 and !currentImport.submitted and !permission
-    logics.import.showFinish = currentImport.distributor and logics.import.currentImportDetails.count() > 0 and !logics.import.showSubmit
+    scope.showSubmit = currentImport.distributor and scope.currentImportDetails.count() > 0 and !currentImport.submitted and !permission
+    scope.showFinish = currentImport.distributor and scope.currentImportDetails.count() > 0 and !scope.showSubmit
 
 
 

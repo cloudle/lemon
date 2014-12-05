@@ -20,6 +20,8 @@ lemon.defineHyper Template.productManagementOverviewSection,
   rendered: ->
     scope.overviewTemplateInstance = @
     @ui.$productName.autosizeInput({space: 10})
+    @ui.$productPrice.autosizeInput({space: 10})
+    @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
   events:
     "click .avatar": (event, template) -> template.find('.avatarFile').click()
@@ -33,7 +35,9 @@ lemon.defineHyper Template.productManagementOverviewSection,
     "input .editable": (event, template) ->
       Session.set "productManagementShowEditCommand",
         template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
-        Number(template.ui.$productPrice.val()) isnt (Session.get("productManagementCurrentProduct").price ? '')
+        template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '')
+
+      console.log template.ui.$productPrice.inputmask('unmaskedvalue')
 
     "keyup input.editable": (event, template) ->
       scope.editProduct(template) if event.which is 13
@@ -47,6 +51,6 @@ lemon.defineHyper Template.productManagementOverviewSection,
 
       Session.set "productManagementShowEditCommand",
         template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
-        Number(template.ui.$productPrice.val()) isnt (Session.get("productManagementCurrentProduct").price ? '')
+        template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '')
 
     "click .syncProductEdit": (event, template) -> scope.editProduct(template)
