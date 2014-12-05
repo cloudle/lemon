@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'lemon';
-  src: url('../font/lemon.eot?85605795');
-  src: url('../font/lemon.eot?85605795#iefix') format('embedded-opentype'),
-       url('../font/lemon.woff?85605795') format('woff'),
-       url('../font/lemon.ttf?85605795') format('truetype'),
-       url('../font/lemon.svg?85605795#lemon') format('svg');
+  src: url('../font/lemon.eot?55290059');
+  src: url('../font/lemon.eot?55290059#iefix') format('embedded-opentype'),
+       url('../font/lemon.woff?55290059') format('woff'),
+       url('../font/lemon.ttf?55290059') format('truetype'),
+       url('../font/lemon.svg?55290059#lemon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'lemon';
-    src: url('../font/lemon.svg?85605795#lemon') format('svg');
+    src: url('../font/lemon.svg?55290059#lemon') format('svg');
   }
 }
 */
@@ -55,16 +55,48 @@
 .icon-edit:before { content: '\e802'; } /* '' */
 .icon-sun:before { content: '\e803'; } /* '' */
 .icon-flow-cross:before { content: '\e804'; } /* '' */
+.icon-user-add-outline:before { content: '\e805'; } /* '' */
+.icon-user-delete-outline:before { content: '\e806'; } /* '' */
+.icon-users-outline:before { content: '\e807'; } /* '' */
 .icon-database:before { content: '\e808'; } /* '' */
+.icon-user-outline:before { content: '\e809'; } /* '' */
+.icon-heart:before { content: '\e80a'; } /* '' */
+.icon-search-outline:before { content: '\e80b'; } /* '' */
+.icon-tags:before { content: '\e80c'; } /* '' */
+.icon-tag:before { content: '\e80d'; } /* '' */
+.icon-reply-outline:before { content: '\e80e'; } /* '' */
+.icon-forward-outline:before { content: '\e80f'; } /* '' */
+.icon-minus-outline:before { content: '\e810'; } /* '' */
+.icon-plus-outline:before { content: '\e811'; } /* '' */
+.icon-cancel-alt:before { content: '\e812'; } /* '' */
+.icon-cancel-outline:before { content: '\e813'; } /* '' */
+.icon-ok-outline:before { content: '\e814'; } /* '' */
+.icon-lock:before { content: '\e815'; } /* '' */
 .icon-star:before { content: '\e816'; } /* '' */
+.icon-lock-open:before { content: '\e817'; } /* '' */
+.icon-flag:before { content: '\e818'; } /* '' */
+.icon-export-outline:before { content: '\e819'; } /* '' */
+.icon-pencil:before { content: '\e81a'; } /* '' */
+.icon-bell:before { content: '\e81b'; } /* '' */
+.icon-chat:before { content: '\e81c'; } /* '' */
+.icon-contacts:before { content: '\e81d'; } /* '' */
+.icon-location-outline:before { content: '\e81e'; } /* '' */
+.icon-wrench-outline:before { content: '\e81f'; } /* '' */
+.icon-map:before { content: '\e820'; } /* '' */
+.icon-box:before { content: '\e821'; } /* '' */
+.icon-calendar-outlilne:before { content: '\e822'; } /* '' */
+.icon-mic-outline:before { content: '\e823'; } /* '' */
 .icon-trash:before { content: '\e824'; } /* '' */
 .icon-doc:before { content: '\e825'; } /* '' */
 .icon-beaker:before { content: '\e826'; } /* '' */
 .icon-truck:before { content: '\e827'; } /* '' */
 .icon-money:before { content: '\e828'; } /* '' */
+.icon-volume-high:before { content: '\e829'; } /* '' */
 .icon-shop:before { content: '\e82a'; } /* '' */
+.icon-clock:before { content: '\e82b'; } /* '' */
 .icon-t-shirt:before { content: '\e82c'; } /* '' */
 .icon-wallet:before { content: '\e82d'; } /* '' */
+.icon-lightbulb:before { content: '\e82e'; } /* '' */
 .icon-spin6:before { content: '\e82f'; } /* '' */
 .icon-spin2:before { content: '\e830'; } /* '' */
 .icon-facebook-rect:before { content: '\e831'; } /* '' */
@@ -72,6 +104,8 @@
 .icon-googleplus-rect:before { content: '\e833'; } /* '' */
 .icon-linkedin-rect:before { content: '\e834'; } /* '' */
 .icon-award:before { content: '\e835'; } /* '' */
+.icon-cw-outline:before { content: '\e836'; } /* '' */
+.icon-clipboard:before { content: '\e837'; } /* '' */
 .icon-power:before { content: '\e838'; } /* '' */
 .icon-skype:before { content: '\e839'; } /* '' */
 .icon-phone-circled:before { content: '\e83a'; } /* '' */
@@ -83,6 +117,7 @@
 .icon-chat-6:before { content: '\e840'; } /* '' */
 .icon-globe-6:before { content: '\e841'; } /* '' */
 .icon-share-3:before { content: '\e842'; } /* '' */
+.icon-key-outline:before { content: '\e843'; } /* '' */
 .icon-cubes:before { content: '\e844'; } /* '' */
 .icon-cube:before { content: '\e845'; } /* '' */
 .icon-clipboard-2:before { content: '\e846'; } /* '' */
@@ -215,6 +250,40 @@
 .icon-doc-inv-1:before { content: '\e8c5'; } /* '' */
 .icon-pencil-circled:before { content: '\e8c6'; } /* '' */
 .icon-minus-4:before { content: '\e8c7'; } /* '' */
+.icon-cancel-alt-filled:before { content: '\e8c8'; } /* '' */
+.icon-basket:before { content: '\e8c9'; } /* '' */
+.icon-download-outline:before { content: '\e8ca'; } /* '' */
+.icon-chart-bar-outline:before { content: '\e8cb'; } /* '' */
+.icon-loop-outline:before { content: '\e8cc'; } /* '' */
+.icon-target-outline:before { content: '\e8cd'; } /* '' */
+.icon-database-1:before { content: '\e8ce'; } /* '' */
+.icon-flow-merge:before { content: '\e8cf'; } /* '' */
+.icon-coffee:before { content: '\e8d0'; } /* '' */
+.icon-anchor-outline:before { content: '\e8d1'; } /* '' */
+.icon-gift:before { content: '\e8d2'; } /* '' */
+.icon-credit-card:before { content: '\e8d3'; } /* '' */
+.icon-power-outline:before { content: '\e8d4'; } /* '' */
+.icon-flash-outline:before { content: '\e8d5'; } /* '' */
+.icon-moon:before { content: '\e8d6'; } /* '' */
+.icon-cog-outline:before { content: '\e8d7'; } /* '' */
+.icon-code-outline:before { content: '\e8d8'; } /* '' */
+.icon-pin-outline:before { content: '\e8d9'; } /* '' */
+.icon-link-outline:before { content: '\e8da'; } /* '' */
+.icon-home-outline:before { content: '\e8db'; } /* '' */
+.icon-bookmark:before { content: '\e8dc'; } /* '' */
+.icon-music-outline:before { content: '\e8dd'; } /* '' */
+.icon-star-1:before { content: '\e8de'; } /* '' */
+.icon-zoom-in-outline:before { content: '\e8df'; } /* '' */
+.icon-zoom-out-outline:before { content: '\e8e0'; } /* '' */
+.icon-resize-normal-outline:before { content: '\e8e1'; } /* '' */
+.icon-resize-full-outline:before { content: '\e8e2'; } /* '' */
+.icon-move-outline:before { content: '\e8e3'; } /* '' */
+.icon-chart-alt-outline:before { content: '\e8e4'; } /* '' */
+.icon-chart-outline:before { content: '\e8e5'; } /* '' */
+.icon-puzzle-outline:before { content: '\e8e6'; } /* '' */
+.icon-vcard:before { content: '\e8e7'; } /* '' */
+.icon-trash-1:before { content: '\e8e8'; } /* '' */
+.icon-chart-pie-outline:before { content: '\e8e9'; } /* '' */
 .icon-emo-happy:before { content: '\f027'; } /* '' */
 .icon-emo-wink:before { content: '\f028'; } /* '' */
 .icon-emo-wink2:before { content: '\f029'; } /* '' */

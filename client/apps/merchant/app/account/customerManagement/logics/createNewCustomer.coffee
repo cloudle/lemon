@@ -46,12 +46,12 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       parentMerchant  : Session.get('myProfile').parentMerchant
       creator         : Session.get('myProfile').user
       name            : nameOptions.name
-      description     : nameOptions.description
       gender          : true
       styles          : Helpers.RandomColor()
+    customer.description = nameOptions.description if nameOptions.description
 
     existedQuery = {name: nameOptions.name, currentMerchant: Session.get('myProfile').currentMerchant}
-    existedQuery.description = nameOptions.description if nameOptions.description.length > 0
+    existedQuery.description = nameOptions.description if nameOptions.description?.length > 0
     if Schema.customers.findOne existedQuery
       template.ui.$searchFilter.notify("Khách hàng đã tồn tại.", {position: "bottom"})
     else

@@ -841,9 +841,99 @@
       "src": "entypo"
     },
     {
+      "uid": "b1c81b3df9f4a9b8c393f405bb5293d8",
+      "css": "music-outline",
+      "code": 59613,
+      "src": "typicons"
+    },
+    {
+      "uid": "1be0ad37c941fcc88233d38c2e460cf5",
+      "css": "search-outline",
+      "code": 59403,
+      "src": "typicons"
+    },
+    {
+      "uid": "3b00728aa97ad1a2581d414bd9d650bc",
+      "css": "heart",
+      "code": 59402,
+      "src": "typicons"
+    },
+    {
+      "uid": "bcdc294bb787b15203b82f2be8096548",
+      "css": "star-1",
+      "code": 59614,
+      "src": "typicons"
+    },
+    {
+      "uid": "8ed4884bf9b840729eef8f0bbd2b1dbb",
+      "css": "user-outline",
+      "code": 59401,
+      "src": "typicons"
+    },
+    {
+      "uid": "a1d4b614f12cfe2b5aa66313ad88c90c",
+      "css": "users-outline",
+      "code": 59399,
+      "src": "typicons"
+    },
+    {
+      "uid": "b9cd6e266f74ac97272b2fabbfbd0b85",
+      "css": "user-add-outline",
+      "code": 59397,
+      "src": "typicons"
+    },
+    {
+      "uid": "344c1c070cd0018ced51d3f051c6f4dd",
+      "css": "user-delete-outline",
+      "code": 59398,
+      "src": "typicons"
+    },
+    {
       "uid": "a0af0ba081a37bac0783788042ea1774",
       "css": "th-outline",
       "code": 59453,
+      "src": "typicons"
+    },
+    {
+      "uid": "40c9502d45c736a0a6ec45e6fbc28656",
+      "css": "ok-outline",
+      "code": 59412,
+      "src": "typicons"
+    },
+    {
+      "uid": "24aba8757d4a7b49568c98a577a85df3",
+      "css": "cancel-outline",
+      "code": 59411,
+      "src": "typicons"
+    },
+    {
+      "uid": "3df1557e2d6e84ec32bd47aee5bfdf59",
+      "css": "cancel-alt",
+      "code": 59410,
+      "src": "typicons"
+    },
+    {
+      "uid": "l11ixzfrief0chds7elurdm2ot98xp4l",
+      "css": "cancel-alt-filled",
+      "code": 59592,
+      "src": "typicons"
+    },
+    {
+      "uid": "0677f879e75956571d8cbbb478487c47",
+      "css": "plus-outline",
+      "code": 59409,
+      "src": "typicons"
+    },
+    {
+      "uid": "7b67ab93e2dd09f8884b574925ab9352",
+      "css": "minus-outline",
+      "code": 59408,
+      "src": "typicons"
+    },
+    {
+      "uid": "a42f298da5c64e646a5d532724cd6e15",
+      "css": "home-outline",
+      "code": 59611,
       "src": "typicons"
     },
     {
@@ -853,9 +943,99 @@
       "src": "typicons"
     },
     {
+      "uid": "3562ca2f2f16f6629b5ffabfe3cfa5a7",
+      "css": "link-outline",
+      "code": 59610,
+      "src": "typicons"
+    },
+    {
+      "uid": "3e1bb74572a30486bd647304d9fcaff6",
+      "css": "lock",
+      "code": 59413,
+      "src": "typicons"
+    },
+    {
+      "uid": "75cff40f03567673e13b0e7d005b7741",
+      "css": "lock-open",
+      "code": 59415,
+      "src": "typicons"
+    },
+    {
+      "uid": "6373242453e92e8ce419b8391463867a",
+      "css": "pin-outline",
+      "code": 59609,
+      "src": "typicons"
+    },
+    {
+      "uid": "z2kx6nr3u9112p0e1pfhxdhva9v7kd4k",
+      "css": "tag",
+      "code": 59405,
+      "src": "typicons"
+    },
+    {
+      "uid": "e417e4ca7774bb0f4aca5278ae3bfe49",
+      "css": "tags",
+      "code": 59404,
+      "src": "typicons"
+    },
+    {
+      "uid": "gr2i0fsmy50yfjhz6defsqkexnmctv8z",
+      "css": "bookmark",
+      "code": 59612,
+      "src": "typicons"
+    },
+    {
+      "uid": "d91495faa39f7bc987caa15275d96ae8",
+      "css": "flag",
+      "code": 59416,
+      "src": "typicons"
+    },
+    {
+      "uid": "86157b2f942e37940f8702a4a3221a2b",
+      "css": "download-outline",
+      "code": 59594,
+      "src": "typicons"
+    },
+    {
+      "uid": "c60f50a1729165e3752fa27a16325208",
+      "css": "reply-outline",
+      "code": 59406,
+      "src": "typicons"
+    },
+    {
+      "uid": "ca92083691d138f832d6a9874d7636dc",
+      "css": "forward-outline",
+      "code": 59407,
+      "src": "typicons"
+    },
+    {
+      "uid": "9e02faeda1ede96a076b72260f44e4b5",
+      "css": "code-outline",
+      "code": 59608,
+      "src": "typicons"
+    },
+    {
+      "uid": "44a6b866f720a1d2b11bf05023a4e089",
+      "css": "export-outline",
+      "code": 59417,
+      "src": "typicons"
+    },
+    {
+      "uid": "1e77a2yvsq3owssduo2lcgsiven57iv5",
+      "css": "pencil",
+      "code": 59418,
+      "src": "typicons"
+    },
+    {
       "uid": "jqzwo6i8oicjbn049sh2856d8anrqoli",
       "css": "edit",
       "code": 59394,
+      "src": "typicons"
+    },
+    {
+      "uid": "2hqh2lidoqvaujgq29tdkrtiay5s6tyk",
+      "css": "chat",
+      "code": 59420,
       "src": "typicons"
     },
     {
@@ -865,9 +1045,165 @@
       "src": "typicons"
     },
     {
+      "uid": "c155bb86da2f8da808394d58220b5146",
+      "css": "bell",
+      "code": 59419,
+      "src": "typicons"
+    },
+    {
+      "uid": "ba9ae3250633c7b1fe249587358c8383",
+      "css": "contacts",
+      "code": 59421,
+      "src": "typicons"
+    },
+    {
+      "uid": "933f454f9d3342a055217fd695475d44",
+      "css": "vcard",
+      "code": 59623,
+      "src": "typicons"
+    },
+    {
+      "uid": "13289e807e02b1d46f2fe10d81d6fba6",
+      "css": "location-outline",
+      "code": 59422,
+      "src": "typicons"
+    },
+    {
+      "uid": "87d337fee4866c2c28f6082994ce0f41",
+      "css": "map",
+      "code": 59424,
+      "src": "typicons"
+    },
+    {
+      "uid": "csuoy0rqoun3unhsgjoy2uumpldzbfmt",
+      "css": "trash-1",
+      "code": 59624,
+      "src": "typicons"
+    },
+    {
+      "uid": "a3264f2df401aaeeee9d9eb800e455eb",
+      "css": "box",
+      "code": 59425,
+      "src": "typicons"
+    },
+    {
+      "uid": "3a89ddb1c81111c15d6c4e26cc3c546a",
+      "css": "cog-outline",
+      "code": 59607,
+      "src": "typicons"
+    },
+    {
+      "uid": "9e717a7080503cfe84c7c7bd336ffe5f",
+      "css": "wrench-outline",
+      "code": 59423,
+      "src": "typicons"
+    },
+    {
+      "uid": "e0d15ef5945000f5f264acc35494002f",
+      "css": "basket",
+      "code": 59593,
+      "src": "typicons"
+    },
+    {
+      "uid": "3d211fe82ca138fce185f8869d38df26",
+      "css": "calendar-outlilne",
+      "code": 59426,
+      "src": "typicons"
+    },
+    {
+      "uid": "b7bd78e163801889af145e513d6c5383",
+      "css": "mic-outline",
+      "code": 59427,
+      "src": "typicons"
+    },
+    {
+      "uid": "okc52fdxu9uz2wnl0awdtv5373is429s",
+      "css": "volume-high",
+      "code": 59433,
+      "src": "typicons"
+    },
+    {
+      "uid": "eh1m4shhgsndy7pmdzx3ynrakadhozgr",
+      "css": "clock",
+      "code": 59435,
+      "src": "typicons"
+    },
+    {
+      "uid": "12d16dda691bda304e3b57d7bc0de5a9",
+      "css": "lightbulb",
+      "code": 59438,
+      "src": "typicons"
+    },
+    {
+      "uid": "debaf3311987af708b9c1646fc192c15",
+      "css": "resize-full-outline",
+      "code": 59618,
+      "src": "typicons"
+    },
+    {
+      "uid": "1e4cf19f2a9f546c5f13f09af7c40ba9",
+      "css": "resize-normal-outline",
+      "code": 59617,
+      "src": "typicons"
+    },
+    {
+      "uid": "2b9bcf0829f99d9bdaa653b0a8cf41f5",
+      "css": "move-outline",
+      "code": 59619,
+      "src": "typicons"
+    },
+    {
+      "uid": "16bd6f8fd1c32a89b16d61e09a968c24",
+      "css": "zoom-in-outline",
+      "code": 59615,
+      "src": "typicons"
+    },
+    {
+      "uid": "abbfffb71ee797c071d628c374714083",
+      "css": "zoom-out-outline",
+      "code": 59616,
+      "src": "typicons"
+    },
+    {
+      "uid": "1fb50a37bc38da3863187931ac44ae5e",
+      "css": "cw-outline",
+      "code": 59446,
+      "src": "typicons"
+    },
+    {
+      "uid": "6b69b1a2df6d099ba15f11476075438e",
+      "css": "loop-outline",
+      "code": 59596,
+      "src": "typicons"
+    },
+    {
+      "uid": "c3b851a7a3ee5407ff159e9c7f61945f",
+      "css": "target-outline",
+      "code": 59597,
+      "src": "typicons"
+    },
+    {
       "uid": "ivmsk67zo1yb1tthd3ugi4xnb3get418",
       "css": "sun",
       "code": 59395,
+      "src": "typicons"
+    },
+    {
+      "uid": "971842913945f59c7f3cf11e75e1e4f1",
+      "css": "flash-outline",
+      "code": 59605,
+      "src": "typicons"
+    },
+    {
+      "uid": "7d6302991626c252d089d14dc760fc37",
+      "css": "moon",
+      "code": 59606,
+      "src": "typicons"
+    },
+    {
+      "uid": "b7cf8dba5f349cb92b536d76db4a4178",
+      "css": "power-outline",
+      "code": 59604,
       "src": "typicons"
     },
     {
@@ -877,15 +1213,93 @@
       "src": "typicons"
     },
     {
+      "uid": "610efad3150b6959e1b3fc863f39c60c",
+      "css": "gift",
+      "code": 59602,
+      "src": "typicons"
+    },
+    {
+      "uid": "85046e7e5a2fe685961d1423fcda0649",
+      "css": "chart-outline",
+      "code": 59621,
+      "src": "typicons"
+    },
+    {
+      "uid": "a55e4173e388989f16afd373b894a9f4",
+      "css": "chart-alt-outline",
+      "code": 59620,
+      "src": "typicons"
+    },
+    {
+      "uid": "890649841b2c37d56ff90065872fecf3",
+      "css": "chart-bar-outline",
+      "code": 59595,
+      "src": "typicons"
+    },
+    {
+      "uid": "76dfadaf502e065ac7b2689948f49cb0",
+      "css": "chart-pie-outline",
+      "code": 59625,
+      "src": "typicons"
+    },
+    {
       "uid": "um6h7e9nfp79peah8uphjhismoa8owtu",
       "css": "chart-pie-2",
       "code": 59563,
       "src": "typicons"
     },
     {
+      "uid": "9f498adcae624d612adc3123d65abf04",
+      "css": "credit-card",
+      "code": 59603,
+      "src": "typicons"
+    },
+    {
+      "uid": "1a27e6346cdf0480c9c22351378bebbb",
+      "css": "clipboard",
+      "code": 59447,
+      "src": "typicons"
+    },
+    {
+      "uid": "9637f035d143cc193e71c9704ebbb513",
+      "css": "database-1",
+      "code": 59598,
+      "src": "typicons"
+    },
+    {
+      "uid": "8cc0aaefb9860f1ccef03f63f5873361",
+      "css": "key-outline",
+      "code": 59459,
+      "src": "typicons"
+    },
+    {
+      "uid": "c1bea2b4c01d1d4bd1e4e1f79e51cdd2",
+      "css": "flow-merge",
+      "code": 59599,
+      "src": "typicons"
+    },
+    {
       "uid": "e45a44236f3f1ac013a1287bb60cd965",
       "css": "flow-cross",
       "code": 59396,
+      "src": "typicons"
+    },
+    {
+      "uid": "8f73806c205d38d9412c340f93ed0c7a",
+      "css": "coffee",
+      "code": 59600,
+      "src": "typicons"
+    },
+    {
+      "uid": "40b8b7bf3ab4931765b7d32fb625b4cd",
+      "css": "anchor-outline",
+      "code": 59601,
+      "src": "typicons"
+    },
+    {
+      "uid": "8f47f269b2667fb9b661e950a9599e26",
+      "css": "puzzle-outline",
+      "code": 59622,
       "src": "typicons"
     },
     {

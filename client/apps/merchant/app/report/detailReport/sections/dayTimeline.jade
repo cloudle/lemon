@@ -3,7 +3,14 @@ template(name="merchantReportDayTimeline")
       .panel-heading
          span nhật ký ngày ?/?/2014
       .panel-body
-         each timelineRecords
-            div {{version.createdAt}}, {{group}}, {{finalPrice}}, {{emailCreator}}
+         .lemon-timelime
+            each timelineRecords
+               .timeline-block(class="{{timelineMeta.color}}")
+                  .timeline-hook {{timeHook}}
+                  .timeline-thumb(class="{{timelineMeta.icon}}")
+                  .timeline-avatar
+                     +avatarImageComponent(avatar=timelineMeta.creatorAvatar alias=timelineMeta.creatorFirstName)
+                  .timeline-content
+                     span {{timelineMeta.message}}
       .panel-footer
          span.icon-angle-right
