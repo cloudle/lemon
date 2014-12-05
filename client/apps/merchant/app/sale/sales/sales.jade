@@ -1,12 +1,6 @@
 template(name="sales")
   +salePrinter(orderDetails=currentOrderDetails order=currentOrder)
   #header
-    .caption-row
-      .title Bán hàng
-      .commands
-        input(binding="switch" type="checkbox" name="advancedMode")
-        //+iSelect(options=warehouseSelectOptions class="field")
-
     .editor-row
       .editor-wrapper(style="width: 250px")
         span.ilabel sản phẩm
@@ -30,9 +24,17 @@ template(name="sales")
         span.ilabel.center.optional giảm %
         +iSpinEdit(options=productDiscountPercentOptions)
 
-  #content.sales-app
-    +gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
-
+  #content.modern.sales-app
+    .dual-content
+      .dual-detail-wrapper
+        .dual-detail
+          .nano: .nano-content
+            +gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
+      .dual-addon
+        .search-filter.icon-search-8
+          input(name='searchFilter' type="text")
+        .nano: .nano-content
+          span yeah!
   #footer
     .editor-row.extra(name='delivery')
       .editor-wrapper.right(style="width:200px")
@@ -70,6 +72,8 @@ template(name="sales")
         +iSpinEdit(options=billPercentDiscountOptions)
 
     .editor-row
+      .editor-wrapper
+        input(binding="switch" type="checkbox" name="advancedMode")
       .editor-wrapper(style="width: 180px")
         span.ilabel.optional khách hàng
         +iSelect(options=customerSelectOptions class="field")

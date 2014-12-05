@@ -44,6 +44,8 @@ editor-font-size = 12px
     padding-top 5px
     min-height 5px
     clearfix()
+    &.modern
+      border-top solid 1px #d7d7d7
     &.gray
       /*background #f7f7f7 url(images/dot-bg.png) repeat center top*/
       $noise-material(#f7f7f7, 'light')
@@ -66,7 +68,8 @@ editor-font-size = 12px
 
   .field
     width 100%; margin 5px 0
-
+  .switchery
+    margin 6px 0
   .ilabel
     absolute left 15px top 0; z-index 10
     padding 0 4px; line-height 10px
@@ -94,7 +97,7 @@ editor-font-size = 12px
     &:disabled
       background-color #fff
 
-#content > .detail-grid
+#content .detail-grid
   margin 0; padding 4px 2px 0 2px
   min-height 104px
   .col, .item-wrapper

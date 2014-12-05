@@ -4,6 +4,8 @@ saleRoute =
   onBeforeAction: ->
     if @ready()
       Apps.setup(logics.sales, Apps.Merchant.salesInit, 'sales')
+      Session.set "currentAppInfo",
+        name: "bán hàng"
       @next()
 #      Apps.setup(logics.sales, Apps.Merchant.salesReload)
   data: ->
