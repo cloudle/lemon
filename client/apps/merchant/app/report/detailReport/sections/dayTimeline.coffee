@@ -1,4 +1,6 @@
 lemon.defineHyper Template.merchantReportDayTimeline,
+  created: -> Session.setDefault('totalRevenue', 0)
+
   timelineMeta: ->
     meta = {}
 
@@ -7,7 +9,7 @@ lemon.defineHyper Template.merchantReportDayTimeline,
       meta.creatorFullName = profile.fullName ? '?'
       meta.creatorFirstName = Helpers.firstName(meta.creatorFullName)
     else
-      meta.creatorFullName = meta.creatorFirstName = Schema.users.findOne(@creator)?.emails[0].address
+      meta.creatorFullName = meta.creatorFirstName = Meteor.users.findOne(@creator)?.emails[0].address
 
     meta.creatorAvatar = AvatarImages.findOne(profile.avatar)?.url() if profile.avatar
 
@@ -24,7 +26,8 @@ lemon.defineHyper Template.merchantReportDayTimeline,
       meta.icon = 'icon-tag'
       meta.color = 'blue'
       meta.action = 'bán hàng'
-      meta.message = "#{meta.creatorFullName} bán hàng cho ?, giá trị #{@debtBalanceChange}. <br/>
+      buyerName = Schema.customers.findOne(@buyer)?.name
+      meta.message = "#{meta.creatorFullName} bán hàng cho #{buyerName}, giá trị #{@debtBalanceChange}. <br/>
                      Cân bằng nợ mới nhất từ #{accounting.formatNumber(@beforeDebtBalance)} thành
                      #{accounting.formatNumber(@latestDebtBalance)}."
 
@@ -42,6 +45,7 @@ lemon.defineHyper Template.merchantReportDayTimeline,
   timeHook: -> moment(@version.createdAt).format 'hh:mm'
 
   timelineRecords: ->
+    totalRevenue = 0
     transactions = Schema.transactions.find().fetch()
     sales = Schema.sales.find().fetch()
     imports = Schema.imports.find().fetch()
@@ -51,12 +55,23 @@ lemon.defineHyper Template.merchantReportDayTimeline,
     sorted = _.sortBy combined, (item) ->
       if item.group
         item.timelineType = 'transaction'
+        totalRevenue += item.debtBalanceChange
+        item.merchantRevenueDay = totalRevenue
       else if item.orderCode
         item.timelineType = 'sale'
+        totalRevenue += item.debtBalanceChange
+        item.merchantRevenueDay = totalRevenue
       else if item.returnCode
         item.timelineType = 'return'
+        totalRevenue += item.finallyPrice
+        item.merchantRevenueDay = totalRevenue
       else
         item.timelineType = 'import'
+        totalRevenue += item.debtBalanceChange
+        item.merchantRevenueDay = totalRevenue
 
       item.version.createdAt
+    console.log sorted
+    console.log totalRevenue
+    sorted
 

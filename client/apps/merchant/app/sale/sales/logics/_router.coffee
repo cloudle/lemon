@@ -1,43 +1,47 @@
+scope = logics.sales
+
 saleRoute =
   template: 'sales',
   waitOnDependency: 'saleOrder'
   onBeforeAction: ->
     if @ready()
-      Apps.setup(logics.sales, Apps.Merchant.salesInit, 'sales')
+      Apps.setup(scope, Apps.Merchant.salesInit, 'sales')
       Session.set "currentAppInfo",
         name: "bán hàng"
       @next()
-#      Apps.setup(logics.sales, Apps.Merchant.salesReload)
+#      Apps.setup(scope, Apps.Merchant.salesReload)
   data: ->
-    Apps.setup(logics.sales, Apps.Merchant.salesReactiveRun)
+    Apps.setup(scope, Apps.Merchant.salesReactiveRun)
 
     return {
-      currentOrder: logics.sales.currentOrder
-      currentOrderDetails: logics.sales.currentOrderDetails
-      orderHistory: logics.sales.currentOrderHistory
+      currentOrder: scope.currentOrder
+      currentOrderDetails: scope.currentOrderDetails
+      orderHistory: scope.currentOrderHistory
 
-      finalPriceProduct: logics.sales.finalPriceProduct
-      deliveryDetail   : logics.sales.deliveryDetail
-      currentDebit     : logics.sales.currentDebit
+      finalPriceProduct: scope.finalPriceProduct
+      deliveryDetail   : scope.deliveryDetail
+      currentDebit     : scope.currentDebit
 
-      tabOptions        : logics.sales.tabOptions
-      saleDetailOptions : logics.sales.saleDetailOptions
+      tabOptions        : scope.tabOptions
+      saleDetailOptions : scope.saleDetailOptions
 
-      productSelectOptions         : logics.sales.productSelectOptions
-      productQualityOptions        : logics.sales.qualityOptions
-      productPriceOptions          : logics.sales.priceOptions
-      productDiscountCashOptions   : logics.sales.discountCashOptions
-      productDiscountPercentOptions: logics.sales.discountPercentOptions
+#      productSelectOptions         : scope.productSelectOptions
+      productQualityOptions        : scope.qualityOptions
+      productPriceOptions          : scope.priceOptions
+      productDiscountCashOptions   : scope.discountCashOptions
+      productDiscountPercentOptions: scope.discountPercentOptions
 
-      billDiscountSelectOption   : logics.sales.billDiscountSelectOptions
-      billCashDiscountOptions    : logics.sales.billCashDiscountOptions
-      billPercentDiscountOptions : logics.sales.billPercentDiscountOptions
-      customerSelectOptions      : logics.sales.customerSelectOptions
-      depositOptions             : logics.sales.depositOptions
+      billDiscountSelectOption   : scope.billDiscountSelectOptions
+      billCashDiscountOptions    : scope.billCashDiscountOptions
+      billPercentDiscountOptions : scope.billPercentDiscountOptions
+      customerSelectOptions      : scope.customerSelectOptions
+      depositOptions             : scope.depositOptions
 
-      sellerSelectOptions          : logics.sales.sellerSelectOptions
-      paymentsDeliverySelectOption : logics.sales.paymentsDeliverySelectOptions
-      paymentMethodSelectOption    : logics.sales.paymentMethodSelectOptions
+      sellerSelectOptions          : scope.sellerSelectOptions
+      paymentsDeliverySelectOption : scope.paymentsDeliverySelectOptions
+      paymentMethodSelectOption    : scope.paymentMethodSelectOptions
+
+      allProductInCurrentWarehouse : scope.managedSalesProductList
     }
 
 lemon.addRoute [saleRoute], Apps.Merchant.RouterBase

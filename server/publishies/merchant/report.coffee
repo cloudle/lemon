@@ -38,6 +38,9 @@ Meteor.publishComposite 'merchantReportData', (branchIds, startDate = new Date()
           {'version.createdAt': {$lt: toDate}}
         ]
       }
+      children: [
+        find: (currentImport, branch) -> Schema.distributors.find {_id: currentImport.distributor}
+      ]
     ,
       find: (branch) -> Schema.sales.find {
         $and: [
@@ -46,6 +49,9 @@ Meteor.publishComposite 'merchantReportData', (branchIds, startDate = new Date()
           {'version.createdAt': {$lt: toDate}}
         ]
       }
+      children: [
+        find: (sale, branch) -> Schema.customers.find {_id: sale.buyer}
+      ]
     ,
       find: (branch) -> Schema.returns.find {
         $and: [
@@ -59,6 +65,9 @@ Meteor.publishComposite 'merchantReportData', (branchIds, startDate = new Date()
       find: (branch) -> Schema.transactions.find {
           $and: [
             { merchant: branch._id }
+            { debtBalanceChange: { $exists: true }}
+            { beforeDebtBalance: { $exists: true }}
+            { latestDebtBalance: { $exists: true }}
             { dueDay: {$gt: startDate} }
             { dueDay: {$lt: toDate} }
           ]
