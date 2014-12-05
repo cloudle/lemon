@@ -1,51 +1,64 @@
-calculateTotalPrice = -> logics.sales.currentOrder?.currentPrice * logics.sales.currentOrder?.currentQuality
-calculatePercentDiscount = -> Math.round(logics.sales.currentOrder?.currentDiscount*100/(logics.sales.currentOrder?.currentPrice * logics.sales.currentOrder?.currentQuality))
+scope = logics.sales
 
 lemon.defineApp Template.sales,
-  allowAllOrderDetail: -> if !logics.sales.currentProduct then 'disabled'
+  allowCreateOrderDetail: -> if !scope.currentProduct then 'disabled'
   allowSuccessOrder: -> if Session.get('allowSuccess') then '' else 'disabled'
+  productSelectionActiveClass: -> if Session.get('currentOrder')?.currentProduct is @._id then 'active' else ''
+  productCreationMode: -> Session.get("salesCurrentProductCreationMode")
+  showProductFilterSearch: -> Session.get("salesCurrentProductSearchFilter")?.length > 0
+  avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
 
   created: ->
-    Session.setDefault('allowAllOrderDetail', false)
+    Session.setDefault('allowCreateOrderDetail', false)
     Session.setDefault('allowSuccessOrder', false)
     Session.setDefault('globalBarcodeInput', '')
 
   rendered: ->
-    logics.sales.templateInstance = @
+    scope.templateInstance = @
     lemon.ExcuteLogics()
-    $("[name=deliveryDate]").datepicker('setDate', logics.sales.deliveryDetail?.deliveryDate)
-    $(document).on "keypress", (e) -> logics.sales.handleGlobalBarcodeInput(e)
+    $("[name=deliveryDate]").datepicker('setDate', scope.deliveryDetail?.deliveryDate)
+    $(document).on "keypress", (e) -> scope.handleGlobalBarcodeInput(e)
   destroyed: ->
     $(document).off("keypress")
 
   events:
-    "change [name='advancedMode']": (event, template) ->
-      logics.sales.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
+    "input .search-filter": (event, template) ->
+      Session.set("salesCurrentProductSearchFilter", template.ui.$searchFilter.val())
+#    "keypress input[name='searchFilter']": (event, template)->
+#      scope.createCustomer(template) if event.which is 13 and Session.get("salesCurrentProductCreationMode")
+#    "click .createCustomerBtn": (event, template) -> scope.createCustomer(template)
 
-    "change [name ='deliveryDate']": (event, template) -> logics.sales.updateDeliveryDate()
+
+    "click .product-selection": ->
+      scope.updateSelectNewProduct(scope, currentProduct) if currentProduct = Schema.products.findOne(@_id)
+
+    "change [name='advancedMode']": (event, template) ->
+      scope.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
+
+    "change [name ='deliveryDate']": (event, template) -> scope.updateDeliveryDate()
 
     'blur .contactName': (event, template)->
-      logics.sales.updateDeliveryContactName(template.find(".contactName"))
+      scope.updateDeliveryContactName(template.find(".contactName"))
 
     'blur .contactPhone': (event, template)->
-      logics.sales.updateDeliveryContactPhone(template.find(".contactPhone"))
+      scope.updateDeliveryContactPhone(template.find(".contactPhone"))
 
     'blur .deliveryAddress': (event, template)->
-      logics.sales.updateDeliveryAddress(template.find(".deliveryAddress"))
+      scope.updateDeliveryAddress(template.find(".deliveryAddress"))
 
     'blur .comment': (event, template)->
-      logics.sales.updateDeliveryComment(template.find(".comment"))
+      scope.updateDeliveryComment(template.find(".comment"))
 
     'click .addOrderDetail': () ->
-      logics.sales.addOrderDetail(
-        logics.sales.currentOrder.currentProduct,
-        logics.sales.currentOrder.currentQuality,
-        logics.sales.currentOrder.currentPrice,
-        logics.sales.currentOrder.currentDiscountCash
+      scope.addOrderDetail(
+        scope.currentOrder.currentProduct,
+        scope.currentOrder.currentQuality,
+        scope.currentOrder.currentPrice,
+        scope.currentOrder.currentDiscountCash
       )
     "click .print-preview": (event, template) -> $(template.find '#salePrinter').modal()
     'click .finish': (event, template)->
-      Meteor.call "finishOrder", logics.sales.currentOrder._id, (error, result) ->
+      Meteor.call "finishOrder", scope.sales.currentOrder._id, (error, result) ->
         if error then console.log error
         else
           saleId = result

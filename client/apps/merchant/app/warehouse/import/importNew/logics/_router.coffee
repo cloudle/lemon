@@ -36,7 +36,7 @@ importRoute =
       importPriceOptions: scope.importPriceOptions
       salePriceOptions  : scope.salePriceOptions
 
-      managedProductList: scope.managedProductList
+      managedSalesProductList: scope.managedSalesProductList
     }
 
 lemon.addRoute [importRoute], Apps.Merchant.RouterBase

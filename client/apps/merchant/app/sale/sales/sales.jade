@@ -2,9 +2,9 @@ template(name="sales")
   +salePrinter(orderDetails=currentOrderDetails order=currentOrder)
   #header
     .editor-row
-      .editor-wrapper(style="width: 250px")
-        span.ilabel sản phẩm
-        +iSelect(options=productSelectOptions class="field")
+      //.editor-wrapper(style="width: 250px")
+      //  span.ilabel sản phẩm
+      //  +iSelect(options=productSelectOptions class="field")
       .editor-wrapper(style="width: 100px")
         span.ilabel.center số lượng
         +iSpinEdit(options=productQualityOptions)
@@ -12,7 +12,7 @@ template(name="sales")
         span.ilabel.center giá bán
         +iSpinEdit(options=productPriceOptions)
       .editor-wrapper(style="width:70px")
-        button.lemon.btn.lime.icon-plus-circled.addOrderDetail(class="{{allowAllOrderDetail}}" type='submit') THÊM
+        button.lemon.btn.lime.icon-plus-circled.addOrderDetail(class="{{allowCreateOrderDetail}}" type='submit') THÊM
 
       .editor-wrapper.right(style="width: 150px")
         span.ilabel.optional giá tổng
@@ -34,7 +34,26 @@ template(name="sales")
         .search-filter.icon-search-8
           input(name='searchFilter' type="text")
         .nano: .nano-content
-          span yeah!
+          if showProductFilterSearch
+            .group-wrapper
+              each allProductInCurrentWarehouse
+                .caption.inner.product-selection(class="{{productSelectionActiveClass}}")
+                  +avatarImageComponent(avatar=avatarUrl alias=name)
+                  span.text
+                    | {{name}}
+                    if skulls
+                      | ({{skulls}})
+          else
+            each allProductInCurrentWarehouse
+              .group-wrapper
+                .caption.group {{key}}
+                each childs
+                  .caption.inner.product-selection(class="{{productSelectionActiveClass}}")
+                    +avatarImageComponent(avatar=avatarUrl alias=name)
+                    span.text
+                      | {{name}}
+                      if skulls
+                        | ({{skulls}})
   #footer
     .editor-row.extra(name='delivery')
       .editor-wrapper.right(style="width:200px")

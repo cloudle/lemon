@@ -188,10 +188,12 @@ Meteor.methods
             updateDistributorAndCustomImportByDelete(distributor._id, customImport._id, customImportDetail.finalPrice)
             calculateTransactionBy(customImport._id)
 
-  createNewReceiptCashOfCustomImport: (distributorId, debtCash, description, paidDate)->
+  createNewReceiptCashOfCustomImport: (distributorId, debtCash, description, paidDate = new Date())->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      toDate = new Date()
+      paidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), toDate.getHours(), toDate.getMinutes(), toDate.getSeconds())
       distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
-      if distributor and distributor.customImportModeEnabled is true and paidDate < (new Date)
+      if distributor and distributor.customImportModeEnabled is true and paidDate <= toDate
         latestCustomImport = Schema.customImports.findOne({seller: distributor._id},{sort: {debtDate: -1}})
         if latestCustomImport is undefined
           Meteor.call('createNewCustomImport', createImportOption(profile, distributor, paidDate))
@@ -242,8 +244,10 @@ Meteor.methods
 
   createNewReceiptCashOfImport: (distributorId, debtCash, description, paidDate = new Date())->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      toDate = new Date()
+      paidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), toDate.getHours(), toDate.getMinutes(), toDate.getSeconds())
       distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
-      if distributor and paidDate < (new Date)
+      if distributor and paidDate <= toDate
         latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
         if latestImport and paidDate >= latestImport.version.createdAt
           if latestTransaction = Schema.transactions.findOne({
@@ -262,8 +266,6 @@ Meteor.methods
             incCustomerOption.importLoan     = -debtCash
             incCustomerOption.importTotalCash = -debtCash
           Schema.distributors.update distributor._id, $inc: incCustomerOption
-
-        return {client: paidDate, server: latestImport.version.createdAt}
 
 
   calculateCustomImportByDistributor: (distributorId)->
