@@ -12,7 +12,8 @@ Component.helpers.customBinding = (uiOptions, context) ->
   context.ui = {}
   context.ui[name] = context.find(value) for name, value of uiOptions when typeof value is 'string'
 
-Component.helpers.bindingElements = (context)-> bindingElements(context)
+Component.helpers.bindingElements = (context) -> bindingElements(context)
+Component.helpers.bindingHotkeys = (context) -> bindingHotkeys(context)
 
 Component.helpers.autoBinding = (context) ->
   context.ui = context.ui ? {}
@@ -31,6 +32,11 @@ bindingElements = (context) ->
     name = $(item).attr('name')
     context.ui[name] = item
     context.ui["$#{name}"] = $(item)
+
+bindingHotkeys = (hotkeyOptions, context) ->
+#  context.hotkeys = hotkeyOptions
+#  for name, value of hotkeyOptions when typeof value is 'function'
+
 
 bindingSwitch = (context) ->
   context.switch = {}
