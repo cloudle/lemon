@@ -34,7 +34,7 @@ lemon.defineApp Template.sales,
 
 
     "click .product-selection": ->
-      scope.updateSelectNewProduct(scope, currentProduct) if currentProduct = Schema.products.findOne(@_id)
+      scope.updateSelectNewProduct(currentProduct) if currentProduct = Schema.products.findOne(@_id)
 
     "change [name='advancedMode']": (event, template) ->
       scope.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked

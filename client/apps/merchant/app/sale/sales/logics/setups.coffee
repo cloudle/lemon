@@ -11,10 +11,13 @@ Apps.Merchant.salesInit.push (scope) ->
 
 
 
-  scope.updateSelectNewProduct = (scope, product)->
+  scope.updateSelectNewProduct = (product)->
     if Session.get('salesCurrentOrderSelected')
+      orderId = Session.get('salesCurrentOrderSelected')._id
     else
-      orderId = scope.createNewOrderAndSelected()
+      if order = scope.createNewOrderAndSelected()
+        Session.set('salesCurrentOrderSelected', order)
+        orderId = order._id
 
     cross = scope.validation.getCrossProductQuality(product._id, orderId)
     maxQuality = (cross.product.availableQuality - cross.quality)
@@ -26,3 +29,5 @@ Apps.Merchant.salesInit.push (scope) ->
         currentTotalPrice     : product.price
         currentDiscountCash   : Number(0)
         currentDiscountPercent: Number(0)
+
+    Session.set('salesCurrentOrderSelected', Schema.orders.findOne(orderId))

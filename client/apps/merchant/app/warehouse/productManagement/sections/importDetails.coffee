@@ -14,4 +14,4 @@ lemon.defineWidget Template.productManagementImportDetails,
     Schema.productDetails.find {import: importId, product: Session.get("productManagementCurrentProduct")._id}
 
   saleDetails: -> Schema.saleDetails.find {productDetail: @_id}
-  buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale).buyer).name
+  buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
