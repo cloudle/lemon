@@ -4,7 +4,9 @@ lemon.defineHyper Template.distributorManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showEditCommand: -> Session.get "distributorManagementShowEditCommand"
   name: ->
-    Meteor.setTimeout(scope.overviewTemplateInstance.ui.$distributorName.change(), 50) if scope.overviewTemplateInstance
+    Meteor.setTimeout ->
+      scope.overviewTemplateInstance.ui.$distributorName.change()
+    , 50 if scope.overviewTemplateInstance
     @name
 
   rendered: ->

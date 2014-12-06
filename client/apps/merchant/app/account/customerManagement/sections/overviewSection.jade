@@ -4,10 +4,10 @@ template(name="customerManagementOverviewSection")
     .panel-heading
       +avatarImageComponent(avatar=avatarUrl alias=firstName)
       .caption
-        input.editable(name="customerName" value="{{name}}" maxlength="50")
+        input.editable.dashed(name="customerName" value="{{name}}" maxlength="50")
         if description
           span.blured-color ({{description}})
-      .sub1: input.editable(name="customerPhone" value="{{phone}}" maxlength="20" size="15" placeholder="điện thoại")
+      .sub1: input.editable.dashed(name="customerPhone" value="{{phone}}" maxlength="20" size="15" placeholder="điện thoại")
       .sub2: input.editable(name="customerAddress" value="{{address}}" maxlength="100" size="50" placeholder="địa chỉ")
       .commands
         if showEditCommand

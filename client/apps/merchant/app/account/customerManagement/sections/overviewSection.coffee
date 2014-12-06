@@ -4,7 +4,9 @@ lemon.defineHyper Template.customerManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showEditCommand: -> Session.get "customerManagementShowEditCommand"
   name: ->
-    Meteor.setTimeout(scope.overviewTemplateInstance.ui.$customerName.change(), 50) if scope.overviewTemplateInstance
+    Meteor.setTimeout ->
+      scope.overviewTemplateInstance.ui.$customerName.change()
+    ,50 if scope.overviewTemplateInstance
     @name
   firstName: -> Helpers.firstName(@name)
 

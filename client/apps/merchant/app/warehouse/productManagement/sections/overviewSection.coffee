@@ -14,13 +14,14 @@ lemon.defineHyper Template.productManagementOverviewSection,
       totalPrice/totalQuality
 
   name: ->
-    Meteor.setTimeout(scope.overviewTemplateInstance.ui.$productName.change(), 50) if scope.overviewTemplateInstance
+    Meteor.setTimeout ->
+      scope.overviewTemplateInstance.ui.$productName.change()
+    , 50 if scope.overviewTemplateInstance
     @name
 
   rendered: ->
     scope.overviewTemplateInstance = @
     @ui.$productName.autosizeInput({space: 10})
-    @ui.$productPrice.autosizeInput({space: 10})
     @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
   events:
