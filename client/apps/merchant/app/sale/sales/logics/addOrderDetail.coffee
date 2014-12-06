@@ -38,7 +38,7 @@ checkingAddOrderDetail= (newOrderDetail, orderDetails)->
 Apps.Merchant.salesInit.push ->
   logics.sales.addOrderDetail = (productId, quality = 1, price = null, discountCash = null)->
     zone.run =>
-      currentOrder = logics.sales.currentOrder
+      currentOrder = Session.get('currentOrder')
       if !product = Schema.products.findOne(productId) then return console.log('productId không tồn tại.')
       if price is null then price = product.price
       if discountCash is null then discountCash = 0

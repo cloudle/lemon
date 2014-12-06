@@ -9,11 +9,11 @@ Apps.Merchant.salesInit.push ->
         result
       text: 'email'
     initSelection: (element, callback) ->
-      currentSeller = logics.sales.currentOrder?.seller ? Meteor.userId()
+      currentSeller = Session.get('currentOrder')?.seller ? Meteor.userId()
       callback Meteor.users.findOne(currentSeller)
     formatSelection: formatSellerSearch
     formatResult: formatSellerSearch
     id: '_id'
     placeholder: 'CHỌN NGƯỜI BÁN'
-    changeAction: (e) -> Order.update(logics.sales.currentOrder._id, {$set: {seller: e.added._id}})
-    reactiveValueGetter: -> logics.sales.currentOrder?.seller
+    changeAction: (e) -> Order.update(Session.get('currentOrder')._id, {$set: {seller: e.added._id}})
+    reactiveValueGetter: -> Session.get('currentOrder')?.seller

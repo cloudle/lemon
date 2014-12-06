@@ -1,33 +1,28 @@
 Apps.Merchant.salesInit.push (scope) ->
-  scope.currentAllProductsInWarehouse = Product.insideWarehouse(Session.get('myProfile').currentWarehouse)
-  scope.currentAllCustomers           = Customer.insideMerchant(Session.get('myProfile').parentMerchant)
-  scope.currentAllSkulls              = Skull.insideMerchant(Session.get('myProfile').parentMerchant)
-  scope.currentBranchProviders        = Provider.insideBranch(Session.get('myProfile').currentMerchant)
-  scope.currentAllProviders           = Provider.insideMerchant(Session.get('myProfile').parentMerchant)
-  scope.currentOrderHistory           = Order.myHistory(Session.get('myProfile').user, Session.get('myProfile').currentWarehouse, Session.get('myProfile').currentMerchant)
-  scope.currentBranchStaff            = Meteor.users.find({})
-
-
-
 
 
   scope.updateSelectNewProduct = (product)->
-    if Session.get('salesCurrentOrderSelected')
-      orderId = Session.get('salesCurrentOrderSelected')._id
-    else
-      if order = scope.createNewOrderAndSelected()
-        Session.set('salesCurrentOrderSelected', order)
-        orderId = order._id
+    order = Session.get('currentOrder')
+    if !order then order = scope.createNewOrderAndSelected()
 
-    cross = scope.validation.getCrossProductQuality(product._id, orderId)
+    cross = scope.validation.getCrossProductQuality(product._id, order._id)
     maxQuality = (cross.product.availableQuality - cross.quality)
-    Schema.orders.update orderId,
-      $set:
-        currentProduct        : product._id
-        currentQuality        : if maxQuality > 0 then 1 else 0
-        currentPrice          : product.price
-        currentTotalPrice     : product.price
-        currentDiscountCash   : Number(0)
-        currentDiscountPercent: Number(0)
 
-    Session.set('salesCurrentOrderSelected', Schema.orders.findOne(orderId))
+    order.currentProduct         = product._id
+    order.currentQuality         = if maxQuality > 0 then 1 else 0
+    order.currentPrice           = product.price
+    order.currentTotalPrice      = product.price
+    order.currentDiscountCash    = Number(0)
+    order.currentDiscountPercent = Number(0)
+    Session.set('currentOrder', order)
+    Meteor.subscribe('orderDetails', order._id)
+
+    Schema.orders.update order._id,
+      $set:
+        currentProduct        : order.currentProduct
+        currentQuality        : order.currentQuality
+        currentPrice          : order.currentPrice
+        currentTotalPrice     : order.currentTotalPrice
+        currentDiscountCash   : order.currentDiscountCash
+        currentDiscountPercent: order.currentDiscountPercent
+

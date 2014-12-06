@@ -14,7 +14,7 @@ saleRoute =
     Apps.setup(scope, Apps.Merchant.salesReactiveRun)
 
     return {
-      currentOrder: scope.currentOrder
+      currentOrder: Session.get('currentOrder')
       currentOrderDetails: scope.currentOrderDetails
       orderHistory: scope.currentOrderHistory
 

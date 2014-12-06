@@ -7,9 +7,9 @@ lemon.addRoute
       Apps.setup(scope, Apps.Merchant.customerManagementInit, 'customerManagement')
       Session.set "currentAppInfo",
         name: "khách hàng"
-      #        navigationPartial:
-      #          template: "customerManagementNavigationPartial"
-      #          data: {}
+        navigationPartial:
+          template: "customerManagementNavigationPartial"
+          data: {}
       @next()
   data: ->
     Apps.setup(scope, Apps.Merchant.customerManagementReactive)

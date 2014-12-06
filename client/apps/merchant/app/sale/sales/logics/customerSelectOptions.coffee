@@ -44,5 +44,5 @@ Apps.Merchant.salesInit.push ->
     formatResult: formatCustomerSearch
     id: '_id'
     placeholder: 'CHỌN NGƯỜI MUA'
-    changeAction: (e) -> changedActionSelectCustomer(e.added._id, logics.sales.currentOrder)
+    changeAction: (e) -> changedActionSelectCustomer(e.added._id, Session.get('currentOrder'))
     reactiveValueGetter: -> Session.get('currentOrder')?.buyer

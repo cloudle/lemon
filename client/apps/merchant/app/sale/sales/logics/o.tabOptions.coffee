@@ -23,4 +23,4 @@ Apps.Merchant.salesInit.push (scope) ->
     destroyAction: (instance) -> destroySaleAndDetail(scope, instance._id)
     navigateAction: (instance) ->
       UserSession.set('currentOrder', instance._id)
-      Session.set('currentOrder', scope.currentOrder)
+      Session.set('currentOrder', instance)

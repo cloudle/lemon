@@ -7,6 +7,8 @@ lemon.defineApp Template.customerManagement,
   activeClass:-> if Session.get("customerManagementCurrentCustomer")?._id is @._id then 'active' else ''
   creationMode: -> Session.get("customerManagementCreationMode")
   firstName: -> Helpers.firstName(@name)
+
+  finalDebtBalance: -> Session.get("customerManagementCurrentCustomer")?.customSaleDebt + Session.get("customerManagementCurrentCustomer")?.saleDebt
 #  rendered: -> $(".nano").nanoScroller()
   created: ->
 #    Session.setDefault('allowCreateNewCustomer', false)

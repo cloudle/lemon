@@ -1,12 +1,17 @@
 scope = logics.sales
 
 lemon.defineApp Template.sales,
+  currentOrder: -> Session.get('currentOrder')
   allowCreateOrderDetail: -> if !scope.currentProduct then 'disabled'
   allowSuccessOrder: -> if Session.get('allowSuccess') then '' else 'disabled'
-  productSelectionActiveClass: -> if Session.get('currentOrder')?.currentProduct is @._id then 'active' else ''
+  productSelectionActiveClass: -> if Session.get('currentOrder')?.currentProduct is @_id then 'active' else ''
   productCreationMode: -> Session.get("salesCurrentProductCreationMode")
   showProductFilterSearch: -> Session.get("salesCurrentProductSearchFilter")?.length > 0
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
+
+  product: -> Schema.products.findOne(@product)
+
+
 
   created: ->
     Session.setDefault('allowCreateOrderDetail', false)
@@ -14,7 +19,7 @@ lemon.defineApp Template.sales,
     Session.setDefault('globalBarcodeInput', '')
 
     if mySession = Session.get('mySession')
-      Session.set('salesCurrentOrderSelected', Schema.orders.findOne(mySession.currentOrder))
+      Session.set('currentOrder', Schema.orders.findOne(mySession.currentOrder))
       Meteor.subscribe('orderDetails', mySession.currentOrder)
 
   rendered: ->
@@ -54,15 +59,16 @@ lemon.defineApp Template.sales,
       scope.updateDeliveryComment(template.find(".comment"))
 
     'click .addOrderDetail': () ->
-      scope.addOrderDetail(
-        scope.currentOrder.currentProduct,
-        scope.currentOrder.currentQuality,
-        scope.currentOrder.currentPrice,
-        scope.currentOrder.currentDiscountCash
-      )
+      if currentOrder = Session.get('currentOrder')
+        scope.addOrderDetail(
+          currentOrder.currentProduct,
+          currentOrder.currentQuality,
+          currentOrder.currentPrice,
+          currentOrder.currentDiscountCash
+        )
     "click .print-preview": (event, template) -> $(template.find '#salePrinter').modal()
     'click .finish': (event, template)->
-      Meteor.call "finishOrder", scope.currentOrder._id, (error, result) ->
+      Meteor.call "finishOrder", Session.get('currentOrder')._id, (error, result) ->
         if error then console.log error
         else
           saleId = result

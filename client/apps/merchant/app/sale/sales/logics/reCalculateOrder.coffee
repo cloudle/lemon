@@ -44,7 +44,20 @@ calculateDefaultOrder = (currentOrder, orderDetails)->
 updateOrderByOrderDetail = (currentOrder, orderDetails)->
   orderOptionDefault = calculateDefaultOrder(currentOrder, orderDetails)
   updateOrder = calculateOrderDeposit(currentOrder, orderOptionDefault)
+  console.log updateOrder
   Schema.orders.update currentOrder._id, $set: updateOrder
+
+  currentOrder.saleCount       = updateOrder.saleCount
+  currentOrder.discountCash    = updateOrder.discountCash
+  currentOrder.discountPercent = updateOrder.discountPercent
+  currentOrder.totalPrice      = updateOrder.totalPrice
+  currentOrder.finalPrice      = updateOrder.finalPrice
+  currentOrder.deposit         = updateOrder.deposit
+  currentOrder.debit           = updateOrder.debit
+#  currentOrder.paymentMethod   = updateOrder.paymentMethod   if updateOrder.paymentMethod
+#  currentOrder.currentDeposit  = updateOrder.currentDeposit  if updateOrder.currentDeposit
+
+  Session.set('currentOrder', currentOrder)
 
 updateOrderByOrderDetailEmpty = (currentOrder)->
   updateOrder =
@@ -57,8 +70,10 @@ updateOrderByOrderDetailEmpty = (currentOrder)->
     currentDeposit  : 0
     deposit         : 0
     debit           : 0
-
   Schema.orders.update currentOrder._id, $set: updateOrder
+
+
+
 
 Apps.Merchant.salesInit.push ->
   logics.sales.reCalculateOrder = (orderId) ->

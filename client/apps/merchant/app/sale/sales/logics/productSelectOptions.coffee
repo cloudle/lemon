@@ -27,8 +27,8 @@
 #    placeholder: 'CHỌN SẢN PHẨM'
 ##    minimumResultsForSearch: -1
 #    changeAction: (e) ->
-#      if logics.sales.currentOrder
-#        orderId = logics.sales.currentOrder._id
+#      if Session.get('currentOrder')
+#        orderId = Session.get('currentOrder')._id
 #      else
 #        orderId = logics.sales.createNewOrderAndSelected()
 #      updateSelectNewProduct(scope, e.added, orderId)

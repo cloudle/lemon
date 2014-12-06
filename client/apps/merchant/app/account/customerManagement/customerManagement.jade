@@ -1,6 +1,3 @@
-template(name="customerManagementNavigationPartial")
-  li Yeah!
-
 template(name="customerManagement")
   //#header
   //  .caption-row
@@ -61,3 +58,9 @@ template(name="customerManagement")
                       |{{name}}
                       if description
                         |({{description}})
+
+  #footer.modern
+    .editor-row
+      .editor-wrappe.pull-right
+        span.s5 TỔNG NỢ:
+        span.s3 <b>{{formatNumber finalDebtBalance}}</b> VNĐ
