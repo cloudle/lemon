@@ -29,7 +29,11 @@ template(name="sales")
       .dual-detail-wrapper
         .dual-detail
           .nano: .nano-content
-            +gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
+            .section.top.panel.panel-default
+              .panel-heading
+                span heading
+              .panel-body
+                +gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
       .dual-addon
         .search-filter.icon-search-8
           input(name='searchFilter' type="text")
@@ -54,7 +58,7 @@ template(name="sales")
                       | {{name}}
                       if skulls
                         | ({{skulls}})
-  #footer
+  #footer.modern
     .editor-row.extra(name='delivery')
       .editor-wrapper.right(style="width:200px")
         span.ilabel ghi chú
