@@ -18,28 +18,32 @@ lemon.defineHyper Template.merchantReportDayTimeline,
       meta.color = if @receivable then 'lime' else 'pumpkin'
       action = if @receivable then 'thu tiền' else 'chi tiền'
       optionalDesc = if @description then "(#{@description})" else ''
-      meta.message = "#{meta.creatorFullName} #{action} #{optionalDesc}, giá trị #{@debtBalanceChange}. <br/>
-                     Cân bằng nợ mới nhất từ #{accounting.formatNumber(@beforeDebtBalance)} thành
-                     #{accounting.formatNumber(@latestDebtBalance)}."
+      meta.message = "#{meta.creatorFullName} #{action} #{optionalDesc}, giá trị #{accounting.formatNumber(@debtBalanceChange)} VNĐ.
+                     Cân bằng nợ mới nhất từ #{accounting.formatNumber(@beforeDebtBalance)} VNĐ, thành
+                     #{accounting.formatNumber(@latestDebtBalance)} VNĐ."
 
     else if @timelineType is 'sale'
       meta.icon = 'icon-tag'
       meta.color = 'blue'
       meta.action = 'bán hàng'
       buyerName = Schema.customers.findOne(@buyer)?.name
-      meta.message = "#{meta.creatorFullName} bán hàng cho #{buyerName}, giá trị #{@debtBalanceChange}. <br/>
-                     Cân bằng nợ mới nhất từ #{accounting.formatNumber(@beforeDebtBalance)} thành
-                     #{accounting.formatNumber(@latestDebtBalance)}."
+      meta.message = "#{meta.creatorFullName} bán hàng cho #{buyerName}, giá trị #{accounting.formatNumber(@debtBalanceChange)} VNĐ.
+                     Cân bằng nợ mới nhất từ #{accounting.formatNumber(@beforeDebtBalance)} VNĐ, thành
+                     #{accounting.formatNumber(accounting.formatNumber(@latestDebtBalance))} VNĐ."
 
     else if @timelineType is 'return'
       meta.icon = 'icon-reply-outline'
       meta.color = 'pumpkin'
-      meta.message = "#{meta.creatorFullName} thực hiện trả hàng với tổng giá trị #{accounting.formatNumber(@finallyPrice)}."
+      meta.message = "#{meta.creatorFullName} thực hiện trả hàng với tổng giá trị #{accounting.formatNumber(@finallyPrice)} VNĐ.
+                     Cân bằng nợ mới nhất từ #{accounting.formatNumber(@beforeDebtBalance)} VNĐ, thành
+                     #{accounting.formatNumber(@latestDebtBalance)} VNĐ."
+
     else if @timelineType is 'import'
       meta.icon = 'icon-download-outline'
       meta.color = 'amethyst'
-      meta.message = "#{meta.creatorFullName} nhập kho với tổng giá trị #{accounting.formatNumber(@debtBalanceChange)}."
-
+      meta.message = "#{meta.creatorFullName} nhập kho với tổng giá trị #{accounting.formatNumber(@debtBalanceChange)} VNĐ.
+                     Cân bằng nợ mới nhất từ #{accounting.formatNumber(@beforeDebtBalance)} VNĐ, thành
+                     #{accounting.formatNumber(@latestDebtBalance)} VNĐ."
     return meta
 
   timeHook: -> moment(@version.createdAt).format 'hh:mm'
@@ -55,23 +59,36 @@ lemon.defineHyper Template.merchantReportDayTimeline,
     sorted = _.sortBy combined, (item) ->
       if item.group
         item.timelineType = 'transaction'
-        totalRevenue += item.debtBalanceChange
-        item.merchantRevenueDay = totalRevenue
       else if item.orderCode
         item.timelineType = 'sale'
-        totalRevenue += item.debtBalanceChange
-        item.merchantRevenueDay = totalRevenue
       else if item.returnCode
         item.timelineType = 'return'
-        totalRevenue += item.finallyPrice
+      else
+        item.timelineType = 'import'
+
+      item.version.createdAt
+
+
+    sorted = _.sortBy sorted, (item) ->
+      if item.group
+        item.timelineType = 'transaction'
+        item.beforeDebtBalance = totalRevenue
+        totalRevenue += item.debtBalanceChange
+        item.latestDebtBalance = totalRevenue
+      else if item.orderCode
+        item.timelineType = 'sale'
+        item.beforeDebtBalance = totalRevenue
+        totalRevenue += item.debtBalanceChange
+        item.latestDebtBalance = totalRevenue
+      else if item.returnCode
+        item.timelineType = 'return'
+        totalRevenue -= item.finallyPrice
         item.merchantRevenueDay = totalRevenue
       else
         item.timelineType = 'import'
-        totalRevenue += item.debtBalanceChange
-        item.merchantRevenueDay = totalRevenue
+        item.beforeDebtBalance = totalRevenue
+        totalRevenue -= item.debtBalanceChange
+        item.latestDebtBalance = totalRevenue
 
-      item.version.createdAt
-    console.log sorted
-    console.log totalRevenue
-    sorted
+      -item.version.createdAt
 

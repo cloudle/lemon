@@ -7,9 +7,11 @@ lemon.defineWidget Template.productManagementImportDetails,
     if distributorId = Schema.imports.findOne(@import).distributor
       Schema.distributors.findOne(distributorId)?.name
 
-  soldQuality: -> @importQuality - @inStockQuality
   totalPrice: -> @importPrice * @importQuality
 
   importDetails: ->
     importId = UI._templateInstance().data._id
     Schema.productDetails.find {import: importId, product: Session.get("productManagementCurrentProduct")._id}
+
+  saleDetails: -> Schema.saleDetails.find {productDetail: @_id}
+  buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale).buyer).name

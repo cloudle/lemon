@@ -37,16 +37,15 @@ subtractQualityOnSales = (stockingItems, sellingItem , currentSale) ->
 
 createSaleAndSaleOrder = (order, orderDetails)->
   currentSale = Schema.sales.findOne(Sale.insertByOrder(order))
-  console.log currentSale
   if !currentSale then throw new Meteor.Error("Create sale fail.")
 
   for currentOrderDetail in orderDetails
     productDetails = Schema.productDetails.find({product: currentOrderDetail.product, availableQuality: {$gt: 0}}).fetch()
     subtractQualityOnSales(productDetails, currentOrderDetail, currentSale)
-
   option = {status: true}
   if currentSale.paymentsDelivery == 1
-    option.delivery = Delivery.insertBySale(order, currentSale)
+    deliveryOption = Delivery.newBySale(order, currentSale)
+    option.delivery = Schema.deliveries.insert deliveryOption
   Schema.userProfiles.update option.creator, $set:{allowDelete: false}
   Schema.userProfiles.update option.seller, $set:{allowDelete: false} if option.creator isnt option.seller
   Schema.sales.update currentSale._id, $set: option, (error, result) -> if error then console.log error
@@ -81,7 +80,6 @@ Meteor.methods
   finishOrder: (orderId) ->
     userProfile = Schema.userProfiles.findOne({user: @userId})
     if !userProfile then throw new Meteor.Error("User chưa đăng nhập."); return
-
     currentOrder = Schema.orders.findOne({
       _id       : orderId
       creator   : userProfile.user

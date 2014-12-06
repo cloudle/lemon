@@ -13,8 +13,6 @@ destroySaleAndDetail = (scope, orderId)->
   else
     -1
 
-
-
 Apps.Merchant.salesInit.push (scope) ->
   scope.tabOptions =
     source: scope.currentOrderHistory

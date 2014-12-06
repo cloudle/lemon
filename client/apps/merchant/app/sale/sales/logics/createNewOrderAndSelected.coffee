@@ -1,8 +1,5 @@
 Apps.Merchant.salesInit.push ->
   logics.sales.createNewOrderAndSelected = ->
-    buyer = Schema.customers.findOne(logics.sales.currentOrder.buyer)
-    if Session.get('myProfile') and buyer
-      newOrderId = Order.createdNewBy(buyer, Session.get('myProfile'))
-      logics.sales.selectOrder(newOrderId) if newOrderId
-    else
-      console.log buyer, Session.get('myProfile')
+    if Session.get('myProfile') and buyer = Schema.customers.findOne(logics.sales.currentOrder.buyer)
+      UserSession.set('currentOrder', newOrder._id) if newOrder = Order.createdNewBy(buyer, Session.get('myProfile'))
+    else console.log buyer, Session.get('myProfile')

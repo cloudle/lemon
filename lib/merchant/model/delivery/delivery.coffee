@@ -13,6 +13,7 @@ Schema.add 'deliveries', "Delivery", class Delivery
       status          : 0
 
     option.deliveryDate = order.deliveryDate if order.deliveryDate
+    option
 
 
   @insertBySale: (order, sale)-> @schema.insert Delivery.newBySale(order, sale)

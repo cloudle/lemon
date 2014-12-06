@@ -11,7 +11,7 @@ calculateDepositAndDebit = (deposit, currentOrder)->
       paymentMethod   : 1
       deposit         : deposit
       debit           : currentOrder.finalPrice - deposit
-  Order.update(currentOrder._id, {$set: option})
+  Schema.orders.update(currentOrder._id, {$set: option})
 
 Apps.Merchant.salesInit.push ->
   logics.sales.depositOptions =

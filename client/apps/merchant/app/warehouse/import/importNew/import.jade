@@ -70,7 +70,7 @@ template(name="import")
         .nano: .nano-content
           if showFilterSearch
             .group-wrapper
-              each managedProductList
+              each managedImportProductList
                 .caption.inner(class="{{activeClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=firstName)
                   span.text
@@ -78,7 +78,7 @@ template(name="import")
                     if description
                       |({{description}})
           else
-            each managedProductList
+            each managedImportProductList
               .group-wrapper
                 .caption.group {{key}}
                 each childs

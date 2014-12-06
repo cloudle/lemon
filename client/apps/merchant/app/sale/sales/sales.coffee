@@ -13,6 +13,10 @@ lemon.defineApp Template.sales,
     Session.setDefault('allowSuccessOrder', false)
     Session.setDefault('globalBarcodeInput', '')
 
+    if mySession = Session.get('mySession')
+      Session.set('salesCurrentOrderSelected', Schema.orders.findOne(mySession.currentOrder))
+      Meteor.subscribe('orderDetails', mySession.currentOrder)
+
   rendered: ->
     scope.templateInstance = @
     lemon.ExcuteLogics()
@@ -58,7 +62,7 @@ lemon.defineApp Template.sales,
       )
     "click .print-preview": (event, template) -> $(template.find '#salePrinter').modal()
     'click .finish': (event, template)->
-      Meteor.call "finishOrder", scope.sales.currentOrder._id, (error, result) ->
+      Meteor.call "finishOrder", scope.currentOrder._id, (error, result) ->
         if error then console.log error
         else
           saleId = result

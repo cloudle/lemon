@@ -97,6 +97,34 @@ Meteor.publish 'saleDetailAndProductAndReturn', (saleId) ->
 
     [saleDetail, returnProducts, returns]
 
+#---------------------------------------------------------------------------------------------------------------------->
+Meteor.publishComposite 'salesManagerData', ->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.merchants.find {_id: myProfile.currentMerchant}
+    children: [
+      find: (merchant) -> Schema.warehouses.find {merchant: merchant._id}
+    ,
+      find: (merchant) -> Schema.userProfiles.find({merchant: merchant._id})
+    ,
+      find: (merchant) -> Schema.orders.find {merchant: merchant._id}
+    ,
+      find: (merchant) -> Schema.products.find {merchant: merchant._id}
+    ,
+      find: (merchant) -> Schema.warehouses.find {merchant: merchant._id}
+    ,
+      find: (merchant) -> Schema.customers.find {parentMerchant: if merchant.parent then merchant.parent else merchant._id}
+    ,
+      find: (merchant) -> Schema.skulls.find {parentMerchant: if merchant.parent then merchant.parent else merchant._id}
+    ,
+      find: (merchant) -> Schema.providers.find {parentMerchant: if merchant.parent then merchant.parent else merchant._id}
+    ]
+  }
+
+
 Schema.sales.allow
   insert: -> true
   update: -> true

@@ -4,7 +4,7 @@ changedActionSelectDiscountCash = (discount)->
   option = {billDiscount: discount}
   option.discountCash = 0 if option.billDiscount
   option.discountPercent = 0 if option.billDiscount
-  Order.update(logics.sales.currentOrder._id, {$set: option})
+  Schema.orders.update(logics.sales.currentOrder._id, {$set: option})
   logics.sales.reCalculateOrder(logics.sales.currentOrder._id)
 
 Apps.Merchant.salesInit.push ->

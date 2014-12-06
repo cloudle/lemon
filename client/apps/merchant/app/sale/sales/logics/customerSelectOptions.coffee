@@ -28,7 +28,7 @@ changedActionSelectCustomer = (customerId, currentOrder)->
     option.tabDisplay = Helpers.respectName(customer.name, customer.gender)
   else
     console.log 'Sai customer'; return
-  Order.update(currentOrder._id, {$set: option})
+  Schema.orders.update(currentOrder._id, {$set: option})
 
 Apps.Merchant.salesInit.push ->
   logics.sales.customerSelectOptions =

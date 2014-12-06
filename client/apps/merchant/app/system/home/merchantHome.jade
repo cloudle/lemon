@@ -53,7 +53,7 @@ template(name="merchantHome")
         span.center.middle.caption: span.table: i.ico.icon-shareable
         span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> XUẤT NHẬP KHO
       .tile.peter-river(class="{{metroUnLocker Summary.data.saleCount}}"
-      data-app='salesReport')
+      data-app='merchantReport')
         span.s7.top.middle.caption DOANH THU HÔM NAY <br/> {{formatNumber Summary.data.depositDay}}
         span.center.middle.caption: span.table: i.ico.icon-chart-pie-outline
         span.bottom.middle.caption BÁO CÁO
@@ -82,7 +82,7 @@ template(name="merchantHome")
           i.ico.icon-loop-outline
         span.bottom.middle.caption CHUYỂN KHO
       .tile.green-sea.double(class="{{metroUnLocker Summary.data.warehouseCount}}"
-      data-app='importHistory')
+      data-app='import')
         span.center.left.caption: span.table: i.ico.icon-download-outline
         span.bottom.left.caption {{formatNumber Summary.data.importCount}} NHẬP KHO
         span.top.left.caption

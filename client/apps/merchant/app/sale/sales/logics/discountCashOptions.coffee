@@ -6,7 +6,7 @@ calculateCurrentDiscountPercent = (discountCash, currentOrder)->
   else
     option.currentDiscountPercent = 0
 
-  Order.update(currentOrder._id, {$set: option})
+  Schema.orders.update(currentOrder._id, {$set: option})
 
 Apps.Merchant.salesInit.push ->
   logics.sales.discountCashOptions =

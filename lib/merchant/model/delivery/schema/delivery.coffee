@@ -1,6 +1,7 @@
 simpleSchema.deliveries = new SimpleSchema
   merchant:
     type: String
+    optional: true
 
   warehouse:
     type: String

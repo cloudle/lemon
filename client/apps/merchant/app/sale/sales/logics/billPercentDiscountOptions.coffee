@@ -9,7 +9,7 @@ calculateBillDiscountCash = (discountPercent, currentOrder)->
     else
       option.discountCash = 0
     option.finalPrice = currentOrder.totalPrice - option.discountCash
-  Order.update(currentOrder._id, {$set: option})
+  Schema.orders.update(currentOrder._id, {$set: option})
 
 reactiveMaxPercentDiscount = ->
   if Session.get('currentOrder')?.billDiscount then 100
@@ -18,7 +18,6 @@ reactiveMaxPercentDiscount = ->
 reactiveMinBillPercentDiscount = ->
   if Session.get('currentOrder')?.billDiscount then 0
   else Session.get('currentOrder')?.discountPercent ? 0
-
 
 Apps.Merchant.salesInit.push ->
   logics.sales.billPercentDiscountOptions =

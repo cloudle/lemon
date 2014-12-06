@@ -11,7 +11,8 @@ optionOrderDetail = (productId, quality, price, discountCash, currentOrder)->
     totalPrice      : totalPrice
     finalPrice      : totalPrice - discountCash
     styles          : Helpers.RandomColor()
-  option
+
+  return option
 
 reUpdateQualityOfOrderDetail = (newOrderDetail, oldOrderDetail) ->
   option={}
@@ -19,9 +20,7 @@ reUpdateQualityOfOrderDetail = (newOrderDetail, oldOrderDetail) ->
   option.totalPrice   = option.quality * oldOrderDetail.price
   option.discountCash = Math.round(option.totalPrice * oldOrderDetail.discountPercent/100)
   option.finalPrice   = option.totalPrice - option.discountCash
-  OrderDetail.update oldOrderDetail._id, $set: option
-
-insertNewOrderDetail = (orderDetail)-> OrderDetail.create orderDetail
+  Schema.orderDetails.update oldOrderDetail._id, $set: option
 
 checkingAddOrderDetail= (newOrderDetail, orderDetails)->
   findOldOrderDetail =_.findWhere(orderDetails,
@@ -34,7 +33,7 @@ checkingAddOrderDetail= (newOrderDetail, orderDetails)->
   if findOldOrderDetail
     reUpdateQualityOfOrderDetail(newOrderDetail, findOldOrderDetail)
   else
-    insertNewOrderDetail(newOrderDetail)
+    Schema.orderDetails.insert newOrderDetail
 
 Apps.Merchant.salesInit.push ->
   logics.sales.addOrderDetail = (productId, quality = 1, price = null, discountCash = null)->

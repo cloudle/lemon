@@ -44,7 +44,7 @@ calculateDefaultOrder = (currentOrder, orderDetails)->
 updateOrderByOrderDetail = (currentOrder, orderDetails)->
   orderOptionDefault = calculateDefaultOrder(currentOrder, orderDetails)
   updateOrder = calculateOrderDeposit(currentOrder, orderOptionDefault)
-  Order.update currentOrder._id, $set: updateOrder
+  Schema.orders.update currentOrder._id, $set: updateOrder
 
 updateOrderByOrderDetailEmpty = (currentOrder)->
   updateOrder =

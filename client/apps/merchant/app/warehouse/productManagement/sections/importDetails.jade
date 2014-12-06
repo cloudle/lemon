@@ -8,6 +8,13 @@ template(name="productManagementImportDetails")
       td.first-column {{distributorName}}
       td {{momentFormat expire "DD/MM/YYYY"}}
       td.number {{formatNumber inStockQuality}}/{{formatNumber importQuality}}
-      td.number {{formatNumber soldQuality}}
       td.number {{formatNumber importPrice}}
       td.number {{formatNumber totalPrice}}
+
+    each saleDetails
+      tr.detail-row
+        td.first-column {{buyerName}}
+        td {{momentFormat version.createdAt "DD/MM/YYYY"}}
+        td.number {{formatNumber quality}}
+        td.number {{formatNumber price}}
+        td.number {{formatNumber finalPrice}}

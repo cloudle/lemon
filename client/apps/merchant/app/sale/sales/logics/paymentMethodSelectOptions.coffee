@@ -13,7 +13,7 @@ changedActionSelectPaymentMethod = (paymentMethod, currentOrder)->
       currentDeposit : 0
       deposit        : 0
       debit          : currentOrder.finalPrice
-  Order.update(currentOrder._id, {$set: option})
+  Schema.orders.update(currentOrder._id, {$set: option})
 
 Apps.Merchant.salesInit.push ->
   logics.sales.paymentMethodSelectOptions =

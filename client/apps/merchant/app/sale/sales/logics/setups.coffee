@@ -1,7 +1,20 @@
 Apps.Merchant.salesInit.push (scope) ->
+  scope.currentAllProductsInWarehouse = Product.insideWarehouse(Session.get('myProfile').currentWarehouse)
+  scope.currentAllCustomers           = Customer.insideMerchant(Session.get('myProfile').parentMerchant)
+  scope.currentAllSkulls              = Skull.insideMerchant(Session.get('myProfile').parentMerchant)
+  scope.currentBranchProviders        = Provider.insideBranch(Session.get('myProfile').currentMerchant)
+  scope.currentAllProviders           = Provider.insideMerchant(Session.get('myProfile').parentMerchant)
+  scope.currentOrderHistory           = Order.myHistory(Session.get('myProfile').user, Session.get('myProfile').currentWarehouse, Session.get('myProfile').currentMerchant)
+  scope.currentBranchStaff            = Meteor.users.find({})
+
+
+
+
+
   scope.updateSelectNewProduct = (scope, product)->
-    if scope.currentOrder then orderId = scope.currentOrder._id
-    else orderId = scope.createNewOrderAndSelected()
+    if Session.get('salesCurrentOrderSelected')
+    else
+      orderId = scope.createNewOrderAndSelected()
 
     cross = scope.validation.getCrossProductQuality(product._id, orderId)
     maxQuality = (cross.product.availableQuality - cross.quality)
