@@ -71,3 +71,6 @@ Apps.Merchant.salesReactiveRun.push (scope) ->
 
     else allowSuccess = false
     Session.set('allowSuccess', allowSuccess)
+
+  if Session.get("salesEditingRowId")
+    Session.set("salesEditingRow", Schema.orderDetails.findOne(Session.get("salesEditingRowId")))

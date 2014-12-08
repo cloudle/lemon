@@ -1,5 +1,10 @@
 lemon.defineHyper Template.saleDetailEditor,
-  finalPrice: -> @price * @quality - @discountCash
+  price: ->
+    Meteor.setTimeout ->
+      console.log 'updating'
+      $("input[name='price']").change()
+    , 100
+    @price
   product: -> Schema.products.findOne(@product)
   rendered: ->
     @ui.$quality.inputmask "numeric",
@@ -12,6 +17,16 @@ lemon.defineHyper Template.saleDetailEditor,
     @ui.$quality.select()
 
   events:
-    "keypress [name='quality']": (event, template) ->
+    "keypress input[name]": (event, template) ->
       if event.which is 13 #ENTER
-        Schema.orderDetails.update(@_id, {$set: {quality: template.ui.$quality.inputmask('unmaskedvalue')}})
+        quality = template.ui.$quality.inputmask('unmaskedvalue')
+        price = template.ui.$price.inputmask('unmaskedvalue')
+        discount = template.ui.$discount.inputmask('unmaskedvalue')
+        finalPrice = price * quality - discount
+
+        Schema.orderDetails.update @_id,
+          $set:
+            quality: quality
+            price: price
+            discount: discount
+            finalPrice: finalPrice

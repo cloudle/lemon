@@ -5,9 +5,8 @@ lemon.defineHyper Template.saleDetailSection,
   editingMode: -> Session.get("salesEditingRow")?._id is @_id
   editingData: -> Session.get("salesEditingRow")
   product: -> Schema.products.findOne(@product)
-  finalPrice: -> @price * @quality - @discountCash
   created: -> @timeInterval = Meteor.setInterval(setTime, 1000)
   destroyed: -> Meteor.clearInterval(@timeInterval)
 
   events:
-    "click .detail-row": -> Session.set("salesEditingRow", @)
+    "click .detail-row": -> Session.set("salesEditingRowId", @_id)
