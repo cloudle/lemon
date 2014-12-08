@@ -1,28 +1,28 @@
 template(name="sales")
   +salePrinter(orderDetails=saleDetails.orderDetails order=saleDetails.order)
-  #header
-    .editor-row
+  //#header
+  //  .editor-row
       //.editor-wrapper(style="width: 250px")
       //  span.ilabel sản phẩm
       //  +iSelect(options=productSelectOptions class="field")
-      .editor-wrapper(style="width: 100px")
-        span.ilabel.center số lượng
-        +iSpinEdit(options=productQualityOptions)
-      .editor-wrapper(style="width: 150px")
-        span.ilabel.center giá bán
-        +iSpinEdit(options=productPriceOptions)
-      .editor-wrapper(style="width:70px")
-        button.lemon.btn.lime.icon-plus-circled.addOrderDetail(class="{{allowCreateOrderDetail}}" type='submit') THÊM
-
-      .editor-wrapper.right(style="width: 150px")
-        span.ilabel.optional giá tổng
-        input.quality(value="{{formatNumber finalPriceProduct}}" disabled)
-      .editor-wrapper.right(style="width: 150px")
-        span.ilabel.center.optional giảm giá
-        +iSpinEdit(options=productDiscountCashOptions)
-      .editor-wrapper.right(style="width:100px")
-        span.ilabel.center.optional giảm %
-        +iSpinEdit(options=productDiscountPercentOptions)
+      //.editor-wrapper(style="width: 100px")
+      //  span.ilabel.center số lượng
+      //  +iSpinEdit(options=productQualityOptions)
+      //.editor-wrapper(style="width: 150px")
+      //  span.ilabel.center giá bán
+      //  +iSpinEdit(options=productPriceOptions)
+      //.editor-wrapper(style="width:70px")
+      //  button.lemon.btn.lime.icon-plus-circled.addOrderDetail(class="{{allowCreateOrderDetail}}" type='submit') THÊM
+      //
+      //.editor-wrapper.right(style="width: 150px")
+      //  span.ilabel.optional giá tổng
+      //  input.quality(value="{{formatNumber finalPriceProduct}}" disabled)
+      //.editor-wrapper.right(style="width: 150px")
+      //  span.ilabel.center.optional giảm giá
+      //  +iSpinEdit(options=productDiscountCashOptions)
+      //.editor-wrapper.right(style="width:100px")
+      //  span.ilabel.center.optional giảm %
+      //  +iSpinEdit(options=productDiscountPercentOptions)
 
   #content.modern.sales-app
     .dual-content
@@ -55,6 +55,8 @@ template(name="sales")
                       | {{name}}
                       if skulls
                         | ({{skulls}})
+                      .commands
+                        span.icon-right-open-big.addSaleDetail
   #footer.modern
     .editor-row.extra(name='delivery')
       .editor-wrapper.right(style="width:200px")

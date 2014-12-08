@@ -9,7 +9,6 @@ lemon.defineApp Template.import,
   showHistory: -> Session.get("metroSummary")?.importCount > 0
 
   creationMode: -> Session.get("importCreationMode")
-  showAddImportDetail: -> !Session.get('importCurrentProduct').allowDelete
   showEditImportCurrentProduct: -> Session.get('importCurrentProduct').allowDelete
 
   rendered: ->

@@ -21,6 +21,7 @@ reUpdateQualityOfOrderDetail = (newOrderDetail, oldOrderDetail) ->
   option.discountCash = Math.round(option.totalPrice * oldOrderDetail.discountPercent/100)
   option.finalPrice   = option.totalPrice - option.discountCash
   Schema.orderDetails.update oldOrderDetail._id, $set: option
+  oldOrderDetail._id
 
 checkingAddOrderDetail= (newOrderDetail, orderDetails)->
   findOldOrderDetail =_.findWhere(orderDetails,
@@ -31,9 +32,10 @@ checkingAddOrderDetail= (newOrderDetail, orderDetails)->
     })
 
   if findOldOrderDetail
-    reUpdateQualityOfOrderDetail(newOrderDetail, findOldOrderDetail)
+    orderId = reUpdateQualityOfOrderDetail(newOrderDetail, findOldOrderDetail)
   else
-    Schema.orderDetails.insert newOrderDetail
+    orderId = Schema.orderDetails.insert newOrderDetail
+  return orderId
 
 Apps.Merchant.salesInit.push ->
   logics.sales.addOrderDetail = (productId, quality = 1, price = null, discountCash = null)->
@@ -48,5 +50,6 @@ Apps.Merchant.salesInit.push ->
         newOrderDetail = optionOrderDetail(productId, quality, price, discountCash, currentOrder)
 
         #kiem tra orderDetail co ton tai hay ko, neu co cong so luong, tinh gia tong , ko thi them moi
-        checkingAddOrderDetail(newOrderDetail, orderDetails)
+        orderId = checkingAddOrderDetail(newOrderDetail, orderDetails)
         logics.sales.reCalculateOrder(currentOrder._id)
+        return orderId

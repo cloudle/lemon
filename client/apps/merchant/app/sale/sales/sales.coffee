@@ -61,6 +61,10 @@ lemon.defineApp Template.sales,
           currentOrder.currentPrice,
           currentOrder.currentDiscountCash
         )
+
+    "click .addSaleDetail": -> Session.set("salesEditingRowId", scope.addOrderDetail @_id)
+
+
     "click .print-preview": (event, template) -> $(template.find '#salePrinter').modal()
     'click .finish': (event, template)->
       Meteor.call "finishOrder", Session.get('currentOrder')._id, (error, result) ->

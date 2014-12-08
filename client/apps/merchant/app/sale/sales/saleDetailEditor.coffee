@@ -11,7 +11,7 @@ lemon.defineHyper Template.saleDetailEditor,
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
     @ui.$price.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
-    @ui.$discount.inputmask "numeric",
+    @ui.$discountCash.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
 
     @ui.$quality.select()
@@ -21,12 +21,18 @@ lemon.defineHyper Template.saleDetailEditor,
       if event.which is 13 #ENTER
         quality = template.ui.$quality.inputmask('unmaskedvalue')
         price = template.ui.$price.inputmask('unmaskedvalue')
-        discount = template.ui.$discount.inputmask('unmaskedvalue')
-        finalPrice = price * quality - discount
+        discountCash = template.ui.$discountCash.inputmask('unmaskedvalue')
+        totalPrice = price * quality
+        finalPrice = totalPrice - discountCash
+        discountPercent = (discountCash * 100) / totalPrice
 
         Schema.orderDetails.update @_id,
           $set:
             quality: quality
             price: price
-            discount: discount
+            discountCash: discountCash
+            discountPercent: discountPercent
+            totalPrice: totalPrice
             finalPrice: finalPrice
+
+        logics.sales.reCalculateOrder(@order)

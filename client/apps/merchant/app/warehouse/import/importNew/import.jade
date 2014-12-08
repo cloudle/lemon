@@ -127,6 +127,12 @@ template(name="import")
                       |{{name}}
                       if skulls
                         |({{skulls}})
+                      .commands
+                        if allowDelete
+                          span.icon-cancel-circled-4.deleteProduct
+                        else
+                          span.icon-right-open-big.addImportDetail
+
 
 
   #footer
