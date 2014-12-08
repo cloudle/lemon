@@ -2,55 +2,55 @@ template(name="import")
   +addProduct(myCreateProduct=myCreateProduct order=currentOrder)
   +addProvider(myCreateProvider=myCreateProvider order=currentOrder)
   +addDistributor(myCreateDistributor=myCreateDistributor order=currentOrder)
-  #header
-    .caption-row
-      .title
-        |Nhập Kho
-      .commands
-        if showHistory
-          button.lemon.btn.amethyst.icon-history.importHistory(type='submit') LỊCH SỬ
-        button.lemon.btn.lime.icon-building.add-provider(type='submit') Thêm NCC
-        button.lemon.btn.lime.icon-building.add-distributor(type='submit') Thêm C.Ty PP
-        button.lemon.btn.lime.icon-tags-2.add-product(type='submit') Thêm Sản Phẩm
-        input(binding="switch" type="checkbox" name="advancedMode")
+  //#header
+    //.caption-row
+      //.title
+      //  |Nhập Kho
+      //.commands
+        //if showHistory
+        //  button.lemon.btn.amethyst.icon-history.importHistory(type='submit') LỊCH SỬ
+        //button.lemon.btn.lime.icon-building.add-provider(type='submit') Thêm NCC
+        //button.lemon.btn.lime.icon-building.add-distributor(type='submit') Thêm C.Ty PP
+        //button.lemon.btn.lime.icon-tags-2.add-product(type='submit') Thêm Sản Phẩm
+        //input(binding="switch" type="checkbox" name="advancedMode")
 
-    .editor-row
-      .editor-wrapper(style="width:250px")
-        span.ilabel sản phẩm
-        span.ilabel.optional.right: a(href="#"): i.add-product.icon-plus-6(data-toggle="tooltip" data-container="body" data-placement="top" title="Thêm sản phẩm")
-        +iSelect(options=productSelectOptions class="field")
-      .editor-wrapper(style="width:180px")
-        span.ilabel.optional nhà cung cấp
-        span.ilabel.optional.right: a(href="#"): i.add-provider.icon-plus-6(data-toggle="tooltip" data-container="body" data-placement="top" title="Thêm nhà cung cấp")
-        +iSelect(options=providerSelectOptions class="field")
-      .editor-wrapper(style="width:120px")
-        span.ilabel.center số lượng
-        +iSpinEdit(options=qualityOptions class="field")
-      .editor-wrapper(style="width:150px")
-        span.ilabel.center giá nhập
-        +iSpinEdit(options=importPriceOptions class="field")
-      if hidePriceSale
-        .editor-wrapper(style="width:150px")
-          span.ilabel.center giá bán
-          +iSpinEdit(options=salePriceOptions class="field")
-      if showCreateDetail
-        .editor-wrapper(style="width:100px")
-          button.lemon.btn.lime.icon-plus-circled.addImportDetail(type='submit' style="{{showCreateDetail}}") THÊM
-      .editor-wrapper.right
-        input.hidden.excelFileSource(type="file")
-        button.lemon.btn.blue.right.excel-import(type='submit' data-toggle="tooltip" data-container="body" data-placement="top" title="Nhập tự động")
-          span.icon-inbox-1
-      .editor-wrapper.right
-        a.lemon.btn.blue(href="/template/nhap_kho.csv" target="_blank" data-toggle="tooltip" data-container="body" data-palace-holder="top" title="Tải về file Mẫu")
-          span.icon-doc-text-inv-1
+    //.editor-row
+      //.editor-wrapper(style="width:250px")
+      //  span.ilabel sản phẩm
+      //  span.ilabel.optional.right: a(href="#"): i.add-product.icon-plus-6(data-toggle="tooltip" data-container="body" data-placement="top" title="Thêm sản phẩm")
+      //  +iSelect(options=productSelectOptions class="field")
+      //.editor-wrapper(style="width:180px")
+      //  span.ilabel.optional nhà cung cấp
+      //  span.ilabel.optional.right: a(href="#"): i.add-provider.icon-plus-6(data-toggle="tooltip" data-container="body" data-placement="top" title="Thêm nhà cung cấp")
+      //  +iSelect(options=providerSelectOptions class="field")
+      //.editor-wrapper(style="width:120px")
+      //  span.ilabel.center số lượng
+      //  +iSpinEdit(options=qualityOptions class="field")
+      //.editor-wrapper(style="width:150px")
+      //  span.ilabel.center giá nhập
+      //  +iSpinEdit(options=importPriceOptions class="field")
+      //if hidePriceSale
+      //  .editor-wrapper(style="width:150px")
+      //    span.ilabel.center giá bán
+      //    +iSpinEdit(options=salePriceOptions class="field")
+      //if showCreateDetail
+      //  .editor-wrapper(style="width:100px")
+      //    button.lemon.btn.lime.icon-plus-circled.addImportDetail(type='submit' style="{{showCreateDetail}}") THÊM
+      //.editor-wrapper.right
+      //  input.hidden.excelFileSource(type="file")
+      //  button.lemon.btn.blue.right.excel-import(type='submit' data-toggle="tooltip" data-container="body" data-placement="top" title="Nhập tự động")
+      //    span.icon-inbox-1
+      //.editor-wrapper.right
+      //  a.lemon.btn.blue(href="/template/nhap_kho.csv" target="_blank" data-toggle="tooltip" data-container="body" data-palace-holder="top" title="Tải về file Mẫu")
+      //    span.icon-doc-text-inv-1
 
-    .editor-row.extra(name='advanced' style="display: none;")
-      .editor-wrapper(style="width: 120px")
-        span.ilabel.optional ngày sản xuất
-        input(name="productionDate" binding="datePicker" todayHighlight="true")
-      .editor-wrapper(style="width: 120px")
-        span.ilabel.optional hạn sử dụng
-        +iSelect(options=timeUseSelectOptions class="field")
+    //.editor-row.extra(name='advanced' style="display: none;")
+      //.editor-wrapper(style="width: 120px")
+      //  span.ilabel.optional ngày sản xuất
+      //  input(name="productionDate" binding="datePicker" todayHighlight="true")
+      //.editor-wrapper(style="width: 120px")
+      //  span.ilabel.optional hạn sử dụng
+      //  +iSelect(options=timeUseSelectOptions class="field")
       //.editor-wrapper(style="width: 120px")
       //  span.ilabel.optional ngày hết hạn
       //  input(binding="datePicker" todayHighlight="true" name="expire")
@@ -60,34 +60,73 @@ template(name="import")
       .dual-detail-wrapper
         .dual-detail
           .nano: .nano-content
-            +iGrid(options=importDetailOptions)
+            if showEditImportCurrentProduct
+              +importCurrentProductOverviewSection importCurrentProduct
+            .section.top.panel.panel-default
+              .panel-heading
+                .editor-row
+                  .editor-wrapper(style="width:180px")
+                    span.ilabel.optional công ty phân phối
+                    +iSelect(options=distributorSelectOptions class="field")
+
+
+              .panel-body
+                table.lemon-grid
+                  tr
+                    th(style="width:auto") SẢN PHẨM
+                    th(style="width:90px") QUI CÁCH
+                    th.number(style="width:60px") SL
+                    th.number(style="width:100px") ĐƠN GIÁ
+                    th.number(style="width:120px") THÀNH TIỀN
+
+                  each importDetails
+                    tr
+                      td {{product.name}}
+                      td {{product.skulls}}
+                      td.number {{formatNumber importQuality}}
+                      td.number {{formatNumber importPrice}}
+                      td.number {{formatNumber totalPrice}}
+                  //if showAddImportDetail
+                  //  tr.editors.dual-border
+                  //    td: input.new-import-detail-field(name='currentProductName' type="text" size="10" placeholder="tên sản phẩm")
+                  //    td: input.new-import-detail-field(name='currentProductSkulls' type="text" size="10" placeholder="quy cách")
+                  //    td: input.new-import-detail-field.number(name='currentProductQuality' type="text" size="10" placeholder="số lượng")
+                  //    td: input.new-import-detail-field.number(name='currentProductPrice' type="text" size="10" placeholder="giá nhập")
+                  //    td: .lemon.rounded.btn.orange.icon-tags-2.pull-right.createImportDetail
+
+                //+iGrid(options=importDetailOptions)
+              .panel-footer
+                .right-float
+                  span.s5 TỔNG TIỀN:
+                  span.s3 <b>{{formatNumber currentImport.totalPrice}}</b> VNĐ
+
 
       .dual-addon
         .search-filter.icon-search-8
           input(name='searchFilter' type="text")
-          //if creationMode
-            .lemon.btn.rounded.tiny.lime.icon-plus-6.create-command.createCustomerBtn
+          if creationMode
+            .lemon.btn.rounded.tiny.lime.icon-plus-6.create-command.createProductBtn
         .nano: .nano-content
           if showFilterSearch
             .group-wrapper
               each managedImportProductList
-                .caption.inner(class="{{activeClass}}")
+                .caption.inner(class="{{productSelectionActiveClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=firstName)
                   span.text
                     |{{name}}
-                    if description
-                      |({{description}})
+                    if skulls
+                      |({{skulls}})
           else
             each managedImportProductList
               .group-wrapper
                 .caption.group {{key}}
                 each childs
-                  .caption.inner(class="{{activeClass}}")
+                  .caption.inner(class="{{productSelectionActiveClass}}")
                     +avatarImageComponent(avatar=avatarUrl alias=firstName)
                     span.text
                       |{{name}}
-                      if description
-                        |({{description}})
+                      if skulls
+                        |({{skulls}})
 
 
   #footer
@@ -105,19 +144,20 @@ template(name="import")
 
         .editor-wrapper.right(style="width: 120px")
           span.ilabel.optional tiền còn nợ
-          input.debit(style="text-align: center" value="{{currentImport.debit}}" disabled)
+          input.debit(name='debitCash' disabled)
         .editor-wrapper.right(style="width: 120px")
           span.ilabel.optional tiền đã trả
-          input.deposit(style="text-align: center" value="{{currentImport.deposit}}")
-        .editor-wrapper.right(style="width: 120px")
-          span.ilabel.optional tổng tiền
-          input.totalPrice(style="text-align: center" value="{{currentImport.totalPrice}}" disabled)
-        .editor-wrapper.right(style="width: 300px")
-          span.ilabel description
-          input.description(value="{{currentImport.description}}")
-        .editor-wrapper.right(style="width:180px")
-          span.ilabel.optional công ty phân phối
-          span.ilabel.optional.right: a(href="#"): i.add-distributor.icon-plus-6(data-toggle="tooltip" data-container="body" data-placement="top" title="Thêm nhà phân phối")
-          +iSelect(options=distributorSelectOptions class="field")
+          input.deposit(name='depositCash')
+        //.editor-wrapper.right(style="width: 120px")
+        //  span.ilabel.optional tổng tiền
+        //  input.totalPrice(style="text-align: center" value="{{currentImport.totalPrice}}" disabled)
+        //.editor-wrapper.right(style="width:180px")
+          //span.ilabel.optional công ty phân phối
+          //span.ilabel.optional.right: a(href="#"): i.add-distributor.icon-plus-6(data-toggle="tooltip" data-container="body" data-placement="top" title="Thêm nhà phân phối")
+          //+iSelect(options=distributorSelectOptions class="field")
+        //.editor-wrapper.right(style="width: 300px")
+          //span.ilabel description
+          //input.description(value="{{currentImport.description}}")
+
 
     +tabComponent(options=tabOptions)

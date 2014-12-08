@@ -8,9 +8,9 @@ navigateNewTab=(currentImportId, profile)->
     nextIndex = if currentIndex == currentLength - 1 then currentIndex - 1 else currentIndex + 1
     UserSession.set('currentImport', allTabs[nextIndex]._id)
   else
-    importId = Import.createdNewBy('01-05-2015', profile)
-    UserSession.set('currentImport', importId)
-    Schema.imports.findOne(importId)
+    if newImport = Import.createdNewBy('01-05-2015', null, profile)
+      UserSession.set('currentImport', newImport._id)
+      Schema.imports.findOne(newImport._id)
 
 
 updateImportAndDistributor = (currentImport, distributor)->

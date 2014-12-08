@@ -1,11 +1,23 @@
+scope = logics.import
+
 lemon.defineApp Template.import,
   showFilterSearch: -> Session.get("importManagementSearchFilter")?.length > 0
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   firstName: -> Helpers.firstName(@name)
-  activeClass:-> if Session.get("importManagementCurrentProduct")?._id is @._id then 'active' else ''
-
+  productSelectionActiveClass:-> if Session.get('currentImport')?.currentProduct is @._id then 'active' else ''
+  product: -> Schema.products.findOne(@product)
   showHistory: -> Session.get("metroSummary")?.importCount > 0
-  rendered: -> logics.import.templateInstance = @
+
+  creationMode: -> Session.get("importCreationMode")
+  showAddImportDetail: -> !Session.get('importCurrentProduct').allowDelete
+  showEditImportCurrentProduct: -> Session.get('importCurrentProduct').allowDelete
+
+  rendered: ->
+    logics.import.templateInstance = @
+    @ui.$depositCash.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
+    @ui.$debitCash.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
+
+
   created: ->
     Session.set("importManagementSearchFilter", "")
 #    if Session.get("mySession")
@@ -14,9 +26,16 @@ lemon.defineApp Template.import,
 #        if  = Schema.customers.findOne()
 
   events:
+    "input .search-filter": (event, template) ->
+      Session.set("importManagementSearchFilter", template.ui.$searchFilter.val())
+    "keypress input[name='searchFilter']": (event, template)->
+      if event.which is 13 and Session.get("importManagementSearchFilter")?.trim().length > 1
+        scope.createProduct(template)
+    "click .createProductBtn": (event, template) -> scope.createProduct(template)
+
+
     "click .inner.caption": (event, template) ->
-      if Session.get("mySession")
-        Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentImportProductManagementSelection: @_id}})
+      if currentImport = Session.get('currentImport')
         if product = Schema.products.findOne(@_id)
           option =
             currentProduct     : product._id
@@ -24,17 +43,21 @@ lemon.defineApp Template.import,
             currentQuality     : 1
             currentImportPrice : product.importPrice ? 0
           if product.price > 0 and product.inStockQuality > 0
-            Import.update(Session.get('currentImport')._id, $set: option, $unset: {currentPrice: ""})
+            Schema.imports.update(Session.get('currentImport')._id, $set: option, $unset: {currentPrice: ""})
           else
             option.currentPrice = product.importPrice ? 0
-            Import.update(Session.get('currentImport')._id, {$set: option})
-          #    $("[name=expire]").datepicker('setDate', undefined)
-          $("[name=productionDate]").datepicker('setDate', undefined)
+            Schema.imports.update(Session.get('currentImport')._id, {$set: option})
 
-          Session.set("importManagementCurrentProduct", product)
+          currentImport.currentProduct     = option.currentProduct
+          currentImport.currentProvider    = option.currentProvider
+          currentImport.currentQuality     = option.currentQuality
+          currentImport.currentImportPrice = option.currentImportPrice
 
+          Session.set('importCurrentProduct', product)
+          Session.set('currentImport', currentImport)
+          Session.set('importCurrentProductShowEditCommand')
 
-
+#          $("[name=productionDate]").datepicker('setDate', undefined)
 
     "click .add-product": (event, template) -> $(template.find '#addProduct').modal()
     "click .add-provider": (event, template) -> $(template.find '#addProvider').modal()
@@ -42,22 +65,23 @@ lemon.defineApp Template.import,
 
     "click .importHistory": (event, template) -> Router.go('/importHistory')
     "change [name='advancedMode']": (event, template) ->
-      logics.import.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
+      scope.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
 
     'blur .description': (event, template)->
-      logics.import.updateDescription(template.find(".description").value, Session.get('currentImport'))
+      scope.updateDescriptionOfImport(template.find(".description").value, Session.get('currentImport'))
 
     'blur .deposit': (event, template)->
-      deposit = template.find(".deposit")
-      currentImport = Session.get('currentImport')
-      if currentImport.totalPrice < deposit.value
-        deposit.value = currentImport.totalPrice
-        if currentImport.debit != currentImport.deposit
-          logics.import.updateDeposit(currentImport.totalPrice , currentImport)
-      else
-        logics.import.updateDeposit(deposit.value , currentImport)
+      if currentImport = Session.get('currentImport')
+        deposit = $(template.find(".deposit")).inputmask('unmaskedvalue')
+        if currentImport.totalPrice < deposit
+          if currentImport.debit != currentImport.deposit
+            logics.import.calculateImportByDeposit(currentImport.totalPrice , currentImport)
+        else
+          logics.import.calculateImportByDeposit(deposit, currentImport)
 
-    'click .addImportDetail': (event, template)-> logics.import.addImportDetail(event, template)
+    'click .addImportDetail': (event, template)-> scope.addImportDetail(event, template)
+
+    'click .createImportDetail': (event, template)-> scope.addImportDetail(event, template)
 
     'click .editImport': (event, template)->
       if currentImport = Session.get('currentImport')

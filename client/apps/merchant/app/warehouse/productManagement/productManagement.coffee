@@ -27,10 +27,10 @@ lemon.defineApp Template.productManagement,
   events:
     "input .search-filter": (event, template) ->
       Session.set("productManagementSearchFilter", template.ui.$searchFilter.val())
-#    "keypress input[name='searchFilter']": (event, template)->
-#      if event.which is 13 and Session.get("productManagementSearchFilter")?.trim().length > 1
-#        scope.createProduct(template)
-#    "click .createProductBtn": (event, template) -> scope.createProduct(template)
+    "keypress input[name='searchFilter']": (event, template)->
+      if event.which is 13 and Session.get("productManagementSearchFilter")?.trim().length > 1
+        scope.createProduct(template)
+    "click .createProductBtn": (event, template) -> scope.createProduct(template)
 
     "click .inner.caption": (event, template) ->
       if Session.get("mySession")

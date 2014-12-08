@@ -73,7 +73,7 @@ Meteor.methods
       customer = Schema.customers.findOne({_id: customer._id ,parentMerchant: profile.parentMerchant}) if customer.parentMerchant != profile.parentMerchant
 
       if customer
-        orderFound = Schema.orders.findOne({creator: userId, buyer: customer._id}, {sort: {'version.createdAt': -1}})
+        orderFound = Schema.orders.findOne({creator: userId, buyer: customer._id, merchant: profile.currentMerchant}, {sort: {'version.createdAt': -1}})
         if !orderFound then orderFound = Order.createdNewBy(customer, profile)
         Schema.userSessions.update {user: userId}, {$set:{'currentOrder': orderFound._id}}
 

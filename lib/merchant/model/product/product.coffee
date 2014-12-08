@@ -28,18 +28,17 @@ Schema.add 'products', "Product", class Product
         merchant    : warehouse?.merchant ? myProfile.currentMerchant
         warehouse   : warehouse?._id ? myProfile.currentWarehouse
         creator     : myProfile.user
-        productCode : productCode
         name        : name
-        skulls      : skull
-        price       : price if price
 
-      findProduct =  @schema.findOne({
-        merchant    : newProduct.merchant
-        warehouse   : newProduct.warehouse
-        productCode : newProduct.productCode
-        skulls      : newProduct.skulls})
+      newProduct.productCode = productCode if productCode
+      newProduct.skulls      = skulls if skulls
+      newProduct.price       = price if price
 
-      if findProduct
+
+      existedQuery = {merchant: newProduct.merchant, warehouse: newProduct.warehouse, name: newProduct.name}
+      existedQuery.skulls = newProduct.skulls if newProduct.skulls
+
+      if @schema.findOne existedQuery
         {error:'Tạo mới sản phẩm bị trùng lặp.'}
       else
         @schema.insert newProduct, (error, result)-> if error then {error: error} else {}
