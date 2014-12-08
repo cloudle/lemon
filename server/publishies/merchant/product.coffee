@@ -56,12 +56,10 @@ Meteor.publishComposite 'productManagementData', (productId, currentRecords = 0)
 
 Schema.products.allow
   insert: (userId, product) ->
-    if Schema.products.findOne({
-      merchant    : product.merchant
-      warehouse   : product.warehouse
-      productCode : product.productCode
-      skulls      : product.skulls
-    }) then false else true
+    existedQuery = {merchant: product.merchant, warehouse: product.warehouse, name: product.name}
+    existedQuery.productCode = product.productCode if product.productCode
+    existedQuery.skulls      = product.skulls if product.skulls
+    if Schema.products.findOne existedQuery then false else true
 
   update: (userId, product) -> true
   remove: (userId, product) ->

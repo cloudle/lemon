@@ -1,0 +1,16 @@
+template(name="importCurrentProductOverviewSection")
+  .section.top.panel.panel-default
+    input.hidden.avatarFile(type="file")
+    .panel-heading
+      +avatarImageComponent(avatar=avatarUrl alias=firstName)
+      .caption
+        input.editable.dashed(name="productName" value="{{name}}" maxlength="50")
+        if skulls
+          span.blured-color ({{skulls}})
+      .sub1: input.editable.dashed(name="productPrice" value="{{price}}" maxlength="20" style="width: 125px")
+      //.sub2: input.editable(name="customerAddress" value="{{address}}" maxlength="100" size="50" placeholder="địa chỉ")
+      .commands
+        if showEditCommand
+          .lemon.btn.rounded.lime.icon-ok-6.syncCustomerEdit
+    .panel-footer
+      span.icon-angle-right

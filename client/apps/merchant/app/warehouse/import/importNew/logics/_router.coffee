@@ -36,6 +36,9 @@ importRoute =
       importPriceOptions: scope.importPriceOptions
       salePriceOptions  : scope.salePriceOptions
 
+      currentImport: Session.get('currentImport')
+      importDetails: scope.currentImportDetails
+      importCurrentProduct: Session.get('importCurrentProduct')
       managedImportProductList: scope.managedImportProductList
     }
 

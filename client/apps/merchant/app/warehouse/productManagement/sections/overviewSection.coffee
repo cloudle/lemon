@@ -38,8 +38,6 @@ lemon.defineHyper Template.productManagementOverviewSection,
         template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
         template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '')
 
-      console.log template.ui.$productPrice.inputmask('unmaskedvalue')
-
     "keyup input.editable": (event, template) ->
       scope.editProduct(template) if event.which is 13
 
@@ -52,6 +50,6 @@ lemon.defineHyper Template.productManagementOverviewSection,
 
       Session.set "productManagementShowEditCommand",
         template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
-        template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '')
+        Number(template.ui.$productPrice.inputmask('unmaskedvalue')) isnt (Session.get("productManagementCurrentProduct").price ? '')
 
     "click .syncProductEdit": (event, template) -> scope.editProduct(template)

@@ -21,9 +21,11 @@ simpleSchema.products = new SimpleSchema
 
   productCode:
     type: String
+    optional: true
 
   skulls:
     type: [String]
+    optional: true
 
   childProduct:
     type: Schema.ChildProduct
