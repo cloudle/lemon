@@ -7,7 +7,7 @@ template(name="merchantHome")
       data-app='roleManager')
         span.center.middle.caption: span.table: i.ico.icon-key-outline
         span.bottom.middle.caption PHÂN QUYỀN
-      .tile.carrot(class="{{metroUnLocker Summary.data.staffCount}}"
+      .tile.pink(class="{{metroUnLocker Summary.data.staffCount}}"
       data-app='staffManager')
         span.s7.top.middle.caption TÀI KHOẢN
         span.center.middle.caption: span.table: i.ico.icon-users-outline
@@ -23,7 +23,7 @@ template(name="merchantHome")
         span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> THU TIỀN
 
     .tile-group-3
-      .tile.double.dark-blue#saleManager(class="{{metroUnLocker Summary.data.importCount}}{{metroUnLocker Summary.data.customerCountAll}}{{metroUnLocker Summary.data.staffCountAll}}" data-app='sales')
+      .tile.double.orange#saleManager(class="{{metroUnLocker Summary.data.importCount}}{{metroUnLocker Summary.data.customerCountAll}}{{metroUnLocker Summary.data.staffCountAll}}" data-app='sales')
         span.top.left.caption: h3 {{formatNumber Summary.data.saleProductCount}} <tiny5>SẢN PHẨM ĐÃ BÁN</tiny5>
         span.center.left.caption: span.table: i.ico.icon-tags
         span.bottom.left.caption BÁN HÀNG

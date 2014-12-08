@@ -1,5 +1,5 @@
 template(name="sales")
-  +salePrinter(orderDetails=currentOrderDetails order=currentOrder)
+  +salePrinter(orderDetails=saleDetails.orderDetails order=saleDetails.order)
   #header
     .editor-row
       //.editor-wrapper(style="width: 250px")
@@ -29,38 +29,7 @@ template(name="sales")
       .dual-detail-wrapper
         .dual-detail
           .nano: .nano-content
-            .section.top.panel.panel-default
-              .panel-heading
-                span heading
-              .panel-body
-                //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
-                table.lemon-grid
-                  tr
-                    th(style="width:auto") SẢN PHẨM
-                    th(style="width:90px") QUI CÁCH
-                    th.number(style="width:50px") SL
-                    th.number(style="width:100px") ĐƠN GIÁ
-                    th.number(style="width:80px") GIẢM GIÁ
-                    th.number(style="width:120px") THÀNH TIỀN
-
-
-                  each currentOrderDetails
-                    tr
-                      td {{product.name}}
-                      td {{product.skulls}}
-                      td.number {{formatNumber quality}}
-                      td.number {{formatNumber price}}
-                      td.number {{formatNumber discountCash}}
-                      td.number
-                        span {{formatNumber finalPrice}}
-                        if discountPercent
-                          span.s7 {{discountPercent}}%
-              .panel-footer
-                .right-float
-                  span.s5 TỔNG TIỀN:
-                  span.s3 <b>{{formatNumber currentOrder.finalPrice}}</b> VNĐ
-
-
+            +saleDetailSection saleDetails
 
       .dual-addon
         .search-filter.icon-search-8

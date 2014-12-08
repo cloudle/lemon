@@ -68,12 +68,19 @@ grid-left-border-width = 5px
     border-bottom dashed 1px #dddddd
   td.number, th.number
     text-align right
+    input
+      text-align right
   tr.editors
-    border-top solid 1px orange
+    border-top solid 1px #7ac5f9
+    td:first-child
+      border-left none
     &.dual-border
-      border-bottom solid 1px orange
+      border-bottom solid 1px #7ac5f9
+    input
+      font-style italic; font-weight bolder
+      color #7ac5f9
   input
-    border none; width 100%
+    border none; outline none; width 100%
     &.number
       float right
       text-align right
@@ -81,3 +88,6 @@ grid-left-border-width = 5px
 .lemon-grid.safe
   tr.header-row td .bill-header
     background-color lime
+
+input.note
+  font-style italic; color #666666

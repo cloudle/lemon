@@ -15,6 +15,9 @@ saleRoute =
 
     return {
       currentOrder: Session.get('currentOrder')
+      saleDetails:
+        order: Session.get('currentOrder')
+        orderDetails: scope.currentOrderDetails
       currentOrderDetails: scope.currentOrderDetails
       orderHistory: scope.currentOrderHistory
 

@@ -1,5 +1,3 @@
-setTime = -> Session.set('realtime-now', new Date())
-
 lemon.defineWidget Template.salePrinter,
   merchant: -> Schema.merchantPurchases.findOne({merchant: Session.get('myProfile')?.currentMerchant})
   dayOfWeek: -> moment(Session.get('realtime-now')).format("dddd")
@@ -8,8 +6,6 @@ lemon.defineWidget Template.salePrinter,
   timeS: -> moment(Session.get('realtime-now')).format("ss")
   soldPrice: -> @price - (@price * @discountPercent)/100
   discountVisible: -> @discountPercent > 0
-  created: -> @timeInterval = Meteor.setInterval(setTime, 1000)
-  destroyed: -> Meteor.clearInterval(@timeInterval)
 
   events:
     "click .print-button": -> window.print()

@@ -2,6 +2,11 @@ Template.registerHelper 'systemVersion', -> Schema.systems.findOne()?.version ? 
 Template.registerHelper 'currentAppInfo', -> Session.get("currentAppInfo")
 Template.registerHelper 'appCollapseClass', -> if Session.get('collapse') then 'icon-angle-double-left' else 'icon-angle-double-right'
 
+Template.registerHelper 'dayOfWeek', -> moment(Session.get('realtime-now')).format("dddd")
+Template.registerHelper 'timeDMY', -> moment(Session.get('realtime-now')).format("DD/MM/YYYY")
+Template.registerHelper 'timeHM', -> moment(Session.get('realtime-now')).format("hh:mm")
+Template.registerHelper 'timeS', -> moment(Session.get('realtime-now')).format("ss")
+
 Template.registerHelper 'sessionGet', (name) -> Session.get(name)
 Template.registerHelper 'authenticated', (name) -> Meteor.userId() isnt null
 Template.registerHelper 'metroUnLocker', (context) ->  if context < 1 then ' locked'

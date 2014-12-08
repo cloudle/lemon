@@ -1,0 +1,34 @@
+template(name="saleDetailSection")
+   .section.top.panel.panel-default.printable-area
+      .panel-heading.printing-header
+         span.pull-right <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b>
+      .panel-body
+         //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
+         table.lemon-grid
+            tr
+               th(style="width:auto") SẢN PHẨM
+               th(style="width:90px") QUI CÁCH
+               th.number(style="width:50px") SL
+               th.number(style="width:100px") ĐƠN GIÁ
+               th.number(style="width:80px") GIẢM GIÁ
+               th.number(style="width:120px") THÀNH TIỀN
+            each orderDetails
+               if editingMode
+                  +saleDetailEditor editingData
+               else
+                  tr.detail-row.click-enable
+                     td {{product.name}}
+                     td {{product.skulls}}
+                     td.editable-field.number {{formatNumber quality}}
+                     td.editable-field.number {{formatNumber price}}
+                     td.editable-field.number {{formatNumber discountCash}}
+                     td.number
+                        span <b>{{formatNumber finalPrice}}</b>
+                        if discountPercent
+                           span.s7 {{discountPercent}}%
+
+      .panel-footer
+         input.editable.dashed.note(value="{{order.description}}" placeholder="ghi chú đơn hàng" size="50" maxlength="120")
+         .right-float
+            span.s5 TỔNG TIỀN:
+            span.s3 <b>{{formatNumber order.finalPrice}}</b> VNĐ
