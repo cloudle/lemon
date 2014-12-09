@@ -74,3 +74,8 @@ Apps.Merchant.salesReactiveRun.push (scope) ->
 
   if Session.get("salesEditingRowId")
     Session.set("salesEditingRow", Schema.orderDetails.findOne(Session.get("salesEditingRowId")))
+
+  if Session.get("salesEditingRow")
+    cross = scope.validation.getCrossProductQuality(Session.get("salesEditingRow").product, Session.get("salesEditingRow").order)
+    Session.set 'saleAppMaxQuality', (cross.product.availableQuality - cross.quality)
+  else Session.set 'saleAppMaxQuality', 0

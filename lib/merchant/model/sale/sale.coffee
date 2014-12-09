@@ -48,6 +48,9 @@ Schema.add 'sales', "Sale", class Sale
       beforeDebtBalance : buyer.saleDebt
       latestDebtBalance : buyer.saleDebt + order.finalPrice
 
+    option.description = order.description if order.description
+    return option
+
   @insertByOrder: (order)->
     @schema.insert Sale.newByOrder(order), (error, result) -> if error then console.log error; null else result
 

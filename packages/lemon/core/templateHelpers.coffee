@@ -27,6 +27,16 @@ Template.registerHelper 'ownerNameFromId', (id) -> Schema.customers.findOne(id)?
 
 Template.registerHelper 'allowAction', (val) -> if val then '' else 'disabled'
 
+Template.registerHelper 'crossBillAvailableQuality', ->
+  cross = logics.sales.validation.getCrossProductQuality(@product, @order)
+  crossAvailable = cross.product.availableQuality - cross.quality
+  return {
+    crossAvailable: crossAvailable
+    isValid: crossAvailable > 0
+    invalid: crossAvailable < 0
+    errorClass: if crossAvailable > 0 then '' else 'errors'
+  }
+
 Template.registerHelper 'aliasLetter', (fullAlias) -> fullAlias?.substring(0,1)
 
 Template.registerHelper 'activeClassByCount', (count) -> if count > 0 then 'active' else ''

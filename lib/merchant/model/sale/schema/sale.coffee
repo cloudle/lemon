@@ -63,6 +63,10 @@ simpleSchema.sales = new SimpleSchema
     type: Date
     optional: true
 
+  description:
+    type: String
+    optional: true
+
   latestDebtBalance:
     type: Number
     defaultValue: 0

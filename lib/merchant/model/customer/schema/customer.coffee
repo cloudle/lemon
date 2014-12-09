@@ -21,6 +21,10 @@ simpleSchema.customers = new SimpleSchema
     type: [String]
     optional: true
 
+  builtIn:
+    type: [String]
+    optional: true
+
   name:
     type: String
 

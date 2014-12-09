@@ -1,11 +1,12 @@
 template(name="saleDetailEditor")
-   tr.editors.dual-border
-      td {{product.name}}
-      td {{product.skulls}}
-      td.number: input(name="quality" value="{{quality}}")
-      td.number: input(name="price" value="{{price}}")
-      td.number: input(name="discountCash" value="{{discountCash}}")
-      td.number
-         span <b>{{formatNumber finalPrice}}</b>
-         if discountPercent
-            span.s7 {{discountPercent}}%
+   tr.editors.dual-border(class="{{crossBillAvailableQuality.errorClass}}")
+      td.note.has-commands
+       |{{product.name}}
+       .commands
+          .lemon.rounded.tiny.btn.blue.animated.bounceIn.deleteOrderDetail: span.icon-minus-4
+      td.note {{product.skulls}}
+      td.number: input.error-field(name="quality" value="{{quality}}" min="0")
+      td.number: input(name="price" value="{{price}}" min="0")
+      td.number: input(name="discountCash" value="{{discountCash}}" min="0")
+      td.note.number <b>{{formatNumber finalPrice}}</b>
+

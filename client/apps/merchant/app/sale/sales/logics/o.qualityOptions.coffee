@@ -15,21 +15,6 @@ calculateDiscountCashAndDiscountPercent  = (quality, currentOrder)->
     currentOrder.currentTotalPrice      = option.currentTotalPrice
     Session.set('currentOrder', currentOrder)
 
-Apps.Merchant.salesReactiveRun.push (scope) ->
-  return if !scope.validation.getCrossProductQuality
-#  if logics.sales.currentProduct
-#    qualityProduct = logics.sales.currentProduct?.availableQuality
-#    orderDetail = _.where(logics.sales.currentOrderDetails.fetch(), {product: Session.get('currentOrder').currentProduct})
-#    for detail in orderDetail
-#      qualityProduct -= detail.quality
-#    qualityProduct
-#  else 0
-
-  if logics.sales.currentProduct and currentOrder = Session.get('currentOrder')
-    cross = logics.sales.validation.getCrossProductQuality(logics.sales.currentProduct._id, currentOrder._id)
-    Session.set 'saleAppMaxQuality', (cross.product.availableQuality - cross.quality)
-  else Session.set 'saleAppMaxQuality', 0
-
 Apps.Merchant.salesInit.push (scope) ->
   logics.sales.qualityOptions =
     reactiveSetter: (val) -> calculateDiscountCashAndDiscountPercent(val, Session.get('currentOrder'))

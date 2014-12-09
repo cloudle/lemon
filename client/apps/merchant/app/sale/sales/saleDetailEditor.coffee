@@ -1,10 +1,23 @@
 lemon.defineHyper Template.saleDetailEditor,
   price: ->
     Meteor.setTimeout ->
-      console.log 'updating'
       $("input[name='price']").change()
     , 100
     @price
+
+  quality: ->
+    Meteor.setTimeout ->
+      $("input[name='quality']").change()
+    , 100
+    @quality
+
+  discountCash: ->
+    Meteor.setTimeout ->
+      $("input[name='discountCash']").change()
+    , 100
+    @discountCash
+
+
   product: -> Schema.products.findOne(@product)
   rendered: ->
     @ui.$quality.inputmask "numeric",
@@ -17,22 +30,30 @@ lemon.defineHyper Template.saleDetailEditor,
     @ui.$quality.select()
 
   events:
-    "keypress input[name]": (event, template) ->
-      if event.which is 13 #ENTER
-        quality = template.ui.$quality.inputmask('unmaskedvalue')
-        price = template.ui.$price.inputmask('unmaskedvalue')
-        discountCash = template.ui.$discountCash.inputmask('unmaskedvalue')
-        totalPrice = price * quality
+    "keyup input[name]": (event, template) ->
+      quality = Number(template.ui.$quality.inputmask('unmaskedvalue'))
+      price = Number(template.ui.$price.inputmask('unmaskedvalue'))
+      discountCash = Number(template.ui.$discountCash.inputmask('unmaskedvalue'))
+      totalPrice = price * quality
+      if totalPrice > 0
         finalPrice = totalPrice - discountCash
         discountPercent = (discountCash * 100) / totalPrice
+      else
+        finalPrice = 0
+        discountCash = 0
+        discountPercent = 0
 
-        Schema.orderDetails.update @_id,
-          $set:
-            quality: quality
-            price: price
-            discountCash: discountCash
-            discountPercent: discountPercent
-            totalPrice: totalPrice
-            finalPrice: finalPrice
+      Schema.orderDetails.update @_id,
+        $set:
+          quality: quality
+          price: price
+          discountCash: discountCash
+          discountPercent: discountPercent
+          totalPrice: totalPrice
+          finalPrice: finalPrice
 
-        logics.sales.reCalculateOrder(@order)
+      logics.sales.reCalculateOrder(@order)
+
+    "click .deleteOrderDetail": (event, template) ->
+      Schema.orderDetails.remove @_id
+      logics.sales.reCalculateOrder(@order)
