@@ -36,14 +36,15 @@ Apps.Merchant.importInit.push (scope) ->
       product       : Session.get('currentImport').currentProduct
       importQuality : Session.get('currentImport').currentQuality
       importPrice   : Session.get('currentImport').currentImportPrice
-      provider      : Session.get('currentImport').currentProvider
-      salePrice     : Session.get('currentImport').currentPrice if Session.get('currentImport').currentPrice
 
-    productionDate = logics.import.getProductionDate()
-    if productionDate and Session.get('timesUseProduct') > 0
-      option.productionDate = productionDate
-      option.timeUse = Session.get('timesUseProduct')
-      option.expire  = new Date(productionDate.getFullYear(), productionDate.getMonth(), productionDate.getDate() + option.timeUse)
+    option.provider  = Session.get('currentImport').currentProvider if Session.get('currentImport').currentProvider
+    option.salePrice = Session.get('currentImport').currentPrice if Session.get('currentImport').currentPrice
+
+#    productionDate = logics.import.getProductionDate()
+#    if productionDate and Session.get('timesUseProduct') > 0
+#      option.productionDate = productionDate
+#      option.timeUse = Session.get('timesUseProduct')
+#      option.expire  = new Date(productionDate.getFullYear(), productionDate.getMonth(), productionDate.getDate() + option.timeUse)
 
     #      if expireDate = logics.import.getExpireDate() and Session.get('timesUseProduct') > 0
     #        option.expire  = expireDate

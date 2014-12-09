@@ -29,6 +29,8 @@ Apps.Merchant.importReactive.push (scope) ->
     $("[name=debitCash]").val(currentImport.debit)
     $("[name=depositCash]").val(currentImport.deposit)
 
+  if Session.get("importEditingRowId")
+    Session.set("importEditingRow", Schema.importDetails.findOne(Session.get("importEditingRowId")))
 
 
 

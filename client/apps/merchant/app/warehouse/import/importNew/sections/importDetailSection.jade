@@ -1,0 +1,38 @@
+template(name="importDetailSection")
+   .section.top.panel.panel-default.printable-area
+      .panel-heading.printing-header
+         span.pull-right <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b><br/>
+      .panel-body
+         //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
+         table.lemon-grid
+            tr
+               th(style="width:auto") SẢN PHẨM
+               th(style="width:80px") SẢN XUẤT
+               th(style="width:80px") HẾT HẠN
+               th.number(style="width:50px") SL
+               th.number(style="width:90px") ĐƠN GIÁ
+               th.number(style="width:120px") THÀNH TIỀN
+            each importDetails
+               if editingMode
+                  +importDetailEditor editingData
+               else
+                  tr.detail-row.click-enable
+                     td.has-commands
+                      |{{product.name}}
+                      .commands
+                        .lemon.rounded.tiny.btn.blue.deleteImportDetail: span.icon-minus-4
+                     td
+                        if showProductionDate
+                           |{{momentFormat productionDate 'DD/MM/YYYY'}}
+                     td
+                        if showExpireDate
+                           |{{momentFormat expire 'DD/MM/YYYY'}}
+                     td.editable-field.number {{formatNumber importQuality}}
+                     td.editable-field.number {{formatNumber importPrice}}
+                     td.number <b>{{formatNumber totalPrice}}</b>
+
+
+      .panel-footer
+         input.editable.dashed.note(value="{{import.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
+         .right-float
+            span.s3 <b>{{formatNumber import.totalPrice}}</b> VNĐ

@@ -1,21 +1,21 @@
 lemon.defineHyper Template.saleDetailEditor,
-  price: ->
-    Meteor.setTimeout ->
-      $("input[name='price']").change()
-    , 100
-    @price
-
-  quality: ->
-    Meteor.setTimeout ->
-      $("input[name='quality']").change()
-    , 100
-    @quality
-
-  discountCash: ->
-    Meteor.setTimeout ->
-      $("input[name='discountCash']").change()
-    , 100
-    @discountCash
+#  price: ->
+#    Meteor.setTimeout ->
+#      $("input[name='price']").change()
+#    , 100
+#    @price
+#
+#  quality: ->
+#    Meteor.setTimeout ->
+#      $("input[name='quality']").change()
+#    , 100
+#    @quality
+#
+#  discountCash: ->
+#    Meteor.setTimeout ->
+#      $("input[name='discountCash']").change()
+#    , 100
+#    @discountCash
 
 
   product: -> Schema.products.findOne(@product)
@@ -27,7 +27,15 @@ lemon.defineHyper Template.saleDetailEditor,
     @ui.$discountCash.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
 
+    @ui.$quality.val Session.get("salesEditingRow").quality
+    @ui.$price.val Session.get("salesEditingRow").price
+    @ui.$discountCash.val Session.get("salesEditingRow").discountCash
+
     @ui.$quality.select()
+
+
+
+
 
   events:
     "keyup input[name]": (event, template) ->
