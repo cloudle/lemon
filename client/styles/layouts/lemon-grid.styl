@@ -23,6 +23,8 @@ grid-left-border-width = 5px
       font-style italic; color #666666
     .super
       absolute top -4px right -8px
+  tr.detail-row:hover
+    background-color #C9EAFF !important
   tr.header-row
     border-bottom dashed 1px #B0B0B0
     td
@@ -52,6 +54,9 @@ grid-left-border-width = 5px
     margin-bottom 20px
     .blured-color
       color #999999
+  tr.group-summary-row td:first-child
+    border-left none
+
   tr.paid-row
     background-color lighten(lime, 50)
     &.top
