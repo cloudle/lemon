@@ -95,12 +95,13 @@ tile-background(color)
 
 .tile.locked, .tile:not([data-app])
   background-color #808080 !important
+  border none
   &:hover
     background-color darken(#808080, 15) !important
     * { opacity: 0.2; }
     &:before
       font-family 'lemon'
-      content '\E81C'
+      content '\E815'
       font-size 25px; color #cccccc
       absolute left 50% top 50%
       margin-left -10px; margin-top -20px
