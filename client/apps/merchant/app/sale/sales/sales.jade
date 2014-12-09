@@ -103,12 +103,6 @@ template(name="sales")
         +iSpinEdit(options=billPercentDiscountOptions)
 
     .editor-row
-      .editor-wrapper(style="width: 180px; margin-right: 5px;")
-        span.ilabel.optional nhân viên
-        +iSelect(options=sellerSelectOptions class="field")
-      .editor-wrapper(style="width: 170px")
-        span.ilabel.optional khách hàng
-        +iSelect(options=customerSelectOptions class="field")
       .editor-wrapper(style="width: 100px")
         span.ilabel.optional thanh toán
         +iSelect(options=paymentMethodSelectOption class="field")
@@ -122,12 +116,10 @@ template(name="sales")
       //.editor-wrapper
       //  input(binding="switch" type="checkbox" name="advancedMode")
 
-      .editor-wrapper
-        button.lemon.btn.blue.pull-right.print-preview(type='submit'): span.icon-print-6
-      .editor-wrapper
+      .editor-wrapper.pull-right
         button.lemon.btn.lime.pull-right.finish(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
-
-
+      .editor-wrapper.pull-right
+        button.lemon.btn.blue.pull-right.print-preview(type='submit'): span.icon-print-6
 
       //.editor-wrapper.pull-right(style="width: 120px")
       //  span.ilabel.optional.right thực thu

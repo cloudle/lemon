@@ -97,6 +97,9 @@ Meteor.methods
 
     sale = createSaleAndSaleOrder(currentOrder, orderDetails)
     if sale
+      productIds = _.uniq(_.pluck(orderDetails, 'product'))
+      Schema.customers.update(sale.buyer, $push: {builtIn:{ $each: productIds, $slice: -50 }})
+
       removeOrderAndOrderDetail(currentOrder, userProfile)
       updateCustomerByNewSales(sale, userProfile)
 

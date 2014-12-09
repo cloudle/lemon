@@ -2,8 +2,6 @@ template(name="saleDetailSection")
    .section.top.panel.panel-default.printable-area
       .panel-heading.printing-header
          span.pull-right <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b><br/>
-         if deliveryMode
-            span giao hang
       .panel-body
          //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
          table.lemon-grid

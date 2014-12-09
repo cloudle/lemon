@@ -8,6 +8,8 @@ Apps.Merchant.salesReactiveRun.push (scope) ->
         unsignedName = Helpers.RemoveVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1 || item.productCode.indexOf(unsignedTerm) > -1
     else
+      if Session.get('currentOrderCustomer')?.builtIn?.length > 0
+        products = Schema.products.find({_id: $in: Session.get('currentOrderCustomer').builtIn}).fetch()
       groupedProducts = _.groupBy products, (product) -> product.name.substr(0, 1).toLowerCase()
       scope.managedSalesProductList.push {key: key, childs: childs} for key, childs of groupedProducts
       scope.managedSalesProductList = _.sortBy(scope.managedSalesProductList, (num)-> num.key)

@@ -85,7 +85,6 @@ Meteor.methods
           option.debtBalanceChange = debtCash
           option.beforeDebtBalance = customer.saleDebt
           option.latestDebtBalance = customer.saleDebt - debtCash
-          console.log option
           Schema.transactions.insert option
           Schema.customers.update customer._id, $inc: incCustomerOption
 
