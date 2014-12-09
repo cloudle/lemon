@@ -41,7 +41,9 @@ grid-left-border-width = 5px
       border-top dashed 1px #eeeeee
     td:first-child
       padding-left 5px
-      border-left solid grid-left-border-width #00aff0
+      border-left solid grid-left-border-width #7ac5f9
+    &.errors td:first-child
+      border-left solid grid-left-border-width red
   tr.summary-row
     border-top dashed 1px #C8C8C8 !important
     margin-bottom 20px
@@ -79,6 +81,10 @@ grid-left-border-width = 5px
     input
       font-style italic; font-weight bolder
       color #7ac5f9
+    &.errors
+      border-top solid 1px red
+      &.dual-border
+        border-bottom solid 1px red
   input
     border none; outline none; width 100%
     &.number
