@@ -1,5 +1,8 @@
 Apps.Merchant.distributorManagementInit.push (scope) ->
-  scope.customImportModeDisable = ()->
+  scope.customImportModeDisable = (distributorId) ->
+    distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant:Session.get('myProfile').parentMerchant})
+    if distributor and distributor.customImportModeEnabled is true
+      Schema.distributors.update distributor._id, $set:{customImportModeEnabled: false}
 
   scope.createCustomImport = (template)->
     if distributor = Session.get("distributorManagementCurrentDistributor")
@@ -90,20 +93,29 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 
 
   scope.createTransactionOfImport = (template, distributor)->
-    $payDescription = template.ui.$paySaleDescription
-
     if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
-      importCreatedAt = new Date(latestImport.version.createdAt.getFullYear(), latestImport.version.createdAt.getMonth(), latestImport.version.createdAt.getDate())
+      $payDescription = template.ui.$paySaleDescription
+      $payAmount = template.ui.$paySaleAmount
+      payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
 
-    $paidDate = $(template.find("[name='paidSaleDate']")).inputmask('unmaskedvalue')
-    paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
-    limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
-    isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and paidDate > limitCurrentPaidDate and paidDate >= importCreatedAt
+      if latestImport and !isNaN(payAmount) and payAmount != 0
+        Meteor.call('createNewReceiptCashOfImport', distributor._id, payAmount, $payDescription.val())
+        Session.set("allowCreateTransactionOfImport", false)
+        $payDescription.val(''); $payAmount.val('')
 
-    $payAmount = template.ui.$paySaleAmount
-    payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
 
-    if latestImport and isValidDate and !isNaN(payAmount) and payAmount != 0
-      Meteor.call('createNewReceiptCashOfImport', distributor._id, payAmount, $payDescription.val())
-      Session.set("allowCreateTransactionOfImport", false)
-      $payDescription.val(''); $payAmount.val('')
+#    if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
+#      importCreatedAt = new Date(latestImport.version.createdAt.getFullYear(), latestImport.version.createdAt.getMonth(), latestImport.version.createdAt.getDate())
+#    $payDescription = template.ui.$paySaleDescription
+#    $paidDate = $(template.find("[name='paidSaleDate']")).inputmask('unmaskedvalue')
+#    paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
+#    limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
+#    isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and paidDate > limitCurrentPaidDate and paidDate >= importCreatedAt
+#
+#    $payAmount = template.ui.$paySaleAmount
+#    payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+#
+#    if latestImport and isValidDate and !isNaN(payAmount) and payAmount != 0
+#      Meteor.call('createNewReceiptCashOfImport', distributor._id, payAmount, $payDescription.val())
+#      Session.set("allowCreateTransactionOfImport", false)
+#      $payDescription.val(''); $payAmount.val('')

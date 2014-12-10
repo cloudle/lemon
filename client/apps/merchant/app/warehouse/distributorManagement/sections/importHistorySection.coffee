@@ -5,6 +5,10 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
   allowCreateCustomImport: -> if Session.get("allowCreateCustomImport") then '' else 'disabled'
   allowCreateTransactionOfImport: -> if Session.get("allowCreateTransactionOfImport") then '' else 'disabled'
   allowCreateTransactionOfCustomImport: -> if Session.get("allowCreateTransactionOfCustomImport") then '' else 'disabled'
+  showAddTransactionOfImport: ->
+    if distributor = Session.get("distributorManagementCurrentDistributor")
+      importFound = Schema.imports.findOne {distributor: distributor._id, finish: true, submitted: true}
+      if importFound then "" else "display: none;"
 
   showExpandImportAndCustomImport: -> Session.get("showExpandImportAndCustomImport")
   isCustomImportModeEnabled: -> if Session.get("distributorManagementCurrentDistributor")?.customImportModeEnabled then "" else "display: none;"
@@ -19,7 +23,6 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
     @ui.$paidDate.inputmask("dd/mm/yyyy")
     @ui.$payAmount.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
-    @ui.$paidSaleDate.inputmask("dd/mm/yyyy")
     @ui.$paySaleAmount.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
   events:
@@ -38,20 +41,20 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
         scope.customImportModeDisable(distributor._id)
 
 #----Create-Custom-Import-----------------------------------------------------------------------------------------------
-    "keydown .new-bill-field.number": (event, template) ->
-      if distributor = Session.get("distributorManagementCurrentDistributor") and event.which is 8
+    "keydown .new-bill-field": (event, template) ->
+      if distributor = Session.get("distributorManagementCurrentDistributor") and event.which is 8 #Backspaces
         scope.checkAllowCreateCustomImport(template, distributor)
 
-    "input .new-bill-field.number": (event, template) ->
-      if distributor = Session.get("distributorManagementCurrentDistributor")
+    "input .new-bill-field": (event, template) ->
+      if distributor = Session.get("distributorManagementCurrentDistributor") #Input
         scope.checkAllowCreateCustomImport(template, distributor)
 
-    "click .createCustomImport":  (event, template) ->
-      if Session.get("allowCreateCustomImport")
+    "keypress .new-bill-field": (event, template) ->
+      if  Session.get("allowCreateCustomImport") and event.which is 13 #Enter
         scope.createCustomImport(template)
 
-    "keypress input.new-bill-field": (event, template) ->
-      if  Session.get("allowCreateCustomImport") and event.which is 13
+    "click .createCustomImport":  (event, template) ->
+      if Session.get("allowCreateCustomImport") #Click
         scope.createCustomImport(template)
 
 #-----Create-Transaction-Of-Custom-Import-------------------------------------------------------------------------------

@@ -2,7 +2,7 @@ template(name="distributorManagementImportDetails")
   tr.header-row
     td(colspan="5")
       | .
-      .bill-header <b>{{momentCalendar version.createdAt}}</b>
+      .bill-header <b>{{momentCalendar debtDate}}</b>
   each importDetails
     tr.detail-row
       td.first-column {{productName}}

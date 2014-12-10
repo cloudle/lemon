@@ -7,9 +7,9 @@ template(name="importDetailSection")
          table.lemon-grid
             tr
                th(style="width:auto") SẢN PHẨM
-               th(style="width:80px") SẢN XUẤT
-               th(style="width:80px") HẾT HẠN
-               th.number(style="width:50px") SL
+               th(style="width:90px") HẾT HẠN
+               th(style="width:50px") SL
+               th(style="width:90px") QUY CÁCH
                th.number(style="width:90px") ĐƠN GIÁ
                th.number(style="width:120px") THÀNH TIỀN
             each importDetails
@@ -23,12 +23,10 @@ template(name="importDetailSection")
                            .commands
                               .lemon.rounded.tiny.btn.blue.deleteImportDetail: span.icon-minus-4
                      td
-                        if showProductionDate
-                           |{{momentFormat productionDate 'DD/MM/YYYY'}}
-                     td
                         if showExpireDate
                            |{{momentFormat expire 'DD/MM/YYYY'}}
-                     td.editable-field.number {{formatNumber importQuality}}
+                     td.editable-field {{formatNumber importQuality}}
+                     td {{product.skulls}}
                      td.editable-field.number {{formatNumber importPrice}}
                      td.number <b>{{formatNumber totalPrice}}</b>
 

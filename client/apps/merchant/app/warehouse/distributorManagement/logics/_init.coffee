@@ -14,16 +14,11 @@ Apps.Merchant.distributorManagementReactive.push (scope) ->
         $("[name=paidDate]").val(moment(latestTransaction.debtDate).format('DDMMYYY'))
       else
         $("[name=paidDate]").val(moment(latestCustomImport.debtDate).format('DDMMYYY'))
+
+      $("[name=customImportDebtDate]").val(moment(latestCustomImport.debtDate).format('DDMMYYY'))
     else
       $("[name=paidDate]").val('')
+      $("[name=customImportDebtDate]").val('')
 
-    if latestImport = Schema.imports.findOne({distributor: distributorId}, {sort: {'version.createdAt': -1}})
-      if latestTransaction = Schema.transactions.findOne({latestImport: latestImport._id}, {sort: {debtDate: -1}})
-        $("[name=paidSaleDate]").val(moment(latestTransaction.debtDate).format('DDMMYYY'))
-      else
-        $("[name=paidSaleDate]").val(moment(latestImport.version.createdAt).format('DDMMYYY'))
-    else
-      $("[name=paidSaleDate]").val('')
-
-#  if Session.get("distributorManagementCurrentDistributor")
+#  if Session.get("distributorManagementCurrentDistributor").allowDelete
 #    Meteor.subscribe('distributorManagementData', Session.get("distributorManagementCurrentDistributor")._id)

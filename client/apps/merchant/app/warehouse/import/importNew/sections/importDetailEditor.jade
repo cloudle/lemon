@@ -5,9 +5,9 @@ template(name="importDetailEditor")
       if showDelete
         .commands
           .lemon.rounded.tiny.btn.blue.animated.bounceIn.deleteImportDetail: span.icon-minus-4
-    td: input(name="editProductionDate" min="0")
     td: input(name="editExpireDate" min="0")
-    td.number: input(name="editImportQuality" min="0")
+    td: input(name="editImportQuality" min="0")
+    td {{product.skulls}}
     td.number: input(name="editImportPrice" min="0")
     td.note.number <b>{{formatNumber totalPrice}}</b>
 

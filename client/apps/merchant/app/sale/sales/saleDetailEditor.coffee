@@ -21,7 +21,7 @@ lemon.defineHyper Template.saleDetailEditor,
   product: -> Schema.products.findOne(@product)
   rendered: ->
     @ui.$editQuality.inputmask "numeric",
-        {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
+        {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
     @ui.$editPrice.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
     @ui.$editDiscountCash.inputmask "numeric",

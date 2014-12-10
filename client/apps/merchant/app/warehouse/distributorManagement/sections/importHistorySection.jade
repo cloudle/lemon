@@ -21,7 +21,7 @@ template(name="distributorManagementImportsHistorySection")
           td
             input.new-transaction-custom-import-field.number(name='paidDate' type="text" size="10" placeholder="ngày giao dịch")
           td
-            .lemon.rounded.btn.lime.icon-money.pull-right.createTransactionOfCustomImport(class="{{allowCreateTransactionOfCustomImport}}")
+            .lemon.rounded.btn.orange.icon-money.pull-right.createTransactionOfCustomImport(class="{{allowCreateTransactionOfCustomImport}}")
 
         tr.editors.dual-border(style="{{isCustomImportModeEnabled}}")
           td(colspan="3")
@@ -29,12 +29,12 @@ template(name="distributorManagementImportsHistorySection")
           td
             input.new-bill-field.number(name='customImportDebtDate' type="text" size="10" placeholder="ngày nhập")
           td
-            .lemon.rounded.btn.lime.icon-tags-2.pull-right.createCustomImport(class="{{allowCreateCustomImport}}")
+            .lemon.rounded.btn.orange.icon-tags-2.pull-right.createCustomImport(class="{{allowCreateCustomImport}}")
 
         if customImportModeEnabled
           tr.group-summary-row
             td
-              //.lemon.btn.lime.customImportModeDisable.icon-ok-6
+              .lemon.btn.lime.customImportModeDisable.icon-ok-6 Kết Sổ Cũ
             td.number.old-debt-total(colspan="5")
               span.s5 NỢ CŨ:
               span.s3 <b>{{formatNumber customImportDebt}}</b> VNĐ
@@ -48,13 +48,11 @@ template(name="distributorManagementImportsHistorySection")
         each defaultImport
           +distributorManagementImportDetails this
 
-        tr.editors
+        tr.editors(style="{{showAddTransactionOfImport}}")
           td
             input.new-transaction-import-field(name='paySaleDescription' type="text" size="10" placeholder="ghi chú thu chi")
-          td(colspan="2")
+          td(colspan="3")
             input.new-transaction-import-field.number(name='paySaleAmount' type="text" size="10" placeholder="số tiền")
-          td
-            input.new-transaction-import-field.number(name='paidSaleDate' type="text" size="10" placeholder="ngày giao dịch")
           td
             .lemon.rounded.btn.lime.icon-money.pull-right.createTransactionOfImport(class="{{allowCreateTransactionOfImport}}")
 

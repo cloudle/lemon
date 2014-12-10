@@ -56,13 +56,14 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
   scope.checkAllowCreateCustomImport = (template, distributor)->
     latestCustomImport = Schema.customImports.findOne({seller: distributor._id}, {sort: {debtDate: -1}})
 
+    isValidDescription = template.find("[name='customImportDescription']").value.length > 0
     $debtDate = $(template.find("[name='customImportDebtDate']")).inputmask('unmaskedvalue')
     tempDate = moment($debtDate, 'DD/MM/YYYY')._d
     debtDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
     limitDebtDate = new Date(tempDate.getFullYear() - 20, tempDate.getMonth(), tempDate.getDate())
     isValidDate = $debtDate.length is 8 and moment($debtDate, 'DD/MM/YYYY').isValid() and debtDate > limitDebtDate
 
-    if isValidDate and (latestCustomImport is undefined || debtDate >= latestCustomImport.debtDate)
+    if isValidDate and isValidDescription and (latestCustomImport is undefined || debtDate >= latestCustomImport.debtDate)
       Session.set("allowCreateCustomImport", true)
     else
       Session.set("allowCreateCustomImport", false)
@@ -98,33 +99,32 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 
   scope.checkAllowCreateTransactionOfImport = (template, distributor)->
     if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
-      latestTransaction = Schema.transactions.findOne({latestImport: latestImport._id}, {sort: {debtDate: -1}})
-
-    $paidDate = $(template.find("[name='paidSaleDate']")).inputmask('unmaskedvalue')
-    paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
-    currentPaidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
-    limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
-    isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and currentPaidDate > limitCurrentPaidDate and currentPaidDate < new Date()
-    payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
-
-    if isValidDate and payAmount != 0 and !isNaN(payAmount)
-      if latestImport
-        if latestTransaction then debtDate = latestTransaction.debtDate else debtDate = latestImport.version.createdAt
-        if currentPaidDate >= debtDate
-          Session.set("allowCreateTransactionOfImport", true)
-        else
-          Session.set("allowCreateTransactionOfImport", false)
-      else
+      payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+      if payAmount != 0 and !isNaN(payAmount)
         Session.set("allowCreateTransactionOfImport", true)
-    else
-      Session.set("allowCreateTransactionOfImport", false)
+      else
+        Session.set("allowCreateTransactionOfImport", false)
 
-
-
-#    if latestImport and isValidDate and !isNaN(payAmount) and payAmount != 0
-#      Session.set("allowCreateTransactionOfImport", true)
-#    else
-#      Session.set("allowCreateTransactionOfImport", false)
+#      latestTransaction = Schema.transactions.findOne({latestImport: latestImport._id}, {sort: {debtDate: -1}})
+#
+#      $paidDate = $(template.find("[name='paidSaleDate']")).inputmask('unmaskedvalue')
+#      paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
+#      currentPaidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
+#      limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
+#      isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and currentPaidDate > limitCurrentPaidDate and currentPaidDate < new Date()
+#      payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+#
+#      if isValidDate and payAmount != 0 and !isNaN(payAmount)
+#        if latestImport
+#          if latestTransaction then debtDate = latestTransaction.debtDate else debtDate = latestImport.version.createdAt
+#          if currentPaidDate >= debtDate
+#            Session.set("allowCreateTransactionOfImport", true)
+#          else
+#            Session.set("allowCreateTransactionOfImport", false)
+#        else
+#          Session.set("allowCreateTransactionOfImport", true)
+#      else
+#        Session.set("allowCreateTransactionOfImport", false)
 
     scope.checkAllowUpdateOverview = (template) ->
       Session.set "distributorManagementShowEditCommand",
