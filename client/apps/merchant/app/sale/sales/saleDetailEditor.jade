@@ -5,8 +5,8 @@ template(name="saleDetailEditor")
        .commands
           .lemon.rounded.tiny.btn.blue.animated.bounceIn.deleteOrderDetail: span.icon-minus-4
       td.note {{product.skulls}}
-      td.number: input.error-field(name="quality" min="0")
-      td.number: input(name="price" min="0")
-      td.number: input(name="discountCash" min="0")
+      td.number: input.error-field(name="editQuality" min="0")
+      td.number: input(name="editPrice" min="0")
+      td.number: input(name="editDiscountCash" min="0")
       td.note.number <b>{{formatNumber finalPrice}}</b>
 

@@ -9,11 +9,15 @@ lemon.defineHyper Template.importDetailSection,
   destroyed: -> Meteor.clearInterval(@timeInterval)
   showProductionDate: -> if @productionDate then true else false
   showExpireDate: -> if @expire then true else false
+  showDelete: -> !Session.get("currentImport")?.submitted
 
   events:
     "click .detail-row": ->
-      Session.set("importEditingRowId", @_id)
+      if Session.get("currentImport")?.submitted is false
+        Session.set("importEditingRowId", @_id)
 
     "click .deleteImportDetail": (event, template) ->
       Schema.importDetails.remove @_id
-      logics.import.reCalculateImport(@import)
+      Schema.imports.update @import, $inc:{totalPrice: -@totalPrice, deposit: -@totalPrice, debit: 0}
+
+#    "input"

@@ -18,9 +18,10 @@ template(name="importDetailSection")
                else
                   tr.detail-row.click-enable
                      td.has-commands
-                      |{{product.name}}
-                      .commands
-                        .lemon.rounded.tiny.btn.blue.deleteImportDetail: span.icon-minus-4
+                        |{{product.name}}
+                        if showDelete
+                           .commands
+                              .lemon.rounded.tiny.btn.blue.deleteImportDetail: span.icon-minus-4
                      td
                         if showProductionDate
                            |{{momentFormat productionDate 'DD/MM/YYYY'}}
@@ -33,6 +34,6 @@ template(name="importDetailSection")
 
 
       .panel-footer
-         input.editable.dashed.note(value="{{import.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
+         input.editable.dashed.note(name='importDescription' value="{{import.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
          .right-float
             span.s3 <b>{{formatNumber import.totalPrice}}</b> VNĐ

@@ -81,43 +81,47 @@ template(name="import")
             .group-wrapper
               each managedImportProductList
                 .caption.inner(class="{{productSelectionActiveClass}}")
-                  +avatarImageComponent(avatar=avatarUrl alias=firstName)
+                  +avatarImageComponent(avatar=avatarUrl alias=name)
                   span.text
                     |{{name}}
                     if skulls
                       |({{skulls}})
+                    if showAddDetail
+                      .commands
+                        span.icon-right-open-big.addImportDetail
           else
             each managedImportProductList
               .group-wrapper
                 .caption.group {{key}}
                 each childs
                   .caption.inner(class="{{productSelectionActiveClass}}")
-                    +avatarImageComponent(avatar=avatarUrl alias=firstName)
+                    +avatarImageComponent(avatar=avatarUrl alias=name)
                     span.text
                       |{{name}}
                       if skulls
                         |({{skulls}})
-                      .commands
-                        span.icon-right-open-big.addImportDetail
+                      if showAddDetail
+                        .commands
+                          span.icon-right-open-big.addImportDetail
 
 
 
   #footer
     if currentImport
       .editor-row
-        if showSubmit
-          .editor-wrapper.right(style="width: 100px")
-            button.lemon.btn.lime.icon-ok-6.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN
-        if showEdit
-          .editor-wrapper.right(style="width: 120px")
-            button.lemon.btn.carrot.icon-pencil-circled.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
-        if showFinish
-          .editor-wrapper.right(style="width: 100px")
-            button.lemon.btn.lime.icon-award.right.finishImport(type='submit' style="margin-right: 5px;") HOÀN TẤT
-
+        //if showSubmit
         .editor-wrapper.right(style="width: 120px")
-          span.ilabel.optional tiền còn nợ
-          input.debit(name='debitCash' disabled)
+          button.lemon.btn.blue.icon-ok-6.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN
+        //if showEdit
+        .editor-wrapper.right(style="width: 120px")
+          button.lemon.btn.carrot.icon-pencil-circled.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
+        //if showFinish
+        .editor-wrapper.right(style="width: 120px")
+          button.lemon.btn.lime.icon-award.right.finishImport(type='submit' style="margin-right: 5px;") HOÀN TẤT
+
+        //.editor-wrapper.right(style="width: 120px")
+        //  span.ilabel.optional tiền còn nợ
+        //  input.debit(name='debitCash' disabled)
         .editor-wrapper.right(style="width: 120px")
           span.ilabel.optional tiền đã trả
           input.deposit(name='depositCash')
