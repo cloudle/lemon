@@ -20,4 +20,7 @@ lemon.defineHyper Template.importDetailSection,
       Schema.importDetails.remove @_id
       Schema.imports.update @import, $inc:{totalPrice: -@totalPrice, deposit: -@totalPrice, debit: 0}
 
-#    "input"
+    "keyup [name='importDescription']": (event, template)->
+      if currentImport = Session.get('currentImport')
+        description = template.find("[name='importDescription']")
+        Schema.imports.update currentImport._id, $set:{description: description.value}

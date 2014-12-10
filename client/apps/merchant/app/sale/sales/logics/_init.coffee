@@ -77,10 +77,6 @@ Apps.Merchant.salesReactiveRun.push (scope) ->
 
   if Session.get("salesEditingRow")
     $("[name=editQuality]").val(Session.get("salesEditingRow").quality)
-    $("[name=editPrice]").val(Session.get("salesEditingRow").price)
-    $("[name=editDiscountCash]").val(Session.get("salesEditingRow").discountCash)
-
-
 
   if Session.get('currentOrder')
     if !Session.get('currentOrderCustomer') || Session.get('currentOrderCustomer')._id != Session.get('currentOrder').buyer

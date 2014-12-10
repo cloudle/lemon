@@ -70,7 +70,7 @@ simpleSchema.products = new SimpleSchema
     optional: true
 
   version: { type: simpleSchema.Version }
-
+#-----------------------------------------------
   provider:
     type: String
     optional: true

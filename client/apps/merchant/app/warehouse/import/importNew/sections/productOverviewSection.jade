@@ -2,15 +2,17 @@ template(name="importCurrentProductOverviewSection")
   .section.top.panel.panel-default
     input.hidden.avatarFile(type="file")
     .panel-heading
-      +avatarImageComponent(avatar=avatarUrl alias=firstName)
+      +avatarImageComponent(avatar=avatarUrl alias=name)
       .caption
         input.editable.dashed(name="productName" value="{{name}}" maxlength="50")
         if skulls
           span.blured-color ({{skulls}})
-      .sub1: input.editable.dashed(name="productPrice" value="{{price}}" maxlength="20" style="width: 125px")
-      //.sub2: input.editable(name="customerAddress" value="{{address}}" maxlength="100" size="50" placeholder="địa chỉ")
+      .sub1
+        input.editable.dashed(name="productPrice" maxlength="20" style="width: 125px")
+        span.blured-color (giá bán)
+      .sub2
+        input.editable.dashed(name="productImportPrice" maxlength="20" style="width: 125px")
+        span.blured-color (giá nhập)
       .commands
         if showEditCommand
-          .lemon.btn.rounded.lime.icon-ok-6.syncCustomerEdit
-    .panel-footer
-      span.icon-angle-right
+          .lemon.btn.rounded.lime.icon-ok-6.syncProductEdit

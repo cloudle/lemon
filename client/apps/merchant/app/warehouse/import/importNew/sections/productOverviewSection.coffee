@@ -7,12 +7,18 @@ lemon.defineHyper Template.importCurrentProductOverviewSection,
       scope.overviewTemplateInstance.ui.$productName.change()
     ,50 if scope.overviewTemplateInstance
     @name
-  firstName: -> Helpers.firstName(@name)
 
   rendered: ->
     scope.overviewTemplateInstance = @
     @ui.$productName.autosizeInput({space: 20})
     @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
+    @ui.$productImportPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
+
+    @ui.$productPrice.val Session.get('importCurrentProduct').price
+    @ui.$productImportPrice.val Session.get('importCurrentProduct').importPrice ? 0
+
+    @ui.$productName.select()
+
 
   events:
     "click .avatar": (event, template) -> template.find('.avatarFile').click()
@@ -36,10 +42,13 @@ lemon.defineHyper Template.importCurrentProductOverviewSection,
           $(event.currentTarget).change()
         else if $(event.currentTarget).attr('name') is 'productPrice'
           $(event.currentTarget).val(Session.get("importCurrentProduct").price)
+        else if $(event.currentTarget).attr('name') is 'productImportPrice'
+          $(event.currentTarget).val(Session.get("importCurrentProduct").importPrice)
 
       Session.set "importCurrentProductShowEditCommand",
         template.ui.$productName.val() isnt Session.get("importCurrentProduct").name or
-        Number(template.ui.$productPrice.inputmask('unmaskedvalue')) isnt (Session.get("importCurrentProduct").price ? '')
+          Number(template.ui.$productPrice.inputmask('unmaskedvalue')) isnt (Session.get("importCurrentProduct").price ? '') or
+          Number(template.ui.$productImportPrice.inputmask('unmaskedvalue')) isnt (Session.get("importCurrentProduct").importPrice ? '')
 
       scope.editProduct(template) if event.which is 13
 

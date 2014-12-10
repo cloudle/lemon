@@ -5,14 +5,12 @@ lemon.defineApp Template.import,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showAddDetail: -> !Session.get("currentImport")?.submitted
   showFilterSearch: -> Session.get("importManagementSearchFilter")?.length > 0
-  showEditImportCurrentProduct: -> Session.get('importCurrentProduct').allowDelete
+  showEditImportCurrentProduct: -> if Session.get('importCurrentProduct')?.price > 0 and Session.get('importCurrentProduct')?.importPrice > 0 then false else true
   productSelectionActiveClass:-> if Session.get('currentImport')?.currentProduct is @._id then 'active' else ''
-
 
   rendered: ->
     logics.import.templateInstance = @
-    @ui.$depositCash.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
-
+    @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
   created: ->
     Session.set("importManagementSearchFilter", "")
@@ -34,13 +32,10 @@ lemon.defineApp Template.import,
 
 
     "click .createProductBtn": (event, template) -> scope.createProduct(template)
-    "input .search-filter": (event, template) ->
-      Session.set("importManagementSearchFilter", template.ui.$searchFilter.val())
+    "input .search-filter": (event, template) -> Session.set("importManagementSearchFilter", template.ui.$searchFilter.val())
     "keypress input[name='searchFilter']": (event, template)->
       if event.which is 13 and Session.get("importManagementSearchFilter")?.trim().length > 1
         scope.createProduct(template)
-
-
     "click .inner.caption": (event, template) ->
       if currentImport = Session.get('currentImport')
         if product = Schema.products.findOne(@_id)
@@ -64,14 +59,16 @@ lemon.defineApp Template.import,
           Session.set('currentImport', currentImport)
           Session.set('importCurrentProductShowEditCommand')
 
+
     'keyup .deposit': (event, template)->
       if currentImport = Session.get('currentImport')
-        deposit = $(template.find(".deposit")).inputmask('unmaskedvalue')
+        deposit = Math.abs($(template.find(".deposit")).inputmask('unmaskedvalue'))
         Schema.imports.update(currentImport._id, $set:{deposit: deposit})
-
     'click .addImportDetail': (event, template)->
-      Session.get("importEditingRowId", scope.addImportDetail(event, template, @))
-
+      importDetail = Schema.importDetails.findOne(scope.addImportDetail(@))
+      Session.set("importEditingRowId", importDetail._id)
+      Session.set("importEditingRow", importDetail)
+      $("[name=editImportQuality]").val(importDetail.importQuality)
 
 
     'click .editImport': (event, template)->
@@ -85,6 +82,7 @@ lemon.defineApp Template.import,
         if currentImport.submitted is false
           Meteor.call 'importSubmit', currentImport._id, (error, result) -> if error then console.log error.error
         Meteor.call 'importFinish', currentImport._id, (error, result) -> if error then console.log error.error
+
 
     'click .excel-import': (event, template) -> $(".excelFileSource").click()
     'change .excelFileSource': (event, template) ->

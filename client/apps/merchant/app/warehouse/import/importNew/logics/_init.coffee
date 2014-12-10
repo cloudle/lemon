@@ -29,7 +29,6 @@ Apps.Merchant.importReactive.push (scope) ->
 
 
   if currentImport = scope.currentImport
-    $("[name=debitCash]").val(currentImport.debit)
     $("[name=depositCash]").val(currentImport.deposit)
 
   if Session.get("currentImport")?.submitted is true
@@ -39,8 +38,8 @@ Apps.Merchant.importReactive.push (scope) ->
   if Session.get("importEditingRowId")
     Session.set("importEditingRow", Schema.importDetails.findOne(Session.get("importEditingRowId")))
 
-  if Session.get("importEditingRow")
-    $("[name=editImportQuality]").val(Session.get("importEditingRow").importQuality)
+#  if Session.get("importEditingRow")?.importQuality
+#    $("[name=editImportQuality]").val(Session.get("importEditingRow").importQuality)
 
 
 #    if Session.get('currentImport')
