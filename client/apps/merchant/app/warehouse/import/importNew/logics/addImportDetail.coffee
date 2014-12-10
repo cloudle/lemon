@@ -1,5 +1,11 @@
+reUpdateImportDetail = (newImportDetail, oldImportDetail) ->
+  totalPrice = newImportDetail.importQuality  * oldImportDetail.importPrice
+  Schema.importDetails.update oldImportDetail._id, $inc:{ importQuality : newImportDetail.importQuality , totalPrice: totalPrice}
+  , (error, result) -> console.log error if error
+  return oldImportDetail._id
+
 Apps.Merchant.importInit.push (scope) ->
-  logics.import.reCalculateImport = (importId)->
+  scope.reCalculateImport = (importId)->
     if currentImport = Schema.imports.findOne(
       {
         _id: importId
@@ -15,31 +21,7 @@ Apps.Merchant.importInit.push (scope) ->
       else option = {totalPrice: 0, deposit: 0, debit: 0}
       Import.update importId, $set: option
 
-
-reUpdateImportDetail = (newImportDetail, oldImportDetail) ->
-  totalPrice = newImportDetail.importQuality  * oldImportDetail.importPrice
-  Schema.importDetails.update oldImportDetail._id, $inc:{ importQuality : newImportDetail.importQuality , totalPrice: totalPrice}
-  , (error, result) -> console.log error if error
-
-optionImportDetail = (option, currentImport)->
-  option.merchant   = currentImport.merchant
-  option.warehouse  = currentImport.warehouse
-  option.import     = currentImport._id
-  option.totalPrice = option.importQuality * option.importPrice
-  option
-
-checkValidationOption = (option, currentImport) -> true
-
-Apps.Merchant.importInit.push (scope) ->
-  logics.import.addImportDetail = (event, template) ->
-    option =
-      product       : Session.get('currentImport').currentProduct
-      importQuality : Session.get('currentImport').currentQuality
-      importPrice   : Session.get('currentImport').currentImportPrice
-
-    option.provider  = Session.get('currentImport').currentProvider if Session.get('currentImport').currentProvider
-    option.salePrice = Session.get('currentImport').currentPrice if Session.get('currentImport').currentPrice
-
+  scope.addImportDetail = (product) ->
 #    productionDate = logics.import.getProductionDate()
 #    if productionDate and Session.get('timesUseProduct') > 0
 #      option.productionDate = productionDate
@@ -51,21 +33,29 @@ Apps.Merchant.importInit.push (scope) ->
     #        option.timeUse = Session.get('timesUseProduct')
     #        option.productionDate  = new Date(productionDate.getFullYear(), productionDate.getMonth(), productionDate.getDate() - option.timeUse)
 
+    if currentImport = Session.get('currentImport')
+      importDetail =
+        merchant      : currentImport.merchant
+        warehouse     : currentImport.warehouse
+        import        : currentImport._id
+        product       : product._id
+        importQuality : 1
+        importPrice   : product.importPrice ? 0
 
-    if currentImport = Schema.imports.findOne({_id: Session.get('currentImport')._id})
-      importDetail = optionImportDetail(option, currentImport)
+      importDetail.provider = product.provider if product.provider
+      importDetail.totalPrice = importDetail.importQuality * importDetail.importPrice
 
-      findImportDetail = Schema.importDetails.findOne ({
+      existedQuery = {
         import      : importDetail.import
         product     : importDetail.product
-        provider    : importDetail.provider
         importPrice : importDetail.importPrice
-        expire      : importDetail.expire
-      })
+      }
+      existedQuery.provider = importDetail.provider if importDetail.provider
 
-      if findImportDetail
-        reUpdateImportDetail(importDetail, findImportDetail)
+      if findImportDetail = Schema.importDetails.findOne(existedQuery)
+        importDetailId = reUpdateImportDetail(importDetail, findImportDetail)
       else
-        Schema.importDetails.insert importDetail, (error, result) -> console.log error if error
-
+        importDetailId = Schema.importDetails.insert importDetail, (error, result) -> console.log error if error
       logics.import.reCalculateImport(Session.get('currentImport')._id)
+
+      return importDetailId

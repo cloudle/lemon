@@ -12,22 +12,12 @@ Apps.Merchant.importReactive.push (scope) ->
       scope.managedImportProductList.push {key: key, childs: childs} for key, childs of groupedProducts
       scope.managedImportProductList = _.sortBy(scope.managedImportProductList, (num)-> num.key)
 
-    if Session.get("importManagementSearchFilter")?.trim().length > 1 and scope.managedImportProductList.length is 0
-      Session.set("importCreationMode", true)
+    if Session.get("importManagementSearchFilter")?.trim().length > 1
+      if scope.managedImportProductList.length > 0
+        productNameLists = _.pluck(scope.managedImportProductList, 'name')
+        Session.set("importCreationMode", !_.contains(productNameLists, Session.get("importManagementSearchFilter").trim()))
+      else
+        Session.set("importCreationMode", true)
     else
       Session.set("importCreationMode", false)
-
-    if Session.get('currentImport')
-      $("[name=currentProductQuality]").val(Session.get('currentImport').currentQuality)
-      $("[name=currentProductPrice]").val(Session.get('currentImport').currentImportPrice)
-    else
-      $("[name=currentProductQuality]").val('')
-      $("[name=currentProductPrice]").val('')
-
-    if Session.get('importCurrentProduct')
-      $("[name=currentProductName]").val(Session.get('importCurrentProduct').name)
-      $("[name=currentProductSkulls]").val(Session.get('importCurrentProduct').skulls)
-    else
-      $("[name=currentProductName]").val('')
-      $("[name=currentProductSkulls]").val('')
 

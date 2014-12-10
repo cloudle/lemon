@@ -7,7 +7,6 @@ splitName = (fullText) ->
     return { name: fullText }
 
 
-
 Apps.Merchant.importInit.push (scope) ->
   scope.availableProducts    = Product.insideWarehouse(Session.get('myProfile').currentWarehouse)
   scope.availableSkulls      = Skull.insideMerchant(Session.get('myProfile').parentMerchant)
@@ -21,11 +20,13 @@ Apps.Merchant.importInit.push (scope) ->
 
 
   scope.editProduct = (template) ->
-    newName  = template.ui.$productName.val()
-    newPrice = template.ui.$productPrice.inputmask('unmaskedvalue')
+    newName        = template.ui.$productName.val()
+    newPrice       = template.ui.$productPrice.inputmask('unmaskedvalue')
+    newImportPrice = template.ui.$productImportPrice.inputmask('unmaskedvalue')
     return if newName.replace("(", "").replace(")", "").trim().length < 2
     editOptions = splitName(newName)
     editOptions.price = newPrice if newPrice.length > 0
+    editOptions.importPrice = newImportPrice if newImportPrice.length > 0
 
     template.ui.$productName.val editOptions.name
     Session.set "importCurrentProductShowEditCommand", false

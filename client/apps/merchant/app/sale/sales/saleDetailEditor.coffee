@@ -20,28 +20,25 @@ lemon.defineHyper Template.saleDetailEditor,
 
   product: -> Schema.products.findOne(@product)
   rendered: ->
-    @ui.$quality.inputmask "numeric",
+    @ui.$editQuality.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
-    @ui.$price.inputmask "numeric",
+    @ui.$editPrice.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
-    @ui.$discountCash.inputmask "numeric",
+    @ui.$editDiscountCash.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
 
-    @ui.$quality.val Session.get("salesEditingRow").quality
-    @ui.$price.val Session.get("salesEditingRow").price
-    @ui.$discountCash.val Session.get("salesEditingRow").discountCash
+    @ui.$editQuality.val Session.get("salesEditingRow").quality
+    @ui.$editPrice.val Session.get("salesEditingRow").price
+    @ui.$editDiscountCash.val Session.get("salesEditingRow").discountCash
 
-    @ui.$quality.select()
-
-
-
+    @ui.$editQuality.select()
 
 
   events:
     "keyup input[name]": (event, template) ->
-      quality = Number(template.ui.$quality.inputmask('unmaskedvalue'))
-      price = Number(template.ui.$price.inputmask('unmaskedvalue'))
-      discountCash = Number(template.ui.$discountCash.inputmask('unmaskedvalue'))
+      quality = Number(template.ui.$editQuality.inputmask('unmaskedvalue'))
+      price = Number(template.ui.$editPrice.inputmask('unmaskedvalue'))
+      discountCash = Number(template.ui.$editDiscountCash.inputmask('unmaskedvalue'))
       totalPrice = price * quality
       if totalPrice > 0
         finalPrice = totalPrice - discountCash
