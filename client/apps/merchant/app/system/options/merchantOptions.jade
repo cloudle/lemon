@@ -1,0 +1,20 @@
+template(name="merchantOptions")
+  #content.modern.merchant-options
+    .dual-content
+      .dual-detail-wrapper
+        .dual-detail
+          .nano: .nano-content
+            .section.top.panel.panel-default
+              .panel-heading tùy chỉnh
+              .panel-body nội dung tùy chỉnh
+      .dual-addon
+        .nano: .nano-content
+          .group-wrapper
+            each settings.common
+              .caption.inner
+                span.text <b>{{display}}</b>
+          .group-wrapper
+            .caption.group VĂN BẢN
+            each settings.printing
+              .caption.inner
+                span.text <b>{{display}}</b>
