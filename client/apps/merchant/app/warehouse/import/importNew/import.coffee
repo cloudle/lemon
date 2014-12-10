@@ -5,20 +5,27 @@ lemon.defineApp Template.import,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showAddDetail: -> !Session.get("currentImport")?.submitted
   showFilterSearch: -> Session.get("importManagementSearchFilter")?.length > 0
-  showEditImportCurrentProduct: -> if Session.get('importCurrentProduct')?.price > 0 and Session.get('importCurrentProduct')?.importPrice > 0 then false else true
+  showEditImportCurrentProduct: ->
+    if product = Session.get('importCurrentProduct')
+      if product.price > 0 and product.importPrice > 0 then false else true
+    else false
   productSelectionActiveClass:-> if Session.get('currentImport')?.currentProduct is @._id then 'active' else ''
 
   rendered: ->
     logics.import.templateInstance = @
     @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
+
   created: ->
     lemon.dependencies.resolve('importManagement')
     Session.set("importManagementSearchFilter", "")
-#    if Session.get("mySession")
-#      currentImport = Session.get("mySession").currentImport  ManagementSelection
-#      if !currentImport
-#        if  = Schema.customers.findOne()
+    if Session.get("mySession")
+      if currentImport = Schema.imports.findOne(Session.get("mySession").currentImport)
+        Session.set('currentImport', currentImport)
+        Meteor.subscribe('importDetails', currentImport._id)
+
+        Session.set('importCurrentProduct', Schema.products.findOne currentImport.currentProduct)
+        scope.currentImportDetails = ImportDetail.findBy(currentImport._id)
 
   events:
 #    "click .add-product": (event, template) -> $(template.find '#addProduct').modal()
@@ -59,6 +66,9 @@ lemon.defineApp Template.import,
           Session.set('importCurrentProduct', product)
           Session.set('currentImport', currentImport)
           Session.set('importCurrentProductShowEditCommand')
+
+          $("[name=productPrice]").val(product.price)
+          $("[name=productImportPrice]").val(product.importPrice)
 
 
     'keyup .deposit': (event, template)->

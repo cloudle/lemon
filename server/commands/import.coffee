@@ -87,7 +87,7 @@ Meteor.methods
         navigateNewTab(currentImport._id, profile)
         if distributor = Schema.distributors.findOne(currentImport.distributor)
           updateImportAndDistributor(currentImport, distributor)
-          Meteor.call('createNewReceiptCashOfImport', distributor._id, currentImport.deposit, new Date())
+          Meteor.call('createNewReceiptCashOfImport', distributor._id, currentImport.deposit)
 
         warehouseImport = Schema.imports.findOne(importId)
         transaction = Transaction.newByImport(warehouseImport)

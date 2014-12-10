@@ -242,21 +242,17 @@ Meteor.methods
             else
               Schema.customImports.update latestCustomImport._id, $set:{allowDelete: true}
 
-  createNewReceiptCashOfImport: (distributorId, debtCash, description, paidDate = new Date())->
+  createNewReceiptCashOfImport: (distributorId, debtCash, description)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      toDate = new Date()
-      paidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), toDate.getHours(), toDate.getMinutes(), toDate.getSeconds())
-      distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
-      if distributor and paidDate <= toDate
-        latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
-        if latestImport and paidDate >= latestImport.version.createdAt
+      if distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
+        if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
           if latestTransaction = Schema.transactions.findOne({
             owner: distributor._id
             latestImport: latestImport._id
             parentMerchant: profile.parentMerchant
           }, {sort: {debtDate: -1}}) then updateTransactionAllowDelete(latestTransaction._id)
 
-          createTransactionOfImport(profile, distributor, latestImport._id, debtCash, paidDate, description)
+          createTransactionOfImport(profile, distributor, latestImport._id, debtCash,  new Date(), description)
           updateCustomImportDenyDelete(latestImport._id)
 
           incCustomerOption = {importDebt: -debtCash}

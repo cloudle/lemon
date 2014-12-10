@@ -14,8 +14,9 @@ lemon.defineHyper Template.importCurrentProductOverviewSection,
     @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
     @ui.$productImportPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
-    @ui.$productPrice.val Session.get('importCurrentProduct').price
-    @ui.$productImportPrice.val Session.get('importCurrentProduct').importPrice ? 0
+    if Session.get('importCurrentProduct')
+      @ui.$productPrice.val Session.get('importCurrentProduct').price ? 0
+      @ui.$productImportPrice.val Session.get('importCurrentProduct').importPrice ? 0
 
     @ui.$productName.select()
 
