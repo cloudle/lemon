@@ -9,6 +9,7 @@ lemon.defineApp Template.sales,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
 
   created: ->
+    lemon.dependencies.resolve('saleManagement')
     Session.setDefault('allowCreateOrderDetail', false)
     Session.setDefault('allowSuccessOrder', false)
     Session.setDefault('globalBarcodeInput', '')

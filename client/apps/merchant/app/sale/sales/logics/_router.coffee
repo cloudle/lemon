@@ -2,7 +2,7 @@ scope = logics.sales
 
 saleRoute =
   template: 'sales',
-  waitOnDependency: 'saleOrder'
+  waitOnDependency: 'merchantEssential'
   onBeforeAction: ->
     if @ready()
       Apps.setup(scope, Apps.Merchant.salesInit, 'sales')

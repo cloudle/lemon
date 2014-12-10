@@ -12,6 +12,9 @@ lemon.defineApp Template.navigation,
       color             : Session.get("currentAppInfo")?.color ? 'white'
     }
 
+  created: ->
+    lemon.dependencies.resolve('merchantEssentialOnce')
+
   events:
     "click #logoutButton": (event, template) -> lemon.logout('/')
     "click a.branding": -> Session.set('autoNatigateDashboardOff', true); Router.go('/')

@@ -1,7 +1,7 @@
 scope = logics.distributorManagement
 lemon.addRoute
   template: 'distributorManagement'
-  waitOnDependency: 'distributorManagement'
+  waitOnDependency: 'merchantEssential'
   onBeforeAction: ->
     if @ready()
       Apps.setup(scope, Apps.Merchant.distributorManagementInit, 'distributorManagement')

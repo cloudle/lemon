@@ -2,7 +2,7 @@ scope = logics.import
 
 importRoute =
   template: 'import',
-  waitOnDependency: 'importManager'
+  waitOnDependency: 'merchantEssential'
   onBeforeAction: ->
     if @ready()
       Apps.setup(scope, Apps.Merchant.importInit, 'import')

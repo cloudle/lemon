@@ -125,3 +125,9 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 #      Session.set("allowCreateTransactionOfImport", true)
 #    else
 #      Session.set("allowCreateTransactionOfImport", false)
+
+    scope.checkAllowUpdateOverview = (template) ->
+      Session.set "distributorManagementShowEditCommand",
+        template.ui.$distributorName.val() isnt Session.get("customerManagementCurrentCustomer").name or
+          template.ui.$distributorPhone.val() isnt (Session.get("customerManagementCurrentCustomer").phone ? '') or
+          template.ui.$distributorAddress.val() isnt (Session.get("customerManagementCurrentCustomer").address ? '')

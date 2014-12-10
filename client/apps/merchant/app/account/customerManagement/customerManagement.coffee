@@ -11,6 +11,7 @@ lemon.defineApp Template.customerManagement,
   finalDebtBalance: -> Session.get("customerManagementCurrentCustomer")?.customSaleDebt + Session.get("customerManagementCurrentCustomer")?.saleDebt
 #  rendered: -> $(".nano").nanoScroller()
   created: ->
+    lemon.dependencies.resolve('customerManagement')
 #    Session.setDefault('allowCreateNewCustomer', false)
     Session.set("customerManagementSearchFilter", "")
     if Session.get("mySession")

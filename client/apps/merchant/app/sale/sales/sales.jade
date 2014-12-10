@@ -45,10 +45,10 @@ template(name="sales")
           if showProductFilterSearch
             .group-wrapper
               each allProductInCurrentWarehouse
-                .caption.inner.product-selection(class="{{productSelectionActiveClass}}")
+                .caption.advanced.inner.product-selection(class="{{productSelectionActiveClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=name)
                   span.text
-                    | {{name}}
+                    | <b>{{name}}</b>
                     if skulls
                       | ({{skulls}})
                     .commands
@@ -58,10 +58,10 @@ template(name="sales")
               .group-wrapper
                 .caption.group {{key}}
                 each childs
-                  .caption.inner.product-selection(class="{{productSelectionActiveClass}}")
+                  .caption.advanced.inner.product-selection(class="{{productSelectionActiveClass}}")
                     +avatarImageComponent(avatar=avatarUrl alias=name)
                     span.text
-                      | {{name}}
+                      | <b>{{name}}</b>
                       if skulls
                         | ({{skulls}})
                       .commands

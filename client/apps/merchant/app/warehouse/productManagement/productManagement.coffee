@@ -8,6 +8,7 @@ lemon.defineApp Template.productManagement,
   creationMode: -> Session.get("productManagementCreationMode")
 #  rendered: -> $(".nano").nanoScroller()
   created: ->
+    lemon.dependencies.resolve('productManagement')
     Session.set("productManagementSearchFilter", "")
     if Session.get("mySession")
       currentProduct = Session.get("mySession").currentProductManagementSelection

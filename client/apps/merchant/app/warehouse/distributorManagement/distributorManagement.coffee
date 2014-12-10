@@ -8,6 +8,7 @@ lemon.defineApp Template.distributorManagement,
   creationMode: -> Session.get("distributorManagementCreationMode")
 #  rendered: -> $(".nano").nanoScroller()
   created: ->
+    lemon.dependencies.resolve('distributorManagement')
 #    Session.setDefault('allowCreateDistributor', false)
     if Session.get("mySession")
       currentDistributor = Session.get("mySession").currentDistributorManagementSelection

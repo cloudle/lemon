@@ -18,6 +18,7 @@ lemon.defineApp Template.import,
 
 
   created: ->
+    lemon.dependencies.resolve('importManagement')
     Session.set("importManagementSearchFilter", "")
 #    if Session.get("mySession")
 #      currentImport = Session.get("mySession").currentImport  ManagementSelection

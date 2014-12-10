@@ -1,7 +1,7 @@
 scope = logics.merchantReport
 lemon.addRoute
   template: 'merchantReport'
-  waitOnDependency: 'merchantReport'
+  waitOnDependency: 'merchantEssential'
   onBeforeAction: ->
     if @ready()
       Apps.setup(scope, Apps.Merchant.merchantReportInit, 'merchantReport')
