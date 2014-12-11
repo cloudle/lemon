@@ -45,19 +45,19 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 
   scope.checkAllowCreateTransactionOfImport = (template, distributor)->
     if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
-      payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+      payAmount = parseInt($(template.find("[name='payImportAmount']")).inputmask('unmaskedvalue'))
       if payAmount != 0 and !isNaN(payAmount)
         Session.set("allowCreateTransactionOfImport", true)
       else
         Session.set("allowCreateTransactionOfImport", false)
 #      latestTransaction = Schema.transactions.findOne({latestImport: latestImport._id}, {sort: {debtDate: -1}})
 #
-#      $paidDate = $(template.find("[name='paidSaleDate']")).inputmask('unmaskedvalue')
+#      $paidDate = $(template.find("[name='paidImportDate']")).inputmask('unmaskedvalue')
 #      paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
 #      currentPaidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
 #      limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
 #      isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and currentPaidDate > limitCurrentPaidDate and currentPaidDate < new Date()
-#      payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+#      payAmount = parseInt($(template.find("[name='payImportAmount']")).inputmask('unmaskedvalue'))
 #
 #      if isValidDate and payAmount != 0 and !isNaN(payAmount)
 #        if latestImport
@@ -147,8 +147,7 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
         template.ui.$distributorName.val editOptions.name
         Session.set("distributorManagementShowEditCommand", false)
 
-
   scope.deleteDistributor = (distributor) ->
     if distributor.allowDelete
       Schema.distributors.remove distributor._id
-      UserSession.set('currentDistributorManagementSelection', Schema.distributors.findOne()?._id)
+      UserSession.set('currentDistributorManagementSelection', Schema.distributors.findOne()?._id ? '')

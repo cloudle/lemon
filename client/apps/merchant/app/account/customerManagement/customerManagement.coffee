@@ -15,7 +15,6 @@ lemon.defineApp Template.customerManagement,
 #    Session.setDefault('allowCreateNewCustomer', false)
     Session.set("customerManagementSearchFilter", "")
     if Session.get("mySession")
-      console.log Session.get("mySession")
       currentCustomer = Session.get("mySession").currentCustomerManagementSelection
       limitExpand = Session.get("mySession").limitExpandSaleAndCustomSale ? 5
       if !currentCustomer

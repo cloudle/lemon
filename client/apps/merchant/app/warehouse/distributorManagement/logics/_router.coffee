@@ -16,6 +16,6 @@ lemon.addRoute
 
     return {
       managedDistributorList : scope.managedDistributorList
-      allowCreateDistributor : scope.allowCreateDistributor
+#      allowCreateDistributor : scope.allowCreateDistributor
     }
 , Apps.Merchant.RouterBase

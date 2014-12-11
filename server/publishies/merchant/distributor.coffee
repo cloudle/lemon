@@ -4,25 +4,56 @@ Meteor.publish 'availableDistributors', ->
   Schema.distributors.find({parentMerchant: myProfile.parentMerchant})
 
 
-Meteor.publishComposite 'distributorManagementData', (distributorId, currentRecords = 0)->
+Meteor.publishComposite 'distributorManagementData', (distributorId, currentRecords = 0, limitRecords = 5)->
   self = @
+  importCount = Schema.imports.find({distributor: distributorId, finish: true, submitted: true}).count()
+  customImportCount = Schema.customImports.find({seller: distributorId}).count()
+
   return {
     find: ->
       myProfile = Schema.userProfiles.findOne({user: self.userId})
       return EmptyQueryResult if !myProfile
       Schema.distributors.find {_id: distributorId, parentMerchant: myProfile.parentMerchant}
     children: [
-      find: (distributor) -> Schema.imports.find {distributor: distributor._id, finish: true, submitted: true}
+      find: (distributor) ->
+        if distributor.customSaleModeEnabled
+          if customImportCount > currentRecords
+            skipCustomImportRecords  = currentRecords
+            limitCustomImportRecords = limitRecords
+          else
+            skipCustomImportRecords  = customImportCount
+            limitCustomImportRecords = 0
+          Schema.customImports.find {seller: distributor._id}, {sort: {debtDate: -1}, skip: skipCustomImportRecords, limit: limitCustomImportRecords}
+        else
+          if importCount < currentRecords + limitRecords
+            if importCount + limitRecords > currentRecords
+              skipCustomImportRecords  = 0
+              limitCustomImportRecords = limitRecords + currentRecords - importCount
+            else
+              skipCustomImportRecords  = currentRecords - importCount
+              limitCustomImportRecords = limitRecords
+            Schema.customImports.find {seller: distributor._id}, {sort: {debtDate: -1}, skip: skipCustomImportRecords, limit: limitCustomImportRecords}
+          else
+            EmptyQueryResult
+      children: [
+        find: (customImport, distributor) -> Schema.customImportDetails.find {customImport: customImport._id}
+      ]
+    ,
+      find: (distributor) ->
+        if distributor.customImportModeEnabled
+          Schema.imports.find {distributor: distributor._id, finish: true, submitted: true}
+        else
+          if importCount > currentRecords
+            skipImportRecords  = currentRecords
+            limitImportRecords = limitRecords
+            Schema.imports.find {distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}, skip: skipImportRecords, limit: limitImportRecords}
+          else
+            EmptyQueryResult
       children: [
         find: (currentImport, distributor) -> Schema.importDetails.find {import: currentImport._id}
         children: [
           find: (importDetail, distributor) -> Schema.products.find {_id: importDetail.product}
         ]
-      ]
-    ,
-      find: (distributor) -> Schema.customImports.find {seller: distributor._id}
-      children: [
-        find: (customImport, distributor) -> Schema.customImportDetails.find {customImport: customImport._id}
       ]
     ,
       find: (distributor) -> Schema.transactions.find {owner: distributor._id}
