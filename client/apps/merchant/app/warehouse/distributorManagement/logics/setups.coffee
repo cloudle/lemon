@@ -72,23 +72,29 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 #        Session.set("allowCreateTransactionOfImport", false)
 
   scope.checkAllowUpdateDistributorOverview = (template) ->
-    if distributor = Session.get("distributorManagementCurrentDistributor")
-      name    = template.ui.$distributorName.val()
-      phone   = template.ui.$distributorPhone.val()
-      address = template.ui.$distributorAddress.val()
+    Session.set "distributorManagementShowEditCommand",
+      template.ui.$distributorName.val() isnt Session.get("distributorManagementCurrentDistributor").name or
+      template.ui.$distributorPhone.val() isnt (Session.get("distributorManagementCurrentDistributor").phone ? '') or
+      template.ui.$distributorAddress.val() isnt (Session.get("distributorManagementCurrentDistributor").location?.address ? '')
 
-      isValidName    = name isnt distributor.name
-      isValidPhone   = phone isnt (distributor.phone ? '')
-      isValidAddress = address isnt (distributor.location?.address ? '')
-
-      distributorFound = Schema.distributors.findOne {name: name, parentMerchant: Session.get('myProfile').parentMerchant}
-      if name.length is 0
-        template.ui.$distributorName.notify("Tên nhà phân phối không thể để trống.", {position: "right"})
-      else if distributorFound and distributorFound._id isnt distributor._id
-        template.ui.$distributorName.notify("Tên nhà phân phối đã tồn tại.", {position: "right"})
-        Session.set "distributorManagementShowEditCommand"
-      else
-        Session.set "distributorManagementShowEditCommand", isValidName or isValidPhone or isValidAddress
+#  scope.checkAllowUpdateDistributorOverview = (template) ->
+#    if distributor = Session.get("distributorManagementCurrentDistributor")
+#      name    = template.ui.$distributorName.val()
+#      phone   = template.ui.$distributorPhone.val()
+#      address = template.ui.$distributorAddress.val()
+#
+#      isValidName    = name isnt distributor.name
+#      isValidPhone   = phone isnt (distributor.phone ? '')
+#      isValidAddress = address isnt (distributor.location?.address ? '')
+#
+#      distributorFound = Schema.distributors.findOne {name: name, parentMerchant: Session.get('myProfile').parentMerchant}
+#      if name.length is 0
+#        template.ui.$distributorName.notify("Tên nhà phân phối không thể để trống.", {position: "right"})
+#      else if distributorFound and distributorFound._id isnt distributor._id
+#        template.ui.$distributorName.notify("Tên nhà phân phối đã tồn tại.", {position: "right"})
+#        Session.set "distributorManagementShowEditCommand"
+#      else
+#        Session.set "distributorManagementShowEditCommand", isValidName or isValidPhone or isValidAddress
 
   scope.createDistributorBySearchFilter = (template) ->
     fullText    = Session.get("distributorManagementSearchFilter")
@@ -140,7 +146,7 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
         template.ui.$distributorName.notify("Tên nhà phân phối không thể để trống.", {position: "right"})
       else if distributorFound and distributorFound._id isnt distributor._id
         template.ui.$distributorName.notify("Tên nhà phân phối đã tồn tại.", {position: "right"})
-        template.ui.$distributorName.val distributor.name
+        template.ui.$distributorName.val name
         Session.set("distributorManagementShowEditCommand", false)
       else
         Schema.distributors.update distributor._id, {$set: editOptions}, (error, result) -> if error then console.log error

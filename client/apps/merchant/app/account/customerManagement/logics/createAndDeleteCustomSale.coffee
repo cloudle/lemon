@@ -83,21 +83,25 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         $payDescription.val(''); $payAmount.val('');# $paidDate.val('')
 
   scope.createTransactionOfSale = (template) ->
-    currentTime     = new Date()
+    customer = Session.get("customerManagementCurrentCustomer")
+    if customer and Session.get("allowCreateTransactionOfSale")
+      $payDescription = template.ui.$paySaleDescription
+      $payAmount      = $(template.find("[name='paySaleAmount']"))
+      payAmount       = parseInt($payAmount.inputmask('unmaskedvalue'))
+      description     = $payDescription.val()
 
-    $payDescription = template.ui.$paySaleDescription
-    $payAmount      = $(template.find("[name='paySaleAmount']"))
-    $paidDate       = template.ui.$paidSaleDate
+#    currentTime     = new Date()
+#    $paidDate       = template.ui.$paidSaleDate
+#    tempPaidDate    = moment($paidDate.val(), 'DD/MM/YYYY')._d
+#    paidDate        = new Date(tempPaidDate.getFullYear(), tempPaidDate.getMonth(), tempPaidDate.getDate(), currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds())
 
-    payAmount       = $payAmount.inputmask('unmaskedvalue')
-    tempPaidDate    = moment($paidDate.val(), 'DD/MM/YYYY')._d
-    paidDate        = new Date(tempPaidDate.getFullYear(), tempPaidDate.getMonth(), tempPaidDate.getDate(), currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds())
+#    console.log latestSale = Schema.sales.findOne({buyer: customer._id}, {sort: {'version.createdAt': -1}})
+#    console.log $payDescription.val() , (paidDate > latestSale.version.createdAt if latestSale) , payAmount != "" , !isNaN(payAmount)
 
-    if customer = Session.get("customerManagementCurrentCustomer")
-      latestSale = Schema.sales.findOne({buyer: customer._id}, {sort: {'version.createdAt': -1}})
-      console.log $payDescription.val() , (paidDate > latestSale.version.createdAt if latestSale) , payAmount != "" , !isNaN(payAmount)
-
-      if paidDate >= latestSale?.version.createdAt and payAmount != "" and !isNaN(payAmount)
-        Meteor.call('createNewReceiptCashOfSales', customer._id, parseInt(payAmount), $payDescription.val(), paidDate)
+      console.log customer
+      if Schema.sales.findOne({buyer: customer._id}) and payAmount != 0 and !isNaN(payAmount) # and paidDate >= latestSale?.version.createdAt
+        Meteor.call('createNewReceiptCashOfSales', customer._id, payAmount, description)
         Session.set("allowCreateTransactionOfSale", false)
         $payDescription.val(''); $payAmount.val('')
+      else
+        console.log $payDescription.val() , payAmount != 0 , !isNaN(payAmount), payAmount, Schema.sales.findOne()

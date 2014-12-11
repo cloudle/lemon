@@ -6,6 +6,9 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
 #  allowCreate = if Session.get('allowCreateNewCustomer') then '' else 'disabled'
 #  scope.allowCreate = allowCreate
 
+  if customerId = Session.get("mySession")?.currentCustomerManagementSelection
+    Session.set("customerManagementCurrentCustomer", Schema.customers.findOne(customerId))
+
   if customer = Session.get("customerManagementCurrentCustomer")
     maxRecords = Session.get("customerManagementDataMaxCurrentRecords")
     countRecords = Schema.customSales.find({buyer: customer._id}).count()
@@ -18,19 +21,19 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
         $("[name=paidDate]").val(moment(latestTransaction.debtDate).format('DDMMYYY'))
       else
         $("[name=paidDate]").val(moment(latestCustomSale.debtDate).format('DDMMYYY'))
+      $("[name=debtDate]").val(moment(latestCustomSale.debtDate).format('DDMMYYY'))
     else
       $("[name=paidDate]").val('')
+      $("[name=debtDate]").val('')
 
-    if latestSale = Schema.sales.findOne({buyer: customer._id}, {sort: {'version.createdAt': -1}})
-      if latestTransaction = Schema.transactions.findOne({latestSale: latestSale._id}, {sort: {debtDate: -1}})
-        $("[name=paidSaleDate]").val(moment(latestTransaction.debtDate).format('DDMMYYY'))
-      else
-        $("[name=paidSaleDate]").val(moment(latestSale.version.createdAt).format('DDMMYYY'))
-    else
-      $("[name=paidSaleDate]").val('')
 
-  if customerId = Session.get("mySession")?.currentCustomerManagementSelection
-    Session.set("customerManagementCurrentCustomer", Schema.customers.findOne(customerId))
+#    if latestSale = Schema.sales.findOne({buyer: customer._id}, {sort: {'version.createdAt': -1}})
+#      if latestTransaction = Schema.transactions.findOne({latestSale: latestSale._id}, {sort: {debtDate: -1}})
+#        $("[name=paidSaleDate]").val(moment(latestTransaction.debtDate).format('DDMMYYY'))
+#      else
+#        $("[name=paidSaleDate]").val(moment(latestSale.version.createdAt).format('DDMMYYY'))
+#    else
+#      $("[name=paidSaleDate]").val('')
 
 #  if Session.get("customerManagementCurrentCustomer")
     #customerManagementData

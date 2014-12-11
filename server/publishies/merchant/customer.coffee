@@ -86,8 +86,9 @@ Schema.customers.allow
   update: -> true
   remove: (userId, customer) ->
     anySaleFound = Schema.sales.findOne {buyer: customer._id}
+    anyCustomSaleFound = Schema.customSales.findOne {buyer: customer._id}
     anyTransactionFound = Schema.transactions.findOne {owner: customer._id}
-    return anySaleFound is undefined and anyTransactionFound is undefined
+    return anySaleFound is undefined and anyTransactionFound is undefined and anyCustomSaleFound is undefined
 
 
 Schema.customerAreas.allow

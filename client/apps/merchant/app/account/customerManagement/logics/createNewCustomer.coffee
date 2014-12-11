@@ -58,19 +58,49 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       Schema.customers.insert customer, (error, result) ->
         console.log error if error
         MetroSummary.updateMetroSummaryBy(['customer'])
+        UserSession.set('currentCustomerManagementSelection', result)
       template.ui.$searchFilter.val(''); Session.set("customerManagementSearchFilter", "")
 
   scope.editCustomer = (template) ->
-    newName  = template.ui.$customerName.val()
-    newPhone = template.ui.$customerPhone.val()
-    newAddress = template.ui.$customerAddress.val()
-    return if newName.replace("(", "").replace(")", "").trim().length < 2
-    editOptions = splitName(newName)
-    editOptions.phone = newPhone if newPhone.length > 0
-    editOptions.address = newAddress if newAddress.length > 0
+    customer = Session.get("customerManagementCurrentCustomer")
+    if customer and Session.get("customerManagementShowEditCommand")
+      name    = template.ui.$customerName.val()
+      phone   = template.ui.$customerPhone.val()
+      address = template.ui.$customerAddress.val()
 
-    template.ui.$customerName.val editOptions.name
-    Session.set "customerManagementShowEditCommand", false
+      return if name.replace("(", "").replace(")", "").trim().length < 2
+      editOptions = splitName(name)
+      editOptions.phone = phone if phone.length > 0
+      editOptions.address = address if address.length > 0
 
-    Schema.customers.update Session.get("customerManagementCurrentCustomer")._id, {$set: editOptions}, (error, result) ->
-      if error then console.log error else template.ui.$customerName.val Session.get("customerManagementCurrentCustomer").name
+      console.log editOptions
+
+      if editOptions.name.length > 0
+        customerFound = Schema.customers.findOne {name: editOptions.name, parentMerchant: customer.parentMerchant}
+
+      if editOptions.name.length is 0
+        template.ui.$customerName.notify("Tên khách hàng không thể để trống.", {position: "right"})
+      else if customerFound and customerFound._id isnt customer._id
+        template.ui.$customerName.notify("Tên khách hàng đã tồn tại.", {position: "right"})
+        template.ui.$customerName.val editOptions.name
+        Session.set("customerManagementShowEditCommand", false)
+      else
+        Schema.customers.update customer._id, {$set: editOptions}, (error, result) -> if error then console.log error
+        template.ui.$customerName.val editOptions.name
+        Session.set("customerManagementShowEditCommand", false)
+
+
+
+#    newName  = template.ui.$customerName.val()
+#    newPhone = template.ui.$customerPhone.val()
+#    newAddress = template.ui.$customerAddress.val()
+#    return if newName.replace("(", "").replace(")", "").trim().length < 2
+#    editOptions = splitName(newName)
+#    editOptions.phone = newPhone if newPhone.length > 0
+#    editOptions.address = newAddress if newAddress.length > 0
+#
+#    template.ui.$customerName.val editOptions.name
+#    Session.set "customerManagementShowEditCommand", false
+#
+#    Schema.customers.update Session.get("customerManagementCurrentCustomer")._id, {$set: editOptions}, (error, result) ->
+#      if error then console.log error else template.ui.$customerName.val Session.get("customerManagementCurrentCustomer").name
