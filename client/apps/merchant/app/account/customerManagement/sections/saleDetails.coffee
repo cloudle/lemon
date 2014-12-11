@@ -1,7 +1,7 @@
 lemon.defineWidget Template.customerManagementSaleDetails,
   productName: -> @name ? Schema.products.findOne(@product)?.name
   totalDebtBalance: -> @latestDebtBalance + Session.get("customerManagementCurrentCustomer").customSaleDebt
-  skulls: -> Schema.products.findOne(@product)?.skulls[0]
+  skulls: -> Schema.products.findOne(@product)?.skulls?[0]
 
   receivableClass: -> if @debtBalanceChange >= 0 then 'receive' else 'paid'
   finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'

@@ -18,7 +18,7 @@ Apps.Merchant.checkPayableExpireDate = (profile, value)->
     for transaction in transactions
       transactionCreateDate = new Date(transaction.version.createdAt.getFullYear(), transaction.version.createdAt.getMonth(), transaction.version.createdAt.getDate())
       currentTransaction =
-        companyName : _.findWhere(distributors, {_id: transaction.owner}).name
+        companyName : _.findWhere(distributors, {_id: transaction.owner})?.name ? "Bạn"
         day         : (currentDate.getTime() - transactionCreateDate.getTime())/timeOneDay - value
       Notification.payableExpire(currentTransaction, profile)
     Schema.merchantProfiles.update({merchant: profile.parentMerchant}, {$set:{latestCheckPayable: new Date()}})

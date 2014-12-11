@@ -2,6 +2,8 @@ Apps.Merchant.merchantOptionsInit.push (scope) ->
   settings = scope.settings = {}
 
   settings.common = [
+    display: "doanh nghiệp"
+  ,
     display: "tài khoản"
   ,
     display: "trò chuyện"

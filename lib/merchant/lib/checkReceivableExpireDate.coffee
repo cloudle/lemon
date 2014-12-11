@@ -18,7 +18,7 @@ Apps.Merchant.checkReceivableExpireDate = (profile, value)->
     for transaction in transactions
       transactionCreateDate = new Date(transaction.debtDate.toDateString())
       currentTransaction =
-        customerName : _.findWhere(customers, {_id: transaction.owner}).name
+        customerName : _.findWhere(customers, {_id: transaction.owner})?.name ? "Bạn"
         day          : (currentDate.getTime() - transactionCreateDate.getTime())/timeOneDay - value
       Notification.receivableExpire(currentTransaction, profile)
     Schema.merchantProfiles.update({merchant: profile.parentMerchant}, {$set:{latestCheckReceivable: new Date()}})
@@ -34,6 +34,6 @@ Apps.Merchant.checkExpireDateCreateTransaction = (profile, transactionId, value)
       transactionCreateDate = new Date(transaction.debtDate.toDateString())
       currentTransaction =
         _id          : transaction._id
-        customerName : Schema.customers.findOne(transaction.owner).name
+        customerName : Schema.customers.findOne(transaction.owner)?.name ? "Bạn"
         day          : (currentDate.getTime() - transactionCreateDate.getTime())/timeOneDay - value
       Notification.receivableExpire(currentTransaction, profile)
