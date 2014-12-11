@@ -64,6 +64,10 @@ simpleSchema.products = new SimpleSchema
     type: Boolean
     defaultValue: true
 
+  avatar:
+    type: String
+    optional: true
+
   styles:
     type: String
     defaultValue: Helpers.RandomColor()

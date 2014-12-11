@@ -2,6 +2,8 @@ updateDistributorDenyDelete = (id)-> Schema.distributors.update id, $set: {allow
 updateCustomImportDenyDelete = (id)-> Schema.customImports.update id, $set: {allowDelete: false}
 updateTransactionAllowDelete = (id)-> Schema.transactions.update id, $set: {allowDelete: false}
 
+findLatestCustomImportByDistributorId = (distributorId)->
+  Schema.customImports.findOne({seller: distributorId}, {sort: {debtDate: -1, 'version.createdAt': -1}})
 
 #----------Create-Custom-Import-------------------
 updateLatestTransactionDenyDelete = (ownerId)->
@@ -33,16 +35,21 @@ checkAndRemoveCustomImport = (customImportId, latestCustomImportId, distributorI
         Schema.transactions.remove transaction._id
       Schema.distributors.update distributorId, $inc: incCustomerOption
   else
-    Schema.customImports.remove customImportId if customImportDetails.length is 0
+    Schema.customImports.remove customImportId if Schema.customImportDetails.find({customImport: customImportId}).count() is 0
 
 updateAllowDeleteCustomImportAndDetailAndTransactionBy = (customImportId)->
   for customImportDetail in Schema.customImportDetails.find({customImport: customImportId}).fetch()
     Schema.customImportDetails.update customImportDetail._id, $set:{allowDelete: true}
 
-  if latestTransaction = Schema.transactions.findOne({latestImport: customImportId}, {sort: {debtDate: -1}})
+  if latestTransaction = Schema.transactions.findOne({latestImport: customImportId}, {sort: {debtDate: -1, 'version.createdAt': -1}})
     Schema.transactions.update latestTransaction._id, $set:{allowDelete: true}
   else
     Schema.customImports.update customImportId, $set:{allowDelete: true}
+
+checkUpdateDistributorAllowDelete = (distributorId)->
+  customImportFound = Schema.customImports.findOne({seller: distributorId})
+  importFound = Schema.imports.findOne({distributor: distributorId})
+  Schema.distributors.update distributorId, $set:{allowDelete: true} if !customImportFound and !importFound
 
 #----------Create-Delete-Custom-Import-Detail-------------------
 updateDistributorAndCustomImportByCreate = (distributorId, customImportId, cash)->
@@ -142,11 +149,11 @@ createTransactionOfImport = (profile, distributor, latestImportId, debtCash, pai
 Meteor.methods
   createNewCustomImport: (customImport)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      latestCustomImport = Schema.customImports.findOne({seller: customImport.seller}, {sort: {debtDate: -1}})
+      latestCustomImport = findLatestCustomImportByDistributorId(customImport.seller)
       distributor = Schema.distributors.findOne({_id: customImport.seller, parentMerchant: profile.parentMerchant})
       if distributor?.customImportModeEnabled is true
         if latestCustomImport
-          if customImport.debtDate >= latestCustomImport.debtDate
+          if customImport.debtDate >= latestCustomImport.debtDate and customImport.debtDate < new Date()
             if Schema.customImports.insert customImport
               updateDistributorDenyDelete(distributor._id)
               updateCustomImportDetailDenyDelete(latestCustomImport._id)
@@ -159,16 +166,18 @@ Meteor.methods
       if customImport = Schema.customImports.findOne({_id: customImportId, parentMerchant: profile.parentMerchant})
         distributor = Schema.distributors.findOne(customImport.seller)
         if distributor.customImportModeEnabled is true
-          if latestCustomImport = Schema.customImports.findOne({seller: customImport.seller}, {sort: {debtDate: -1}})
+          if latestCustomImport = findLatestCustomImportByDistributorId(customImport.seller)
             checkAndRemoveCustomImport(customImport._id, latestCustomImport._id, distributor._id, customImport.debtBalanceChange)
 
-          if latestCustomImport = Schema.customImports.findOne({seller: customImport.seller}, {sort: {debtDate: -1}})
+          if latestCustomImport = findLatestCustomImportByDistributorId(customImport.seller)
             updateAllowDeleteCustomImportAndDetailAndTransactionBy(latestCustomImport._id)
+
+          checkUpdateDistributorAllowDelete(distributor._id)
 
   updateCustomImportByCreateCustomImportDetail: (customImportDetail)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       customImport = Schema.customImports.findOne({_id: customImportDetail.customImport, parentMerchant: profile.parentMerchant})
-      latestCustomImport = Schema.customImports.findOne({seller: customImport.seller}, {sort: {debtDate: -1}})
+      latestCustomImport = findLatestCustomImportByDistributorId(customImport.seller)
       if customImport._id is latestCustomImport._id
         distributor = Schema.distributors.findOne({_id: customImport.seller, parentMerchant: profile.parentMerchant})
         if distributor.customImportModeEnabled is true
@@ -180,7 +189,7 @@ Meteor.methods
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customImportDetail = Schema.customImportDetails.findOne({_id: customImportDetailId, parentMerchant: profile.parentMerchant})
         customImport = Schema.customImports.findOne({_id: customImportDetail.customImport, parentMerchant: profile.parentMerchant})
-        latestCustomImport = Schema.customImports.findOne({seller: customImport.seller}, {sort: {debtDate: -1}})
+        latestCustomImport = findLatestCustomImportByDistributorId(customImport.seller)
         if customImport._id is latestCustomImport._id
           distributor = Schema.distributors.findOne({_id: customImport.seller, parentMerchant: profile.parentMerchant})
           if distributor.customImportModeEnabled is true
@@ -191,20 +200,20 @@ Meteor.methods
   createNewReceiptCashOfCustomImport: (distributorId, debtCash, description, paidDate = new Date())->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       toDate = new Date()
-      paidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), toDate.getHours(), toDate.getMinutes(), toDate.getSeconds())
+      paidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate())
       distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
       if distributor and distributor.customImportModeEnabled is true and paidDate <= toDate
-        latestCustomImport = Schema.customImports.findOne({seller: distributor._id},{sort: {debtDate: -1}})
+        latestCustomImport = Schema.customImports.findOne({seller: distributor._id}, {sort: {debtDate: -1, 'version.createdAt': -1}})
         if latestCustomImport is undefined
           Meteor.call('createNewCustomImport', createImportOption(profile, distributor, paidDate))
-          latestCustomImport = Schema.customImports.findOne({seller: distributor._id},{sort: {debtDate: -1}})
+          latestCustomImport = Schema.customImports.findOne({seller: distributor._id}, {sort: {debtDate: -1, 'version.createdAt': -1}})
 
         if latestCustomImport and paidDate >= latestCustomImport.debtDate
           if latestTransaction = Schema.transactions.findOne({
               owner: distributor._id
               latestImport: latestCustomImport._id
               parentMerchant: profile.parentMerchant
-          }, {sort: {debtDate: -1}}) then updateTransactionAllowDelete(latestTransaction._id)
+          }, {sort: {debtDate: -1, 'version.createdAt': -1}}) then updateTransactionAllowDelete(latestTransaction._id)
 
           createTransactionOfCustomImport(profile, distributor, latestCustomImport._id, debtCash, paidDate, description)
           updateCustomImportDenyDelete(latestCustomImport._id)
@@ -222,8 +231,8 @@ Meteor.methods
       if transaction = Schema.transactions.findOne({_id: transactionId, parentMerchant: profile.parentMerchant})
         distributor = Schema.distributors.findOne({_id: transaction.owner})
         if distributor.customImportModeEnabled is true
-          latestCustomImport = Schema.customImports.findOne({seller: transaction.owner}, {sort: {debtDate: -1}})
-          latestTransaction = Schema.transactions.findOne({owner: transaction.owner, group: 'customImport', parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1}})
+          latestCustomImport = Schema.customImports.findOne({seller: transaction.owner}, {sort: {debtDate: -1, 'version.createdAt': -1}})
+          latestTransaction = Schema.transactions.findOne({owner: transaction.owner, group: 'customImport', parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1, 'version.createdAt': -1}})
 
           if transaction.latestImport is latestCustomImport._id and transaction._id is latestTransaction._id
             Schema.transactions.remove transaction._id
@@ -236,7 +245,7 @@ Meteor.methods
               incCustomerOption.customImportTotalCash = transaction.debtBalanceChange
             Schema.distributors.update transaction.owner, $inc: incCustomerOption
 
-            latestTransaction = Schema.transactions.findOne({latestImport: latestCustomImport._id, group: 'customImport', parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1}})
+            latestTransaction = Schema.transactions.findOne({latestImport: latestCustomImport._id, group: 'customImport', parentMerchant: profile.parentMerchant}, {sort: {debtDate: -1, 'version.createdAt': -1}})
             if latestTransaction
               Schema.transactions.update latestTransaction._id, $set:{allowDelete: true}
             else
@@ -250,7 +259,7 @@ Meteor.methods
             owner: distributor._id
             latestImport: latestImport._id
             parentMerchant: profile.parentMerchant
-          }, {sort: {debtDate: -1}}) then updateTransactionAllowDelete(latestTransaction._id)
+          }, {sort: {debtDate: -1, 'version.createdAt': -1}}) then updateTransactionAllowDelete(latestTransaction._id)
 
           createTransactionOfImport(profile, distributor, latestImport._id, debtCash,  new Date(), description)
           updateCustomImportDenyDelete(latestImport._id)

@@ -5,11 +5,12 @@ lemon.defineApp Template.distributorManagement,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   currentDistributor: -> Session.get("distributorManagementCurrentDistributor")
   activeClass:-> if Session.get("distributorManagementCurrentDistributor")?._id is @._id then 'active' else ''
-  creationMode: -> Session.get("distributorManagementCreationMode")
+  creationMode: -> Session.get("distributorCreationMode")
 #  rendered: -> $(".nano").nanoScroller()
   created: ->
     lemon.dependencies.resolve('distributorManagement')
-#    Session.setDefault('allowCreateDistributor', false)
+    Session.set("distributorManagementSearchFilter", "")
+
     if Session.get("mySession")
       currentDistributor = Session.get("mySession").currentDistributorManagementSelection
       if !currentDistributor
@@ -24,11 +25,13 @@ lemon.defineApp Template.distributorManagement,
   events:
     "input .search-filter": (event, template) ->
       Session.set("distributorManagementSearchFilter", template.ui.$searchFilter.val())
-    "keypress input[name='searchFilter']": (event, template)->
-      if event.which is 13 and Session.get("distributorManagementSearchFilter")?.trim().length > 1
-        scope.createDistributorBySearchFilter(template)
-    "click .createDistributorBtn": (event, template) -> scope.createDistributorBySearchFilter(template)
 
+    "keypress input[name='searchFilter']": (event, template)->
+      if event.which is 13 and Session.get("distributorManagementSearchFilter")?.trim().length > 1 and Session.get("distributorCreationMode")
+        scope.createDistributorBySearchFilter(template)
+
+    "click .createDistributorBtn": (event, template) ->
+      scope.createDistributorBySearchFilter(template) if Session.get("distributorCreationMode")
 
     "click .inner.caption": (event, template) ->
       if Session.get("mySession")
@@ -36,8 +39,7 @@ lemon.defineApp Template.distributorManagement,
         Meteor.subscribe('distributorManagementData', @_id)
 
 
-#    "input .add-distributor": (event, template) -> scope.checkAllowCreateDistributor(template)
-#    'click .create-distributor': (event, template)-> scope.createDistributor(template)
+
 #
 #    "click .excel-distributor": (event, template) -> $(".excelFileSource").click()
 #    "change .excelFileSource": (event, template) ->

@@ -34,7 +34,7 @@ Template.registerHelper 'crossBillAvailableQuality', ->
     crossAvailable: crossAvailable
     isValid: crossAvailable > 0
     invalid: crossAvailable < 0
-    errorClass: if crossAvailable > 0 then '' else 'errors'
+    errorClass: if crossAvailable >= 0 then '' else 'errors'
   }
 
 Template.registerHelper 'aliasLetter', (fullAlias) -> fullAlias?.substring(0,1)

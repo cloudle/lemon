@@ -13,7 +13,7 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
   showExpandImportAndCustomImport: -> Session.get("showExpandImportAndCustomImport")
   isCustomImportModeEnabled: -> if Session.get("distributorManagementCurrentDistributor")?.customImportModeEnabled then "" else "display: none;"
 
-  customImport: -> Schema.customImports.find({seller: Session.get("distributorManagementCurrentDistributor")?._id}, {sort: {'version.createdAt': 1}})
+  customImport: -> Schema.customImports.find({seller: Session.get("distributorManagementCurrentDistributor")?._id}, {sort: {debtDate: -1, 'version.createdAt': 1}})
   defaultImport: ->
     if distributor = Session.get("distributorManagementCurrentDistributor")
       Schema.imports.find({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': 1}})

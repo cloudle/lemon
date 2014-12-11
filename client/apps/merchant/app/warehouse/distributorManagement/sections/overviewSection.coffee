@@ -3,6 +3,7 @@ scope = logics.distributorManagement
 lemon.defineHyper Template.distributorManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showEditCommand: -> Session.get "distributorManagementShowEditCommand"
+  showDeleteCommand: -> Session.get("distributorManagementCurrentDistributor")?.allowDelete
   name: ->
     Meteor.setTimeout ->
       scope.overviewTemplateInstance.ui.$distributorName.change()
@@ -22,19 +23,20 @@ lemon.defineHyper Template.distributorManagementOverviewSection,
           Schema.distributors.update(Session.get('distributorManagementCurrentDistributor')._id, {$set: {avatar: fileObj._id}})
           AvatarImages.findOne(Session.get('distributorManagementCurrentDistributor').avatar)?.remove()
 
-#    "input .editable": (event, template) -> scope.checkAllowUpdateOverview(template)
+    "input .editable": (event, template) -> scope.checkAllowUpdateDistributorOverview(template)
     "keyup input.editable": (event, template) ->
-      scope.editCustomer(template) if event.which is 13
+      scope.editDistributor(template) if event.which is 13
 
       if event.which is 27
         if $(event.currentTarget).attr('name') is 'distributorName'
-          $(event.currentTarget).val(Session.get("distributorManagementCurrentCustomer").name)
+          $(event.currentTarget).val(Session.get("distributorManagementCurrentDistributor").name)
           $(event.currentTarget).change()
         else if $(event.currentTarget).attr('name') is 'distributorPhone'
-          $(event.currentTarget).val(Session.get("distributorManagementCurrentCustomer").phone)
+          $(event.currentTarget).val(Session.get("distributorManagementCurrentDistributor").phone)
         else if $(event.currentTarget).attr('name') is 'distributorAddress'
-          $(event.currentTarget).val(Session.get("distributorManagementCurrentCustomer").address)
+          $(event.currentTarget).val(Session.get("distributorManagementCurrentDistributor").location?.address)
 
-        scope.checkAllowUpdateOverview(template)
+        scope.checkAllowUpdateDistributorOverview(template)
 
-#    "click .syncCustomerEdit": (event, template) -> scope.editCustomer(template)
+    "click .syncDistributorEdit": (event, template) -> scope.editDistributor(template)
+    "click .distributorDelete": (event, template) -> scope.deleteDistributor(@)

@@ -6,16 +6,17 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 
   scope.createCustomImport = (template)->
     if distributor = Session.get("distributorManagementCurrentDistributor")
-      latestCustomImport = Schema.customImports.findOne({seller: distributor._id}, {sort: {debtDate: -1}})
+      latestCustomImport = Schema.customImports.findOne({seller: distributor._id}, {sort: {debtDate: -1, 'version.createdAt': -1}})
       $description = template.ui.$customImportDescription
 
       $debtDate = $(template.find("[name='customImportDebtDate']")).inputmask('unmaskedvalue')
       tempDate = moment($debtDate, 'DD/MM/YYYY')._d
-      debtDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
+      debtDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate())
+      customImportDebtDate = new Date(latestCustomImport?.debtDate.getFullYear(), latestCustomImport?.debtDate.getMonth(), latestCustomImport?.debtDate.getDate())
       limitDebtDate = new Date(tempDate.getFullYear() - 20, tempDate.getMonth(), tempDate.getDate())
       isValidDate = $debtDate.length is 8 and moment($debtDate, 'DD/MM/YYYY').isValid() and debtDate > limitDebtDate and debtDate < (new Date)
 
-      if isValidDate and (latestCustomImport is undefined || debtDate >= latestCustomImport.debtDate)
+      if isValidDate and (latestCustomImport is undefined || debtDate >= customImportDebtDate and debtDate < new Date())
         option =
           parentMerchant   : Session.get('myProfile').currentMerchant
           creator          : Session.get('myProfile').user
@@ -29,6 +30,7 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
         $(template.find("[name='customImportDebtDate']")).val(''); $description.val('')
       else
         console.log isValidDate , latestCustomImport is undefined, debtDate >= latestCustomImport.debtDate
+      Session.set("allowCreateCustomImport", false)
 
   scope.createCustomImportDetail = (template, customImport) ->
     console.log template
@@ -72,8 +74,8 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
     payAmount   = $($payAmount).inputmask('unmaskedvalue')
 
     if distributor = Session.get("distributorManagementCurrentDistributor")
-      if latestCustomImport = Schema.customImports.findOne({seller: distributor._id}, {sort: {debtDate: -1}})
-        if latestTransaction = Schema.transactions.findOne({latestImport: latestCustomImport._id}, {sort: {debtDate: -1}})
+      if latestCustomImport = Schema.customImports.findOne({seller: distributor._id}, {sort: {debtDate: -1, 'version.createdAt': -1}})
+        if latestTransaction = Schema.transactions.findOne({latestImport: latestCustomImport._id}, {sort: {debtDate: -1, 'version.createdAt': -1}})
           customImportCreatedAt = new Date(
             latestTransaction.debtDate.getFullYear()
             latestTransaction.debtDate.getMonth()

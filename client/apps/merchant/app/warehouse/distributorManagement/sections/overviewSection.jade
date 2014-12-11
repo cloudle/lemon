@@ -8,9 +8,12 @@ template(name="distributorManagementOverviewSection")
         if description
           span.blured-color ({{description}})
       .sub1: input.editable.dashed(name="distributorPhone" value="{{phone}}" maxlength="20" size="15" placeholder="điện thoại")
-      .sub2: input.editable(name="distributorAddress" value="{{address}}" maxlength="100" size="50" placeholder="địa chỉ")
+      .sub2: input.editable(name="distributorAddress" value="{{location.address}}" maxlength="100" size="50" placeholder="địa chỉ")
       .commands
         if showEditCommand
-          .lemon.btn.rounded.lime.icon-ok-6.syncCustomerEdit
+          .lemon.btn.rounded.lime.icon-ok-6.syncDistributorEdit
+        if showDeleteCommand
+          .lemon.btn.rounded.red.icon-minus-4.distributorDelete
+
     .panel-footer
       span.icon-angle-right

@@ -12,7 +12,11 @@ Apps.Merchant.distributorManagementReactive.push (scope) ->
       scope.managedDistributorList.push {key: key, childs: childs} for key, childs of groupedStaffs
       scope.managedDistributorList = _.sortBy(scope.managedDistributorList, (num)-> num.key)
 
-    if Session.get("distributorManagementSearchFilter")?.trim().length > 1 and scope.managedDistributorList.length is 0
-      Session.set("distributorManagementCreationMode", true)
+    if Session.get("distributorManagementSearchFilter")?.trim().length > 1
+      if scope.managedDistributorList.length > 0
+        distributorNameLists = _.pluck(scope.managedDistributorList, 'name')
+        Session.set("distributorCreationMode", !_.contains(distributorNameLists, Session.get("distributorManagementSearchFilter").trim()))
+      else
+        Session.set("distributorCreationMode", true)
     else
-      Session.set("distributorManagementCreationMode", false)
+      Session.set("distributorCreationMode", false)

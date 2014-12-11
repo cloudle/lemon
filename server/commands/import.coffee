@@ -18,7 +18,7 @@ updateImportAndDistributor = (currentImport, distributor)->
     importDebt     : currentImport.totalPrice
     importTotalCash: currentImport.totalPrice
   }
-  Schema.distributors.update distributor._id, $inc: distributorOption
+  Schema.distributors.update distributor._id, $inc: distributorOption, $set: {allowDelete: false}
 
   importOption = {
     beforeDebtBalance   : distributor.importDebt

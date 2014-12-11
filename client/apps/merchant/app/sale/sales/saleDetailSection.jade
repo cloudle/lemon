@@ -22,9 +22,10 @@ template(name="saleDetailSection")
                       .commands
                         .lemon.rounded.tiny.btn.blue.deleteOrderDetail: span.icon-minus-4
                      td.editable-field.error-field
-                        span {{formatNumber quality}}
-                        if crossBillAvailableQuality.invalid
-                           span.super.s7.color-lime {{crossBillAvailableQuality.crossAvailable}}
+                        span
+                           |{{formatNumber quality}}
+                           if crossBillAvailableQuality.invalid
+                              span.super.s7.color-lime {{crossBillAvailableQuality.crossAvailable}}
                      td {{product.skulls}}
                      td.editable-field.number {{formatNumber price}}
                      td.editable-field.number

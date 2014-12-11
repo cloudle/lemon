@@ -37,4 +37,6 @@ Schema.distributors.allow
   update: (userId, distributor)-> true
   remove: (userId, distributor)->
     if distributor.allowDelete
-      if Schema.imports.findOne({distributor: distributor._id}) then false else true
+      importFound = Schema.imports.findOne({distributor: distributor._id})
+      customImportFound = Schema.customImports.findOne({seller: distributor._id})
+      if importFound is undefined and customImportFound is undefined then true else false

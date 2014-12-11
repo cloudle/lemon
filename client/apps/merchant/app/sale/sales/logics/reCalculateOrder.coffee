@@ -44,7 +44,6 @@ calculateDefaultOrder = (currentOrder, orderDetails)->
 updateOrderByOrderDetail = (currentOrder, orderDetails)->
   orderOptionDefault = calculateDefaultOrder(currentOrder, orderDetails)
   updateOrder = calculateOrderDeposit(currentOrder, orderOptionDefault)
-  console.log updateOrder
   Schema.orders.update currentOrder._id, $set: updateOrder
 
   currentOrder.saleCount       = updateOrder.saleCount
