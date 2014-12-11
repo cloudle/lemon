@@ -12,5 +12,7 @@ template(name="customerManagementOverviewSection")
       .commands
         if showEditCommand
           .lemon.btn.rounded.lime.icon-ok-6.syncCustomerEdit
+        if showDeleteCommand
+          .lemon.btn.rounded.red.icon-minus-4.customerDelete
     .panel-footer
       span.icon-angle-right

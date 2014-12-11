@@ -95,7 +95,13 @@ Meteor.methods
             updateCustomSaleDetailAllowDeleteBy(latestCustomSale._id)
             updateTransactionOrCustomSalesAllowDeleteBy(latestCustomSale._id)
           else
-            Schema.customers.update customer._id, $set: {customSaleDebt: 0, customSalePaid: 0, customSaleTotalCash: 0}
+            customerOption= {customSaleDebt: 0, customSalePaid: 0, customSaleTotalCash: 0}
+            if !Schema.sales.findOne({buyer: customer._id})
+              customerOption.allowDelete   = true
+              customerOption.saleDebt      = 0
+              customerOption.salePaid      = 0
+              customerOption.saleTotalCash = 0
+            Schema.customers.update customer._id, $set: customerOption
 
 
   updateCustomSaleByCreateCustomSaleDetail: (customSaleDetail)->

@@ -50,9 +50,9 @@ template(name="distributorManagementImportsHistorySection")
 
         tr.editors(style="{{showAddTransactionOfImport}}")
           td
-            input.new-transaction-import-field(name='paySaleDescription' type="text" size="10" placeholder="ghi chú thu chi")
+            input.new-transaction-import-field(name='payImportDescription' type="text" size="10" placeholder="ghi chú thu chi")
           td(colspan="3")
-            input.new-transaction-import-field.number(name='paySaleAmount' type="text" size="10" placeholder="số tiền")
+            input.new-transaction-import-field.number(name='payImportAmount' type="text" size="10" placeholder="số tiền")
           td
             .lemon.rounded.btn.lime.icon-money.pull-right.createTransactionOfImport(class="{{allowCreateTransactionOfImport}}")
 

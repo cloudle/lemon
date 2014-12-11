@@ -26,19 +26,25 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       Session.set("allowCreateTransactionOfCustomSale", false)
 
   scope.checkAllowCreateTransactionOfSale = (template, customer)->
-    latestSale = Schema.sales.findOne({buyer: customer._id}, {sort: {'version.createdAt': -1}})
+    if latestSale = Schema.sales.findOne({buyer: customer._id}, {sort: {'version.createdAt': -1}})
+      payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
 
-    $paidDate = $(template.find("[name='paidSaleDate']")).inputmask('unmaskedvalue')
-    paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
-    currentPaidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
-    limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
-    isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and currentPaidDate > limitCurrentPaidDate and currentPaidDate < new Date()
-    payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+      if payAmount != 0 and !isNaN(payAmount)
+        Session.set("allowCreateTransactionOfSale", true)
+      else
+        Session.set("allowCreateTransactionOfSale", false)
 
-    if latestSale and currentPaidDate >= latestSale.version.createdAt and isValidDate and payAmount != 0 and !isNaN(payAmount)
-      Session.set("allowCreateTransactionOfSale", true)
-    else
-      Session.set("allowCreateTransactionOfSale", false)
+#      $paidDate = $(template.find("[name='paidSaleDate']")).inputmask('unmaskedvalue')
+#      paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
+#      currentPaidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
+#      limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
+#      isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and currentPaidDate > limitCurrentPaidDate and currentPaidDate < new Date()
+#      payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+#
+#      if currentPaidDate >= latestSale.version.createdAt and isValidDate and payAmount != 0 and !isNaN(payAmount)
+#        Session.set("allowCreateTransactionOfSale", true)
+#      else
+#        Session.set("allowCreateTransactionOfSale", false)
 
   scope.checkAllowCreateCustomSale = (template, customer)->
     latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})

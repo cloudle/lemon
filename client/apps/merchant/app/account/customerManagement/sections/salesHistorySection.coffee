@@ -27,7 +27,6 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
     @ui.$paidDate.inputmask("dd/mm/yyyy")
 
     @ui.$paySaleAmount.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
-    @ui.$paidSaleDate.inputmask("dd/mm/yyyy")
 
   events:
     "click .expandSaleAndCustomSale": ->

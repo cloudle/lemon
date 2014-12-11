@@ -3,8 +3,14 @@ Apps.Merchant.distributorManagementInit = []
 Apps.Merchant.distributorManagementReactive = []
 
 Apps.Merchant.distributorManagementReactive.push (scope) ->
-  if Session.get('allowCreateDistributor') then allowCreate = '' else allowCreate = 'disabled'
-  scope.allowCreateDistributor = allowCreate
+#  if Session.get('allowCreateDistributor') then allowCreate = '' else allowCreate = 'disabled'
+#  scope.allowCreateDistributor = allowCreate
+
+  if distributor = Session.get("distributorManagementCurrentDistributor")
+    maxRecords = Session.get("distributorManagementDataMaxCurrentRecords")
+    countRecords = Schema.customImports.find({sale: distributor._id}).count()
+    countRecords += Schema.imports.find({distributor: distributor._id, finish: true, submitted: true}).count() if distributor.customImportModeEnabled is false
+    Session.set("showExpandImportAndCustomImport", (maxRecords is countRecords))
 
   if distributorId = Session.get("mySession")?.currentDistributorManagementSelection
     Session.set("distributorManagementCurrentDistributor", Schema.distributors.findOne(distributorId))

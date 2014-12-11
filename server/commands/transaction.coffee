@@ -57,7 +57,7 @@ Meteor.methods
       throw new Meteor.Error('addTransactionDetail', error)
 
 
-  createNewReceiptCashOfSales: (customerId, debtCash, description, paidDate)->
+  createNewReceiptCashOfSales: (customerId, debtCash, description, paidDate = new Date())->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
         if sale = Schema.sales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})

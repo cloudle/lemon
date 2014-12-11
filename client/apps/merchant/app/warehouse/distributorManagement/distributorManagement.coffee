@@ -13,13 +13,16 @@ lemon.defineApp Template.distributorManagement,
 
     if Session.get("mySession")
       currentDistributor = Session.get("mySession").currentDistributorManagementSelection
+      limitExpand = Session.get("mySession").limitExpandImportAndCustomImport ? 5
       if !currentDistributor
         if distributor = Schema.distributors.findOne()
           UserSession.set("currentCustomerManagementSelection", distributor._id)
-          Meteor.subscribe('distributorManagementData', distributor._id)
+          Meteor.subscribe('distributorManagementData', distributor._id, 0, limitExpand)
+          Session.set("distributorManagementDataMaxCurrentRecords", limitExpand)
           Session.set("distributorManagementCurrentCustomer", distributor)
       else
-        Meteor.subscribe('distributorManagementData', currentDistributor)
+        Meteor.subscribe('distributorManagementData', currentDistributor, 0, limitExpand)
+        Session.set("distributorManagementDataMaxCurrentRecords", limitExpand)
         Session.set("distributorManagementCurrentCustomer", Schema.distributors.findOne(currentDistributor))
 
   events:
@@ -35,10 +38,20 @@ lemon.defineApp Template.distributorManagement,
 
     "click .inner.caption": (event, template) ->
       if Session.get("mySession")
-        UserSession.set("currentDistributorManagementSelection", @_id)
-        Meteor.subscribe('distributorManagementData', @_id)
+        Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentDistributorManagementSelection: @_id}})
+        limitExpand = Session.get("mySession").limitExpandImportAndCustomImport ? 5
+        if distributor = Schema.distributors.findOne(@_id)
+          countRecords = Schema.customImports.find({seller: distributor._id}).count()
+          countRecords += Schema.imports.find({distributor: distributor._id, finish: true, submitted: true}).count() if distributor.customImportModeEnabled is false
+          if countRecords is 0
+            Meteor.subscribe('distributorManagementData', distributor._id, 0, limitExpand)
+            Session.set("distributorManagementDataMaxCurrentRecords", limitExpand)
+          else
+            Session.set("distributorManagementDataMaxCurrentRecords", countRecords)
+          Session.set("distributorManagementCurrentCustomer", distributor)
 
-
+        Session.set("allowCreateCustomImport", false)
+        Session.set("allowCreateTransactionOfCustomImport", false)
 
 #
 #    "click .excel-distributor": (event, template) -> $(".excelFileSource").click()
