@@ -30,6 +30,11 @@ updateImportAndDistributor = (currentImport, distributor)->
   }
   Schema.imports.update currentImport._id, $set: importOption
 
+
+updateBuiltInOfDistributor = (distributorId, importDetails)->
+  productIds = _.uniq(_.pluck(importDetails, 'product'))
+  Schema.distributors.update(distributorId, $push: {builtIn:{ $each: productIds, $slice: -50 }})
+
 Meteor.methods
   importEnabledEdit: (importId) ->
     currentImport = Schema.imports.findOne({_id: importId, finish: false, submitted: true})
@@ -86,6 +91,7 @@ Meteor.methods
 
         navigateNewTab(currentImport._id, profile)
         if distributor = Schema.distributors.findOne(currentImport.distributor)
+          updateBuiltInOfDistributor(distributor._id, importDetails)
           updateImportAndDistributor(currentImport, distributor)
           Meteor.call('createNewReceiptCashOfImport', distributor._id, currentImport.deposit)
 

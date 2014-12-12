@@ -19,6 +19,10 @@ simpleSchema.distributors = new SimpleSchema
     type: String
     optional: true
 
+  builtIn:
+    type: [String]
+    optional: true
+
   phone:
     type: String
     optional: true

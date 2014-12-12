@@ -12,6 +12,8 @@ template(name="productManagementOverviewSection")
       .commands
         if showEditCommand
           .lemon.btn.rounded.lime.icon-ok-6.syncProductEdit
+        if showDeleteCommand
+          .lemon.btn.rounded.red.icon-minus-4.productDelete
     .panel-body
       .option-row
         .caption tada

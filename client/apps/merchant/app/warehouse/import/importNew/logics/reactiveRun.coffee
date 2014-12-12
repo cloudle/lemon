@@ -8,6 +8,8 @@ Apps.Merchant.importReactive.push (scope) ->
         unsignedName = Helpers.RemoveVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
     else
+      if Session.get('currentImportDistributor')?.builtIn?.length > 0
+        products = Schema.products.find({_id: $in: Session.get('currentImportDistributor').builtIn}).fetch()
       groupedProducts = _.groupBy products, (product) -> product.name.substr(0, 1).toLowerCase()
       scope.managedImportProductList.push {key: key, childs: childs} for key, childs of groupedProducts
       scope.managedImportProductList = _.sortBy(scope.managedImportProductList, (num)-> num.key)
