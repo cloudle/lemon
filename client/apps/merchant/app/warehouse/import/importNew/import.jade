@@ -81,7 +81,10 @@ template(name="import")
                       |({{skulls}})
                     if showAddDetail
                       .commands
+                        if showEditProductCommand
+                          span.icon-edit.enableEditProduct
                         span.icon-right-open-big.addImportDetail
+
           else
             each managedImportProductList
               .group-wrapper
@@ -95,7 +98,11 @@ template(name="import")
                         |({{skulls}})
                       if showAddDetail
                         .commands
+                          if showEditProductCommand
+                            span.icon-edit.enableEditProduct
                           span.icon-right-open-big.addImportDetail
+
+
 
 
 

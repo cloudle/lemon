@@ -13,7 +13,11 @@ Apps.Merchant.productManagementReactive.push (scope) ->
       scope.managedProductList = _.sortBy(scope.managedProductList, (num)-> num.key)
 
 
-    if Session.get("productManagementSearchFilter")?.trim().length > 1 and scope.managedProductList.length is 0
-      Session.set("productManagementCreationMode", true)
+    if Session.get("productManagementSearchFilter")?.trim().length > 1
+      if scope.managedProductList.length > 0
+        productNameLists = _.pluck(scope.managedProductList, 'name')
+        Session.set("productManagementCreationMode", !_.contains(productNameLists, Session.get("productManagementSearchFilter").trim()))
+      else
+        Session.set("productManagementCreationMode", true)
     else
       Session.set("productManagementCreationMode", false)

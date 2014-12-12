@@ -1,0 +1,66 @@
+template(name="staffManagement")
+  //#header
+  //  .caption-row
+  //    .title KHÁCH HÀNG
+    //.editor-row
+    //  .editor-wrapper(style="width: 80px")
+    //    span.ilabel.optional danh xưng
+    //    input(style="text-align: center" name="pronoun" maxlength="10" value="Anh")
+    //  .editor-wrapper(style="width: 159px")
+    //    span.ilabel tên khách hàng
+    //    input(name="fullName" maxlength="40")
+    //  .editor-wrapper(style="width: 80px")
+    //    span.ilabel.optional giới tính
+    //    +iSelect(options=genderSelectOptions class="field")
+    //  .editor-wrapper(style="width:150px")
+    //    span.ilabel.optional ghi chú
+    //    input(name="staffDescription")
+    //  .editor-wrapper
+    //    button.lemon.btn.lime.icon-user-add-1#createStaffAccount(class="{{allowCreate}}") TẠO MỚI
+    //  .editor-wrapper.right
+    //    input.hidden.excelFileSource(type="file")
+    //    button.lemon.btn.blue.right.excel-staff(type='submit' data-toggle="tooltip" data-container="body" data-placement="top" title="Tự động nhập")
+    //      span.icon-user-add-1
+    //  .editor-wrapper.right
+    //    a.lemon.btn.blue(href="/template/khach_hang.csv" target="_blank" data-toggle="tooltip" data-container="body" data-palace-holder="top" title="Tải về file Mẫu")
+    //      span.icon-doc-text-inv-1
+
+  #content.modern.staff-management
+    .dual-content
+      .dual-detail-wrapper
+        .dual-detail
+          .nano: .nano-content
+            +staffManagementOverviewSection currentStaff
+            +staffManagementSalesHistorySection currentStaff
+      .dual-addon
+        .search-filter.icon-search-8
+          input(name='searchFilter' type="text" placeholder="tìm khách hàng...")
+          if creationMode
+            .lemon.btn.rounded.tiny.lime.icon-plus-6.create-command.createStaffBtn
+        .nano: .nano-content
+          if showFilterSearch
+            .group-wrapper
+              each managedStaffList
+                .caption.inner(class="{{activeClass}}")
+                  +avatarImageComponent(avatar=avatarUrl alias=firstName)
+                  span.text
+                    |{{name}}
+                    if description
+                      |({{description}})
+          else
+            each managedStaffList
+              .group-wrapper
+                .caption.group {{key}}
+                each childs
+                  .caption.inner(class="{{activeClass}}")
+                    +avatarImageComponent(avatar=avatarUrl alias=firstName)
+                    span.text
+                      |{{name}}
+                      if description
+                        |({{description}})
+
+  #footer.modern
+    .editor-row
+      .editor-wrappe.pull-right
+        span.s5 TỔNG NỢ:
+        span.s3 <b>{{formatNumber finalDebtBalance}}</b> VNĐ

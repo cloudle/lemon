@@ -7,9 +7,12 @@ lemon.defineApp Template.import,
   showFilterSearch: -> Session.get("importManagementSearchFilter")?.length > 0
   showEditImportCurrentProduct: ->
     if product = Session.get('importCurrentProduct')
-      if product.price > 0 and product.importPrice > 0 then false else true
+      if product.price > 0 and product.importPrice > 0
+        if Session.get('showEditProduct') then true else false
+      else true
     else false
   productSelectionActiveClass:-> if Session.get('currentImport')?.currentProduct is @._id then 'active' else ''
+  showEditProductCommand: -> if Session.get('currentImport')?.currentProduct is @._id then true else false
 
   rendered: ->
     logics.import.templateInstance = @
@@ -63,13 +66,14 @@ lemon.defineApp Template.import,
           currentImport.currentQuality     = option.currentQuality
           currentImport.currentImportPrice = option.currentImportPrice
 
-          Session.set('importCurrentProduct', product)
           Session.set('currentImport', currentImport)
+          Session.set('importCurrentProduct', product)
           Session.set('importCurrentProductShowEditCommand')
 
           $("[name=productPrice]").val(product.price)
           $("[name=productImportPrice]").val(product.importPrice)
 
+    "click .enableEditProduct": -> Session.set('showEditProduct', !Session.get('showEditProduct'))
 
     'keyup .deposit': (event, template)->
       if currentImport = Session.get('currentImport')

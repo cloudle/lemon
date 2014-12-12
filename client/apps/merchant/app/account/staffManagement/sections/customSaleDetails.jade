@@ -1,0 +1,48 @@
+template(name="staffManagementCustomSaleDetails")
+  tr.header-row: td(colspan="5")
+    | .
+    .bill-header <b>{{momentCalendar debtDate}}</b>
+    .commands
+      if isCustomSaleModeEnabled
+        .lemon.rounded.red.btn.animated.bounceIn.deleteCustomSale: span.icon-minus-4
+
+  each customSaleDetails
+    tr.detail-row
+      td.has-commands
+        |{{productName}}
+        .commands
+          if isCustomSaleModeEnabled
+            .lemon.rounded.tiny.btn.red.deleteCustomSaleDetail: span.icon-minus-4
+      td {{formatNumber quality}}
+      td {{skulls}}
+      td.number {{formatNumber price}}
+      td.number {{formatNumber finalPrice}}
+  if isCustomSaleDetailCreator
+    +staffManagementCustomSaleDetailCreator
+  tr.detail-row.summary-row
+    td: span.note {{description}}
+    td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber latestDebtBalance}}</b>
+    td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>
+
+  each latestPaids
+    tr.paid-row.top(class="{{receivableClass}}")
+      td.has-commands
+        span.note {{description}}, {{momentCalendar debtDate}}.
+        .commands
+          if isCustomSaleModeEnabled
+            .lemon.rounded.tiny.btn.red.deleteTransaction: span.icon-minus-4
+      td.number(colspan="3")
+        span.icon-feather-1
+        span.s4(class="{{finalReceivableClass}}") <b>{{formatNumberAbs latestDebtBalance}}</b>
+      td.number: span(class="{{receivableClass}}") <b>{{formatNumberAbs debtBalanceChange}}</b>
+
+template(name="staffManagementCustomSaleDetailCreator")
+  tr.editors.dual-border.animated.fadeIn
+    td: input(name='productName' type="text" size="10" placeholder="tên sản phẩm")
+    td: input(name='quality' type="text" size="10" placeholder="sl")
+    td: input(name='skulls' type="text" size="10" placeholder="quy cách")
+    td: input.number(name='price' type="text" size="10" placeholder="đơn giá")
+    td: .lemon.btn.rounded.orange.pull-right.createCustomSaleDetail.icon-plus-6
+    //td
+    //  .pull-left(style="width: 135px"): input.number(name='totalPrice' type="text" size="10" placeholder="tổng tiền")
+    //  .lemon.btn.rounded.lime.pull-right.createCustomSaleDetail.icon-plus-6

@@ -37,7 +37,13 @@ lemon.defineHyper Template.importCurrentProductOverviewSection,
 
 
     "keyup input.editable": (event, template) ->
+      Session.set "importCurrentProductShowEditCommand",
+        template.ui.$productName.val() isnt Session.get("importCurrentProduct").name or
+        Number(template.ui.$productPrice.inputmask('unmaskedvalue')) isnt (Session.get("importCurrentProduct").price ? '') or
+        Number(template.ui.$productImportPrice.inputmask('unmaskedvalue')) isnt (Session.get("importCurrentProduct").importPrice ? '')
+
       if event.which is 27
+        Session.set "importCurrentProductShowEditCommand"
         if $(event.currentTarget).attr('name') is 'productName'
           $(event.currentTarget).val(Session.get("importCurrentProduct").name)
           $(event.currentTarget).change()
@@ -46,12 +52,11 @@ lemon.defineHyper Template.importCurrentProductOverviewSection,
         else if $(event.currentTarget).attr('name') is 'productImportPrice'
           $(event.currentTarget).val(Session.get("importCurrentProduct").importPrice)
 
-      Session.set "importCurrentProductShowEditCommand",
-        template.ui.$productName.val() isnt Session.get("importCurrentProduct").name or
-          Number(template.ui.$productPrice.inputmask('unmaskedvalue')) isnt (Session.get("importCurrentProduct").price ? '') or
-          Number(template.ui.$productImportPrice.inputmask('unmaskedvalue')) isnt (Session.get("importCurrentProduct").importPrice ? '')
-
-      scope.editProduct(template) if event.which is 13
+      if event.which is 13
+        if Session.get("importCurrentProductShowEditCommand")
+          scope.editProduct(template)
+          Session.set("showEditProduct", true)
+        else Session.set("showEditProduct")
 
 
     "click .syncProductEdit": (event, template) -> scope.editProduct(template)
