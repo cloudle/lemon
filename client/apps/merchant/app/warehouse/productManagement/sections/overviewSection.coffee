@@ -3,6 +3,7 @@ scope = logics.productManagement
 lemon.defineHyper Template.productManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showEditCommand: -> Session.get "productManagementShowEditCommand"
+  showDeleteCommand: -> Session.get('productManagementCurrentProduct')?.allowDelete
   averagePrice: ->
     if product = Session.get('productManagementCurrentProduct')
       productDetails = Schema.productDetails.find({product: product._id}).fetch()
@@ -39,8 +40,6 @@ lemon.defineHyper Template.productManagementOverviewSection,
         template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '')
 
     "keyup input.editable": (event, template) ->
-      scope.editProduct(template) if event.which is 13
-
       if event.which is 27
         if $(event.currentTarget).attr('name') is 'productName'
           $(event.currentTarget).val(Session.get("productManagementCurrentProduct").name)
@@ -52,4 +51,10 @@ lemon.defineHyper Template.productManagementOverviewSection,
         template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
         Number(template.ui.$productPrice.inputmask('unmaskedvalue')) isnt (Session.get("productManagementCurrentProduct").price ? '')
 
+      scope.editProduct(template) if event.which is 13
+
     "click .syncProductEdit": (event, template) -> scope.editProduct(template)
+    "click .productDelete": (event, template) ->
+      if @allowDelete
+        Schema.products.remove @_id
+        UserSession.set('currentProductManagementSelection', Schema.products.findOne()?._id ? '')

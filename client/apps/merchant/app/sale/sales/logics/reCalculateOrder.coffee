@@ -44,6 +44,9 @@ calculateDefaultOrder = (currentOrder, orderDetails)->
 updateOrderByOrderDetail = (currentOrder, orderDetails)->
   orderOptionDefault = calculateDefaultOrder(currentOrder, orderDetails)
   updateOrder = calculateOrderDeposit(currentOrder, orderOptionDefault)
+  updateOrder.currentDeposit = updateOrder.finalPrice
+  updateOrder.deposit = updateOrder.finalPrice
+  updateOrder.debit = 0
   Schema.orders.update currentOrder._id, $set: updateOrder
 
   currentOrder.saleCount       = updateOrder.saleCount

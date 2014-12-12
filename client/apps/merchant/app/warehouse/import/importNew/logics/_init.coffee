@@ -25,7 +25,9 @@ Apps.Merchant.importReactive.push (scope) ->
     scope.showSubmit = currentImport.distributor and scope.currentImportDetails.count() > 0 and !currentImport.submitted and !permission
     scope.showFinish = currentImport.distributor and scope.currentImportDetails.count() > 0 and !scope.showSubmit
 
-
+  if Session.get('currentImport')
+    if !Session.get('currentImportDistributor') || Session.get('currentImportDistributor')._id != Session.get('currentImport').distributor
+      Session.set('currentImportDistributor', Schema.distributors.findOne(Session.get('currentImport').distributor))
 
 
   if currentImport = scope.currentImport
