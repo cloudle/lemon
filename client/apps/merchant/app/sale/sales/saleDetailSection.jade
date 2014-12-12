@@ -1,7 +1,7 @@
 template(name="saleDetailSection")
    .section.top.panel.panel-default.printable-area
-      .panel-heading.printing-header
-         span.pull-right <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b><br/>
+      .panel-heading
+         span <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b><br/>
       .panel-body
          //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
          table.lemon-grid
@@ -10,7 +10,7 @@ template(name="saleDetailSection")
                th(style="width:50px") SL
                th(style="width:90px") QUI CÁCH
                th.number(style="width:100px") ĐƠN GIÁ
-               th.number(style="width:80px") GIẢM GIÁ
+               th.number(style="width:100px") GIẢM GIÁ
                th.number(style="width:120px") THÀNH TIỀN
             each orderDetails
                if editingMode
@@ -33,7 +33,6 @@ template(name="saleDetailSection")
                         if discountPercent
                            span.super.s7.color-lime -{{round discountPercent}}%
                      td.number <b>{{formatNumber finalPrice}}</b>
-
 
       .panel-footer
          input.editable.dashed.note(value="{{order.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
