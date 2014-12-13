@@ -8,7 +8,7 @@ lemon.defineHyper Template.staffManagementOverviewSection,
 
   userName: -> Meteor.users.findOne(@currentStaff?.user)?.emails[0].address ? 'chưa tạo tài khoản đăng nhập.'
   branchName: -> Schema.merchants.findOne(@currentStaff?.currentMerchant)?.name ? 'chưa cập nhât'
-  genderName: -> if @currentStaff.gender then 'Nam' else 'Nữ'
+  genderName: -> if @currentStaff?.gender then 'Nam' else 'Nữ'
 
   showCreateEmail: -> if Meteor.users.findOne(@currentStaff?.user) then false else true
 
@@ -53,7 +53,8 @@ lemon.defineHyper Template.staffManagementOverviewSection,
     "click .updateEmailOfStaff": (event, template) -> scope.updateEmailOfStaff(template)
     "click .syncStaffEdit": (event, template) -> scope.editStaff(template)
     "click .staffDelete": (event, template) ->
-      if @allowDelete and @_id isnt Session.get('myProfile')._id
-        Schema.userProfiles.remove @_id
-        UserSession.set('currentStaffManagementSelection', Schema.userProfiles.findOne()?._id ? '')
+      if staff = Session.get("staffManagementCurrentStaff")
+        if staff.allowDelete and staff._id isnt Session.get('myProfile')._id
+          Schema.userProfiles.remove staff._id
+          UserSession.set('currentStaffManagementSelection', Schema.userProfiles.findOne()?._id ? '')
 

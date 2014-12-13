@@ -22,8 +22,8 @@ lemon.defineApp Template.staffManagement,
           UserSession.set("currentStaffManagementSelection", staff._id)
 
       if staff
-        Meteor.subscribe('staffManagementData', currentStaffId, 0, limitExpand)
-        Session.set("staffManagementDataMaxCurrentRecords", limitExpand)
+#        Meteor.subscribe('staffManagementData', currentStaffId, 0, limitExpand)
+#        Session.set("staffManagementDataMaxCurrentRecords", limitExpand)
         Session.set("staffManagementCurrentStaff", staff)
         Session.set('currentRoleSelection', Schema.roles.find({_id: $in: staff.roles ? []}).fetch())
 
@@ -41,13 +41,13 @@ lemon.defineApp Template.staffManagement,
         Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentStaffManagementSelection: @_id}})
         limitExpand = Session.get("mySession").limitExpandSaleAndCustomSale ? 5
         if staff = Schema.userProfiles.findOne(@_id)
-          countRecords = Schema.customSales.find({buyer: staff._id}).count()
-          countRecords += Schema.sales.find({buyer: staff._id}).count() if staff.customSaleModeEnabled is false
-          if countRecords is 0
-            Meteor.subscribe('staffManagementData', staff._id, 0, limitExpand)
-            Session.set("staffManagementDataMaxCurrentRecords", limitExpand)
-          else
-            Session.set("staffManagementDataMaxCurrentRecords", countRecords)
+#          countRecords = Schema.customSales.find({buyer: staff._id}).count()
+#          countRecords += Schema.sales.find({buyer: staff._id}).count() if staff.customSaleModeEnabled is false
+#          if countRecords is 0
+#            Meteor.subscribe('staffManagementData', staff._id, 0, limitExpand)
+#            Session.set("staffManagementDataMaxCurrentRecords", limitExpand)
+#          else
+#            Session.set("staffManagementDataMaxCurrentRecords", countRecords)
           Session.set("staffManagementCurrentStaff", staff)
 
         Session.set("allowCreateCustomSale", false)

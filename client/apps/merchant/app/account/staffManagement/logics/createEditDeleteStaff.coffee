@@ -22,7 +22,7 @@ Apps.Merchant.staffManagementInit.push (scope) ->
       currentWarehouse : Session.get('myProfile').currentWarehouse
       creator          : Session.get('myProfile').user
       fullName         : nameOptions.fullName
-      gender           : true
+      gender           : nameOptions.gender ? true
       isRoot           : false
       styles           : Helpers.RandomColor()
     staff.gender = nameOptions.gender if nameOptions.gender
