@@ -5,29 +5,35 @@ template(name="saleDetailSection")
       .panel-body
          //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
          table.lemon-grid
-            tr
-               th.large-name(style="width:auto") SẢN PHẨM
+            tr.table-header
+               th.bill-name(style="width:auto") SẢN PHẨM
+               th.price(style="width:100px") ĐƠN GIÁ
                th.quality(style="width:50px") SL
                th.skull(style="width:90px") QUI CÁCH
-               th.number.price(style="width:100px") ĐƠN GIÁ
                th.number.bill-discount(style="width:100px") GIẢM GIÁ
                th.number.final-price(style="width:120px") THÀNH TIỀN
             each orderDetails
                if editingMode
                   +saleDetailEditor editingData
                else
+                  tr.detail-row.large-name: td(colspan="3")
+                     span {{product.name}}
+                     if product.skulls
+                        span ({{product.skulls}})
+                     if discountPercent
+                        span.super.s7.color-lime GIẢM GIÁ {{round discountPercent}}%
                   tr.detail-row.click-enable(class="{{crossBillAvailableQuality.errorClass}}")
-                     td.large-name.has-commands
+                     td.bill-name.has-commands
                       |{{product.name}}
                       .commands
                         .lemon.rounded.tiny.btn.blue.deleteOrderDetail: span.icon-minus-4
+                     td.price.editable-field {{formatNumber price}}
                      td.quality.editable-field.error-field
                         span
                            |{{formatNumber quality}}
                            if crossBillAvailableQuality.invalid
                               span.super.s7.color-lime {{crossBillAvailableQuality.crossAvailable}}
                      td.skull {{product.skulls}}
-                     td.price.editable-field.number {{formatNumber price}}
                      td.bill-discount.editable-field.number
                         span {{formatNumber discountCash}}
                         if discountPercent

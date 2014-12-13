@@ -1,8 +1,9 @@
 @require '../lib.import.styl'
 
 print-mode()
-  *
+  :not(.printable-area) *
     visibility hidden !important
+    padding 0 !important; margin 0 !important
   input
     placeholder #ffffff
     &.editable.dashed
@@ -17,22 +18,36 @@ print-mode()
     td:first-child
       border-left none !important
     .editors
-      border-bottom none !important
-      border-top dashed 1px #eee !important
+      border-top none !important
+      border-bottom dashed 1px #eee !important
       input
-        font-style normal; font-weight normal
+        font-style normal !important; font-weight normal !important
+  .hide-on-print
+    display none
+
   #container
     padding-right 0 !important
+    height 100% !important
   .application
     margin-right 0 !important
+    height 100% !important
   .dual-detail
     margin-left 0 !important
 
   .printable-area
     absolute left 0 top 0
-    font-size 125%
-    width 100%
+    font-size 125% !important
+    width 100%; height 100%
     margin 0 !important
+
+  .nano
+    position inherit
+    width auto; height auto
+    overflow auto
+    .nano-content
+      position inherit
+      overflow auto
+      overflow-x auto
 
 @media print
   print-mode()

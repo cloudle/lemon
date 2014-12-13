@@ -54,7 +54,16 @@
     text-align center
     padding-top 10px
 
-@media print
+
+#content.sales-app tr.large-name
+  display none
+  border-bottom none !important
+  td
+    padding 0 !important
+
+@media print and (max-width: 300px)
   #content.sales-app table.lemon-grid
-    .large-name, .skull, .discount
+    tr.large-name
+      display table-row
+    .bill-name, .skull, .bill-discount
       display none

@@ -1,7 +1,14 @@
 template(name="merchantPrintDesigner")
   .section.top.panel.panel-default.printable-area
-    .panel-heading.printing-header
-      h1 header
+    .panel-heading
+      .printing-header
+        .branding
+          .company-name {{merchantInfo.companyName}}
+          .company-address {{merchantInfo.contactAddress}}
+        .info
+          span.icon-phone-circled {{merchantInfo.contactPhone}}
+      .printing-info
+        .document-name PHIẾU BÁN HÀNG
     .panel-body.printing-content
       .empty-dashed-line nội dung bản in
       each bodySpaceIterator

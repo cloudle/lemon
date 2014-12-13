@@ -1,11 +1,17 @@
 template(name="saleDetailEditor")
-   tr.editors.dual-border(class="{{crossBillAvailableQuality.errorClass}}")
-      td.large-name.note.has-commands
-       |{{product.name}}
-       .commands
-          .lemon.rounded.tiny.btn.blue.animated.bounceIn.deleteOrderDetail: span.icon-minus-4
-      td.quality: input.error-field(name="editQuality" min="0")
-      td.skull.note {{product.skulls}}
-      td.price.number: input(name="editPrice" min="0")
-      td.bill-discount.number: input(name="editDiscountCash" min="0")
-      td.final-price.note.number <b>{{formatNumber finalPrice}}</b>
+  tr.detail-row.large-name: td(colspan="3")
+    span {{product.name}}
+    if product.skulls
+      span ({{product.skulls}})
+    if discountPercent
+      span.super.s7.color-lime GIẢM GIÁ {{round discountPercent}}%
+  tr.editors.dual-border(class="{{crossBillAvailableQuality.errorClass}}")
+    td.bill-name.has-commands
+     |{{product.name}}
+     .commands
+        .lemon.rounded.tiny.btn.blue.animated.bounceIn.deleteOrderDetail: span.icon-minus-4
+    td.price: input(name="editPrice" min="0")
+    td.quality: input.error-field(name="editQuality" min="0")
+    td.skull.note {{product.skulls}}
+    td.bill-discount.number: input(name="editDiscountCash" min="0")
+    td.final-price.note.number <b>{{formatNumber finalPrice}}</b>

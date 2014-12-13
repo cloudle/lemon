@@ -9,12 +9,22 @@
     /*width 100%*/
 
 
-/*#content .section.printable-area*/
-  /*.printing-header*/
-    /*clearfix()*/
-    /*.branding*/
-      /*float left*/
-      /*.company-name*/
-        /*font-size 40px*/
-    /*.info*/
-      /*float right*/
+
+.printing-header
+  clearfix()
+  padding-bottom 15px
+  border-bottom dashed 1px #666666
+  .branding
+    float right
+    .company-name
+      font-size 40px
+      text-transform uppercase
+  .info
+    color #666666
+    float left
+
+.printing-info
+  padding-top 25px
+  .document-name
+    font-size 30px; font-weight lighter
+    text-align center

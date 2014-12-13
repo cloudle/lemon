@@ -1,4 +1,4 @@
-totalDecoratorTiles = 10
+totalDecoratorTiles = 300
 lemon.defineWidget Template.merchantPrintDesigner,
   bodySpaceIterator: ->
     array = []

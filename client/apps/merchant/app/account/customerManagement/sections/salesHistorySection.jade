@@ -1,10 +1,10 @@
 template(name="customerManagementSalesHistorySection")
-  .section.panel.panel-default
+  .section.panel.panel-default.printable-area
     .panel-heading
       table.lemon-grid: tr
         th(style="width:auto") SẢN PHẨM
         th(style="width:50px") SL
-        th(style="width:80px") QUI CÁCH
+        th(style="width:100px") QUI CÁCH
         th.number(style="width:120px") ĐƠN GIÁ
         th.number(style="width:180px") THÀNH TIỀN
     .panel-body.debt-details
@@ -13,7 +13,7 @@ template(name="customerManagementSalesHistorySection")
         each customSale
           +customerManagementCustomSaleDetails this
 
-        tr.editors(style="{{isCustomSaleModeEnabled}}")
+        tr.editors.hide-on-print(style="{{isCustomSaleModeEnabled}}")
           td
             input.new-transaction-custom-sale-field(name='payDescription' type="text" size="10" placeholder="ghi chú thu chi")
           td(colspan="2")
@@ -23,7 +23,7 @@ template(name="customerManagementSalesHistorySection")
           td
             .lemon.rounded.btn.orange.icon-money.pull-right.createTransactionOfCustomSale(class="{{allowCreateTransactionOfCustomSale}}")
 
-        tr.editors.dual-border(style="{{isCustomSaleModeEnabled}}")
+        tr.editors.hide-on-print.dual-border(style="{{isCustomSaleModeEnabled}}")
           td(colspan="3")
             input.new-bill-field(name='description' type="text" size="10" placeholder="ghi chú đơn hàng")
           td
@@ -51,7 +51,7 @@ template(name="customerManagementSalesHistorySection")
         each defaultSaleToday
           +customerManagementSaleDetails this
 
-        tr.editors(style="{{showIsFoundSale}}")
+        tr.editors.hide-on-print(style="{{showIsFoundSale}}")
           td
             input.new-transaction-sale-field(name='paySaleDescription' type="text" size="10" placeholder="ghi chú thu chi")
           td(colspan="3")
@@ -69,6 +69,6 @@ template(name="customerManagementSaleHistoryHeader")
   tr
     th(style="width:auto")
     th(style="width:50px")
-    th(style="width:80px")
+    th(style="width:100px")
     th(style="width:120px")
     th(style="width:180px")

@@ -25,6 +25,10 @@ grid-left-border-width = 5px
       absolute top -4px
   tr.detail-row:hover
     background-color #C9EAFF !important
+  tr.table-header
+    border-bottom dashed 1px #B0B0B0
+    th
+      padding-top 5px; padding-bottom 5px
   tr.header-row
     border-bottom dashed 1px #B0B0B0
     td
@@ -42,7 +46,7 @@ grid-left-border-width = 5px
     &:nth-child(odd)
       background-color #FFFFFF
     &:not(:first-child)
-      border-top dashed 1px #eeeeee
+      border-bottom dashed 1px #eeeeee
     td:first-child
       padding-left 5px
       border-left solid grid-left-border-width #7ac5f9
@@ -50,7 +54,7 @@ grid-left-border-width = 5px
       color pumpkin !important
 
   tr.summary-row
-    border-top dashed 1px #C8C8C8 !important
+    border-bottom dashed 1px #C8C8C8 !important
     margin-bottom 20px
     .blured-color
       color #999999
@@ -60,7 +64,7 @@ grid-left-border-width = 5px
   tr.paid-row
     background-color lighten(lime, 50)
     &.top
-      border-top dashed 1px lime
+      border-bottom dashed 1px lime
     td:first-child
       border-left solid grid-left-border-width lime
     .receive
@@ -70,12 +74,12 @@ grid-left-border-width = 5px
   tr.paid-row.paid
     background-color lighten(pumpkin, 55)
     &.top
-      border-top dashed 1px pumpkin
+      border-bottom dashed 1px pumpkin
     td:first-child
       border-left solid grid-left-border-width pumpkin
 
   tr.top-header-row
-    border-bottom dashed 1px #dddddd
+    border-top dashed 1px #dddddd
   td.number, th.number
     text-align right
     input
