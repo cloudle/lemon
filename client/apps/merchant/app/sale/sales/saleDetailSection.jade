@@ -1,7 +1,10 @@
 template(name="saleDetailSection")
    .section.top.panel.panel-default.printable-area
-      .panel-heading
-         span <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b><br/>
+      .panel-heading.show-on-print
+         +merchantPrintingHeader
+         .printing-info
+            .document-name PHIẾU BÁN HÀNG
+
       .panel-body
          //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
          table.lemon-grid

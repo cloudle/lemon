@@ -1,5 +1,8 @@
 @require '../lib.import.styl'
 
+.show-on-print
+  display none
+
 print-mode()
   :not(.printable-area) *
     visibility hidden !important
@@ -39,6 +42,13 @@ print-mode()
     font-size 125% !important
     width 100%; height 100%
     margin 0 !important
+
+  .show-on-print
+    display block
+  .printing-header
+    padding-bottom 15px !important
+  .printing-info
+    padding-top 25px !important
 
   .nano
     position inherit
