@@ -1,18 +1,4 @@
 simpleSchema.userProfiles = new SimpleSchema
-  user:
-    type: String
-
-  creator:
-    type: String
-    optional: true
-
-  isRoot:
-    type: Boolean
-
-  userType:
-    type: String
-    optional: true
-
   parentMerchant:
     type: String
     optional: true
@@ -22,6 +8,21 @@ simpleSchema.userProfiles = new SimpleSchema
     optional: true
 
   currentWarehouse:
+    type: String
+    optional: true
+
+  user:
+    type: String
+    optional: true
+
+  creator:
+    type: String
+    optional: true
+
+  isRoot:
+    type: Boolean
+
+  userType:
     type: String
     optional: true
 

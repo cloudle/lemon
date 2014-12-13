@@ -1,0 +1,57 @@
+template(name="staffManagementOverviewSection")
+  .section.top.panel.panel-default
+    input.hidden.avatarFile(type="file")
+    .panel-heading
+      +avatarImageComponent(avatar=avatarUrl alias=firstName)
+      .caption
+        input.editable.dashed(name="staffName" value="{{fullName}}" maxlength="50")
+        span.blured-color ({{genderName}})
+      .sub1: span.editable Đăng nhập: {{userName}}
+      .sub2: span.editable Chi nhánh: {{branchName}}
+      .commands
+        if showEditCommand
+          .lemon.btn.rounded.lime.icon-ok-6.syncStaffEdit
+        if showDeleteCommand
+          .lemon.btn.rounded.red.icon-minus-4.staffDelete
+    .panel-footer
+      //.editor-row
+      //  .editor-wrapper(style="width: 180px")
+      //    span.ilabel họ tên
+      //    input(name="fullName" value="{{fullName}}")
+      //  .editor-wrapper(style="width: 80px")
+      //    span.ilabel.optional giới tính
+      //    +iSelect(options=genderSelectOptions class="field")
+      //  .editor-wrapper(style="width: 120px")
+      //    span.ilabel.center.optional sinh nhật
+      //    input(name="dateOfBirth" binding="datePicker")
+      //  .editor-wrapper(style="width: 120px")
+      //    span.ilabel.center.optional gia nhập
+      //    input(name="startWorkingDate" binding="datePicker" data-toggle="tooltip" data-container="body" data-placement="left" title="ngày tính lương")
+
+      .editor-row
+        .editor-wrapper(style="width: 250px")
+          span.ilabel.optional phân quyền
+          +iSelect(options=roleSelectOptions class="field")
+        .editor-wrapper(style="width: 80px")
+          span.ilabel.optional giới tính
+          +iSelect(options=genderSelectOptions class="field")
+        .editor-wrapper(style="width: 150px")
+          span.ilabel.optional nơi làm việc
+          +iSelect(options=branchSelectOptions class="field")
+        .editor-wrapper(style="width: 150px")
+          span.ilabel.optional kho mặc định
+          +iSelect(options=warehouseSelectOptions class="field")
+
+      if showCreateEmail
+        .editor-row
+          .editor-wrapper(style="width: 180px")
+            span.ilabel tài khoản (email)
+            input(name="email")
+          .editor-wrapper(style="width: 120px")
+            span.ilabel mật khẩu
+            input(type="password" name="password")
+          .editor-wrapper(style="width: 120px")
+            span.ilabel xác nhận
+            input(type="password" name="confirm")
+          .editor-wrapper
+            button.lemon.btn.lime.icon-user-add-1.updateEmailOfStaff TẠO

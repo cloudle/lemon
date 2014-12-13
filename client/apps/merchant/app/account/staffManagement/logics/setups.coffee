@@ -1,67 +1,75 @@
+formatBranchSelect = (item) -> "#{item.name}" if item
+formatRoleSelect = (item) -> "#{item.name}" if item
+formatWarehouseSelect = (item) -> "#{item.name}" if item
+formatGender = (item) -> "#{item.display}" if item
+
 Apps.Merchant.staffManagementInit.push (scope) ->
-#  scope.checkAllowCreate = (context) ->
-#    fullName = context.ui.$fullName.val()
-#    description = context.ui.$description.val()
-#    if fullName.length > 0
-#      option =
-#        name: fullName
-#        description: description if description.length > 0
-#      if _.findWhere(Session.get("availableStaffs"), option) then Session.set('allowCreateNewStaff', false)
-#      else Session.set('allowCreateNewStaff', true)
-#    else Session.set('allowCreateNewStaff', false)
+  scope.branchSelectOptions =
+    query: (query) -> query.callback
+      results: Schema.merchants.find().fetch()
+    initSelection: (element, callback) ->
+      callback(Schema.merchants.findOne(Session.get("staffManagementCurrentStaff")?.currentMerchant) ? 'skyReset')
+    reactiveValueGetter: -> Session.get("staffManagementCurrentStaff")?.currentMerchant ? 'skyReset'
+    changeAction: (e) ->
+      option =
+        currentMerchant : e.added._id
+        currentWarehouse: Schema.warehouses.findOne({merchant: e.added._id, isRoot: true})?._id ? 'skyReset'
+      Schema.userProfiles.update Session.get("staffManagementCurrentStaff")?._id, $set: option
 
-  scope.checkAllowCreateTransactionOfCustomSale = (template, staff)->
-    latestCustomSale = Schema.customSales.findOne({buyer: staff._id}, {sort: {debtDate: -1}})
+      scope.availableWarehouses = Schema.warehouses.find({merchant: e.added._id})
 
-    $paidDate = $(template.find("[name='paidDate']")).inputmask('unmaskedvalue')
-    paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
-    currentPaidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
-    limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
-    isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and currentPaidDate > limitCurrentPaidDate and currentPaidDate < new Date()
-    payAmount = parseInt($(template.find("[name='payAmount']")).inputmask('unmaskedvalue'))
+    minimumResultsForSearch: -1
+    formatSelection: formatBranchSelect
+    formatResult: formatBranchSelect
 
-    if isValidDate and payAmount != 0 and (latestCustomSale is undefined  || currentPaidDate >= latestCustomSale?.debtDate and !isNaN(payAmount))
-      Session.set("allowCreateTransactionOfCustomSale", true)
-    else
-      Session.set("allowCreateTransactionOfCustomSale", false)
 
-  scope.checkAllowCreateTransactionOfSale = (template, staff)->
-    if latestSale = Schema.sales.findOne({buyer: staff._id}, {sort: {'version.createdAt': -1}})
-      payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
 
-      if payAmount != 0 and !isNaN(payAmount)
-        Session.set("allowCreateTransactionOfSale", true)
-      else
-        Session.set("allowCreateTransactionOfSale", false)
+  scope.roleSelectOptions =
+    query: (query) -> query.callback
+      results: Schema.roles.find().fetch()
+    initSelection: (element, callback) -> callback Session.get('currentRoleSelection')
+    changeAction: (e) ->
+      currentRoles = Session.get('currentRoleSelection')
+      currentRoles = currentRoles ? []
 
-#      $paidDate = $(template.find("[name='paidSaleDate']")).inputmask('unmaskedvalue')
-#      paidDate  = moment($paidDate, 'DD/MM/YYYY')._d
-#      currentPaidDate = new Date(paidDate.getFullYear(), paidDate.getMonth(), paidDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
-#      limitCurrentPaidDate = new Date(paidDate.getFullYear() - 20, paidDate.getMonth(), paidDate.getDate())
-#      isValidDate = $paidDate.length is 8 and moment($paidDate, 'DD/MM/YYYY').isValid() and currentPaidDate > limitCurrentPaidDate and currentPaidDate < new Date()
-#      payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
-#
-#      if currentPaidDate >= latestSale.version.createdAt and isValidDate and payAmount != 0 and !isNaN(payAmount)
-#        Session.set("allowCreateTransactionOfSale", true)
-#      else
-#        Session.set("allowCreateTransactionOfSale", false)
+      currentRoles.push e.added if e.added
+      if e.removed
+        removedItem = _.findWhere(currentRoles, {_id: e.removed._id})
+        currentRoles.splice currentRoles.indexOf(removedItem), 1
 
-  scope.checkAllowCreateCustomSale = (template, staff)->
-    latestCustomSale = Schema.customSales.findOne({buyer: staff._id}, {sort: {debtDate: -1}})
+      Session.set('currentRoleSelection', currentRoles)
+      Schema.userProfiles.update Session.get("staffManagementCurrentStaff")._id, $set: {roles: _.pluck(currentRoles, '_id')}
+    reactiveValueGetter: -> Session.get('currentRoleSelection')
+    formatSelection: formatRoleSelect
+    formatResult: formatRoleSelect
+    others:
+      multiple: true
+      maximumSelectionSize: 3
 
-    $debtDate = $(template.find("[name='debtDate']")).inputmask('unmaskedvalue')
-    tempDate = moment($debtDate, 'DD/MM/YYYY')._d
-    debtDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), (new Date).getHours(), (new Date).getMinutes(), (new Date).getSeconds())
-    limitDebtDate = new Date(tempDate.getFullYear() - 20, tempDate.getMonth(), tempDate.getDate())
-    isValidDate = $debtDate.length is 8 and moment($debtDate, 'DD/MM/YYYY').isValid() and debtDate > limitDebtDate and debtDate < new Date()
 
-    if isValidDate and (latestCustomSale is undefined || debtDate >= latestCustomSale.debtDate)
-      Session.set("allowCreateCustomSale", true)
-    else
-      Session.set("allowCreateCustomSale", false)
+  scope.warehouseSelectOptions =
+    query: (query) -> query.callback
+      results: Schema.warehouses.find({merchant: Session.get("staffManagementCurrentStaff")?.currentMerchant}).fetch()
+    initSelection: (element, callback) ->
+      callback(Schema.warehouses.findOne(Session.get("staffManagementCurrentStaff")?.currentWarehouse) ? 'skyReset')
+    changeAction: (e) ->
+      Schema.userProfiles.update Session.get("staffManagementCurrentStaff")?._id, $set:{currentWarehouse: e.added._id}
+    reactiveValueGetter: -> Session.get("staffManagementCurrentStaff")?._id ? 'skyReset'
+    minimumResultsForSearch: -1
+    formatSelection: formatWarehouseSelect
+    formatResult:    formatWarehouseSelect
 
-  scope.checkAllowUpdateOverview = (template) ->
-    Session.set "staffManagementShowEditCommand",
-      template.ui.$staffName.val() isnt Session.get("staffManagementCurrentStaff").name or
-      template.ui.$staffPhone.val() isnt (Session.get("staffManagementCurrentStaff").phone ? '') or
-      template.ui.$staffAddress.val() isnt (Session.get("staffManagementCurrentStaff").address ? '')
+  scope.genderSelectOptions =
+    query: (query) -> query.callback
+      results: Apps.Merchant.GenderTypes
+      text: 'id'
+    initSelection: (element, callback) ->
+      callback _.findWhere(Apps.Merchant.GenderTypes, {_id: Session.get("staffManagementCurrentStaff")?.gender})
+    reactiveValueGetter: -> _.findWhere(Apps.Merchant.GenderTypes, {_id: Session.get("staffManagementCurrentStaff")?.gender})
+    changeAction: (e) ->
+      Schema.userProfiles.update Session.get("staffManagementCurrentStaff")._id, $set: {gender: e.added._id}
+
+    formatSelection: formatGender
+    formatResult: formatGender
+    placeholder: 'CHỌN GIỚI TÍNH'
+    minimumResultsForSearch: -1

@@ -49,6 +49,12 @@ Meteor.methods
     MetroSummary.updateMetroSummaryByStaff(userId)
     return user
 
+  updateEmailStaff: (email, password, profileId)->
+    userId = Accounts.createUser {email: email, password: password}
+    Schema.userProfiles.update profileId, $set:{user: userId}
+    Schema.userSessions.insert {user: userId}
+    Schema.userOptions.insert {user: userId}
+
   resetMerchant: ->
     profile = Schema.userProfiles.findOne({user: Meteor.userId(), isRoot: true})
     if profile
