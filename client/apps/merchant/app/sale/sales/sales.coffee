@@ -66,7 +66,7 @@ lemon.defineApp Template.sales,
     "click .addSaleDetail": -> Session.set("salesEditingRowId", scope.addOrderDetail @_id)
 
 
-    "click .print-preview": (event, template) -> $(template.find '#salePrinter').modal()
+    "click .print-command": (event, template) -> window.print()
     'click .finish': (event, template)->
       Meteor.call "finishOrder", Session.get('currentOrder')._id, (error, result) ->
         if error then console.log error

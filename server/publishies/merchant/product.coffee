@@ -20,10 +20,17 @@ Meteor.publish 'productDetails', (productId) ->
   return [] if !profile or !currentProduct
   Schema.productDetails.find {product: currentProduct._id}
 
-Meteor.publish 'availableProducts', ->
-  profile = Schema.userProfiles.findOne({user: @userId})
-  return [] if !profile
-  Schema.products.find({merchant: profile.currentMerchant})
+Meteor.publishComposite 'availableProducts', ->
+  self = @
+  return {
+    find: ->
+      profile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !profile
+      Schema.products.find({merchant: profile.currentMerchant})
+    children: [
+      find: (product) -> Schema.productUnits.find {product: product._id}
+    ]
+  }
 
 Meteor.publishComposite 'productManagementData', (productId, currentRecords = 0)->
   self = @
@@ -82,6 +89,11 @@ Schema.productGroups.allow
   remove: -> true
 
 Schema.expiringProducts.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
+Schema.productUnits.allow
   insert: -> true
   update: -> true
   remove: -> true

@@ -1,9 +1,12 @@
 scope = logics.productManagement
 
 lemon.defineHyper Template.productManagementOverviewSection,
+  unitEditingMode: -> Session.get("productManagementUnitEditingRow")?._id is @_id
+  unitEditingData: -> Session.get("productManagementUnitEditingRow")
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showEditCommand: -> Session.get "productManagementShowEditCommand"
   showDeleteCommand: -> Session.get('productManagementCurrentProduct')?.allowDelete
+  hasUnit: -> Schema.productUnits.findOne({product: @_id})
   averagePrice: ->
     if product = Session.get('productManagementCurrentProduct')
       productDetails = Schema.productDetails.find({product: product._id}).fetch()
@@ -13,7 +16,7 @@ lemon.defineHyper Template.productManagementOverviewSection,
         totalQuality += productDetail.importQuality
         totalPrice += productDetail.importQuality * productDetail.importPrice
       totalPrice/totalQuality
-
+  productUnits: -> Schema.productUnits.find({product: @_id})
   name: ->
     Meteor.setTimeout ->
       scope.overviewTemplateInstance.ui.$productName.change()
@@ -34,6 +37,16 @@ lemon.defineHyper Template.productManagementOverviewSection,
           Schema.products.update(Session.get('productManagementCurrentProduct')._id, {$set: {avatar: fileObj._id}})
           AvatarImages.findOne(Session.get('productManagementCurrentProduct').avatar)?.remove()
 
+    #TODO: Chinh lai truong hop bi trung randomBarcode()
+    "click .createUnit": ->
+      newId = Schema.productUnits.insert {
+        product: @_id
+        productCode: Helpers.randomBarcode()
+      }
+      Session.set("productManagementUnitEditingRowId", newId)
+
+    "click .edit-unit": -> Session.set("productManagementUnitEditingRowId", @_id)
+    "click .delete-unit": -> Schema.productUnits.remove(@_id)
     "input .editable": (event, template) ->
       Session.set "productManagementShowEditCommand",
         template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or

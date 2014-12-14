@@ -115,6 +115,7 @@ template(name="import")
         span.ilabel.optional tiền đã trả
         input.deposit(name='depositCash')
 
+
       //if showSubmit
       .editor-wrapper.right(style="width: 120px")
         button.lemon.btn.blue.icon-ok-6.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN
@@ -124,6 +125,8 @@ template(name="import")
       //if showFinish
       .editor-wrapper.right(style="width: 120px")
         button.lemon.btn.lime.icon-award.right.finishImport(type='submit' style="margin-right: 5px;") HOÀN TẤT
+      .editor-wrapper.right
+        button.lemon.btn.blue.pull-right.print-command(type='submit'): span.icon-print-6
 
       //.editor-wrapper.right(style="width: 120px")
       //  span.ilabel.optional tiền còn nợ

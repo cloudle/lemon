@@ -10,13 +10,32 @@ template(name="productManagementOverviewSection")
       .sub1: input.editable.dashed(name="productPrice" value="{{price}}" maxlength="20" style="width: 125px")
       .sub2: span.blured-color Giá nhập cuối: {{formatNumber importPrice}} vnđ - Giá trung bình: {{formatNumber averagePrice}} vnđ
       .commands
+        .lemon.btn.rounded.lime.icon-flow-merge.createUnit
         if showEditCommand
           .lemon.btn.rounded.lime.icon-ok-6.syncProductEdit
         if showDeleteCommand
           .lemon.btn.rounded.red.icon-minus-4.productDelete
-    .panel-body
-      .option-row
-        .caption tada
-        .commands commands
+    if hasUnit
+      .panel-body
+        table.lemon-grid
+          tr.table-header
+            th(style="width:auto") ĐƠN VỊ TÍNH
+            th(style="width:200px") MÃ VẠCH
+            th(style="width:100px") QUI ĐỔI
+            th.number(style="width:250px") GIÁ BÁN
+          each productUnits
+            if unitEditingMode
+              +productManagementUnitEditor unitEditingData
+            else
+              tr.detail-row.edit-unit.click-enable
+                td.has-commands
+                  span {{unit}}
+                  .commands
+                    if allowDelete
+                      .lemon.rounded.tiny.btn.blue.animated.bounceIn.delete-unit: span.icon-minus-4
+                td {{productCode}}
+                td {{conversionQuality}}
+                td.number {{price}}
+
     .panel-footer
       span.icon-angle-right

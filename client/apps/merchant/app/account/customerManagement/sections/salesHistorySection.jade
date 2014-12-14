@@ -1,6 +1,11 @@
 template(name="customerManagementSalesHistorySection")
   .section.panel.panel-default.printable-area
     .panel-heading
+      .show-on-print
+        +merchantPrintingHeader
+        .printing-info
+          .document-name {{name}}
+
       table.lemon-grid: tr
         th(style="width:auto") SẢN PHẨM
         th(style="width:50px") SL

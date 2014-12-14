@@ -20,3 +20,7 @@ Apps.Merchant.productManagementReactive.push (scope) ->
   if productId = Session.get("mySession")?.currentProductManagementSelection
     Session.set("productManagementCurrentProduct", Schema.products.findOne(productId))
 
+  if Session.get("productManagementUnitEditingRowId")
+    Session.set("productManagementUnitEditingRow", Schema.productUnits.findOne(Session.get("productManagementUnitEditingRowId")))
+
+

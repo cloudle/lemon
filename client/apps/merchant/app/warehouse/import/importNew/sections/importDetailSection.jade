@@ -1,7 +1,11 @@
 template(name="importDetailSection")
    .section.top.panel.panel-default.printable-area
       .panel-heading.printing-header
-         span.pull-right <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b><br/>
+         span.hide-on-print <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b><br/>
+         .show-on-print
+            +merchantPrintingHeader
+            .printing-info
+               .document-name PHIẾU NHẬP KHO
       .panel-body
          //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
          table.lemon-grid

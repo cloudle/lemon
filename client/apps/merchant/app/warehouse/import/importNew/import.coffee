@@ -41,7 +41,7 @@ lemon.defineApp Template.import,
 #      scope.updateDescriptionOfImport(template.find(".description").value, Session.get('currentImport'))
 #    'click .createImportDetail': (event, template)-> scope.addImportDetail(event, template)
 
-
+    "click .print-command": -> window.print()
     "click .createProductBtn": (event, template) -> scope.createProduct(template)
     "input .search-filter": (event, template) -> Session.set("importManagementSearchFilter", template.ui.$searchFilter.val())
     "keypress input[name='searchFilter']": (event, template)->
