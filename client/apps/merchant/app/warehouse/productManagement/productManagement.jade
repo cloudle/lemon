@@ -23,8 +23,8 @@ template(name="productManagement")
                   +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                   span.text
                     |{{name}}
-                    if skulls
-                      |({{skulls}})
+                    if basicUnit
+                      |({{basicUnit}})
           else
             each managedProductList
               .group-wrapper
@@ -34,5 +34,5 @@ template(name="productManagement")
                     +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                     span.text
                       |{{name}}
-                      if skulls
-                        |({{skulls}})
+                      if basicUnit
+                        |({{basicUnit}})

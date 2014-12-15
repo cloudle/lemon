@@ -1,8 +1,8 @@
 splitName = (fullText) ->
   if fullText.indexOf("(") > 0
     namePart    = fullText.substr(0, fullText.indexOf("(")).trim()
-    skullsPart    = fullText.substr(fullText.indexOf("(")).replace("(", "").replace(")", "").trim()
-    return { name: namePart, skulls: [skullsPart] }
+    basicUnitPart    = fullText.substr(fullText.indexOf("(")).replace("(", "").replace(")", "").trim()
+    return { name: namePart, basicUnit: basicUnitPart }
   else
     return { name: fullText }
 
@@ -25,7 +25,10 @@ Apps.Merchant.productManagementInit.push (scope) ->
         template.ui.$productName.val editOptions.name
         Session.set("productManagementShowEditCommand", false)
       else
-        Schema.products.update product._id, {$set: editOptions}, (error, result) -> if error then console.log error
+        if Schema.productUnits.findOne({product: product._id})
+          Schema.products.update product._id, {$set: {name: editOptions.name}}, (error, result) -> if error then console.log error
+        else
+          Schema.products.update product._id, {$set: editOptions}, (error, result) -> if error then console.log error
         template.ui.$productName.val editOptions.name
         Session.set("productManagementShowEditCommand", false)
 
@@ -43,10 +46,10 @@ Apps.Merchant.productManagementInit.push (scope) ->
       creator   : Session.get('myProfile').user
       name      : nameOptions.name
       styles    : Helpers.RandomColor()
-    product.skulls = nameOptions.skulls if nameOptions.skulls
+    product.basicUnit = nameOptions.basicUnit if nameOptions.basicUnit
 
     existedQuery = {name: product.name, currentMerchant: Session.get('myProfile').currentMerchant}
-    existedQuery.skulls = product.skulls if product.skulls
+    existedQuery.basicUnit = product.basicUnit if product.basicUnit
 
     if Schema.products.findOne(existedQuery)
       template.ui.$searchFilter.notify("Sản phẩm đã tồn tại.", {position: "bottom"})

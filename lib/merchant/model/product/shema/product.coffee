@@ -27,6 +27,10 @@ simpleSchema.products = new SimpleSchema
     type: [String]
     optional: true
 
+  basicUnit:
+    type: String
+    optional: true
+
   childProduct:
     type: Schema.ChildProduct
     optional: true
@@ -72,6 +76,10 @@ simpleSchema.products = new SimpleSchema
     type: String
     defaultValue: Helpers.RandomColor()
     optional: true
+
+  basicDetailModeEnabled:
+    type: Boolean
+    defaultValue: true
 
   version: { type: simpleSchema.Version }
 #-----------------------------------------------

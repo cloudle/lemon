@@ -48,8 +48,8 @@ template(name="sales")
                   +avatarImageComponent(avatar=avatarUrl alias=name)
                   span.text
                     | <b>{{name}}</b>
-                    if skulls
-                      | ({{skulls}})
+                    if basicUnit
+                      | ({{basicUnit}})
                     .commands
                       span.icon-right-open-big.addSaleDetail
           else
@@ -61,8 +61,8 @@ template(name="sales")
                     +avatarImageComponent(avatar=avatarUrl alias=name)
                     span.text
                       | <b>{{name}}</b>
-                      if skulls
-                        | ({{skulls}})
+                      if basicUnit
+                        | ({{basicUnit}})
                       .commands
                         span.icon-right-open-big.addSaleDetail
   #footer.modern

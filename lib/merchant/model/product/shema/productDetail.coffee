@@ -1,12 +1,13 @@
 simpleSchema.productDetails = new SimpleSchema
-  import:
-    type: String
-
   merchant:
     type: String
 
   warehouse:
     type: String
+
+  import:
+    type: String
+    optional: true
 
   provider:
     type: String
@@ -18,6 +19,22 @@ simpleSchema.productDetails = new SimpleSchema
 
   product:
     type: String
+
+  unit:
+    type: String
+    optional: true
+
+  unitQuality:
+    type: Number
+    optional: true
+
+  unitPrice:
+    type: Number
+    optional: true
+
+  conversionQuality:
+    type: Number
+    optional: true
 
   importQuality:
     type: Number
@@ -44,9 +61,14 @@ simpleSchema.productDetails = new SimpleSchema
 
   checkingInventory:
     type: Boolean
+    optional: true
 
   inventory:
     type: String
     optional: true
+
+  allowDelete:
+    type: Boolean
+    defaultValue: true
 
   version: { type: simpleSchema.Version }

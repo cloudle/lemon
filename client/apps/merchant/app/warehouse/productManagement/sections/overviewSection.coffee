@@ -6,6 +6,8 @@ lemon.defineHyper Template.productManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showEditCommand: -> Session.get "productManagementShowEditCommand"
   showDeleteCommand: -> Session.get('productManagementCurrentProduct')?.allowDelete
+  showCreateUnitMode: -> if Session.get('productManagementCurrentProduct')?.basicUnit then true else false
+  basicDetailModeEnabled: -> Session.get('productManagementCurrentProduct')?.basicDetailModeEnabled
   hasUnit: -> Schema.productUnits.findOne({product: @_id})
   averagePrice: ->
     if product = Session.get('productManagementCurrentProduct')
@@ -39,14 +41,44 @@ lemon.defineHyper Template.productManagementOverviewSection,
 
     #TODO: Chinh lai truong hop bi trung randomBarcode()
     "click .createUnit": ->
-      newId = Schema.productUnits.insert {
-        product: @_id
-        productCode: Helpers.randomBarcode()
-      }
-      Session.set("productManagementUnitEditingRowId", newId)
+      if @basicUnit
+        newId = Schema.productUnits.insert {
+          product: @_id
+          productCode: Helpers.randomBarcode()
+        }
+        Session.set("productManagementUnitEditingRowId", newId)
 
     "click .edit-unit": -> Session.set("productManagementUnitEditingRowId", @_id)
-    "click .delete-unit": -> Schema.productUnits.remove(@_id)
+
+    "click .add-basicDetail": ->
+      if product = Session.get('productManagementCurrentProduct')
+        if productUnit = Schema.productUnits.findOne({_id: @_id, product: product._id})
+          productDetailOption =
+            merchant          : product.merchant
+            warehouse         : product.warehouse
+            product           : product._id
+            unit              : productUnit._id
+            unitQuality       : 1
+            unitPrice         : productUnit.price
+            conversionQuality : productUnit.conversionQuality
+            importQuality     : productUnit.conversionQuality
+            availableQuality  : productUnit.conversionQuality
+            inStockQuality    : productUnit.conversionQuality
+            importPrice       : productUnit.price
+#          productDetailOption.expire
+        Schema.productDetails.insert productDetailOption
+        Schema.productUnits.update @_id, $set:{allowDelete: false}
+        Schema.products.update product._id, $set:{allowDelete: false}, $inc:{
+          totalQuality    : productUnit.conversionQuality
+          availableQuality: productUnit.conversionQuality
+          inStockQuality  :productUnit.conversionQuality
+        }
+        Session.set("productManagementUnitEditingRow")
+        Session.set("productManagementUnitEditingRowId")
+
+    "click .delete-unit": -> Schema.productUnits.remove(@_id) if @allowDelete
+
+
     "input .editable": (event, template) ->
       Session.set "productManagementShowEditCommand",
         template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or

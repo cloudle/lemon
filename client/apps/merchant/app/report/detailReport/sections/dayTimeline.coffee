@@ -41,7 +41,7 @@ lemon.defineHyper Template.merchantReportDayTimeline,
     else if @timelineType is 'import'
       meta.icon = 'icon-download-outline'
       meta.color = 'amethyst'
-      meta.message = "#{meta.creatorFullName} nhập kho với tổng giá trị #{accounting.formatNumber(@debtBalanceChange)} VNĐ.
+      meta.message = "#{meta.creatorFullName} nhập kho với tổng giá trị -#{accounting.formatNumber(@debtBalanceChange)} VNĐ.
                      Cân bằng nợ mới nhất từ #{accounting.formatNumber(@beforeDebtBalance)} VNĐ, thành
                      #{accounting.formatNumber(@latestDebtBalance)} VNĐ."
     return meta
@@ -49,11 +49,40 @@ lemon.defineHyper Template.merchantReportDayTimeline,
   timeHook: -> moment(@version.createdAt).format 'hh:mm'
 
   timelineRecords: ->
+    day = new Date()
+    startDate = new Date(day.getFullYear(), day.getMonth(), day.getDate())
+    toDate    = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1)
+
     totalRevenue = 0
-    transactions = Schema.transactions.find().fetch()
-    sales = Schema.sales.find().fetch()
-    imports = Schema.imports.find().fetch()
-    returns = Schema.returns.find().fetch()
+    transactions = Schema.transactions.find( {
+      $and: [
+        { debtBalanceChange: { $exists: true }}
+        { beforeDebtBalance: { $exists: true }}
+        { latestDebtBalance: { $exists: true }}
+        { dueDay: {$gt: startDate} }
+        { dueDay: {$lt: toDate} }
+      ]
+    }).fetch()
+    sales = Schema.sales.find({
+        $and: [
+          {'version.createdAt': {$gt: startDate}}
+          {'version.createdAt': {$lt: toDate}}
+        ]
+      }).fetch()
+    imports = Schema.imports.find(
+      $and: [
+        {finish: true}
+        {submitted: true}
+        {'version.createdAt': {$gt: startDate}}
+        {'version.createdAt': {$lt: toDate}}
+      ]).fetch()
+    returns = Schema.returns.find({
+      $and: [
+        {status  : 2}
+        {'version.createdAt': {$gt: startDate}}
+        {'version.createdAt': {$lt: toDate}}
+      ]
+    }).fetch()
 
     combined = transactions.concat(sales).concat(imports)
     sorted = _.sortBy combined, (item) ->

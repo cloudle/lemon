@@ -5,12 +5,13 @@ template(name="productManagementOverviewSection")
       +avatarImageComponent(avatar=avatarUrl alias=name)
       .caption
         input.editable.dashed(name="productName" value="{{name}}" maxlength="50")
-        if skulls
-          span.blured-color ({{skulls}})
+        if basicUnit
+          span.blured-color ({{basicUnit}})
       .sub1: input.editable.dashed(name="productPrice" value="{{price}}" maxlength="20" style="width: 125px")
       .sub2: span.blured-color Giá nhập cuối: {{formatNumber importPrice}} vnđ - Giá trung bình: {{formatNumber averagePrice}} vnđ
       .commands
-        .lemon.btn.rounded.lime.icon-flow-merge.createUnit
+        if showCreateUnitMode
+          .lemon.btn.rounded.lime.icon-flow-merge.createUnit
         if showEditCommand
           .lemon.btn.rounded.lime.icon-ok-6.syncProductEdit
         if showDeleteCommand
@@ -22,7 +23,7 @@ template(name="productManagementOverviewSection")
             th(style="width:auto") ĐƠN VỊ TÍNH
             th(style="width:200px") MÃ VẠCH
             th(style="width:100px") QUI ĐỔI
-            th.number(style="width:250px") GIÁ BÁN
+            th.number(style="width:150px") GIÁ BÁN
           each productUnits
             if unitEditingMode
               +productManagementUnitEditor unitEditingData
@@ -32,10 +33,12 @@ template(name="productManagementOverviewSection")
                   span {{unit}}
                   .commands
                     if allowDelete
-                      .lemon.rounded.tiny.btn.blue.animated.bounceIn.delete-unit: span.icon-minus-4
+                      .lemon.rounded.tiny.btn.blue.delete-unit: span.icon-minus-4
+                    if basicDetailModeEnabled
+                      .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
                 td {{productCode}}
-                td {{conversionQuality}}
-                td.number {{price}}
+                td {{formatNumber conversionQuality}}
+                td.number {{formatNumber price}} VNĐ
 
     .panel-footer
       span.icon-angle-right

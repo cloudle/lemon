@@ -5,6 +5,8 @@ template(name="productManagementUnitEditor")
       .commands
         if allowDelete
           .lemon.rounded.tiny.btn.blue.animated.bounceIn.delete-unit: span.icon-minus-4
+        if basicDetailModeEnabled
+          .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
     td: input(name="barcode" placeholder="mã vạch" value="{{productCode}}")
     td: input(name="conversionQuality" placeholder="giá trị qui đổi" min="0")
     td: input(name="price" placeholder="giá bán" min="0")

@@ -1,58 +1,58 @@
 scope = logics.productManagement
 
 lemon.defineHyper Template.productManagementSalesHistorySection,
-  defaultImport: ->
+  unitName: -> Schema.productUnits.findOne(@unit).unit
+  detailEditingMode: -> Session.get("productManagementDetailEditingRow")?._id is @_id
+  detailEditingData: -> Session.get("productManagementDetailEditingRow")
+  expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY')
+
+  basicDetails: ->
     if product = Session.get("productManagementCurrentProduct")
-      allProductDetail = Schema.productDetails.find({product: product._id}).fetch()
+      Schema.productDetails.find({product: product._id, import: {$exists: false}}).fetch()
+
+
+  newImport: ->
+    if product = Session.get("productManagementCurrentProduct")
+      allProductDetail = Schema.productDetails.find({product: product._id import: {$exists: true}}).fetch()
       currentImport = Schema.imports.find {_id: {$in: _.union(_.pluck(allProductDetail, 'import'))}}
 
       return {
-        detail: currentImport
-        importQuality: 0
-        inStockQuality: 0
+      detail: currentImport
+      importQuality: 0
+      inStockQuality: 0
       }
 
+#  rendered: ->
+#    @ui.$expireDate.inputmask("dd/mm/yyyy")
+#    @ui.$unitQuality.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11})
+#    @ui.$unitPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
 
-  totalImportQuality: ->
-  totalInStockQuality: ->
 
-#  events:
-#    "click .expandSaleAndCustomSale": ->
-#      if product = Session.get("productManagementCurrentProduct")
-#        limitExpand = Session.get("mySession").limitExpandSaleAndCustomSale ? 5
-#        if product.customSaleModeEnabled
-#          currentRecords = Schema.customSales.find({buyer: product._id}).count()
-#        else
-#          currentRecords = Schema.customSales.find({buyer: product._id}).count() + Schema.sales.find({buyer: product._id}).count()
-#        Meteor.subscribe('productManagementData', product._id, currentRecords, limitExpand)
-#        Session.set("productManagementDataMaxCurrentRecords", currentRecords + limitExpand)
-#
-#    "click .customSaleModeDisable":  (event, template) ->
-#      scope.customSaleModeDisable(product._id) if product = Session.get("productManagementCurrentProduct")
-#
-##----Create-Transaction-Of-CustomSale-----------------------------------------------------------------------
-#    "keydown input.new-bill-field.number": (event, template) ->
-#      scope.checkAllowCreateCustomSale(template, product) if product = Session.get("productManagementCurrentProduct")
-#
-#    "click .createCustomSale":  (event, template) ->
-#      scope.createCustomSale(template) if Session.get("allowCreateCustomSale")
-#
-#    "keypress input.new-bill-field": (event, template) ->
-#      scope.createCustomSale(template) if event.which is 13 and Session.get("allowCreateCustomSale")
-#
-##----Create-Transaction-Of-CustomSale-----------------------------------------------------------------------
-#    "keydown .new-transaction-custom-sale-field": (event, template) ->
-#      scope.checkAllowCreateTransactionOfCustomSale(template, product) if product = Session.get("productManagementCurrentProduct")
-#
-#    "click .createTransactionOfCustomSale": (event, template) ->
-#      scope.createTransactionOfCustomSale(template) if Session.get("allowCreateTransactionOfCustomSale")
-#
-#    "keypress input.new-transaction-custom-sale-field": (event, template) ->
-#      scope.createTransactionOfCustomSale(template) if event.which is 13 and Session.get("allowCreateTransactionOfCustomSale")
-#
-##----Create-Transaction-Of-Sale-----------------------------------------------------------------------
-#    "click .createTransactionOfSale": (event, template) ->
-#      scope.createTransactionOfSale(template) if Session.get("allowCreateTransactionOfSale")
-#
-#    "keypress input.new-transaction-sale-field": (event, template) ->
-#      scope.createTransactionOfSale(template) if event.which is 13 and Session.get("allowCreateTransactionOfSale")
+  events:
+    "click .edit-detail": ->
+      product = Session.get("productManagementCurrentProduct")
+      if product.basicDetailModeEnabled
+        Session.set("productManagementDetailEditingRowId", @_id)
+      else
+        Session.set("productManagementDetailEditingRowId")
+
+    "click .basicDetailModeDisable": ->
+      if product = Session.get("productManagementCurrentProduct")
+        Schema.products.update product._id, $set:{basicDetailModeEnabled: false}
+        Schema.productDetails.find({product: product._id, import: {$exists: false} }).forEach(
+          (item)-> Schema.productDetails.update item._id, $set: {allowDelete: false}
+        )
+        Session.set("productManagementDetailEditingRowId")
+
+
+
+    "click .delete-basicDetail": ->
+      if @allowDelete
+        Schema.productDetails.remove(@_id)
+        Schema.products.update @product, $inc:{
+          totalQuality    : -@importQuality
+          availableQuality: -@importQuality
+          inStockQuality  : -@importQuality
+        }
+        if !Schema.productDetails.findOne({unit: @unit}) then Schema.productUnits.update @unit, $set:{allowDelete: true}
+

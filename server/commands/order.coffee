@@ -63,7 +63,7 @@ removeOrderAndOrderDetail = (order, userProfile)->
     UserSession.set('currentOrder', allTabs[nextIndex]._id)
   else
     buyer = Customer.findOne(order.buyer).data
-    UserSession.set('currentOrder', Order.createdNewBy(buyer, userProfile))
+    UserSession.set('currentOrder', Order.createdNewBy(buyer, userProfile)._id)
   Order.remove(order._id)
   OrderDetail.remove({order: order._id})
 

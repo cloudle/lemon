@@ -6,18 +6,47 @@ template(name="productManagementSalesHistorySection")
         .printing-info
           .document-name {{name}}
 
-      table.lemon-grid: tr
-        th(style="width:auto") NHÀ CUNG CẤP
-        th(style="width:110px") HẠN SD
-        th.number(style="width:70px") TỒN
-        th.number(style="width:90px") GIÁ
-        th.number(style="width:100px") TỔNG
+      if true
+        table.lemon-grid
+          tr.table-header
+            th(style="width:auto") ĐƠN VỊ TÍNH
+            th(style="width:110px") HẠN SD
+            th(style="width:80px") QUI ĐỔI
+            th(style="width:80px") TỒN KHO
+            th.number(style="width:120px") GIÁ NHẬP
+
+          each basicDetails
+            if detailEditingMode
+              +productManagementDetailEditor detailEditingData
+            else
+              tr.detail-row.edit-detail.click-enable
+                td.has-commands
+                  span {{unitName}}
+                  .commands
+                    if allowDelete
+                      .lemon.rounded.tiny.btn.blue.delete-basicDetail: span.icon-minus-4
+                td {{expireDate}}
+                td {{conversionQuality}}
+                td {{unitQuality}}
+                td.number {{formatNumber importPrice}}
+          if basicDetailModeEnabled
+            tr.group-summary-row
+              td: .lemon.btn.lime.basicDetailModeDisable.icon-ok-6 Kết Thúc
+
+
+
 
     .panel-body.debt-details
-      table.lemon-grid.safe
-        +productManagementImportHistoryHeader
-        each defaultImport.detail
-          +productManagementImportDetails this
+      //table.lemon-grid.safe
+      //  tr
+      //    th(style="width:auto") NHÀ CUNG CẤP
+      //    th(style="width:110px") HẠN SD
+      //    th.number(style="width:80px") TỒN KHO
+      //    th.number(style="width:120px") GIÁ NHẬP
+      //    th.number(style="width:120px") TỔNG TIỀN
+      //
+      //  each newImport.detail
+      //    +productManagementImportDetails this
 
     .panel-footer
       .right-float
