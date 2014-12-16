@@ -6,20 +6,21 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
   detailEditingData: -> Session.get("productManagementDetailEditingRow")
   expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY')
 
-  basicDetails: ->
+  basicDetail: ->
     if product = Session.get("productManagementCurrentProduct")
-      Schema.productDetails.find({product: product._id, import: {$exists: false}}).fetch()
-
+      productDetailFound = Schema.productDetails.find({product: product._id, import: {$exists: false}})
+      return {
+        isShowDetail: if productDetailFound.count() > 0 then true else false
+        detail: productDetailFound
+      }
 
   newImport: ->
     if product = Session.get("productManagementCurrentProduct")
-      allProductDetail = Schema.productDetails.find({product: product._id import: {$exists: true}}).fetch()
+      allProductDetail = Schema.productDetails.find({product: product._id, import: {$exists: true}}).fetch()
       currentImport = Schema.imports.find {_id: {$in: _.union(_.pluck(allProductDetail, 'import'))}}
-
       return {
-      detail: currentImport
-      importQuality: 0
-      inStockQuality: 0
+        isShowDetail: if currentImport.count() > 0 then true else false
+        detail: currentImport
       }
 
 #  rendered: ->

@@ -6,7 +6,7 @@ template(name="productManagementSalesHistorySection")
         .printing-info
           .document-name {{name}}
 
-      if true
+      if basicDetail.isShowDetail
         table.lemon-grid
           tr.table-header
             th(style="width:auto") ĐƠN VỊ TÍNH
@@ -15,7 +15,7 @@ template(name="productManagementSalesHistorySection")
             th(style="width:80px") TỒN KHO
             th.number(style="width:120px") GIÁ NHẬP
 
-          each basicDetails
+          each basicDetail.detail
             if detailEditingMode
               +productManagementDetailEditor detailEditingData
             else
@@ -33,20 +33,18 @@ template(name="productManagementSalesHistorySection")
             tr.group-summary-row
               td: .lemon.btn.lime.basicDetailModeDisable.icon-ok-6 Kết Thúc
 
-
-
-
     .panel-body.debt-details
-      //table.lemon-grid.safe
-      //  tr
-      //    th(style="width:auto") NHÀ CUNG CẤP
-      //    th(style="width:110px") HẠN SD
-      //    th.number(style="width:80px") TỒN KHO
-      //    th.number(style="width:120px") GIÁ NHẬP
-      //    th.number(style="width:120px") TỔNG TIỀN
-      //
-      //  each newImport.detail
-      //    +productManagementImportDetails this
+      if newImport.isShowDetail
+        table.lemon-grid.safe
+          tr
+            th(style="width:auto") NHÀ CUNG CẤP
+            th(style="width:110px") HẠN SD
+            th.number(style="width:80px") TỒN KHO
+            th.number(style="width:120px") GIÁ NHẬP
+            th.number(style="width:120px") TỔNG TIỀN
+
+          each newImport.detail
+            +productManagementImportDetails this
 
     .panel-footer
       .right-float
