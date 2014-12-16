@@ -52,10 +52,20 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
     "click .delete-basicDetail": ->
       if @allowDelete
         Schema.productDetails.remove(@_id)
-        Schema.products.update @product, $inc:{
-          totalQuality    : -@importQuality
-          availableQuality: -@importQuality
-          inStockQuality  : -@importQuality
-        }
         if !Schema.productDetails.findOne({unit: @unit}) then Schema.productUnits.update @unit, $set:{allowDelete: true}
+
+        totalQuality = 0
+        availableQuality = 0
+        inStockQuality = 0
+        Schema.productDetails.find({product: @product}).forEach(
+          (productDetail) ->
+            totalQuality += productDetail.importQuality
+            availableQuality += productDetail.availableQuality
+            inStockQuality += productDetail.inStockQuality
+          )
+        Schema.products.update @product, $set:{
+          totalQuality    : totalQuality
+          availableQuality: availableQuality
+          inStockQuality  : inStockQuality
+        }
 

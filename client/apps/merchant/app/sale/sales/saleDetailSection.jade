@@ -24,8 +24,8 @@ template(name="saleDetailSection")
                else
                   tr.detail-row.large-name: td(colspan="3")
                      span {{product.name}}
-                     if product.skulls
-                        span ({{product.skulls}})
+                     //if product.basicUnit
+                     //   span ({{product.basicUnit}})
                      if discountPercent
                         span.super.s7.color-lime GIẢM GIÁ {{round discountPercent}}%
                   tr.detail-row.click-enable(class="{{crossBillAvailableQuality.errorClass}}")
@@ -39,7 +39,8 @@ template(name="saleDetailSection")
                            |{{formatNumber quality}}
                            if crossBillAvailableQuality.invalid
                               span.super.s7.color-lime {{crossBillAvailableQuality.crossAvailable}}
-                     td.skull {{product.skulls}}
+                     td.skull
+                        //|{{product.skulls}}
                      td.bill-discount.editable-field.number
                         span {{formatNumber discountCash}}
                         if discountPercent

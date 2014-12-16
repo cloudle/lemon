@@ -93,30 +93,40 @@ simpleSchema.orders = new SimpleSchema
     type: String
     defaultValue: "null"
 
+  currentUnit:
+    type: String
+    optional: true
+
   currentQuality:
     type: Number
     defaultValue: 0
+    optional: true
 
   currentPrice:
     type: Number
     defaultValue: 0
+    optional: true
 
   currentTotalPrice:
     type: Number
     defaultValue: 0
+    optional: true
 
   currentDiscountCash:
     type: Number
     defaultValue: 0
+    optional: true
 
   currentDiscountPercent:
     type: Number
     decimal: true
     defaultValue: 0
+    optional: true
 
   currentDeposit:
     type: Number
     defaultValue: 0
+    optional: true
 #----------------------
   contactName:
     type: String

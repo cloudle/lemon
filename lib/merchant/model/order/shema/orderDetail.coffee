@@ -39,3 +39,19 @@ simpleSchema.orderDetails = new SimpleSchema
 
   version: { type: simpleSchema.Version }
 
+  unit:
+    type: String
+    optional: true
+
+  unitQuality:
+    type: Number
+    optional: true
+
+  unitPrice:
+    type: Number
+    optional: true
+
+  conversionQuality:
+    type: Number
+    optional: true
+

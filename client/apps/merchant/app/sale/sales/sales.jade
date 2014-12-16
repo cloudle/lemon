@@ -47,9 +47,9 @@ template(name="sales")
                 .caption.advanced.inner.product-selection(class="{{productSelectionActiveClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=name)
                   span.text
-                    | <b>{{name}}</b>
-                    if basicUnit
-                      | ({{basicUnit}})
+                    | <b>{{product.name}}</b>
+                    if product.basicUnit
+                      | ({{unitName}})
                     .commands
                       span.icon-right-open-big.addSaleDetail
           else
@@ -60,9 +60,9 @@ template(name="sales")
                   .caption.advanced.inner.product-selection(class="{{productSelectionActiveClass}}")
                     +avatarImageComponent(avatar=avatarUrl alias=name)
                     span.text
-                      | <b>{{name}}</b>
-                      if basicUnit
-                        | ({{basicUnit}})
+                      | <b>{{product.name}}</b>
+                      if product.basicUnit
+                        | ({{unitName}})
                       .commands
                         span.icon-right-open-big.addSaleDetail
   #footer.modern

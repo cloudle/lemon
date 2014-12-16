@@ -22,7 +22,7 @@ lemon.defineHyper Template.productManagementUnitEditor,
       price = 0 if price < 0
 
       if @allowDelete
-        conversionQuality = Number(template.ui.$conversionQuality.inputmask('unmaskedvalue'))
+        conversionQuality = Number(template.ui.$conversionQuality?.inputmask('unmaskedvalue'))
         conversionQuality = 1 if conversionQuality < 0
 
       unitOption =
@@ -32,8 +32,9 @@ lemon.defineHyper Template.productManagementUnitEditor,
       unitOption.conversionQuality = conversionQuality if conversionQuality
       Schema.productUnits.update @_id, $set: unitOption
 
-    "keypress input[name]": (event, template)->
       if event.which is 13
         Session.set("productManagementUnitEditingRow")
         Session.set("productManagementUnitEditingRowId")
+
+
 

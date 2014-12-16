@@ -3,10 +3,22 @@ scope = logics.sales
 lemon.defineApp Template.sales,
   allowCreateOrderDetail: -> if !scope.currentProduct then 'disabled'
   allowSuccessOrder: -> if Session.get('allowSuccess') then '' else 'disabled'
-  productSelectionActiveClass: -> if Session.get('currentOrder')?.currentProduct is @_id then 'active' else ''
   productCreationMode: -> Session.get("salesCurrentProductCreationMode")
   showProductFilterSearch: -> Session.get("salesCurrentProductSearchFilter")?.length > 0
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
+
+  unitName: -> if @unit then @unit.unit else @product.basicUnit
+  productSelectionActiveClass: ->
+    if order = Session.get('currentOrder')
+      if @unit
+        if order.currentUnit is @unit._id then 'active' else ''
+      else if !order.currentUnit
+        if @product._id is order.currentProduct then 'active' else ''
+
+
+
+
+
 
   created: ->
     lemon.dependencies.resolve('saleManagement')
@@ -34,8 +46,7 @@ lemon.defineApp Template.sales,
 #    "click .createCustomerBtn": (event, template) -> scope.createCustomer(template)
 
 
-    "click .product-selection": ->
-      scope.updateSelectNewProduct(currentProduct) if currentProduct = Schema.products.findOne(@_id)
+    "click .product-selection": -> scope.updateSelectProduct(@)
 
     "change [name='advancedMode']": (event, template) ->
       scope.templateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
@@ -63,7 +74,10 @@ lemon.defineApp Template.sales,
           currentOrder.currentDiscountCash
         )
 
-    "click .addSaleDetail": -> Session.set("salesEditingRowId", scope.addOrderDetail @_id)
+    "click .addSaleDetail": ->
+      product = Schema.products.findOne(@product._id)
+      productUnit = Schema.productUnits.findOne(@unit._id) if @unit
+      Session.set("salesEditingRowId", scope.addOrderDetail @product._id)
 
 
     "click .print-command": (event, template) -> window.print()
