@@ -63,9 +63,11 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
             availableQuality += productDetail.availableQuality
             inStockQuality += productDetail.inStockQuality
           )
-        Schema.products.update @product, $set:{
+
+        productOption =
           totalQuality    : totalQuality
           availableQuality: availableQuality
           inStockQuality  : inStockQuality
-        }
+        if totalQuality is 0 then productOption.allowDelete = true
+        Schema.products.update @product, $set: productOption
 

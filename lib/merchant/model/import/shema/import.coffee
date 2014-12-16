@@ -74,6 +74,10 @@ simpleSchema.imports = new SimpleSchema
     type: String
     optional: true
 
+  currentUnit:
+    type: String
+    optional: true
+
   currentProvider:
     type: String
     optional: true

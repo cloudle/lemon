@@ -11,6 +11,11 @@ Schema.add 'saleDetails', "SaleDetail", class SaleDetail
       export        : false
       status        : false
 
+      unitQuality   : product.unitQuality
+      unitPrice     : product.unitPrice
+      conversionQuality: product.conversionQuality
+    option.unit = product.unit if product.unit
+
     if currentSale.billDiscount
       if currentSale.discountCash == 0
         option.discountPercent = 0

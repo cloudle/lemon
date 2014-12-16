@@ -54,7 +54,6 @@ template(name="import")
       //.editor-wrapper(style="width: 120px")
       //  span.ilabel.optional ngày hết hạn
       //  input(binding="datePicker" todayHighlight="true" name="expire")
-
   #content.modern
     .dual-content
       .dual-detail-wrapper
@@ -73,12 +72,12 @@ template(name="import")
           if showFilterSearch
             .group-wrapper
               each managedImportProductList
-                .caption.inner(class="{{productSelectionActiveClass}}")
+                .caption.inner.product-selection(class="{{productSelectionActiveClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=name)
                   span.text
-                    |{{name}}
-                    if skulls
-                      |({{skulls}})
+                    |{{product.name}}
+                    if product.basicUnit
+                      |({{unitName}})
                     if showAddDetail
                       .commands
                         if showEditProductCommand
@@ -90,12 +89,12 @@ template(name="import")
               .group-wrapper
                 .caption.group {{key}}
                 each childs
-                  .caption.inner(class="{{productSelectionActiveClass}}")
+                  .caption.inner.product-selection(class="{{productSelectionActiveClass}}")
                     +avatarImageComponent(avatar=avatarUrl alias=name)
                     span.text
-                      |{{name}}
-                      if skulls
-                        |({{skulls}})
+                      |{{product.name}}
+                      if product.basicUnit
+                        |({{unitName}})
                       if showAddDetail
                         .commands
                           if showEditProductCommand

@@ -11,8 +11,14 @@ lemon.defineApp Template.import,
         if Session.get('showEditProduct') then true else false
       else true
     else false
-  productSelectionActiveClass:-> if Session.get('currentImport')?.currentProduct is @._id then 'active' else ''
   showEditProductCommand: -> if Session.get('currentImport')?.currentProduct is @._id then true else false
+  unitName: -> if @unit then @unit.unit else @product.basicUnit
+  productSelectionActiveClass: ->
+    if currentImport = Session.get('currentImport')
+      if @unit
+        if currentImport.currentUnit is @unit._id then 'active' else ''
+      else if !currentImport.currentUnit
+        if @product._id is currentImport.currentProduct then 'active' else ''
 
   rendered: ->
     logics.import.templateInstance = @
@@ -47,31 +53,43 @@ lemon.defineApp Template.import,
     "keypress input[name='searchFilter']": (event, template)->
       if event.which is 13 and Session.get("importManagementSearchFilter")?.trim().length > 1
         scope.createProduct(template)
-    "click .inner.caption": (event, template) ->
+
+    "click .product-selection": (event, template) ->
       if currentImport = Session.get('currentImport')
-        if product = Schema.products.findOne(@_id)
-          option =
-            currentProduct     : product._id
-            currentProvider    : product.provider ? 'skyReset'
-            currentQuality     : 1
-            currentImportPrice : product.importPrice ? 0
-          if product.price > 0 and product.inStockQuality > 0
-            Schema.imports.update(Session.get('currentImport')._id, $set: option, $unset: {currentPrice: ""})
-          else
-            option.currentPrice = product.importPrice ? 0
-            Schema.imports.update(Session.get('currentImport')._id, {$set: option})
+        currentImport.currentProduct = @product._id
+        if @unit then currentImport.currentUnit = @unit._id
+        else (delete currentImport.currentUnit if currentImport.currentUnit)
 
-          currentImport.currentProduct     = option.currentProduct
-          currentImport.currentProvider    = option.currentProvider
-          currentImport.currentQuality     = option.currentQuality
-          currentImport.currentImportPrice = option.currentImportPrice
+        if currentImport.currentUnit
+          Schema.imports.update currentImport._id, $set: {currentProduct: currentImport.currentProduct, currentUnit: currentImport.currentUnit}
+        else
+          Schema.imports.update currentImport._id, $set: {currentProduct: currentImport.currentProduct}, $unset: {currentUnit: true}
 
-          Session.set('currentImport', currentImport)
-          Session.set('importCurrentProduct', product)
-          Session.set('importCurrentProductShowEditCommand')
 
-          $("[name=productPrice]").val(product.price)
-          $("[name=productImportPrice]").val(product.importPrice)
+#      if currentImport = Session.get('currentImport')
+#        if product = Schema.products.findOne(@_id)
+#          option =
+#            currentProduct     : product._id
+#            currentProvider    : product.provider ? 'skyReset'
+#            currentQuality     : 1
+#            currentImportPrice : product.importPrice ? 0
+#          if product.price > 0 and product.inStockQuality > 0
+#            Schema.imports.update(Session.get('currentImport')._id, $set: option, $unset: {currentPrice: ""})
+#          else
+#            option.currentPrice = product.importPrice ? 0
+#            Schema.imports.update(Session.get('currentImport')._id, {$set: option})
+#
+#          currentImport.currentProduct     = option.currentProduct
+#          currentImport.currentProvider    = option.currentProvider
+#          currentImport.currentQuality     = option.currentQuality
+#          currentImport.currentImportPrice = option.currentImportPrice
+#
+#          Session.set('currentImport', currentImport)
+#          Session.set('importCurrentProduct', product)
+#          Session.set('importCurrentProductShowEditCommand')
+#
+#          $("[name=productPrice]").val(product.price)
+#          $("[name=productImportPrice]").val(product.importPrice)
 
     "click .enableEditProduct": -> Session.set('showEditProduct', !Session.get('showEditProduct'))
 
@@ -79,6 +97,7 @@ lemon.defineApp Template.import,
       if currentImport = Session.get('currentImport')
         deposit = Math.abs($(template.find(".deposit")).inputmask('unmaskedvalue'))
         Schema.imports.update(currentImport._id, $set:{deposit: deposit})
+
     'click .addImportDetail': (event, template)->
       importDetail = Schema.importDetails.findOne(scope.addImportDetail(@))
       Session.set("importEditingRowId", importDetail._id)

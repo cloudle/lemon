@@ -12,7 +12,7 @@ lemon.dependencies.add 'merchantEssentialOnce', ['merchantEssential', 'merchantN
 
 lemon.dependencies.add 'merchantHome', ['merchantEssential']
 lemon.dependencies.add 'customerManagement', ['availableCustomers', 'availableCustomerAreas']
-lemon.dependencies.add 'importManagement', ['myImportHistory', 'allProducts', 'skulls', 'providers', 'availableDistributors']
+lemon.dependencies.add 'importManagement', ['myImportHistory', 'availableProducts', 'skulls', 'providers', 'availableDistributors']
 lemon.dependencies.add 'productManagement', ['availableProducts']
 lemon.dependencies.add 'saleManagement', ['myOrderHistory', 'mySaleAndDetail', 'availableProducts', 'skulls', 'providers', 'availableCustomers']
 lemon.dependencies.add 'distributorManagement', ['availableDistributors']

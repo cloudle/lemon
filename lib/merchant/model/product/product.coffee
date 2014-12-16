@@ -1,5 +1,10 @@
 Schema.add 'products', "Product", class Product
-  @insideWarehouse: (warehouseId) -> @schema.find({warehouse: warehouseId, availableQuality: {$gt: 0} },{sort: {'version.createdAt': -1}})
+  @insideWarehouse: (warehouseId) ->
+    @schema.find({
+      warehouse: warehouseId
+      availableQuality: {$gt: 0}
+      basicDetailModeEnabled: false
+    },{sort: {'version.createdAt': -1}})
 
   @findBy: (productId, warehouseId = null, merchantId = null)->
     if !merchantId && !warehouseId then myProfile= Schema.userProfiles.findOne({user: Meteor.userId()})
