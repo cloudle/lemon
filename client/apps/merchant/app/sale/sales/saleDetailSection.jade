@@ -33,14 +33,13 @@ template(name="saleDetailSection")
                       |{{product.name}}
                       .commands
                         .lemon.rounded.tiny.btn.blue.deleteOrderDetail: span.icon-minus-4
-                     td.price.editable-field {{formatNumber price}}
+                     td.price.editable-field {{formatNumber unitPrice}}
                      td.quality.editable-field.error-field
                         span
-                           |{{formatNumber quality}}
+                           |{{formatNumber unitQuality}}
                            if crossBillAvailableQuality.invalid
                               span.super.s7.color-lime {{crossBillAvailableQuality.crossAvailable}}
-                     td.skull
-                        //|{{product.skulls}}
+                     td.skull {{unitName}}
                      td.bill-discount.editable-field.number
                         span {{formatNumber discountCash}}
                         if discountPercent

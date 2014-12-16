@@ -5,6 +5,7 @@ lemon.defineHyper Template.saleDetailSection,
   editingMode: -> Session.get("salesEditingRow")?._id is @_id
   editingData: -> Session.get("salesEditingRow")
   product: -> Schema.products.findOne(@product)
+  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   created: -> @timeInterval = Meteor.setInterval(setTime, 1000)
   destroyed: -> Meteor.clearInterval(@timeInterval)
 

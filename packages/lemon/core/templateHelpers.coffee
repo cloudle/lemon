@@ -31,6 +31,11 @@ Template.registerHelper 'allowAction', (val) -> if val then '' else 'disabled'
 Template.registerHelper 'crossBillAvailableQuality', ->
   cross = logics.sales.validation.getCrossProductQuality(@product, @order)
   crossAvailable = cross.product.availableQuality - cross.quality
+  if crossAvailable < 0
+    crossAvailable = Math.ceil(Math.abs(crossAvailable/@conversionQuality))*(-1)
+  else
+    Math.ceil(Math.abs(crossAvailable/@conversionQuality))
+
   return {
     crossAvailable: crossAvailable
     isValid: crossAvailable > 0

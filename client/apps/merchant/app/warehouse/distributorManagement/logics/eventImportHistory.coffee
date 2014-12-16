@@ -30,7 +30,7 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
         $(template.find("[name='customImportDebtDate']")).val(''); $description.val('')
       else
         console.log isValidDate , latestCustomImport is undefined, debtDate >= latestCustomImport.debtDate
-      Session.set("allowCreateCustomImport", false)
+#      Session.set("allowCreateCustomImport", false)
 
   scope.createCustomImportDetail = (template, customImport) ->
     console.log template
@@ -43,7 +43,6 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
     price        = parseInt($price.inputmask('unmaskedvalue'))
     #    totalPrice   = parseInt($totalPrice.inputmask('unmaskedvalue'))
 
-    console.log customImport, $productName.val().length > 0, $skulls.val().length > 0, price > 0, $quality.val() > 0
 
     if customImport and $productName.val().length > 0 and $skulls.val().length > 0 and price > 0 and $quality.val() > 0
       customImportDetail =
@@ -57,9 +56,10 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
         price         : price
         finalPrice    : $quality.val()*price
 
-      latestCustomImport = Schema.customImports.findOne({buyer: customImport.buyer}, {sort: {debtDate: -1}})
+      latestCustomImport = Schema.customImports.findOne({buyer: customImport.buyer}, {sort: {debtDate: -1, 'version.createdAt': -1}})
       if customImport._id is latestCustomImport._id
         Meteor.call('updateCustomImportByCreateCustomImportDetail', customImportDetail)
+      else console.log customImport._id, latestCustomImport._id
       $productName.val(''); $price.val(''); $quality.val(''); $skulls.val('')
       $productName.focus()
 

@@ -48,10 +48,13 @@ lemon.defineApp Template.distributorManagement,
             Session.set("distributorManagementDataMaxCurrentRecords", limitExpand)
           else
             Session.set("distributorManagementDataMaxCurrentRecords", countRecords)
-          Session.set("distributorManagementCurrentCustomer", distributor)
+          Session.set("distributorManagementCurrentDistributor", distributor)
 
         Session.set("allowCreateCustomImport", false)
         Session.set("allowCreateTransactionOfCustomImport", false)
+
+
+
 
 #
 #    "click .excel-distributor": (event, template) -> $(".excelFileSource").click()

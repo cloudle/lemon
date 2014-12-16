@@ -74,10 +74,7 @@ lemon.defineApp Template.sales,
           currentOrder.currentDiscountCash
         )
 
-    "click .addSaleDetail": ->
-      product = Schema.products.findOne(@product._id)
-      productUnit = Schema.productUnits.findOne(@unit._id) if @unit
-      Session.set("salesEditingRowId", scope.addOrderDetail @product._id)
+    "click .addSaleDetail": -> Session.set("salesEditingRowId", scope.addOrderDetail @product._id, @unit?._id)
 
 
     "click .print-command": (event, template) -> window.print()

@@ -18,6 +18,7 @@ lemon.defineHyper Template.saleDetailEditor,
 #    @discountCash
 
   product: -> Schema.products.findOne(@product)
+  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   rendered: ->
     @ui.$editQuality.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
@@ -26,8 +27,8 @@ lemon.defineHyper Template.saleDetailEditor,
     @ui.$editDiscountCash.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
 
-    @ui.$editQuality.val Session.get("salesEditingRow").quality
-    @ui.$editPrice.val Session.get("salesEditingRow").price
+    @ui.$editQuality.val Session.get("salesEditingRow").unitQuality
+    @ui.$editPrice.val Session.get("salesEditingRow").unitPrice
     @ui.$editDiscountCash.val Session.get("salesEditingRow").discountCash
 
     @ui.$editQuality.select()
@@ -35,10 +36,10 @@ lemon.defineHyper Template.saleDetailEditor,
 
   events:
     "keyup input[name]": (event, template) ->
-      quality = Number(template.ui.$editQuality.inputmask('unmaskedvalue'))
-      price = Number(template.ui.$editPrice.inputmask('unmaskedvalue'))
+      unitQuality = Number(template.ui.$editQuality.inputmask('unmaskedvalue'))
+      unitPrice   = Number(template.ui.$editPrice.inputmask('unmaskedvalue'))
       discountCash = Number(template.ui.$editDiscountCash.inputmask('unmaskedvalue'))
-      totalPrice = price * quality
+      totalPrice = unitQuality * unitPrice
       if totalPrice > 0
         finalPrice = totalPrice - discountCash
         discountPercent = (discountCash * 100) / totalPrice
@@ -47,15 +48,17 @@ lemon.defineHyper Template.saleDetailEditor,
         discountCash = 0
         discountPercent = 0
 
-      Schema.orderDetails.update @_id,
-        $set:
-          quality: quality
-          price: price
-          discountCash: discountCash
-          discountPercent: discountPercent
-          totalPrice: totalPrice
-          finalPrice: finalPrice
+      optionDetail =
+        unitQuality: unitQuality
+        unitPrice: unitPrice
+        quality: @conversionQuality * unitQuality
+        price: unitPrice/@conversionQuality
+        discountCash: discountCash
+        discountPercent: discountPercent
+        totalPrice: totalPrice
+        finalPrice: finalPrice
 
+      Schema.orderDetails.update @_id, $set: optionDetail
       logics.sales.reCalculateOrder(@order)
 
     "click .deleteOrderDetail": (event, template) ->

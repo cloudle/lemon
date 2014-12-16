@@ -76,7 +76,7 @@ Apps.Merchant.salesReactiveRun.push (scope) ->
     Session.set("salesEditingRow", Schema.orderDetails.findOne(Session.get("salesEditingRowId")))
 
   if Session.get("salesEditingRow")
-    $("[name=editQuality]").val(Session.get("salesEditingRow").quality)
+    $("[name=editQuality]").val(Session.get("salesEditingRow").unitQuality)
 
   if Session.get('currentOrder')
     if !Session.get('currentOrderCustomer') || Session.get('currentOrderCustomer')._id != Session.get('currentOrder').buyer
