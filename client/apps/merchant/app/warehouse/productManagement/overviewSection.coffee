@@ -39,7 +39,7 @@ lemon.defineHyper Template.productManagementOverviewSection,
           Schema.products.update(Session.get('productManagementCurrentProduct')._id, {$set: {avatar: fileObj._id}})
           AvatarImages.findOne(Session.get('productManagementCurrentProduct').avatar)?.remove()
 
-    #TODO: Chinh lai truong hop bi trung randomBarcode()
+  #TODO: Chinh lai truong hop bi trung randomBarcode()
     "click .createUnit": ->
       if @basicUnit
         newId = Schema.productUnits.insert {
@@ -52,29 +52,39 @@ lemon.defineHyper Template.productManagementOverviewSection,
 
     "click .add-basicDetail": ->
       if product = Session.get('productManagementCurrentProduct')
-        if productUnit = Schema.productUnits.findOne({_id: @_id, product: product._id})
-          productDetailOption =
+        if @_id is product._id
+          detailOption =
             merchant          : product.merchant
             warehouse         : product.warehouse
             product           : product._id
-            unit              : productUnit._id
+            conversionQuality : 1
+            importQuality     : 1
+            availableQuality  : 1
+            inStockQuality    : 1
+            importPrice       : product.importPrice ? 0
             unitQuality       : 1
-            unitPrice         : productUnit.price
-            conversionQuality : productUnit.conversionQuality
-            importQuality     : productUnit.conversionQuality
-            availableQuality  : productUnit.conversionQuality
-            inStockQuality    : productUnit.conversionQuality
-            importPrice       : productUnit.price
-#          productDetailOption.expire
-        Schema.productDetails.insert productDetailOption
-        Schema.productUnits.update @_id, $set:{allowDelete: false}
-        Schema.products.update product._id, $set:{allowDelete: false}, $inc:{
-          totalQuality    : productUnit.conversionQuality
-          availableQuality: productUnit.conversionQuality
-          inStockQuality  :productUnit.conversionQuality
-        }
-        Session.set("productManagementUnitEditingRow")
-        Session.set("productManagementUnitEditingRowId")
+        else
+          if productUnit = Schema.productUnits.findOne({_id: @_id, product: product._id})
+            detailOption =
+              merchant          : product.merchant
+              warehouse         : product.warehouse
+              product           : product._id
+              conversionQuality : productUnit.conversionQuality
+              importQuality     : productUnit.conversionQuality
+              availableQuality  : productUnit.conversionQuality
+              inStockQuality    : productUnit.conversionQuality
+              unit              : productUnit._id
+              unitQuality       : 1
+              unitPrice         : 0
+              importPrice       : 0
+        if detailOption
+          if Schema.productDetails.insert detailOption
+            Schema.productUnits.update detailOption.unit, $set:{allowDelete: false} if detailOption.unit
+            Schema.products.update product._id, $set:{allowDelete: false}, $inc:{
+              totalQuality    : detailOption.importQuality
+              availableQuality: detailOption.importQuality
+              inStockQuality  : detailOption.importQuality
+            }
 
     "click .delete-unit": -> Schema.productUnits.remove(@_id) if @allowDelete
 

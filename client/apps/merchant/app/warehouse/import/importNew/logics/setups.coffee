@@ -48,9 +48,10 @@ Apps.Merchant.importInit.push (scope) ->
       styles    : Helpers.RandomColor()
     product.skulls = nameOptions.skulls if nameOptions.skulls
 
-    existedQuery = {name: product.name, currentMerchant: Session.get('myProfile').currentMerchant}
-    existedQuery.skulls = product.skulls if product.skulls
+    existedQuery = {name: product.name, merchant: product.merchant}
+#    existedQuery.skulls = product.skulls if product.skulls
     if Schema.products.findOne(existedQuery)
+      console.log 'check'
       template.ui.$searchFilter.notify("Sản phẩm đã tồn tại.", {position: "bottom"})
     else
       while true

@@ -1,5 +1,5 @@
 lemon.defineHyper Template.productManagementDetailEditor,
-  unitName: -> Schema.productUnits.findOne(@unit).unit
+  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   rendered: ->
     @ui.$expireDate.inputmask("dd/mm/yyyy")
     @ui.$unitQuality.inputmask "numeric",

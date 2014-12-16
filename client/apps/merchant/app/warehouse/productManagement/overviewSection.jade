@@ -7,6 +7,8 @@ template(name="productManagementOverviewSection")
         input.editable.dashed(name="productName" value="{{name}}" maxlength="50")
         if basicUnit
           span.blured-color ({{basicUnit}})
+          if basicDetailModeEnabled
+            .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
       .sub1: input.editable.dashed(name="productPrice" value="{{price}}" maxlength="20" style="width: 125px")
       .sub2: span.blured-color Giá nhập cuối: {{formatNumber importPrice}} vnđ - Giá trung bình: {{formatNumber averagePrice}} vnđ
       .commands

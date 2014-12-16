@@ -15,25 +15,21 @@ Apps.Merchant.productManagementInit.push (scope) ->
       editOptions = splitName(newName)
       editOptions.price = newPrice if newPrice.length > 0
 
-      if editOptions.name.length > 0
-        productFound = Schema.products.findOne {name: editOptions.name, currentMerchant: product.currentMerchant}
+      productFound = Schema.products.findOne {name: editOptions.name, merchant: product.merchant} if editOptions.name.length > 0
 
       if editOptions.name.length is 0
         template.ui.$productName.notify("Tên sản phẩn không thể để trống.", {position: "right"})
       else if productFound and productFound._id isnt product._id
         template.ui.$productName.notify("Tên sản phẩm đã tồn tại.", {position: "right"})
-        template.ui.$productName.val editOptions.name
-        Session.set("productManagementShowEditCommand", false)
       else
         if Schema.productUnits.findOne({product: product._id})
-          Schema.products.update product._id, {$set: {name: editOptions.name}}, (error, result) -> if error then console.log error
+          delete editOptions.basicUnit
+          console.log editOptions
+          Schema.products.update product._id, {$set: editOptions}, (error, result) -> if error then console.log error
         else
           Schema.products.update product._id, {$set: editOptions}, (error, result) -> if error then console.log error
-        template.ui.$productName.val editOptions.name
-        Session.set("productManagementShowEditCommand", false)
-
-
-
+      template.ui.$productName.val editOptions.name
+      Session.set("productManagementShowEditCommand", false)
 
 
   scope.createProduct = (template)->
@@ -48,8 +44,8 @@ Apps.Merchant.productManagementInit.push (scope) ->
       styles    : Helpers.RandomColor()
     product.basicUnit = nameOptions.basicUnit if nameOptions.basicUnit
 
-    existedQuery = {name: product.name, currentMerchant: Session.get('myProfile').currentMerchant}
-    existedQuery.basicUnit = product.basicUnit if product.basicUnit
+    existedQuery = {name: product.name, merchant: Session.get('myProfile').currentMerchant}
+#    existedQuery.basicUnit = product.basicUnit if product.basicUnit
 
     if Schema.products.findOne(existedQuery)
       template.ui.$searchFilter.notify("Sản phẩm đã tồn tại.", {position: "bottom"})

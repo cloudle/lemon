@@ -1,7 +1,7 @@
 scope = logics.productManagement
 
 lemon.defineHyper Template.productManagementSalesHistorySection,
-  unitName: -> Schema.productUnits.findOne(@unit).unit
+  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   detailEditingMode: -> Session.get("productManagementDetailEditingRow")?._id is @_id
   detailEditingData: -> Session.get("productManagementDetailEditingRow")
   expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY')
@@ -42,9 +42,11 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
         Schema.productDetails.find({product: product._id, import: {$exists: false} }).forEach(
           (item)-> Schema.productDetails.update item._id, $set: {allowDelete: false}
         )
-        Session.set("productManagementDetailEditingRowId")
 
-
+#        Session.set("productManagementDetailEditingRowId")
+#        Session.set("productManagementDetailEditingRow")
+#        Session.set("productManagementUnitEditingRowId")
+#        Session.set("productManagementUnitEditingRow")
 
     "click .delete-basicDetail": ->
       if @allowDelete
