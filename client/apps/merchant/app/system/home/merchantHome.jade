@@ -20,13 +20,13 @@ template(name="merchantHome")
         span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> THU TIỀN
 
     .tile-group-3
-      .tile.double.orange#saleManager(class="{{metroUnLocker Summary.data.importCount}}{{metroUnLocker Summary.data.customerCountAll}}{{metroUnLocker Summary.data.staffCountAll}}" data-app='sales')
+      .tile.double.orange#saleManager(class="{{metroUnLocker Summary.data.availableProductCount}}{{metroUnLocker Summary.data.customerCountAll}}{{metroUnLocker Summary.data.staffCountAll}}" data-app='sales')
         span.top.left.caption: h3 {{formatNumber Summary.data.saleProductCount}} <tiny5>SẢN PHẨM ĐÃ BÁN</tiny5>
         span.center.left.caption: span.table: i.ico.icon-tags
         span.bottom.left.caption BÁN HÀNG
       .tile.belize-hole(data-app='productManagement')
         span.center.middle.caption: span.table: i.ico.icon-puzzle-outline
-        span.bottom.middle.caption SẢN PHẨM
+        span.bottom.middle.caption {{formatNumber Summary.data.productCount}} SẢN PHẨM
       .tile.quatro.lime(class="{{metroUnLocker Summary.data.staffCount}}" data-app='customerManagement')
         span.top.middle.caption {{formatNumber Summary.data.customerCountAll}} KHÁCH HÀNG
         span.center.middle.caption: span.table: i.ico.huge.icon-contacts
@@ -60,7 +60,7 @@ template(name="merchantHome")
         span.top.left.caption
           h3 <tiny5>TỔNG NHẬP {{Summary.data.importProductCount}}</tiny5>
         span.bottom.right.caption
-          h3 {{Summary.data.stockProductCount}}<br /> <tiny5>TỒN KHO</tiny5>
+          h3 <tiny5>TỒN KHO</tiny5>
       .tile.pomegranate(data-app='merchantOptions')
         span.s7.top.middle.caption TÙY CHỈNH
         span.center.middle.caption: span.table: i.ico.icon-wrench-outline
@@ -72,7 +72,7 @@ template(name="merchantHome")
       //    i.ico.large.icon-chart-bar-4
       //  span.bottom.left.caption BÁO CÁO
       .tile.carrot.quatro(data-app='distributorManagement')
-        span.top.middle.caption NHÀ CUNG CẤP
+        span.top.middle.caption {{formatNumber Summary.data.distributorCount}} NHÀ CUNG CẤP
         span.center.middle.caption: span.table: i.ico.huge.icon-anchor-outline
       .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}")
         span.center.middle.caption: span.table: i.ico.icon-book

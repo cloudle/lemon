@@ -85,6 +85,14 @@ lemon.defineHyper Template.productManagementOverviewSection,
               availableQuality: detailOption.importQuality
               inStockQuality  : detailOption.importQuality
             }
+            metroSummary = Schema.metroSummaries.findOne({merchant: Session.get('myProfile').currentMerchant})
+            Schema.metroSummaries.update metroSummary._id, $inc:{
+              productCount: detailOption.importQuality
+              stockProductCount: detailOption.importQuality
+              availableProductCount: detailOption.importQuality
+            }
+
+
 
     "click .delete-unit": -> Schema.productUnits.remove(@_id) if @allowDelete
 

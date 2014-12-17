@@ -71,3 +71,11 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
         if totalQuality is 0 then productOption.allowDelete = true
         Schema.products.update @product, $set: productOption
 
+        metroSummary = Schema.metroSummaries.findOne({merchant: Session.get('myProfile').currentMerchant})
+        Schema.metroSummaries.update metroSummary._id, $inc:{
+          productCount: -@importQuality
+          stockProductCount: -@importQuality
+          availableProductCount: -@importQuality
+        }
+
+

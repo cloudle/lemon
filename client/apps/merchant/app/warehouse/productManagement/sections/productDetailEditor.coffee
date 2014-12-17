@@ -35,6 +35,13 @@ lemon.defineHyper Template.productManagementDetailEditor,
         inStockQuality  : unitQuality * @conversionQuality - @importQuality
       }
 
+      metroSummary = Schema.metroSummaries.findOne({merchant: Session.get('myProfile').currentMerchant})
+      Schema.metroSummaries.update metroSummary._id, $inc:{
+        productCount: unitQuality * @conversionQuality - @importQuality
+        stockProductCount: unitQuality * @conversionQuality - @importQuality
+        availableProductCount: unitQuality * @conversionQuality - @importQuality
+      }
+
     "keypress input[name]": (event, template)->
       if event.which is 13
         Session.set("productManagementUnitEditingRow")
