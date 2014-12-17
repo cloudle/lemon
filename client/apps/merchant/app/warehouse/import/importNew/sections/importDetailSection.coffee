@@ -5,12 +5,13 @@ lemon.defineHyper Template.importDetailSection,
   editingMode: -> Session.get("importEditingRow")?._id is @_id
   editingData: -> Session.get("importEditingRow")
   product: -> Schema.products.findOne(@product)
-  created: -> @timeInterval = Meteor.setInterval(setTime, 1000)
-  destroyed: -> Meteor.clearInterval(@timeInterval)
+  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   showProductionDate: -> if @productionDate then true else false
   showExpireDate: -> if @expire then true else false
   showDelete: -> !Session.get("currentImport")?.submitted
 
+  created: -> @timeInterval = Meteor.setInterval(setTime, 1000)
+  destroyed: -> Meteor.clearInterval(@timeInterval)
   events:
     "click .detail-row": ->
       if Session.get("currentImport")?.submitted is false

@@ -99,10 +99,10 @@ lemon.defineApp Template.import,
         Schema.imports.update(currentImport._id, $set:{deposit: deposit})
 
     'click .addImportDetail': (event, template)->
-      importDetail = Schema.importDetails.findOne(scope.addImportDetail(@))
-      Session.set("importEditingRowId", importDetail._id)
-      Session.set("importEditingRow", importDetail)
-      $("[name=editImportQuality]").val(importDetail.importQuality)
+      if importDetail = Schema.importDetails.findOne(scope.addImportDetail(@))
+        Session.set("importEditingRowId", importDetail._id)
+        Session.set("importEditingRow", importDetail)
+        $("[name=editImportQuality]").val(importDetail.unitQuality)
 
 
     'click .editImport': (event, template)->

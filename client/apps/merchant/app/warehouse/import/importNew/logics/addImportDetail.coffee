@@ -1,7 +1,10 @@
 reUpdateImportDetail = (newImportDetail, oldImportDetail) ->
   totalPrice = newImportDetail.importQuality  * oldImportDetail.importPrice
-  Schema.importDetails.update oldImportDetail._id, $inc:{ importQuality : newImportDetail.importQuality , totalPrice: totalPrice}
-  , (error, result) -> console.log error if error
+  Schema.importDetails.update oldImportDetail._id, $inc:{
+    unitQuality : newImportDetail.unitQuality
+    importQuality : newImportDetail.importQuality
+    totalPrice: totalPrice
+  }, (error, result) -> console.log error if error
   return oldImportDetail._id
 
 Apps.Merchant.importInit.push (scope) ->
@@ -21,7 +24,7 @@ Apps.Merchant.importInit.push (scope) ->
       else option = {totalPrice: 0, deposit: 0, debit: 0}
       Import.update importId, $set: option
 
-  scope.addImportDetail = (product) ->
+  scope.addImportDetail = (currentProduct) ->
 #    productionDate = logics.import.getProductionDate()
 #    if productionDate and Session.get('timesUseProduct') > 0
 #      option.productionDate = productionDate
@@ -38,19 +41,28 @@ Apps.Merchant.importInit.push (scope) ->
         merchant      : currentImport.merchant
         warehouse     : currentImport.warehouse
         import        : currentImport._id
-        product       : product._id
-        importQuality : 1
-        importPrice   : product.importPrice ? 0
+        product       : currentProduct.product._id
+        unitQuality   : 1
+        unitPrice     : currentProduct.product.importPrice ? 0
+        conversionQuality: 1
 
-      importDetail.provider = product.provider if product.provider
-      importDetail.totalPrice = importDetail.importQuality * importDetail.importPrice
+      if currentProduct.unit
+        importDetail.unit = currentProduct.unit._id
+        importDetail.unitPrice = currentProduct.unit.price
+        importDetail.conversionQuality = currentProduct.unit.conversionQuality
+
+      importDetail.importQuality = importDetail.unitQuality * importDetail.conversionQuality
+      importDetail.importPrice   = importDetail.unitPrice/importDetail.conversionQuality
+      importDetail.totalPrice    = importDetail.importQuality * importDetail.importPrice
+#      importDetail.provider = currentProduct.product.provider if currentProduct.product.provider
 
       existedQuery = {
-        import      : importDetail.import
-        product     : importDetail.product
-        importPrice : importDetail.importPrice
+        import    : importDetail.import
+        product   : importDetail.product
+        unitPrice : importDetail.unitPrice
       }
       existedQuery.provider = importDetail.provider if importDetail.provider
+      existedQuery.unit = importDetail.unit if importDetail.unit
 
       if findImportDetail = Schema.importDetails.findOne(existedQuery)
         importDetailId = reUpdateImportDetail(importDetail, findImportDetail)

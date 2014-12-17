@@ -24,7 +24,7 @@
   "appName": "lemonEds",
 
   // Location of app (local directory)
-  "app": "~/Project/lemon",
+  "app": "~/Projects/lemon",
 
   // Configure environment
   "env": {

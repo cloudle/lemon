@@ -13,7 +13,7 @@ template(name="importDetailSection")
                th(style="width:auto") SẢN PHẨM
                th(style="width:90px") HẾT HẠN
                th(style="width:50px") SL
-               th(style="width:90px") QUY CÁCH
+               th(style="width:90px") ĐƠN VỊ
                th.number(style="width:90px") ĐƠN GIÁ
                th.number(style="width:120px") THÀNH TIỀN
             each importDetails
@@ -29,9 +29,9 @@ template(name="importDetailSection")
                      td
                         if showExpireDate
                            |{{momentFormat expire 'DD/MM/YYYY'}}
-                     td.editable-field {{formatNumber importQuality}}
-                     td {{product.skulls}}
-                     td.editable-field.number {{formatNumber importPrice}}
+                     td.editable-field {{formatNumber unitQuality}}
+                     td {{unitName}}
+                     td.editable-field.number {{formatNumber unitPrice}}
                      td.number <b>{{formatNumber totalPrice}}</b>
 
 

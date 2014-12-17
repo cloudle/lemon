@@ -1,5 +1,6 @@
 lemon.defineHyper Template.importDetailEditor,
   product: -> Schema.products.findOne(@product)
+  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   showDelete: -> !Session.get("currentImport")?.submitted
 
   rendered: ->
@@ -9,8 +10,8 @@ lemon.defineHyper Template.importDetailEditor,
     @ui.$editImportPrice.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
 
-    @ui.$editImportQuality.val Session.get("importEditingRow").importQuality
-    @ui.$editImportPrice.val Session.get("importEditingRow").importPrice
+    @ui.$editImportQuality.val Session.get("importEditingRow").unitQuality
+    @ui.$editImportPrice.val Session.get("importEditingRow").unitPrice
     @ui.$editExpireDate.val if Session.get("importEditingRow").expire then moment(Session.get("importEditingRow").expire).format('DDMMYYYY')
 
     @ui.$editImportQuality.select()
@@ -18,19 +19,21 @@ lemon.defineHyper Template.importDetailEditor,
   events:
     "keyup input[name]": (event, template) ->
       if event.which is 8 || event.which is 46 || 47 < event.which < 58 || 95 < event.which < 106
-        importQuality   = Number(template.ui.$editImportQuality.inputmask('unmaskedvalue'))
-        importPrice     = Number(template.ui.$editImportPrice.inputmask('unmaskedvalue'))
+        unitQuality   = Number(template.ui.$editImportQuality.inputmask('unmaskedvalue'))
+        unitPrice     = Number(template.ui.$editImportPrice.inputmask('unmaskedvalue'))
 
         $expireDate = template.ui.$editExpireDate.inputmask('unmaskedvalue')
         isValidDate = $expireDate.length is 8 and moment($expireDate, 'DD/MM/YYYY').isValid()
         if isValidDate then expireDate = moment($expireDate, 'DD/MM/YYYY')._d else expireDate = undefined
 
-        totalPrice = importQuality * importPrice
+        totalPrice = unitQuality * unitPrice
 
         setOption =
-          importQuality: importQuality
-          importPrice: importPrice
-          totalPrice: totalPrice
+          unitQuality  : unitQuality
+          unitPrice    : unitPrice
+          importQuality: unitQuality*@conversionQuality
+          importPrice  : unitPrice/@conversionQuality
+          totalPrice   : totalPrice
         setOption.expire = expireDate if expireDate
 
         changPrice = totalPrice - Schema.importDetails.findOne(@_id).totalPrice
