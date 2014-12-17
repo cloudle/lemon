@@ -53,9 +53,12 @@ template(name="distributorManagementImportsHistorySection")
         each defaultImport
           +distributorManagementImportDetails this
 
+        each returnImport
+          +distributorManagementReturnDetails this
+
         tr.editors(style="{{showAddTransactionOfImport}}")
           td
-            input.new-transaction-import-field(name='payImportDescription' type="text" size="10" placeholder="ghi chú thu chi")
+            input.new-transaction-import-field(name='payImportDescription' type="text" size="10" placeholder="ghi chú trả hàng")
           td(colspan="3")
             input.new-transaction-import-field.number(name='payImportAmount' type="text" size="10" placeholder="số tiền")
           td

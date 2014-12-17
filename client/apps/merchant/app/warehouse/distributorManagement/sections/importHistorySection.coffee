@@ -17,6 +17,10 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
   defaultImport: ->
     if distributor = Session.get("distributorManagementCurrentDistributor")
       Schema.imports.find({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': 1}})
+  returnImport: ->
+    if distributor = Session.get("distributorManagementCurrentDistributor")
+      Schema.returns.find({distributor: distributor._id, allowDelete: true})
+
 
   rendered: ->
     @ui.$customImportDebtDate.inputmask("dd/mm/yyyy")

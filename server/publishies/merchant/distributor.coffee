@@ -50,9 +50,17 @@ Meteor.publishComposite 'distributorManagementData', (distributorId, currentReco
           else
             EmptyQueryResult
       children: [
-        find: (currentImport, distributor) -> Schema.importDetails.find {import: currentImport._id}
+        find: (currentImport, distributor) -> Schema.productDetails.find {import: currentImport._id}
         children: [
-          find: (importDetail, distributor) -> Schema.products.find {_id: importDetail.product}
+          find: (productDetail, distributor) -> Schema.products.find {_id: productDetail.product}
+          children: [
+            find: (product, distributor) -> Schema.productUnits.find {product: product._id}
+          ]
+        ]
+      ,
+        find: (currentImport, distributor) -> Schema.returns.find {import: currentImport._id}
+        children: [
+          find: (currentReturn, distributor) -> Schema.returnDetails.find {return: currentReturn._id}
         ]
       ]
     ,

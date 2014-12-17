@@ -1,19 +1,73 @@
 simpleSchema.returnDetails  = new SimpleSchema
-  return:
-    type: String
-
   sale:
     type: String
+    optional: true
 
   saleDetail:
+    type: String
+    optional: true
+
+  import:
+    type: String
+    optional: true
+
+  productDetail:
+    type: String
+#----------------------------
+  return:
     type: String
 
   product:
     type: String
 
-  productDetail:
+  unit:
     type: String
+    optional: true
 
+  unitReturnQuality:
+    type: Number
+    optional: true
+
+  unitReturnsPrice:
+    type: Number
+    optional: true
+
+  conversionQuality:
+    type: Number
+    optional: true
+
+  returnQuality:
+    type: Number
+
+  price:
+    type: Number
+
+  discountCash:
+    type: Number
+    defaultValue: 0
+
+  discountPercent:
+    type: Number
+    decimal: true
+    defaultValue: 0
+
+  finalPrice:
+    type: Number
+
+  submit:
+    type: Boolean
+    optional: true
+
+  allowDelete:
+    type: Boolean
+    defaultValue: true
+
+  styles:
+    type: String
+    optional: true
+
+  version: { type: simpleSchema.Version }
+#--------------------------------------------------
   name:
     type: String
     optional: true
@@ -26,31 +80,5 @@ simpleSchema.returnDetails  = new SimpleSchema
     type: String
     optional: true
 
-  styles:
-    type: String
-    optional: true
 
-  returnQuality:
-    type: Number
-
-  price:
-    type: Number
-
-  discountCash:
-    type: Number
-
-  discountPercent:
-    type: Number
-    decimal: true
-    optional: true
-
-  finalPrice:
-    type: Number
-
-  submit:
-    type: Boolean
-    optional: true
-
-
-  version: { type: simpleSchema.Version }
 

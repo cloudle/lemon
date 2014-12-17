@@ -6,10 +6,9 @@ lemon.defineHyper Template.productManagementUnitEditor,
       {autoGroup: true, groupSeparator:",", suffix: " VNĐ", radixPoint: ".", integerDigits:11}
     @ui.$price.val Session.get("productManagementUnitEditingRow").price
 
-    if Session.get("productManagementUnitEditingRow")?.allowDelete
-      @ui.$conversionQuality.inputmask "numeric",
-        {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
-      @ui.$conversionQuality.val Session.get("productManagementUnitEditingRow").conversionQuality
+    @ui.$conversionQuality.inputmask "numeric",
+      {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
+    @ui.$conversionQuality.val Session.get("productManagementUnitEditingRow").conversionQuality
 
     @ui.$unit.select()
 
@@ -21,9 +20,8 @@ lemon.defineHyper Template.productManagementUnitEditor,
       price = Number(template.ui.$price.inputmask('unmaskedvalue'))
       price = 0 if price < 0
 
-      if @allowDelete
-        conversionQuality = Number(template.ui.$conversionQuality?.inputmask('unmaskedvalue'))
-        conversionQuality = 1 if conversionQuality < 0
+      conversionQuality = Number(template.ui.$conversionQuality.inputmask('unmaskedvalue'))
+      conversionQuality = 1 if conversionQuality < 0
 
       unitOption =
         unit    : unit

@@ -6,6 +6,9 @@ lemon.defineApp Template.distributorManagement,
   currentDistributor: -> Session.get("distributorManagementCurrentDistributor")
   activeClass:-> if Session.get("distributorManagementCurrentDistributor")?._id is @._id then 'active' else ''
   creationMode: -> Session.get("distributorCreationMode")
+  distributorReturnMode: -> Session.get("distributorManagementReturnMode")
+  unitName: -> if @unit then @unit.unit else @product.basicUnit
+
 #  rendered: -> $(".nano").nanoScroller()
   created: ->
     lemon.dependencies.resolve('distributorManagement')
@@ -53,6 +56,32 @@ lemon.defineApp Template.distributorManagement,
         Session.set("allowCreateCustomImport", false)
         Session.set("allowCreateTransactionOfCustomImport", false)
 
+    "click .addReturnDetail": (event, template) ->
+      if currentReturn = Session.get('distributorManagementCurrentReturn')
+#        if @unit then existedQuery = {product: @product._id, unit: @unit._id} else existedQuery = {product: @product._id}
+        existedQuery = {import: currentReturn.import, product: @product._id}
+        if productDetail = Schema.productDetails.findOne(existedQuery)
+          returnDetail =
+            return: currentReturn._id
+            import: currentReturn.import
+            product: @product._id
+            productDetail: productDetail._id
+            unitReturnQuality: 1
+            unitReturnsPrice: productDetail.importPrice
+            conversionQuality: 1
+            discountCash: 0
+            discountPercent: 0
+            price: productDetail.importPrice
+
+          if @unit
+            returnDetail.unit = @unit._id
+            returnDetail.conversionQuality = @unit.conversionQuality
+            returnDetail.unitReturnsPrice = productDetail.importPrice * @unit.conversionQuality
+
+          returnDetail.returnQuality = returnDetail.conversionQuality
+          returnDetail.finalPrice = returnDetail.returnQuality * returnDetail.price
+          console.log Schema.returnDetails.insert(returnDetail)
+          Schema.returns.update currentReturn._id, $inc:{totalPrice: returnDetail.finalPrice, finallyPrice: returnDetail.finalPrice}
 
 
 

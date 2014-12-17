@@ -5,16 +5,14 @@ template(name="productManagementSalesHistorySection")
         +merchantPrintingHeader
         .printing-info
           .document-name {{name}}
-
-      if basicDetail.isShowDetail
-        table.lemon-grid
-          tr.table-header
-            th(style="width:auto") ĐƠN VỊ TÍNH
-            th(style="width:110px") HẠN SD
-            th(style="width:80px") QUI ĐỔI
-            th(style="width:80px") TỒN KHO
-            //th.number(style="width:120px") GIÁ NHẬP
-
+      table.lemon-grid
+        tr.table-header
+          th(style="width:auto") ĐƠN VỊ TÍNH
+          th(style="width:110px") HẠN SD
+          th(style="width:80px") QUI ĐỔI
+          th(style="width:80px") TỒN KHO
+          //th.number(style="width:120px") GIÁ NHẬP
+        if basicDetail.isShowDetail
           each basicDetail.detail
             if detailEditingMode
               +productManagementDetailEditor detailEditingData
@@ -29,9 +27,9 @@ template(name="productManagementSalesHistorySection")
                 td {{conversionQuality}}
                 td {{unitQuality}}
                 //td.number {{formatNumber importPrice}}
-          if basicDetailModeEnabled
-            tr.group-summary-row
-              td: .lemon.btn.lime.basicDetailModeDisable.icon-ok-6 Kết Thúc
+        if basicDetailModeEnabled
+          tr.group-summary-row
+            td: .lemon.btn.lime.basicDetailModeDisable.icon-ok-6 Kết Thúc
 
     .panel-body.debt-details
       if newImport.isShowDetail

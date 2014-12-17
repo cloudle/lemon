@@ -86,3 +86,11 @@ simpleSchema.distributors = new SimpleSchema
   importTotalCash:
     type: Number
     defaultValue: 0
+#---------------------------------
+  returnImportModeEnabled:
+    type: Boolean
+    defaultValue: false
+
+  currentReturn:
+    type: String
+    optional: true

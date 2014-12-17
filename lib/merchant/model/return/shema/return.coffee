@@ -5,28 +5,27 @@ simpleSchema.returns = new SimpleSchema
   warehouse:
     type: String
 
-  sale:
-    type: String
-
   creator:
     type: String
-
-  creatorName:
-    type: String
-
-  submitReturn:
-    type: String
-    optional: true
 
   returnCode:
     type: String
 
-  productSale:
-    type: Number
+  sale:
+    type: String
     optional: true
 
-  productQuality:
-    type: Number
+  timeLineImport:
+    type: String
+    optional: true
+
+  import:
+    type: String
+    optional: true
+
+  distributor:
+    type: String
+    optional: true
 
   discountCash:
     type: Number
@@ -47,11 +46,29 @@ simpleSchema.returns = new SimpleSchema
   status:
     type: Number
 
+  submitReturn:
+    type: String
+    optional: true
+
+  allowDelete:
+    type: Boolean
+    defaultValue: true
+
   styles:
     type: String
     defaultValue: Helpers.RandomColor()
     optional: true
 
   version: { type: simpleSchema.Version }
+#-------------------------------------------------
+  creatorName:
+    type: String
+    optional: true
 
+  productSale:
+    type: Number
+    optional: true
 
+  productQuality:
+    type: Number
+    optional: true

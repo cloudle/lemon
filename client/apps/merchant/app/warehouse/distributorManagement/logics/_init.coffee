@@ -26,5 +26,18 @@ Apps.Merchant.distributorManagementReactive.push (scope) ->
       $("[name=paidDate]").val('')
       $("[name=customImportDebtDate]").val('')
 
+  if Session.get("distributorManagementCurrentDistributor")?.returnImportModeEnabled
+    Session.set('distributorManagementReturnMode', true)
+  else
+    Session.set('distributorManagementReturnMode')
+
+  if Session.get("distributorManagementCurrentDistributor")?.currentReturn
+    Session.set('distributorManagementCurrentReturn', Schema.returns.findOne(Session.get("distributorManagementCurrentDistributor").currentReturn))
+  else
+    Session.set('distributorManagementCurrentReturn')
+
+  if returnDetail = Session.get("distributorManagementReturnDetailEditingRowId")
+    Session.set("distributorManagementReturnDetailEditingRow", Schema.returnDetails.findOne(returnDetail))
+
 #  if Session.get("distributorManagementCurrentDistributor").allowDelete
 #    Meteor.subscribe('distributorManagementData', Session.get("distributorManagementCurrentDistributor")._id)

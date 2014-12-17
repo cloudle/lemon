@@ -35,11 +35,11 @@ lemon.defineHyper Template.importDetailEditor,
           importPrice  : unitPrice/@conversionQuality
           totalPrice   : totalPrice
         setOption.expire = expireDate if expireDate
-
-        changPrice = totalPrice - Schema.importDetails.findOne(@_id).totalPrice
-
         Schema.importDetails.update @_id, $set: setOption
-        Schema.imports.update @import, $inc:{totalPrice: changPrice, deposit: changPrice, debit: 0}
+
+        importTotalPrice = 0
+        Schema.importDetails.find({import: @import}).forEach((detail)-> importTotalPrice += detail.totalPrice)
+        Schema.imports.update @import, $set:{totalPrice: importTotalPrice, deposit: importTotalPrice, debit: 0}
 
     "click .deleteOrderDetail": (event, template) ->
       Schema.importDetails.remove @_id
