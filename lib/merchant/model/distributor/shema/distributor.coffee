@@ -94,3 +94,7 @@ simpleSchema.distributors = new SimpleSchema
   currentReturn:
     type: String
     optional: true
+
+  lastImport:
+    type: String
+    optional: true

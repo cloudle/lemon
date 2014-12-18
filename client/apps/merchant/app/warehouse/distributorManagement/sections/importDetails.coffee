@@ -5,10 +5,14 @@ lemon.defineWidget Template.distributorManagementImportDetails,
   skulls: -> Schema.products.findOne(@product)?.skulls?[0]
 
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
-
   quality: -> @availableQuality/@conversionQuality ?  @availableQuality
   totalPrice: -> @unitQuality*@unitPrice
   disableReturnMode: -> !Session.get('distributorManagementReturnMode')
+  showDeleteImport: ->
+    lastImportId = Session.get("distributorManagementCurrentDistributor")?.lastImport
+    if @_id is lastImportId and @creator is Session.get('myProfile').user
+      new Date(@version.createdAt.getFullYear(), @version.createdAt.getMonth(), @version.createdAt.getDate() + 1, @version.createdAt.getHours(), @version.createdAt.getMinutes(), @version.createdAt.getSeconds()) > new Date()
+
   importDetails: ->
     importId = UI._templateInstance().data._id
     Schema.productDetails.find {import: importId}, {sort: {'version.createdAt': 1}}
@@ -42,3 +46,39 @@ lemon.defineWidget Template.distributorManagementImportDetails,
           Session.set('distributorManagementReturnMode', true)
           Session.set('distributorManagementCurrentReturn', returnOption)
           $(".dual-detail .nano").nanoScroller({ scroll: 'bottom' })
+
+
+    "click .deleteImport": (event, template) ->
+      currentImport = @
+      #TODO kiem tra phieu kho co ban hang
+      if Schema.returns.find({timeLineImport: currentImport._id}).count() is 0
+        distributorIncOption =
+          importDebt: -currentImport.debtBalanceChange
+          importTotalCash: -currentImport.debtBalanceChange
+
+        transactions = Schema.transactions.find({latestImport: currentImport._id})
+        for transaction in transactions
+          distributorIncOption.importPaid = -transaction.debtBalanceChange
+          distributorIncOption.importDebt = transaction.debtBalanceChange
+          Schema.transactions.remove transaction._id
+        Schema.imports.remove currentImport._id
+        Schema.importDetails.find({import: currentImport._id}).forEach((detail)-> Schema.importDetails.remove detail._id)
+        Schema.productDetails.find({import: currentImport._id}).forEach(
+          (productDetail)->
+            Schema.productDetails.remove productDetail._id
+            Schema.products.update productDetail.product, $inc: {
+              availableQuality: productDetail.importPrice
+              inStockQuality  : productDetail.importPrice
+              availableQuality: productDetail.importPrice
+            }
+        )
+        lastImport = Schema.imports.findOne({distributor: currentImport.distributor, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
+        if lastImport
+          Schema.distributors.update currentImport.distributor, $set: {lastImport: lastImport._id}, $inc: distributorIncOption
+        else
+          Schema.distributors.update currentImport.distributor, $inc: distributorIncOption
+
+        Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
+        Meteor.call 'reCalculateMetroSummary'
+      else
+        console.log 'Co phieu tra hang, khong the xoa.'

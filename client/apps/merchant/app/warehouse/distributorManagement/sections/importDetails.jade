@@ -6,6 +6,8 @@ template(name="distributorManagementImportDetails")
       if disableReturnMode
         .commands
           .lemon.rounded.tiny.btn.purple.createReturnProduct: span.icon-reply-outline
+          if showDeleteImport
+            .lemon.rounded.tiny.btn.red.deleteImport: span.icon-minus-4
   each importDetails
     tr.detail-row
       td.first-column {{productName}}
