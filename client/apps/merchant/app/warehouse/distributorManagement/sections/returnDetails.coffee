@@ -48,8 +48,15 @@ lemon.defineWidget Template.distributorManagementReturnDetails,
         returnDetails = Schema.returnDetails.find({return: currentReturn._id}).fetch()
         (if detail.returnQuality is 0 then throw 'So luong lon hon 0.') for detail in returnDetails
 
+
+        totalReturnQuality = 0
+        totalReturnPrice = 0
+        for item in returnDetails
+          totalReturnQuality += item.returnQuality
+          totalReturnPrice += item.finalPrice
+
         returnDetails = _.chain(returnDetails)
-        .groupBy("productDetail")
+        .groupBy("product")
         .map (group, key) ->
           return {
           product: key
@@ -57,10 +64,61 @@ lemon.defineWidget Template.distributorManagementReturnDetails,
           }
         .value()
 
-#        for returnDetail in returnDetails
-#          transactionQuality = 0
-#          productDetails = Schema.productDetails.find({import: currentReturn.import, product: returnDetail.product}).fetch()
-#          for productDetail in productDetails
+        for returnDetail in returnDetails
+          quality = 0
+          Schema.productDetails.find({
+            import: currentReturn.import
+            product: returnDetail.product
+            availableQuality: {$gt:0}
+          }).forEach((productDetail)-> quality += productDetail.availableQuality)
+          if quality < returnDetail.quality then throw 'So luong khong du.'
+
+
+        for returnDetail in returnDetails
+          productDetails = Schema.productDetails.find({
+            import: currentReturn.import
+            product: returnDetail.product
+            availableQuality: {$gt:0}
+          }).fetch()
+
+          transactionQuality = 0
+          for productDetail in productDetails
+            requiredQuality = returnDetail.quality - transactionQuality
+            if productDetail.availableQuality > requiredQuality then takenQuality = requiredQuality
+            else takenQuality = productDetail.availableQuality
+
+            Schema.productDetails.update productDetail._id, $inc:{
+              availableQuality: -takenQuality
+              inStockQuality: -takenQuality
+              importPrice: -takenQuality
+            }
+            Schema.products.update productDetail.product  , $inc:{
+              availableQuality: -takenQuality
+              inStockQuality: -takenQuality
+              totalQuality: -takenQuality
+            }
+
+            transactionQuality += takenQuality
+            if transactionQuality == returnDetail.quality then break
+
+        Schema.distributors.update currentReturn.distributor
+        , $set:{returnImportModeEnabled: false}
+        , $unset:{currentReturn: true}
+        , $inc:{importTotalCash: -totalReturnPrice, importDebt: -totalReturnPrice}
+
+        console.log currentReturn
+        timeLineImport = Schema.imports.findOne({distributor: currentReturn.distributor, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
+        Schema.returns.update currentReturn._id, $set: {timeLineImport: timeLineImport._id, status: 2, 'version.createdAt': new Date(), allowDelete: false}
+        #update Metrosummary(so luong san pham mat di)
+
+        #cap nhat tien phai tra
+        Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
+
+
+
+
+
+
 
 
 #

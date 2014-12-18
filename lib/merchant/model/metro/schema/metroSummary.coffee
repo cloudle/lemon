@@ -123,6 +123,14 @@ simpleSchema.metroSummaries = new SimpleSchema
 
   version: { type: simpleSchema.Version }
 #------------------------------------------
+  totalReceivableCash:
+    type: Number
+    defaultValue: 0
+
+  totalPayableCash:
+    type: Number
+    defaultValue: 0
+#------------------------------------------
 
   discountDay:
     type: Number

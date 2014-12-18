@@ -7,6 +7,7 @@ lemon.defineWidget Template.distributorManagementImportDetails,
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
 
   quality: -> @availableQuality/@conversionQuality ?  @availableQuality
+  totalPrice: -> @unitQuality*@unitPrice
   disableReturnMode: -> !Session.get('distributorManagementReturnMode')
   importDetails: ->
     importId = UI._templateInstance().data._id

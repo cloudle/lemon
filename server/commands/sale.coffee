@@ -62,6 +62,7 @@ Meteor.methods
               status  : false
             updateSale(transaction.parent, saleOption)
             Meteor.call 'saleAccountingConfirmByDelivery', profile, currentSale._id
+            Meteor.call 'reCalculateMetroSummaryTotalReceivableCash', profile, currentSale._id
             MetroSummary.updateMetroSummaryByTransaction(transaction.merchant, debitCash)
     catch error
       throw new Meteor.Error('confirmReceiveSale', error)

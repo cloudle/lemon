@@ -2,6 +2,9 @@ simpleSchema.customSales = new SimpleSchema
   parentMerchant:
     type: String
 
+#  merchant:
+#    type: String
+
   creator:
     type: String
 

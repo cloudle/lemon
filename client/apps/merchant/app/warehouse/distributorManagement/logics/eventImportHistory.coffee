@@ -59,6 +59,7 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
       latestCustomImport = Schema.customImports.findOne({buyer: customImport.buyer}, {sort: {debtDate: -1, 'version.createdAt': -1}})
       if customImport._id is latestCustomImport._id
         Meteor.call('updateCustomImportByCreateCustomImportDetail', customImportDetail)
+        Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
       else console.log customImport._id, latestCustomImport._id
       $productName.val(''); $price.val(''); $quality.val(''); $skulls.val('')
       $productName.focus()
@@ -90,6 +91,7 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 
       if isValidDate and !isNaN(payAmount) and Number(payAmount) != 0 and (latestCustomImport is undefined || paidDate >= customImportCreatedAt)
         Meteor.call('createNewReceiptCashOfCustomImport', distributor._id, Number(payAmount), $payDescription.val(), paidDate)
+        Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
         Session.set("allowCreateTransactionOfCustomImport", false)
         $payDescription.val(''); $payAmount.val('')
 
@@ -102,6 +104,7 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 
       if latestImport and !isNaN(payAmount) and payAmount != 0
         Meteor.call('createNewReceiptCashOfImport', distributor._id, payAmount, $payDescription.val())
+        Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
         Session.set("allowCreateTransactionOfImport", false)
         $payDescription.val(''); $payAmount.val('')
 

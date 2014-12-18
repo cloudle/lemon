@@ -28,7 +28,9 @@ template(name="merchantHome")
         span.center.middle.caption: span.table: i.ico.icon-puzzle-outline
         span.bottom.middle.caption {{formatNumber Summary.data.productCount}} SẢN PHẨM
       .tile.quatro.lime(class="{{metroUnLocker Summary.data.staffCount}}" data-app='customerManagement')
-        span.top.middle.caption {{formatNumber Summary.data.customerCountAll}} KHÁCH HÀNG
+        span.top.middle.caption
+         h5 {{formatNumber Summary.data.customerCountAll}} KHÁCH HÀNG
+         h5 {{formatNumber Summary.data.totalReceivableCash}} PHẢI THU
         span.center.middle.caption: span.table: i.ico.huge.icon-contacts
       .tile.amethyst(class="{{metroUnLocker Summary.data.deliveryCount}}"
       data-app='deliveryManager')
@@ -72,7 +74,9 @@ template(name="merchantHome")
       //    i.ico.large.icon-chart-bar-4
       //  span.bottom.left.caption BÁO CÁO
       .tile.carrot.quatro(data-app='distributorManagement')
-        span.top.middle.caption {{formatNumber Summary.data.distributorCount}} NHÀ CUNG CẤP
+        span.top.middle.caption
+         h5 {{formatNumber Summary.data.distributorCount}} NHÀ CUNG CẤP
+         h5 {{formatNumber Summary.data.totalPayableCash}} CẦN TRẢ
         span.center.middle.caption: span.table: i.ico.huge.icon-anchor-outline
       .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}")
         span.center.middle.caption: span.table: i.ico.icon-book

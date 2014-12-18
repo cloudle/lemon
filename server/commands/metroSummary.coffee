@@ -2,6 +2,26 @@ Meteor.methods
 #  reCalculateMetroSummary: (id)->
 #    metro = MetroSummary.findOne(id)
 #    metro.updateMetroSummary()
+  reCalculateMetroSummaryTotalReceivableCash: ->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      metroSummaries = Schema.metroSummaries.find({parentMerchant: profile.parentMerchant}).fetch()
+      if metroSummaries.length > 0
+        totalSaleReceivableCash = 0
+        for customer in Schema.customers.find({parentMerchant: profile.parentMerchant}).fetch()
+          totalSaleReceivableCash += customer.customSaleDebt + customer.saleDebt
+      Schema.metroSummaries.update(metroSummary._id, $set:{totalReceivableCash: totalSaleReceivableCash}) for metroSummary in metroSummaries
+
+  reCalculateMetroSummaryTotalPayableCash: ->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      metroSummaries = Schema.metroSummaries.find({parentMerchant: profile.parentMerchant}).fetch()
+      if metroSummaries.length > 0
+        totalImportPayableCash = 0
+        for distributor in Schema.distributors.find({parentMerchant: profile.parentMerchant}).fetch()
+          totalImportPayableCash += distributor.customImportDebt + distributor.importDebt
+      Schema.metroSummaries.update(metroSummary._id, $set:{totalPayableCash: totalImportPayableCash}) for metroSummary in metroSummaries
+
+
+
 
   reCalculateMetroSummary: ->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
@@ -59,12 +79,12 @@ Meteor.methods
         importDepositCash = 0; importDebitCash = 0; importRevenueCash = 0
         for item in transactionCount.fetch()
           if item.group is 'sale'
-            saleDepositCash += item.depositCash
-            saleDebitCash   += item.debitCash
+#            saleDepositCash += item.depositCash
+#            saleDebitCash   += item.debitCash
             saleRevenueCash += item.totalCash
           if item.group is 'import'
-            importDepositCash += item.depositCash
-            importDebitCash   += item.debitCash
+#            importDepositCash += item.depositCash
+#            importDebitCash   += item.debitCash
             importRevenueCash += item.totalCash
     
         option =
@@ -96,5 +116,5 @@ Meteor.methods
           importDepositCash     : importDepositCash
           importDebitCash       : importDebitCash
           importRevenueCash     : importRevenueCash
-    
+
         Schema.metroSummaries.update metroSummary._id, $set: option
