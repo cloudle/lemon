@@ -4,7 +4,9 @@ lemon.defineWidget Template.distributorManagementImportDetails,
   totalDebtBalance: -> @latestDebtBalance + Session.get("distributorManagementCurrentDistributor")?.customImportDebt
   skulls: -> Schema.products.findOne(@product)?.skulls?[0]
 
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
+  unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
+
+  quality: -> @availableQuality/@conversionQuality ?  @availableQuality
   disableReturnMode: -> !Session.get('distributorManagementReturnMode')
   importDetails: ->
     importId = UI._templateInstance().data._id

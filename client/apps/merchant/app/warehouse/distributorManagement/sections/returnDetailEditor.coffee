@@ -2,15 +2,14 @@ lemon.defineHyper Template.distributorManagementReturnDetailEditor,
   productName: -> @name ? Schema.products.findOne(@product)?.name
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   crossReturnAvailableQuality: ->
-    currentProduct = Schema.productDetails.findOne(@productDetail)
+    currentProduct = Schema.productDetails.find({import: @import, product: @product}).fetch()
     sameProducts = Schema.returnDetails.find({return: @return, productDetail: @productDetail}).fetch()
     crossProductQuality = 0
+    currentProductQuality = 0
     crossProductQuality += item.returnQuality for item in sameProducts
-    cross =
-      product: currentProduct
-      quality: crossProductQuality
+    currentProductQuality += item.availableQuality for item in currentProduct
 
-    crossAvailable = cross.product.availableQuality - cross.quality
+    crossAvailable = currentProductQuality - crossProductQuality
     if crossAvailable < 0
       crossAvailable = Math.ceil(Math.abs(crossAvailable/@conversionQuality))*(-1)
     else

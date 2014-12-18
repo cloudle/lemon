@@ -8,15 +8,14 @@ lemon.defineWidget Template.distributorManagementReturnDetails,
     Schema.returnDetails.find {return: returnId}, {sort: {'version.createdAt': 1}}
 
   crossReturnAvailableQuality: ->
-    currentProduct = Schema.productDetails.findOne(@productDetail)
+    currentProduct = Schema.productDetails.find({import: @import, product: @product}).fetch()
     sameProducts = Schema.returnDetails.find({return: @return, productDetail: @productDetail}).fetch()
     crossProductQuality = 0
+    currentProductQuality = 0
     crossProductQuality += item.returnQuality for item in sameProducts
-    cross =
-      product: currentProduct
-      quality: crossProductQuality
+    currentProductQuality += item.availableQuality for item in currentProduct
 
-    crossAvailable = cross.product.availableQuality - cross.quality
+    crossAvailable = currentProductQuality - crossProductQuality
     if crossAvailable < 0
       crossAvailable = Math.ceil(Math.abs(crossAvailable/@conversionQuality))*(-1)
     else
@@ -49,40 +48,56 @@ lemon.defineWidget Template.distributorManagementReturnDetails,
         returnDetails = Schema.returnDetails.find({return: currentReturn._id}).fetch()
         (if detail.returnQuality is 0 then throw 'So luong lon hon 0.') for detail in returnDetails
 
-        productDetailIds = _.uniq(_.pluck(returnDetails, 'productDetail'))
-        productDetails = Schema.productDetails.find({_id:{$in: productDetailIds}}).fetch()
+        returnDetails = _.chain(returnDetails)
+        .groupBy("productDetail")
+        .map (group, key) ->
+          return {
+          product: key
+          quality: _.reduce(group, ((res, current) -> res + current.returnQuality), 0)
+          }
+        .value()
 
-        for productDetail in productDetails
-          returnDetails = _.where(returnDetails, {productDetail: productDetail._id})
-          crossProductQuality = 0
-          crossProductQuality += item.returnQuality for item in returnDetails
-          crossAvailable = productDetail.availableQuality - crossProductQuality
-          if crossAvailable < 0 then throw 'So luong khong du'
+#        for returnDetail in returnDetails
+#          transactionQuality = 0
+#          productDetails = Schema.productDetails.find({import: currentReturn.import, product: returnDetail.product}).fetch()
+#          for productDetail in productDetails
 
-        for productDetail in productDetails
-          totalReturnQuality = 0
-          totalReturnPrice = 0
-          returnDetails = _.where(returnDetails, {productDetail: productDetail._id})
 
-          for item in returnDetails
-            totalReturnQuality += item.returnQuality
-            totalReturnPrice += item.finalPrice
-
-          optionProduct =
-            importQuality   : -totalReturnQuality
-            availableQuality: -totalReturnQuality
-            inStockQuality  : -totalReturnQuality
-
-          Schema.productDetails.update productDetail._id, $inc: optionProduct
-          Schema.products.update productDetail.product, $inc: optionProduct, $inc: optionProduct
-          Schema.distributors.update productDetail.distributor
-          , $set:{returnImportModeEnabled: false}
-          , $unset:{currentReturn: true}
-          , $inc:{importTotalCash: -totalReturnPrice, importDebt: -totalReturnPrice}
-
-        timeLineImport = Schema.imports.findOne({distributor: productDetail.distributor, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
-        Schema.returns.update currentReturn._id, $set: {timeLineImport: timeLineImport._id, status: 2, 'version.createdAt': new Date(), allowDelete: false}
-        #update Metrosummary(so luong san pham mat di)
+#
+#        productDetailIds = _.uniq(_.pluck(returnDetails, 'productDetail'))
+#        productDetails = Schema.productDetails.find({_id:{$in: productDetailIds}}).fetch()
+#
+#        for productDetail in productDetails
+#          returnDetails = _.where(returnDetails, {productDetail: productDetail._id})
+#          crossProductQuality = 0
+#          crossProductQuality += item.returnQuality for item in returnDetails
+#          crossAvailable = productDetail.availableQuality - crossProductQuality
+#          if crossAvailable < 0 then throw 'So luong khong du'
+#
+#        for productDetail in productDetails
+#          totalReturnQuality = 0
+#          totalReturnPrice = 0
+#          returnDetails = _.where(returnDetails, {productDetail: productDetail._id})
+#
+#          for item in returnDetails
+#            totalReturnQuality += item.returnQuality
+#            totalReturnPrice += item.finalPrice
+#
+#          optionProduct =
+#            importQuality   : -totalReturnQuality
+#            availableQuality: -totalReturnQuality
+#            inStockQuality  : -totalReturnQuality
+#
+#          Schema.productDetails.update productDetail._id, $inc: optionProduct
+#          Schema.products.update productDetail.product, $inc: optionProduct, $inc: optionProduct
+#          Schema.distributors.update productDetail.distributor
+#          , $set:{returnImportModeEnabled: false}
+#          , $unset:{currentReturn: true}
+#          , $inc:{importTotalCash: -totalReturnPrice, importDebt: -totalReturnPrice}
+#
+#        timeLineImport = Schema.imports.findOne({distributor: productDetail.distributor, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
+#        Schema.returns.update currentReturn._id, $set: {timeLineImport: timeLineImport._id, status: 2, 'version.createdAt': new Date(), allowDelete: false}
+#        #update Metrosummary(so luong san pham mat di)
       catch error
         console.log error
 

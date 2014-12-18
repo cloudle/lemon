@@ -20,8 +20,10 @@ Apps.Merchant.importInit.push (scope) ->
       if importDetails.length > 0
         for detail in importDetails
           totalPrice += (detail.importQuality * detail.importPrice)
-          option = {totalPrice: totalPrice, deposit: totalPrice, debit: 0}
+          option = {totalPrice: totalPrice, debit: totalPrice - currentImport.deposit}
+#          option = {totalPrice: totalPrice, deposit: totalPrice, debit: 0}
       else option = {totalPrice: 0, deposit: 0, debit: 0}
+      console.log option
       Import.update importId, $set: option
 
   scope.addImportDetail = (currentProduct) ->

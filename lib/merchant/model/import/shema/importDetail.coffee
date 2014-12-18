@@ -20,6 +20,7 @@ simpleSchema.importDetails = new SimpleSchema
 
   importPrice:
     type: Number
+    decimal: true
 
   totalPrice:
     type: Number

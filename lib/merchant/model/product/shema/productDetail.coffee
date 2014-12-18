@@ -50,6 +50,7 @@ simpleSchema.productDetails = new SimpleSchema
   importPrice:
     type: Number
     min: 0
+    decimal: true
 
   expire:
     type: Date

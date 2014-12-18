@@ -9,6 +9,35 @@ Meteor.methods
       incOption = {totalSales: transaction.totalCash,  totalDebit: transaction.debitCash}
       Schema.distributors.update transaction.owner, $set: setOption, $inc: incOption
 
+  calculateDistributor: (id)->
+    if distributor = Schema.distributors.findOne(id)
+      distributorOption =
+        customImportPaid : 0
+        customImportLoan : 0
+        customImportDebt : 0
+        customImportTotalCash : 0
+#        importPaid      : 0
+#        importDebt      : 0
+#        importTotalCash : 0
+
+      Schema.customImports.find({seller: distributor._id}).forEach(
+        (customImport)->
+          distributorOption.customImportTotalCash += customImport.debtBalanceChange
+          distributorOption.customImportDebt += customImport.debtBalanceChange
+      )
+
+#      Schema.transactions.find({owner: distributor._id}).forEach(
+#        (transaction)->
+#          distributorOption.customImportPaid += transaction.debtBalanceChange
+#          distributorOption.customImportDebt -= transaction.debtBalanceChange
+#      )
+      console.log distributorOption
+
+      Schema.distributors.update distributor._id, $set: distributorOption
+
+
+
+
   distributorToImport : (distributor, profile)->
     try
       throw 'Chưa đăng nhập.' if !userId = Meteor.userId()
@@ -27,6 +56,7 @@ Meteor.methods
         Schema.userSessions.update {user: userId}, {$set:{'currentImport': importFound._id}}
 
       else throw 'Không tìm thấy nhà cung cấp'
+        #wRsWpe5F6ydP6wzjw
 
     catch error
       throw new Meteor.Error('distributorToImport', error)

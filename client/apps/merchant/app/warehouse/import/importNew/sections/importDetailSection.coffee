@@ -1,4 +1,5 @@
 setTime = -> Session.set('realtime-now', new Date())
+scope = logics.import
 
 lemon.defineHyper Template.importDetailSection,
   merchant: -> Schema.merchants.findOne(Session.get('myProfile')?.currentMerchant)
@@ -19,7 +20,8 @@ lemon.defineHyper Template.importDetailSection,
 
     "click .deleteImportDetail": (event, template) ->
       Schema.importDetails.remove @_id
-      Schema.imports.update @import, $inc:{totalPrice: -@totalPrice, deposit: -@totalPrice, debit: 0}
+      scope.reCalculateImport(@import)
+#      Schema.imports.update @import, $inc:{totalPrice: -@totalPrice, deposit: -@totalPrice, debit: 0}
 
     "keyup [name='importDescription']": (event, template)->
       if currentImport = Session.get('currentImport')

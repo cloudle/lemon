@@ -42,7 +42,7 @@ simpleSchema.orders = new SimpleSchema
 
   paymentMethod:
     type: Number
-    defaultValue: 0
+    defaultValue: 1
 
   billDiscount:
     type: Boolean
