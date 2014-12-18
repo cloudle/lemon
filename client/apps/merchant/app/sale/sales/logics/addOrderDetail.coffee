@@ -1,6 +1,9 @@
 optionOrderDetail = (currentOrder, product, productUnit,  quality, price, discountCash)->
   totalPrice      = quality * price
-  discountPercent = discountCash/(totalPrice)*100
+  if discountCash <= 0
+    discountPercent = 0
+  else
+    discountPercent = discountCash/(totalPrice)*100
   option =
     order            : currentOrder._id
     product          : product._id

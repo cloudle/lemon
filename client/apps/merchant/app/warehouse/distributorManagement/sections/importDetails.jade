@@ -9,7 +9,7 @@ template(name="distributorManagementImportDetails")
   each importDetails
     tr.detail-row
       td.first-column {{productName}}
-      td {{formatNumber importQuality}}
+      td {{formatNumber availableQuality}}/{{formatNumber importQuality}}
       td {{skulls}}
       td.number {{formatNumber importPrice}}
       td.last-column.number {{formatNumber totalPrice}}

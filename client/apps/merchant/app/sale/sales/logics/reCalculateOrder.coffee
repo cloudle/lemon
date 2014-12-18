@@ -37,8 +37,8 @@ calculateDefaultOrder = (currentOrder, orderDetails)->
       orderUpdate.discountCash = orderUpdate.discountCash
     else
       orderUpdate.discountCash += detail.discountCash
-  orderUpdate.discountPercent = orderUpdate.discountCash/orderUpdate.totalPrice*100
-  orderUpdate.finalPrice      = orderUpdate.totalPrice - orderUpdate.discountCash
+  if orderUpdate.discountCash > 0 then orderUpdate.discountPercent = orderUpdate.discountCash/orderUpdate.totalPrice*100
+  orderUpdate.finalPrice = orderUpdate.totalPrice - orderUpdate.discountCash
   orderUpdate
 
 updateOrderByOrderDetail = (currentOrder, orderDetails)->
@@ -47,6 +47,7 @@ updateOrderByOrderDetail = (currentOrder, orderDetails)->
   updateOrder.currentDeposit = updateOrder.finalPrice
   updateOrder.deposit = updateOrder.finalPrice
   updateOrder.debit = 0
+
   Schema.orders.update currentOrder._id, $set: updateOrder
 
   currentOrder.saleCount       = updateOrder.saleCount

@@ -38,6 +38,7 @@ lemon.defineHyper Template.distributorManagementReturnDetailEditor,
     "keypress input[name]": (event, template) ->
       #TODO: Kiem tra trung ten & unit!
       returnQuality = Number(template.ui.$returnQuality.inputmask('unmaskedvalue'))
+      console.log returnQuality
       returnPrice = Number(template.ui.$returnPrice.inputmask('unmaskedvalue'))
       returnPrice = 0 if returnPrice < 0
 
