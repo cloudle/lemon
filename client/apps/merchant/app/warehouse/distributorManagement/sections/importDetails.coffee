@@ -5,8 +5,16 @@ lemon.defineWidget Template.distributorManagementImportDetails,
   skulls: -> Schema.products.findOne(@product)?.skulls?[0]
 
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
-  quality: -> @availableQuality/@conversionQuality ?  @availableQuality
-  totalPrice: -> @unitQuality*@unitPrice
+  quality: ->
+    if @conversionQuality then @unitQuality
+    else @importQuality
+
+  totalPrice: ->
+    if @conversionQuality then @unitQuality*@unitPrice
+    else @importQuality*@importPrice
+
+  importPrice: -> if @conversionQuality then @unitPrice else @importPrice
+
   disableReturnMode: -> !Session.get('distributorManagementReturnMode')
   showDeleteImport: ->
     lastImportId = Session.get("distributorManagementCurrentDistributor")?.lastImport

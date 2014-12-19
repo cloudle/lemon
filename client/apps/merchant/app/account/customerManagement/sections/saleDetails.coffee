@@ -39,7 +39,6 @@ lemon.defineWidget Template.customerManagementSaleDetails,
             Schema.saleDetails.remove detail._id
 
             Schema.productDetails.update detail.productDetail, $inc: {
-              unitQuality      : detail.unitQuality
               availableQuality : detail.quality
               inStockQuality   : detail.quality
             }

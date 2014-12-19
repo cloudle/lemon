@@ -15,11 +15,6 @@ lemon.defineApp Template.sales,
       else if !order.currentUnit
         if @product._id is order.currentProduct then 'active' else ''
 
-
-
-
-
-
   created: ->
     lemon.dependencies.resolve('saleManagement')
     Session.setDefault('allowCreateOrderDetail', false)
@@ -85,4 +80,5 @@ lemon.defineApp Template.sales,
           saleId = result
           Meteor.call 'confirmReceiveSale', saleId, (error, result) -> if error then console.log error
           Meteor.call 'createSaleExport', saleId, (error, result) ->  if error then console.log error
+          Meteor.call 'reCalculateMetroSummaryTotalReceivableCash', saleId
           Schema.customers.update(Session.get('currentOrder').buyer, $set: {lastSales: saleId})
