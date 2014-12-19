@@ -8,8 +8,9 @@ lemon.defineWidget Template.customerManagementSaleDetails,
 
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   showDeleteSales: ->
-    lastSaleId = Session.get("customerManagementCurrentCustomer")?.lastSales
-    if @_id is lastSaleId and @creator is Session.get('myProfile').user
+#    lastSaleId = Session.get("customerManagementCurrentCustomer")?.lastSales
+#    if @_id is lastSaleId and @creator is Session.get('myProfile').user
+    if @creator is Session.get('myProfile').user
       new Date(@version.createdAt.getFullYear(), @version.createdAt.getMonth(), @version.createdAt.getDate() + 1, @version.createdAt.getHours(), @version.createdAt.getMinutes(), @version.createdAt.getSeconds()) > new Date()
 
   saleDetails: ->
@@ -20,18 +21,20 @@ lemon.defineWidget Template.customerManagementSaleDetails,
 
   events:
     "click .deleteSales": (event, template) ->
-      console.log 'delete'
-      currentSales = @
-      if Schema.returns.find({timeLineSales: currentSales._id}).count() is 0
+      try
+        currentSales = @
+        throw 'Phiếu bán đã trả hàng không thể xóa.' if Schema.returns.find({timeLineSales: currentSales._id}).count() > 0
+
         customerIncOption =
           saleDebt: -currentSales.debtBalanceChange
           saleTotalCash: -currentSales.debtBalanceChange
 
-        transactions = Schema.transactions.find({latestSale: currentSales._id})
-        for transaction in transactions
-          customerIncOption.salePaid = -transaction.debtBalanceChange
-          customerIncOption.saleDebt = transaction.debtBalanceChange
-          Schema.transactions.remove transaction._id
+        Schema.transactions.find({latestSale: currentSales._id}).forEach(
+          (transaction) ->
+            customerIncOption.salePaid = -transaction.debtBalanceChange
+            customerIncOption.saleDebt = -transaction.latestDebtBalance
+            Schema.transactions.remove transaction._id
+        )
 
         Schema.sales.remove currentSales._id
         Schema.saleDetails.find({sale: currentSales._id}).forEach(
@@ -49,6 +52,25 @@ lemon.defineWidget Template.customerManagementSaleDetails,
             }
         )
 
+        tempBeforeDebtBalance = currentSales.beforeDebtBalance
+        Schema.sales.find({buyer: currentSales.buyer, 'version.createdAt': {$gt: currentSales.version.createdAt} }
+        , {sort: {'version.createdAt': 1}}).forEach(
+          (sale) ->
+            Schema.sales.update sale._id, $set:{
+              beforeDebtBalance: tempBeforeDebtBalance
+              latestDebtBalance: tempBeforeDebtBalance + sale.debtBalanceChange
+            }
+            tempBeforeDebtBalance += sale.debtBalanceChange
+            Schema.transactions.find({latestSale: sale._id}).forEach(
+              (transaction) ->
+                Schema.transactions.update transaction._id, $set:{
+                  beforeDebtBalance: tempBeforeDebtBalance
+                  latestDebtBalance: tempBeforeDebtBalance - transaction.debtBalanceChange
+                }
+                tempBeforeDebtBalance -= transaction.debtBalanceChange
+            )
+        )
+
         lastSale = Schema.sales.findOne({buyer: currentSales.buyer}, {sort: {'version.createdAt': -1}})
         if lastSale
           Schema.customers.update currentSales.buyer, $set: {lastSales: lastSale._id}, $inc: customerIncOption
@@ -57,4 +79,5 @@ lemon.defineWidget Template.customerManagementSaleDetails,
 
         Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
         Meteor.call 'reCalculateMetroSummary'
-      else
+      catch error
+        console.log error

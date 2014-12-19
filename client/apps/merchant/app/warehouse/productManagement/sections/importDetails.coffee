@@ -8,6 +8,7 @@ lemon.defineWidget Template.productManagementImportDetails,
       Schema.distributors.findOne(distributorId)?.name
 
   totalPrice: -> @importPrice * @importQuality
+  expireDate: -> if @exprire then moment(@exprire).format('DD/MM/YYYY') else 'KHÔNG'
 
   importDetails: ->
     importId = UI._templateInstance().data._id
