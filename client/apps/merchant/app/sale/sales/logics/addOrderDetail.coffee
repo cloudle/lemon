@@ -38,9 +38,10 @@ reUpdateQualityOfOrderDetail = (newOrderDetail, oldOrderDetail) ->
 
 checkingAddOrderDetail= (newOrderDetail, orderDetails)->
   existedQuery =
-    product         : newOrderDetail.product
-    price           : newOrderDetail.price
-    discountPercent : newOrderDetail.discountPercent
+    product           : newOrderDetail.product
+    price             : newOrderDetail.price
+    discountPercent   : newOrderDetail.discountPercent
+    conversionQuality : newOrderDetail.conversionQuality
   existedQuery.unit = newOrderDetail.unit if newOrderDetail.unit
 
   if findOldOrderDetail =_.findWhere(orderDetails, existedQuery)

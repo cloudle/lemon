@@ -59,3 +59,4 @@ Apps.Merchant.productManagementInit.push (scope) ->
           UserSession.set('currentProductManagementSelection', productId)
           template.ui.$searchFilter.val(''); Session.set("productManagementSearchFilter", "")
           break
+      MetroSummary.updateMetroSummaryBy(['product'])

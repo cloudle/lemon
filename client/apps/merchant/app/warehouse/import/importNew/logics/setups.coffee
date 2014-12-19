@@ -63,3 +63,4 @@ Apps.Merchant.importInit.push (scope) ->
           Schema.imports.update Session.get('currentImport')._id, $set:{currentProduct: productId}
           template.ui.$searchFilter.val(''); Session.set("importManagementSearchFilter", "")
           break
+      MetroSummary.updateMetroSummaryBy(['product'])

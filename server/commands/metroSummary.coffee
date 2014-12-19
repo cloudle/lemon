@@ -34,7 +34,7 @@ Meteor.methods
         customerCount    = Schema.customers.find({currentMerchant: metroSummary.merchant})
         customerCountAll = Schema.customers.find({parentMerchant: metroSummary.parentMerchant})
     
-        products         = Schema.products.find({merchant: metroSummary.merchant })
+        products         = Schema.products.find({merchant: metroSummary.merchant})
         importCount      = Schema.imports.find({finish: true, merchant: metroSummary.merchant})
         saleCount        = Schema.sales.find({merchant: metroSummary.merchant })
         deliveryCount    = Schema.deliveries.find({merchant: metroSummary.merchant})

@@ -121,3 +121,4 @@ lemon.defineHyper Template.productManagementOverviewSection,
       if @allowDelete
         Schema.products.remove @_id
         UserSession.set('currentProductManagementSelection', Schema.products.findOne()?._id ? '')
+        MetroSummary.updateMetroSummaryBy(['product'])
