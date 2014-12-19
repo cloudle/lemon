@@ -1,13 +1,17 @@
 template(name="customerManagementSaleDetails")
   tr.header-row
-    td(colspan="5")
+    td.has-commands(colspan="5")
       | .
       .bill-header <b>{{momentCalendar version.createdAt}}</b>. {{description}}.
+      .commands
+        if showDeleteSales
+          .lemon.rounded.tiny.btn.red.deleteSales: span.icon-minus-4
+
   each saleDetails
     tr.detail-row
       td.first-column {{productName}}
-      td {{formatNumber quality}}
-      td {{skulls}}
+      td {{formatNumber unitQuality}}
+      td {{unitName}}
       td.number {{formatNumber price}}
       td.last-column.number {{formatNumber finalPrice}}
   tr.detail-row.summary-row

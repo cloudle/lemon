@@ -85,3 +85,4 @@ lemon.defineApp Template.sales,
           saleId = result
           Meteor.call 'confirmReceiveSale', saleId, (error, result) -> if error then console.log error
           Meteor.call 'createSaleExport', saleId, (error, result) ->  if error then console.log error
+          Schema.customers.update(Session.get('currentOrder').buyer, $set: {lastSales: saleId})

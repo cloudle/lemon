@@ -66,6 +66,9 @@ Meteor.publishComposite 'customerManagementData', (customerId, currentRecords = 
         find: (sale, customer) -> Schema.saleDetails.find {sale: sale._id}
         children: [
           find: (saleDetail, customer) -> Schema.products.find {_id: saleDetail.product}
+          children: [
+            find: (product, customer) -> Schema.productUnits.find {product: product._id}
+          ]
         ]
       ,
         find: (sale, customer) -> Schema.returns.find {sale: sale._id}

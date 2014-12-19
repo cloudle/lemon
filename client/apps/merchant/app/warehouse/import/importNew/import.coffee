@@ -11,19 +11,19 @@ lemon.defineApp Template.import,
         if Session.get('showEditProduct') then true else false
       else true
     else false
-  showEditProductCommand: -> if Session.get('currentImport')?.currentProduct is @._id then true else false
   unitName: -> if @unit then @unit.unit else @product.basicUnit
+  showEditProductCommand: ->
+#    if currentImport = Session.get('currentImport')
+#      if @unit
+#        if currentImport.currentUnit is @unit._id then true else false
+#      else if !currentImport.currentUnit
+#        if @product._id is currentImport.currentProduct then true else false
   productSelectionActiveClass: ->
     if currentImport = Session.get('currentImport')
       if @unit
         if currentImport.currentUnit is @unit._id then 'active' else ''
       else if !currentImport.currentUnit
         if @product._id is currentImport.currentProduct then 'active' else ''
-
-  rendered: ->
-    logics.import.templateInstance = @
-    @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
-
 
   created: ->
     lemon.dependencies.resolve('importManagement')
@@ -35,6 +35,11 @@ lemon.defineApp Template.import,
 
         Session.set('importCurrentProduct', Schema.products.findOne currentImport.currentProduct)
         scope.currentImportDetails = ImportDetail.findBy(currentImport._id)
+
+  rendered: ->
+    logics.import.templateInstance = @
+    @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
+    @ui.$depositCash.val Session.get('currentImport')?.deposit ? 0
 
   events:
 #    "click .add-product": (event, template) -> $(template.find '#addProduct').modal()
@@ -96,7 +101,7 @@ lemon.defineApp Template.import,
     'keyup .deposit': (event, template)->
       if currentImport = Session.get('currentImport')
         deposit = Math.abs($(template.find(".deposit")).inputmask('unmaskedvalue'))
-        Schema.imports.update(currentImport._id, $set:{deposit: deposit})
+        Schema.imports.update(currentImport._id, $set:{deposit: deposit, debit: currentImport.totalPrice - deposit})
 
     'click .addImportDetail': (event, template)->
       if importDetail = Schema.importDetails.findOne(scope.addImportDetail(@))

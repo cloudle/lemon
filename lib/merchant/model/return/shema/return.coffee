@@ -11,22 +11,6 @@ simpleSchema.returns = new SimpleSchema
   returnCode:
     type: String
 
-  sale:
-    type: String
-    optional: true
-
-  timeLineImport:
-    type: String
-    optional: true
-
-  import:
-    type: String
-    optional: true
-
-  distributor:
-    type: String
-    optional: true
-
   discountCash:
     type: Number
 
@@ -60,7 +44,32 @@ simpleSchema.returns = new SimpleSchema
     optional: true
 
   version: { type: simpleSchema.Version }
-#-------------------------------------------------
+#------------------------
+  sale:
+    type: String
+    optional: true
+
+  timeLineSales:
+    type: String
+    optional: true
+
+  customer:
+    type: String
+    optional: true
+#------------------------
+  import:
+    type: String
+    optional: true
+
+  timeLineImport:
+    type: String
+    optional: true
+
+  distributor:
+    type: String
+    optional: true
+
+#------------------------
   creatorName:
     type: String
     optional: true

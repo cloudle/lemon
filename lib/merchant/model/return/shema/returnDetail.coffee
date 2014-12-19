@@ -41,6 +41,7 @@ simpleSchema.returnDetails  = new SimpleSchema
 
   price:
     type: Number
+    decimal: true
 
   discountCash:
     type: Number

@@ -3,11 +3,11 @@ template(name="distributorManagementImportDetails")
     td.has-commands(colspan="5")
       | .
       .bill-header <b>{{momentCalendar debtDate}}</b>. {{description}}.
-      if disableReturnMode
-        .commands
+      .commands
+        if disableReturnMode
           .lemon.rounded.tiny.btn.purple.createReturnProduct: span.icon-reply-outline
-          if showDeleteImport
-            .lemon.rounded.tiny.btn.red.deleteImport: span.icon-minus-4
+        if showDeleteImport
+          .lemon.rounded.tiny.btn.red.deleteImport: span.icon-minus-4
   each importDetails
     tr.detail-row
       td.first-column {{productName}}

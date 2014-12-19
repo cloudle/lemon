@@ -78,6 +78,11 @@ simpleSchema.customers = new SimpleSchema
   totalPurchases:
     type: Number
     defaultValue: 0
+
+  lastSales:
+    type: String
+    optional: true
+
 #----------------------------------------------
   totalCustomSaleDeposit:
     type: Number

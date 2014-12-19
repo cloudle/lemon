@@ -45,10 +45,11 @@ lemon.defineHyper Template.distributorManagementReturnDetailEditor,
         unitReturnQuality : returnQuality - @unitReturnQuality
         unitReturnsPrice  : returnPrice - @unitReturnsPrice
         returnQuality     : (returnQuality*@conversionQuality) - @returnQuality
-        price             : (returnPrice/@conversionQuality) - @price
-        finalPrice        : (returnQuality*returnPrice) - @finalPrice
+      returnDetailOption.finalPrice = (returnQuality*returnPrice) - @finalPrice
+      price = returnDetailOption.unitReturnsPrice/(returnDetailOption.unitReturnQuality * @conversionQuality)
+
       console.log returnDetailOption
-      Schema.returnDetails.update @_id, $inc: returnDetailOption
+      Schema.returnDetails.update @_id, $set:{price: price}, $inc: returnDetailOption
 
       finalPrice = 0; Schema.returnDetails.find({return: @return}).forEach((detail)-> finalPrice += detail.finalPrice)
       Schema.returns.update @return, $set:{totalPrice: finalPrice, finallyPrice: finalPrice}

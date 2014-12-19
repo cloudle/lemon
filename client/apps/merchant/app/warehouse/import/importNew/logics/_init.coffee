@@ -30,8 +30,8 @@ Apps.Merchant.importReactive.push (scope) ->
       Session.set('currentImportDistributor', Schema.distributors.findOne(Session.get('currentImport').distributor))
 
 
-  if currentImport = scope.currentImport
-    $("[name=depositCash]").val(currentImport.deposit)
+#  if currentImport = scope.currentImport
+#    $("[name=depositCash]").val(currentImport.deposit)
 
   if Session.get("currentImport")?.submitted is true
     Session.set("importEditingRowId")
