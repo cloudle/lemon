@@ -62,7 +62,7 @@ lemon.defineWidget Template.distributorManagementImportDetails,
         if Schema.returns.find({timeLineImport: currentImport._id}).count() > 0 then throw 'Đã trả hàng không thể xóa'
         productDetails = Schema.productDetails.find({import: currentImport._id}).fetch()
         for productDetail in productDetails
-          if productDetail.importQuality != productDetail.availableQuality !=  productDetail.inStockQuality
+          if productDetail.importQuality != productDetail.availableQuality or productDetail.importQuality !=  productDetail.inStockQuality
             throw 'Đã bán hàng khong thể xóa'
 
         distributorIncOption =

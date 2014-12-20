@@ -8,9 +8,7 @@ lemon.defineWidget Template.customerManagementSaleDetails,
 
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   showDeleteSales: ->
-#    lastSaleId = Session.get("customerManagementCurrentCustomer")?.lastSales
-#    if @_id is lastSaleId and @creator is Session.get('myProfile').user
-    if @creator is Session.get('myProfile').user
+    if @creator is Session.get('myProfile').user and @paymentsDelivery is 0
       new Date(@version.createdAt.getFullYear(), @version.createdAt.getMonth(), @version.createdAt.getDate() + 1, @version.createdAt.getHours(), @version.createdAt.getMinutes(), @version.createdAt.getSeconds()) > new Date()
 
   saleDetails: ->
@@ -24,7 +22,7 @@ lemon.defineWidget Template.customerManagementSaleDetails,
       try
         currentSales = @
         throw 'Phiếu bán đã trả hàng không thể xóa.' if Schema.returns.find({timeLineSales: currentSales._id}).count() > 0
-
+        throw 'Không thể xóa khi có phiếu giao hàng.' if @paymentsDelivery is 1
         customerIncOption =
           saleDebt: -currentSales.debtBalanceChange
           saleTotalCash: -currentSales.debtBalanceChange
@@ -32,7 +30,7 @@ lemon.defineWidget Template.customerManagementSaleDetails,
         Schema.transactions.find({latestSale: currentSales._id}).forEach(
           (transaction) ->
             customerIncOption.salePaid = -transaction.debtBalanceChange
-            customerIncOption.saleDebt = -transaction.latestDebtBalance
+            customerIncOption.saleDebt = -(currentSales.debtBalanceChange - transaction.debtBalanceChange)
             Schema.transactions.remove transaction._id
         )
 

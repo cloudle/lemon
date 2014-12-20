@@ -82,13 +82,12 @@ Meteor.methods
 
           setOption=
             provider    : importDetail.provider
-            importPrice : importDetail.importPrice
+            importPrice : Math.ceil(importDetail.importPrice)
             allowDelete : false
           setOption.price = importDetail.salePrice if importDetail.salePrice
 
           Schema.products.update product._id, $inc: incOption, $set: setOption, (error, result) ->
             if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
-
         navigateNewTab(currentImport._id, profile)
         if distributor = Schema.distributors.findOne(currentImport.distributor)
           updateBuiltInOfDistributor(distributor._id, importDetails)

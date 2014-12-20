@@ -2,7 +2,10 @@ template(name="customerManagementSaleDetails")
   tr.header-row
     td.has-commands(colspan="5")
       | .
-      .bill-header <b>{{momentCalendar version.createdAt}}</b>. {{description}}.
+      .bill-header
+        |<b>{{momentCalendar version.createdAt}}</b>.
+        if description
+          |{{description}}.
       .commands
         if showDeleteSales
           .lemon.rounded.tiny.btn.red.deleteSales: span.icon-minus-4
