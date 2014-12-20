@@ -81,4 +81,4 @@ lemon.defineApp Template.sales,
           Meteor.call 'confirmReceiveSale', saleId, (error, result) -> if error then console.log error
           Meteor.call 'createSaleExport', saleId, (error, result) ->  if error then console.log error
           Meteor.call 'reCalculateMetroSummaryTotalReceivableCash', saleId
-          Schema.customers.update(Session.get('currentOrder').buyer, $set: {lastSales: saleId})
+#          Schema.customers.update(Session.get('currentOrder').buyer, $set: {lastSales: saleId})

@@ -39,15 +39,17 @@ lemon.defineWidget Template.customerManagementSaleDetails,
           (detail)->
             Schema.saleDetails.remove detail._id
 
-            Schema.productDetails.update detail.productDetail, $inc: {
-              availableQuality : detail.quality
-              inStockQuality   : detail.quality
-            }
+            product = Schema.products.findOne(detail.product)
+            if product.basicDetailModeEnabled is false
+              Schema.productDetails.update detail.productDetail, $inc: {
+                availableQuality : detail.quality
+                inStockQuality   : detail.quality
+              }
 
-            Schema.products.update detail.product, $inc: {
-              availableQuality: detail.quality
-              inStockQuality  : detail.quality
-            }
+              Schema.products.update detail.product, $inc: {
+                availableQuality: detail.quality
+                inStockQuality  : detail.quality
+              }
         )
 
         tempBeforeDebtBalance = currentSales.beforeDebtBalance

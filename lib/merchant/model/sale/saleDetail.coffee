@@ -29,3 +29,23 @@ Schema.add 'saleDetails', "SaleDetail", class SaleDetail
 
     option._id = @schema.insert option
     option
+
+  @createSaleDetailByProduct = (currentSale, orderDetail)->
+    option =
+      sale             : currentSale._id
+      product          : orderDetail.product
+      quality          : orderDetail.quality
+      price            : orderDetail.price
+      totalPrice       : orderDetail.totalPrice
+      finalPrice       : orderDetail.finalPrice
+      discountCash     : orderDetail.discountCash
+      discountPercent  : orderDetail.discountPercent
+      returnQuality    : 0
+      export           : false
+      status           : false
+      unitQuality      : orderDetail.unitQuality
+      unitPrice        : orderDetail.unitPrice
+      conversionQuality: orderDetail.conversionQuality
+    option.unit = orderDetail.unit if orderDetail.unit
+    option._id = @schema.insert option
+    option

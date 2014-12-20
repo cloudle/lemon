@@ -36,12 +36,20 @@ Template.registerHelper 'crossBillAvailableQuality', ->
   else
     Math.ceil(Math.abs(crossAvailable/@conversionQuality))
 
-  return {
-    crossAvailable: crossAvailable
-    isValid: crossAvailable > 0
-    invalid: crossAvailable < 0
-    errorClass: if crossAvailable >= 0 then '' else 'errors'
-  }
+  if cross.product.basicDetailModeEnabled is true
+    return {
+    crossAvailable: 0
+    isValid: true
+    invalid: false
+    errorClass: ''
+    }
+  else
+    return {
+      crossAvailable: crossAvailable
+      isValid: crossAvailable > 0
+      invalid: crossAvailable < 0
+      errorClass: if crossAvailable >= 0 then '' else 'errors'
+    }
 
 Template.registerHelper 'aliasLetter', (fullAlias) -> fullAlias?.substring(0,1)
 

@@ -39,15 +39,13 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
 
     "click .basicDetailModeDisable": ->
       if product = Session.get("productManagementCurrentProduct")
-        Schema.products.update product._id, $set:{basicDetailModeEnabled: false}
-        Schema.productDetails.find({product: product._id, import: {$exists: false} }).forEach(
-          (item)-> Schema.productDetails.update item._id, $set: {allowDelete: false}
-        )
+        if product.basicDetailModeEnabled is true
+          Meteor.call('updateProductBasicDetailMode', product._id)
 
-#        Session.set("productManagementDetailEditingRowId")
-#        Session.set("productManagementDetailEditingRow")
-#        Session.set("productManagementUnitEditingRowId")
-#        Session.set("productManagementUnitEditingRow")
+  #        Session.set("productManagementDetailEditingRowId")
+  #        Session.set("productManagementDetailEditingRow")
+  #        Session.set("productManagementUnitEditingRowId")
+  #        Session.set("productManagementUnitEditingRow")
 
     "click .delete-basicDetail": ->
       if @allowDelete

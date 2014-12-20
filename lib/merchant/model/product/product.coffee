@@ -2,8 +2,8 @@ Schema.add 'products', "Product", class Product
   @insideWarehouse: (warehouseId) ->
     @schema.find({
       warehouse: warehouseId
-      availableQuality: {$gt: 0}
-      basicDetailModeEnabled: false
+#      availableQuality: {$gt: 0}
+#      basicDetailModeEnabled: false
     },{sort: {'version.createdAt': -1}})
 
   @findBy: (productId, warehouseId = null, merchantId = null)->

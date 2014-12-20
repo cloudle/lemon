@@ -170,8 +170,8 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
         incOption.deliveryCount        = 1
         incOption.deliveryProductCount = sale.saleCount
 
-      incOption.cogsDay += detail.totalCogs for detail in saleDetails.fetch()
-      incOption.profitabilityDay = sale.finalPrice - incOption.cogsDay
+#      incOption.cogsDay += detail.totalCogs for detail in saleDetails.fetch()
+#      incOption.profitabilityDay = sale.finalPrice - incOption.cogsDay
 #
 #      oldSale = Schema.sales.findOne({$and: [
 #        {merchant: sale.merchant}

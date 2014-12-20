@@ -7,6 +7,7 @@ simpleSchema.saleDetails = new SimpleSchema
 
   productDetail:
     type: String
+    optional: true
 
   color:
     type: String
@@ -21,6 +22,7 @@ simpleSchema.saleDetails = new SimpleSchema
 
   price:
     type: Number
+    decimal: true
 
   discountCash:
     type: Number
@@ -30,11 +32,15 @@ simpleSchema.saleDetails = new SimpleSchema
     type: Number
     decimal: true
 
+  totalPrice:
+    type: Number
+
   finalPrice:
     type: Number
 
   totalCogs:
     type: Number
+    optional: true
 
   styles:
     type: String

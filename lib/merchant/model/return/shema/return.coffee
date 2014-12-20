@@ -68,7 +68,18 @@ simpleSchema.returns = new SimpleSchema
   distributor:
     type: String
     optional: true
+#------------------------
+  beforeDebtBalance:
+    type: Number
+    optional: true
 
+  debtBalanceChange:
+    type: Number
+    optional: true
+
+  latestDebtBalance:
+    type: Number
+    optional: true
 #------------------------
   creatorName:
     type: String

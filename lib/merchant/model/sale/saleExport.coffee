@@ -6,10 +6,18 @@ Schema.add 'saleExports', "SaleExport", class SaleExport
       creator       : Meteor.userId()
       sale          : sale._id
       product       : saleDetail.product
-      productDetail : saleDetail.productDetail
-      name          : saleDetail.name
-      skulls        : saleDetail.skulls
       qualityExport : saleDetail.quality
+      unitQuality       : saleDetail.unitQuality
+      unitPrice         : saleDetail.unitPrice
+      conversionQuality : saleDetail.conversionQuality
+
+    option.unit   = saleDetail.unit if saleDetail.unit
+    option.skulls = saleDetail.skulls if saleDetail.skulls
+    option.productDetail = saleDetail.productDetail if saleDetail.productDetail
+    option
+
+
+
 
 
 

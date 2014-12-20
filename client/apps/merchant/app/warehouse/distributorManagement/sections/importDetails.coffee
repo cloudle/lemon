@@ -47,6 +47,9 @@ lemon.defineWidget Template.distributorManagementImportDetails,
             finallyPrice    : 0
             status          : 0
             comment         : "Trả hàng cho nhà cung cấp"
+            beforeDebtBalance: distributor.customImportDebt + distributor.importDebt
+            debtBalanceChange: 0
+            latestDebtBalance: distributor.customImportDebt + distributor.importDebt
           returnId = Schema.returns.insert returnOption
           returnOption._id = returnId
           Schema.distributors.update @distributor, $set:{returnImportModeEnabled: true, currentReturn: returnId}
@@ -54,7 +57,6 @@ lemon.defineWidget Template.distributorManagementImportDetails,
           Session.set('distributorManagementReturnMode', true)
           Session.set('distributorManagementCurrentReturn', returnOption)
           $(".dual-detail .nano").nanoScroller({ scroll: 'bottom' })
-
 
     "click .deleteImport": (event, template) ->
       try
@@ -72,7 +74,7 @@ lemon.defineWidget Template.distributorManagementImportDetails,
         transactions = Schema.transactions.find({latestImport: currentImport._id})
         for transaction in transactions
           distributorIncOption.importPaid = -transaction.debtBalanceChange
-          distributorIncOption.importDebt = transaction.debtBalanceChange
+          distributorIncOption.importDebt = -(currentImport.debtBalanceChange - transaction.debtBalanceChange)
           Schema.transactions.remove transaction._id
 
         for productDetail in productDetails

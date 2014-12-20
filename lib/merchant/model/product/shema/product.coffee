@@ -37,22 +37,23 @@ simpleSchema.products = new SimpleSchema
 
   alertQuality:
     type: Number
-    min: 0
     defaultValue: 0
+
+  salesQuality:
+    type: Number
+    defaultValue: 0
+    optional: true
 
   totalQuality:
     type: Number
-    min: 0
     defaultValue: 0
 
   availableQuality:
     type: Number
-    min: 0
     defaultValue: 0
 
   inStockQuality:
     type: Number
-    min: 0
     defaultValue: 0
 
   upperGapQuality:
@@ -61,7 +62,6 @@ simpleSchema.products = new SimpleSchema
 
   price:
     type: Number
-    min: 0
     defaultValue: 0
 
   allowDelete:

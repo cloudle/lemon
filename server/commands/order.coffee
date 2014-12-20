@@ -8,10 +8,11 @@ checkProductInStockQuality = (orderDetails, products)->
     }
   .value()
   try
-    for currentDetail in orderDetails
-      currentProduct = _.findWhere(products, {_id: currentDetail.product})
-      if currentProduct.availableQuality < currentDetail.quality
-        throw {message: "lỗi", item: currentDetail}
+    if products.length > 0
+      for currentDetail in orderDetails
+        currentProduct = _.findWhere(products, {_id: currentDetail.product})
+        if currentProduct.availableQuality < currentDetail.quality
+          throw {message: "lỗi", item: currentDetail}
 
     return {}
   catch e
@@ -40,12 +41,19 @@ createSaleAndSaleOrder = (order, orderDetails)->
   if !currentSale then throw new Meteor.Error("Create sale fail.")
 
   for currentOrderDetail in orderDetails
-    productDetails = Schema.productDetails.find({product: currentOrderDetail.product, availableQuality: {$gt: 0}}).fetch()
-    subtractQualityOnSales(productDetails, currentOrderDetail, currentSale)
+    product = Schema.products.findOne(currentOrderDetail.product)
+    if !product then throw new Meteor.Error("Not Find product.")
+    if product.basicDetailModeEnabled is true
+      SaleDetail.createSaleDetailByProduct(currentSale, currentOrderDetail)
+    else
+      productDetails = Schema.productDetails.find({product: currentOrderDetail.product, availableQuality: {$gt: 0}}).fetch()
+      subtractQualityOnSales(productDetails, currentOrderDetail, currentSale)
+
   option = {status: true}
   if currentSale.paymentsDelivery == 1
     deliveryOption = Delivery.newBySale(order, currentSale)
     option.delivery = Schema.deliveries.insert deliveryOption
+
   Schema.userProfiles.update option.creator, $set:{allowDelete: false}
   Schema.userProfiles.update option.seller, $set:{allowDelete: false} if option.creator isnt option.seller
   Schema.sales.update currentSale._id, $set: option, (error, result) -> if error then console.log error
@@ -92,8 +100,10 @@ Meteor.methods
 
     product_ids = _.union(_.pluck(orderDetails, 'product'))
     products = Schema.products.find({_id: {$in: product_ids}}).fetch()
+    products = _.where(products, {basicDetailModeEnabled: false})
+
     result = checkProductInStockQuality(orderDetails, products)
-    if result.error then throw new Meteor.Error(result.error)
+    if result.error then throw new Meteor.Error(result.error.item)
 
     sale = createSaleAndSaleOrder(currentOrder, orderDetails)
     if sale

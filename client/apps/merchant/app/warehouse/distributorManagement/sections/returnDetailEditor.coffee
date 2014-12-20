@@ -35,7 +35,7 @@ lemon.defineHyper Template.distributorManagementReturnDetailEditor,
 
   events:
     "keypress input[name]": (event, template) ->
-      #TODO: Kiem tra trung ten & unit!
+      #TODO: tinh toan beforeDebtBalance, debtBalanceChange, latestDebtBalance
       returnQuality = Number(template.ui.$returnQuality.inputmask('unmaskedvalue'))
       console.log returnQuality
       returnPrice = Number(template.ui.$returnPrice.inputmask('unmaskedvalue'))
