@@ -65,6 +65,7 @@ simpleSchema.saleDetails = new SimpleSchema
   unitQuality:
     type: Number
     optional: true
+    decimal: true
 
   unitPrice:
     type: Number
