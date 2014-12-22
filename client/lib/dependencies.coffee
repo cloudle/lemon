@@ -41,3 +41,5 @@ lemon.dependencies.add 'inventoryHistory', ['merchantEssential', 'allInventory']
 lemon.dependencies.add 'inventoryManager', ['merchantEssential', 'allInventoryAndDetail', 'availableBranch', 'allWarehouse']
 
 lemon.dependencies.add 'transportHistory', ['merchantEssential', 'allInventoryAndDetail', 'availableBranch', 'allWarehouse']
+
+lemon.dependencies.add 'returnManagement', ['returnManagementData', 'availableCustomers', 'availableProducts', 'availableSales']

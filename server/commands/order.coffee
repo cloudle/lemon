@@ -11,9 +11,7 @@ checkProductInStockQuality = (orderDetails, products)->
     if products.length > 0
       for currentDetail in orderDetails
         currentProduct = _.findWhere(products, {_id: currentDetail.product})
-        if currentProduct.availableQuality < currentDetail.quality
-          throw {message: "lỗi", item: currentDetail}
-
+        throw {message: "lỗi", item: currentDetail} if currentProduct?.availableQuality < currentDetail.quality
     return {}
   catch e
     return {error: e}
@@ -46,8 +44,14 @@ createSaleAndSaleOrder = (order, orderDetails)->
     if product.basicDetailModeEnabled is true
       SaleDetail.createSaleDetailByProduct(currentSale, currentOrderDetail)
     else
-      productDetails = Schema.productDetails.find({product: currentOrderDetail.product, availableQuality: {$gt: 0}}).fetch()
-      subtractQualityOnSales(productDetails, currentOrderDetail, currentSale)
+      importBasic = Schema.productDetails.find(
+        {import: { $exists: false}, product: product._id, availableQuality: {$gt: 0}}, {sort: {'version.createdAt': 1}}
+      ).fetch()
+      importProductDetails = Schema.productDetails.find(
+        {import: { $exists: true}, product: product._id, availableQuality: {$gt: 0}}, {sort: {'version.createdAt': 1}}
+      ).fetch()
+      combinedProductDetails = importBasic.concat(importProductDetails)
+      subtractQualityOnSales(combinedProductDetails, currentOrderDetail, currentSale)
 
   option = {status: true}
   if currentSale.paymentsDelivery == 1

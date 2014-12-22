@@ -75,9 +75,30 @@ Meteor.methods
       if customer
         orderFound = Schema.orders.findOne({creator: userId, buyer: customer._id, merchant: profile.currentMerchant}, {sort: {'version.createdAt': -1}})
         if !orderFound then orderFound = Order.createdNewBy(customer, profile)
-        Schema.userSessions.update {user: userId}, {$set:{'currentOrder': orderFound._id}}
+        Schema.userSessions.update {user: userId}, {$set:{currentOrder: orderFound._id}}
 
       else throw 'Không tìm thấy khách hàng'
 
     catch error
       throw new Meteor.Error('customerToSales', error)
+
+  customerToReturns : (customer, profile)->
+    try
+      throw 'Chưa đăng nhập.' if !userId = Meteor.userId()
+      profile = Schema.userProfiles.findOne({user: userId}) if !profile || profile.user != userId
+      customer = Schema.customers.findOne({_id: customer._id ,parentMerchant: profile.parentMerchant}) if customer.parentMerchant != profile.parentMerchant
+
+      if customer
+        returnFound = Schema.returns.findOne({
+          merchant: profile.currentMerchant
+          creator : userId
+          customer: customer._id
+          status  : 0
+        }, {sort: {'version.createdAt': -1}})
+        if !returnFound then returnFound = Return.createByCustomer(customer._id, profile)
+        Schema.userSessions.update {user: userId}, {$set:{currentReturn: returnFound._id}} if returnFound
+        console.log '3'
+      else throw 'Không tìm thấy khách hàng'
+
+    catch error
+      throw new Meteor.Error('customerToReturns', error)

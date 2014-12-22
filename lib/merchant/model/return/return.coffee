@@ -24,3 +24,24 @@ Schema.add 'returns', "Return", class Return
       status        : false
     }
     option
+
+
+  @createByCustomer: (customerId, myProfile)->
+    if !myProfile then myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    option =
+      merchant       : myProfile.currentMerchant
+      warehouse      : myProfile.currentWarehouse
+      creator        : myProfile.user
+      customer       : customerId
+      comment        : 'Trả Hàng'
+      returnCode     : "ramdom"
+      discountCash   : 0
+      discountPercent: 0
+      totalPrice     : 0
+      finallyPrice   : 0
+      status         : 0
+      beforeDebtBalance: 0
+      debtBalanceChange: 0
+      latestDebtBalance: 0
+    option._id = Schema.returns.insert option
+    option
