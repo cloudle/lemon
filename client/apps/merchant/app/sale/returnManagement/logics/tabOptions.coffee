@@ -40,4 +40,4 @@ Apps.Merchant.returnManagementInit.push (scope) ->
     navigateAction: (instance) ->
       UserSession.set('currentReturn', instance._id)
       Session.set('currentReturn', instance)
-      if instance.customer then Meteor.subscribe('returnManagementData')
+      Meteor.subscribe('returnManagementData')

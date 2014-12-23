@@ -5,8 +5,26 @@ formatCustomerSearch = (item) ->
     desc = if item.description then "(#{item.description})" else ""
     name + desc
 
+formatDistributorSearch = (item) ->
+  if item
+    name = "#{item.name} "
+    desc = if item.description then "(#{item.description})" else ""
+    name + desc
 
-changedActionSelectCustomer = (customerId, currentReturn)-> Schema.returns.update currentReturn._id, $set: {customer: customerId}
+
+changedActionSelectCustomer = (customerId, currentReturn)->
+  Schema.returns.update currentReturn._id, $set: {customer: customerId}, $unset:{
+    import: true
+    timeLineImport: true
+    distributor: true
+  }
+
+changedActionSelectDistributor = (distributorId, currentReturn)->
+  Schema.returns.update currentReturn._id, $set: {distributor: distributorId}, $unset:{
+    sale: true
+    timeLineSales: true
+    customer: true
+  }
 
 changedActionSelectReturnMethods = (returnMethods, currentReturn)->
   if returnMethods is 0
@@ -30,19 +48,19 @@ Apps.Merchant.returnManagementInit.push (scope) ->
 
   scope.distributorSelectOptions =
     query: (query) -> query.callback
-      results: _.filter Schema.customers.find().fetch(), (item) ->
+      results: _.filter Schema.distributors.find().fetch(), (item) ->
         unsignedTerm = Helpers.RemoveVnSigns query.term
         unsignedName = Helpers.RemoveVnSigns item.name
 
         unsignedName.indexOf(unsignedTerm) > -1
       text: 'name'
-    initSelection: (element, callback) -> callback(Schema.customers.findOne(Session.get('currentReturn')?.customer ? 'skyReset'))
-    formatSelection: formatCustomerSearch
-    formatResult: formatCustomerSearch
+    initSelection: (element, callback) -> callback(Schema.distributors.findOne(Session.get('currentReturn')?.distributor ? 'skyReset'))
+    formatSelection: formatDistributorSearch
+    formatResult: formatDistributorSearch
     id: '_id'
     placeholder: 'CHỌN NHÀ CC'
-    changeAction: (e) -> changedActionSelectCustomer(e.added._id, Session.get('currentReturn'))
-    reactiveValueGetter: -> Session.get('currentReturn')?.customer ? 'skyReset'
+    changeAction: (e) -> changedActionSelectDistributor(e.added._id, Session.get('currentReturn'))
+    reactiveValueGetter: -> Session.get('currentReturn')?.distributor ? 'skyReset'
 
   scope.customerSelectOptions =
     query: (query) -> query.callback

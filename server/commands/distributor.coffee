@@ -35,9 +35,6 @@ Meteor.methods
 
       Schema.distributors.update distributor._id, $set: distributorOption
 
-
-
-
   distributorToImport : (distributor, profile)->
     try
       throw 'Chưa đăng nhập.' if !userId = Meteor.userId()
@@ -56,7 +53,27 @@ Meteor.methods
         Schema.userSessions.update {user: userId}, {$set:{'currentImport': importFound._id}}
 
       else throw 'Không tìm thấy nhà cung cấp'
-        #wRsWpe5F6ydP6wzjw
-
     catch error
       throw new Meteor.Error('distributorToImport', error)
+
+
+  distributorToReturns : (distributor, profile)->
+    try
+      throw 'Chưa đăng nhập.' if !userId = Meteor.userId()
+      profile = Schema.userProfiles.findOne({user: userId}) if !profile || profile.user != userId
+      if distributor.parentMerchant != profile.parentMerchant
+        distributor = Schema.distributors.findOne({_id: distributor._id ,parentMerchant: profile.parentMerchant})
+
+      if distributor
+        returnFound = Schema.returns.findOne({
+          merchant: profile.currentMerchant
+          creator : userId
+          distributor: distributor._id
+          status  : 0
+        }, {sort: {'version.createdAt': -1}})
+        if !returnFound then returnFound = Return.createByDistributor(distributor._id, profile)
+        Schema.userSessions.update {user: userId}, {$set:{currentReturn: returnFound._id}} if returnFound
+      else throw 'Không tìm thấy nhà cung cấp'
+
+    catch error
+      throw new Meteor.Error('distributorToReturns', error)
