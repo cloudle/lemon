@@ -34,6 +34,10 @@ simpleSchema.returns = new SimpleSchema
     type: String
     optional: true
 
+  returnMethods:
+    type: Number
+    optional: true
+
   allowDelete:
     type: Boolean
     defaultValue: true

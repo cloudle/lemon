@@ -1,14 +1,12 @@
 Meteor.methods
-#  reCalculateMetroSummary: (id)->
-#    metro = MetroSummary.findOne(id)
-#    metro.updateMetroSummary()
   reCalculateMetroSummaryTotalReceivableCash: ->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       metroSummaries = Schema.metroSummaries.find({parentMerchant: profile.parentMerchant}).fetch()
       if metroSummaries.length > 0
         totalSaleReceivableCash = 0
         for customer in Schema.customers.find({parentMerchant: profile.parentMerchant}).fetch()
-          totalSaleReceivableCash += customer.customSaleDebt + customer.saleDebt
+          receivableCash = customer.customSaleDebt + customer.saleDebt
+          totalSaleReceivableCash += receivableCash if receivableCash > 0
       Schema.metroSummaries.update(metroSummary._id, $set:{totalReceivableCash: totalSaleReceivableCash}) for metroSummary in metroSummaries
 
   reCalculateMetroSummaryTotalPayableCash: ->
@@ -17,7 +15,8 @@ Meteor.methods
       if metroSummaries.length > 0
         totalImportPayableCash = 0
         for distributor in Schema.distributors.find({parentMerchant: profile.parentMerchant}).fetch()
-          totalImportPayableCash += distributor.customImportDebt + distributor.importDebt
+          payableCash = distributor.customImportDebt + distributor.importDebt
+          totalImportPayableCash += payableCash if payableCash > 0
       Schema.metroSummaries.update(metroSummary._id, $set:{totalPayableCash: totalImportPayableCash}) for metroSummary in metroSummaries
 
 

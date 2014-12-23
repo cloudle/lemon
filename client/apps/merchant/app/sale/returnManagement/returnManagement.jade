@@ -32,15 +32,19 @@ template(name="returnManagement")
                     span.icon-right-open-big.addReturnDetail
   #footer.modern
     .editor-row
-      //.editor-wrapper(style="width: 100px")
-      //  span.ilabel.optional thanh toán
-      //  +iSelect(options=paymentMethodSelectOption class="field")
-      //.editor-wrapper(style="width: 110px")
-      //  span.ilabel.optional giao hàng
-      //  +iSelect(options=paymentsDeliverySelectOption class="field")
-      //.editor-wrapper(style="width: 170px")
-      //  span.ilabel.center tiền nhận vào
-      //  +iSpinEdit(options=depositOptions)
+      .editor-wrapper(style="width: 180px; margin-right: 5px;")
+        span.ilabel.optional phương thức trả hàng
+        +iSelect(options=returnSelectOptions class="field")
+
+      if showCustomerSelect
+        .editor-wrapper(style="width: 170px")
+          span.ilabel.optional khách hàng
+          +iSelect(options=customerSelectOptions class="field")
+      else
+        .editor-wrapper(style="width: 170px")
+          span.ilabel.optional nhà cung cấp
+          +iSelect(options=distributorSelectOptions class="field")
+
 
 
       .editor-wrapper.pull-right

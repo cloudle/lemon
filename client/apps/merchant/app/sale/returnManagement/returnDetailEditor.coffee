@@ -39,12 +39,9 @@ lemon.defineHyper Template.returnDetailEditor,
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
     @ui.$editPrice.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
-    @ui.$editDiscountCash.inputmask "numeric",
-        {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
 
     @ui.$editQuality.val Session.get("returnEditingRow").unitReturnQuality
     @ui.$editPrice.val Session.get("returnEditingRow").unitReturnsPrice
-    @ui.$editDiscountCash.val Session.get("returnEditingRow").discountCash
 
     @ui.$editQuality.select()
 
@@ -53,25 +50,15 @@ lemon.defineHyper Template.returnDetailEditor,
     "keyup input[name]": (event, template) ->
       unitQuality = Math.abs(Number(template.ui.$editQuality.inputmask('unmaskedvalue')))
       unitPrice   = Math.abs(Number(template.ui.$editPrice.inputmask('unmaskedvalue')))
-      discountCash = Math.abs(Number(template.ui.$editDiscountCash.inputmask('unmaskedvalue')))
       totalPrice = unitQuality * unitPrice
-      if totalPrice > 0
-        finalPrice = totalPrice - discountCash
-        discountPercent = (discountCash * 100) / totalPrice
-      else
-        finalPrice = 0
-        discountCash = 0
-        discountPercent = 0
 
       optionDetail =
         unitReturnQuality: unitQuality
         unitReturnsPrice: unitPrice
         returnQuality: @conversionQuality * unitQuality
         price: unitPrice/@conversionQuality
-        discountCash: discountCash
-        discountPercent: discountPercent
         totalPrice: totalPrice
-        finalPrice: finalPrice
+        finalPrice: totalPrice
 
       Schema.returnDetails.update @_id, $set: optionDetail
       scope.reCalculateReturn(@return)

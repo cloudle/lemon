@@ -40,6 +40,7 @@ Schema.add 'returns', "Return", class Return
       totalPrice     : 0
       finallyPrice   : 0
       status         : 0
+      returnMethods  : 0
       beforeDebtBalance: 0
       debtBalanceChange: 0
       latestDebtBalance: 0

@@ -2,6 +2,7 @@ scope = logics.returnManagement
 
 lemon.defineApp Template.returnManagement,
   currentReturn: -> Session.get('currentReturn')
+  showCustomerSelect: -> if Session.get('currentReturn')?.returnMethods is 0 then true else false
   unitName: -> if @unit then @unit.unit else @product.basicUnit
 
   created: ->

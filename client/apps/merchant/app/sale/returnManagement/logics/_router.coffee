@@ -13,8 +13,11 @@ returnManagementRoute =
     Apps.setup(scope, Apps.Merchant.returnManagementReactiveRun)
 
     return {
-      tabOptions      : scope.tabOptions
-      allReturnProduct: scope.managedReturnProductList
+      tabOptions                 : scope.tabOptions
+      returnSelectOptions        : scope.returnSelectOptions
+      distributorSelectOptions   : scope.distributorSelectOptions
+      customerSelectOptions      : scope.customerSelectOptions
+      allReturnProduct           : scope.managedReturnProductList
 
     }
 

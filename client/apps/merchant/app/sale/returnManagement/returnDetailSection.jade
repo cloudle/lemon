@@ -16,7 +16,6 @@ template(name="returnDetailSection")
                th.price(style="width:100px") ĐƠN GIÁ
                th.quality(style="width:50px") SL
                th.skull(style="width:90px") ĐƠN VỊ
-               th.number.bill-discount(style="width:100px") GIẢM GIÁ
                th.number.final-price(style="width:120px") THÀNH TIỀN
             each returnDetails
                if editingMode
@@ -40,10 +39,6 @@ template(name="returnDetailSection")
                            if crossReturnAvailableQuality.invalid
                               span.super.s7.color-lime {{crossReturnAvailableQuality.crossAvailable}}
                      td.skull {{unitName}}
-                     td.bill-discount.editable-field.number
-                        span {{formatNumber discountCash}}
-                        if discountPercent
-                           span.super.s7.color-lime -{{round discountPercent}}%
                      td.final-price.number <b>{{formatNumber finalPrice}}</b>
 
       .panel-footer

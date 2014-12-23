@@ -14,6 +14,14 @@ Apps.Merchant.PaymentMethods = [
   display: 'GHI NỢ'
 ]
 
+Apps.Merchant.ReturnMethods = [
+  _id: 0
+  display: 'KHÁCH HÀNG'
+,
+  _id: 1
+  display: 'NHÀ CUNG CẤP'
+]
+
 Apps.Merchant.DeliveryTypes = [
   _id: 0
   display: 'TRỰC TIẾP'

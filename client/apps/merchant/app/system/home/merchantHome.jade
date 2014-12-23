@@ -36,7 +36,7 @@ template(name="merchantHome")
         span.center.middle.caption: span.table: i.ico.icon-truck-1
         span.bottom.middle.caption {{formatNumber Summary.data.deliveryCount}} GIAO HÀNG
       .tile.alizarin(class="{{metroUnLocker Summary.data.saleCount}}"
-      data-app='returns' )
+      data-app='returnManagement' )
         span.center.middle.caption: span.table: i.ico.icon-reply-outline
         span.bottom.middle.caption  {{formatNumber Summary.data.returnCount}} TRẢ HÀNG
       .tile.green-sea(class="{{metroUnLocker Summary.data.importCount}}"
