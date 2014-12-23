@@ -13,7 +13,9 @@ returnManagementRoute =
     Apps.setup(scope, Apps.Merchant.returnManagementReactiveRun)
 
     return {
+      tabOptions      : scope.tabOptions
       allReturnProduct: scope.managedReturnProductList
+
     }
 
 lemon.addRoute [returnManagementRoute], Apps.Merchant.RouterBase

@@ -1,0 +1,17 @@
+template(name="returnDetailEditor")
+  tr.detail-row.large-name: td(colspan="3")
+    span {{productName}}
+    //if product.basicUnit
+    //  span ({{product.basicUnit}})
+    if discountPercent
+      span.super.s7.color-lime GIẢM GIÁ {{round discountPercent}}%
+  tr.editors.dual-border(class="{{crossReturnAvailableQuality.errorClass}}")
+    td.bill-name.has-commands
+     |{{productName}}
+     .commands
+        .lemon.rounded.tiny.btn.blue.animated.bounceIn.deleteReturnDetail: span.icon-minus-4
+    td.price: input(name="editPrice" min="0")
+    td.quality: input.error-field(name="editQuality" min="0")
+    td.skull.note {{unitName}}
+    td.bill-discount.number: input(name="editDiscountCash" min="0")
+    td.final-price.note.number <b>{{formatNumber finalPrice}}</b>

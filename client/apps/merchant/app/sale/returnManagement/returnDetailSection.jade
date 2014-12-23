@@ -1,0 +1,52 @@
+template(name="returnDetailSection")
+   .section.top.panel.panel-default.printable-area
+      .panel-heading
+         .hide-on-print
+            span <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b>
+         .show-on-print
+            +merchantPrintingHeader
+            .printing-info
+               .document-name PHIẾU TRẢ HÀNG
+
+      .panel-body
+         //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
+         table.lemon-grid
+            tr.table-header
+               th.bill-name(style="width:auto") SẢN PHẨM
+               th.price(style="width:100px") ĐƠN GIÁ
+               th.quality(style="width:50px") SL
+               th.skull(style="width:90px") ĐƠN VỊ
+               th.number.bill-discount(style="width:100px") GIẢM GIÁ
+               th.number.final-price(style="width:120px") THÀNH TIỀN
+            each returnDetails
+               if editingMode
+                  +returnDetailEditor editingData
+               else
+                  tr.detail-row.large-name: td(colspan="3")
+                     span {{productName}}
+                     //if product.basicUnit
+                     //   span ({{product.basicUnit}})
+                     if discountPercent
+                        span.super.s7.color-lime GIẢM GIÁ {{round discountPercent}}%
+                  tr.detail-row.click-enable(class="{{crossReturnAvailableQuality.errorClass}}")
+                     td.bill-name.has-commands
+                      |{{productName}}
+                      .commands
+                        .lemon.rounded.tiny.btn.blue.deleteReturnDetail: span.icon-minus-4
+                     td.price.editable-field {{formatNumber unitReturnsPrice}}
+                     td.quality.editable-field.error-field
+                        span
+                           |{{formatNumber unitReturnQuality}}
+                           if crossReturnAvailableQuality.invalid
+                              span.super.s7.color-lime {{crossReturnAvailableQuality.crossAvailable}}
+                     td.skull {{unitName}}
+                     td.bill-discount.editable-field.number
+                        span {{formatNumber discountCash}}
+                        if discountPercent
+                           span.super.s7.color-lime -{{round discountPercent}}%
+                     td.final-price.number <b>{{formatNumber finalPrice}}</b>
+
+      .panel-footer
+         input.editable.dashed.note(value="{{comment}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
+         .right-float
+            span.s3 <b>{{formatNumber debtBalanceChange}}</b> VNĐ

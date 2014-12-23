@@ -32,7 +32,7 @@ template(name="distributorManagementImportDetails")
     tr.header-row
       td.has-commands(colspan="5")
         | .
-        .bill-header <b>{{momentCalendar debtDate}}</b>. {{comment}}.
+        .bill-header <b>{{momentCalendar version.createdAt}}</b>. {{comment}}.
     each returnDetails
         tr.detail-row.edit-detail
           td {{productName}}

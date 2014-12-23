@@ -13,6 +13,7 @@ simpleSchema.returnDetails  = new SimpleSchema
 
   productDetail:
     type: String
+    optional: true
 #----------------------------
   return:
     type: String
@@ -51,6 +52,10 @@ simpleSchema.returnDetails  = new SimpleSchema
     type: Number
     decimal: true
     defaultValue: 0
+
+  totalPrice:
+    type: Number
+    optional: true
 
   finalPrice:
     type: Number

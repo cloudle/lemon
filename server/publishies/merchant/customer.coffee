@@ -71,7 +71,7 @@ Meteor.publishComposite 'customerManagementData', (customerId, currentRecords = 
           ]
         ]
       ,
-        find: (sale, customer) -> Schema.returns.find {sale: sale._id}
+        find: (sale, customer) -> Schema.returns.find {timeLineSales: sale._id}
         children: [
           find: (returns, customer) -> Schema.returnDetails.find {return: returns._id}
         ]

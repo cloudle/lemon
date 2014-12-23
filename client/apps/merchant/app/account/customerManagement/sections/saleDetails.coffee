@@ -16,6 +16,8 @@ lemon.defineWidget Template.customerManagementSaleDetails,
     Schema.saleDetails.find {sale: saleId}, {sort: {'version.createdAt': 1}}
 
   latestPaids: -> Schema.transactions.find({latestSale: @_id})
+  returns: -> Schema.returns.find({timeLineSales: @_id})
+  returnDetails: -> Schema.returnDetails.find({return: @_id})
 
   events:
     "click .deleteSales": (event, template) ->

@@ -1,6 +1,6 @@
 template(name="returnManagement")
-  //#header
-    //.editor-row
+  #header
+    .editor-row
       //.editor-wrapper(style="width: 180px; margin-right: 5px;")
       //  span.ilabel.optional nhân viên
       //  +iSelect(options=sellerSelectOptions class="field")
@@ -8,12 +8,13 @@ template(name="returnManagement")
       //  span.ilabel.optional khách hàng
       //  +iSelect(options=customerSelectOptions class="field")
 
+
   #content.modern.sales-app
     .dual-content
       .dual-detail-wrapper
         .dual-detail
           .nano: .nano-content
-            //+saleDetailSection saleDetails
+            +returnDetailSection currentReturn
 
       .dual-addon
         .search-filter.icon-search-8
@@ -21,36 +22,16 @@ template(name="returnManagement")
         .nano: .nano-content
           .group-wrapper
             each allReturnProduct
-              .caption.advanced.inner.product-selection(class="{{productSelectionActiveClass}}")
+              .caption.advanced.inner
                 +avatarImageComponent(avatar=avatarUrl alias=name)
                 span.text
                   | <b>{{product.name}}</b>
                   if product.basicUnit
-                    | ({{unitName}})
+                      | ({{unitName}})
                   .commands
-                    span.icon-right-open-big.addSaleDetail
-
-
-  //#footer.modern
-    //.editor-row.extra(name='advanced')
-    //  .editor-wrapper(style="width: 200px; margin-right: 5px;")
-    //    span.ilabel.optional nhân viên
-    //    +iSelect(options=sellerSelectOptions class="field")
-    //  .editor-wrapper(style="width: 120px")
-    //    span.ilabel.optional thanh toán
-    //    +iSelect(options=paymentMethodSelectOption class="field")
-
-      //.editor-wrapper.right(style="width: 195px")
-      //  span.ilabel.optional phương thức giảm giá
-      //  +iSelect(options=billDiscountSelectOption class="field")
-      //.editor-wrapper.right(style="width: 190px")
-      //  span.ilabel.center.optional giảm giá
-      //  +iSpinEdit(options=billCashDiscountOptions)
-      //.editor-wrapper.right(style="width:110px")
-      //  span.ilabel.center.optional giảm %
-      //  +iSpinEdit(options=billPercentDiscountOptions)
-
-    //.editor-row
+                    span.icon-right-open-big.addReturnDetail
+  #footer.modern
+    .editor-row
       //.editor-wrapper(style="width: 100px")
       //  span.ilabel.optional thanh toán
       //  +iSelect(options=paymentMethodSelectOption class="field")
@@ -61,10 +42,10 @@ template(name="returnManagement")
       //  span.ilabel.center tiền nhận vào
       //  +iSpinEdit(options=depositOptions)
 
-      //.editor-wrapper.pull-right
-      //  button.lemon.btn.lime.pull-right.finish(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
-      //.editor-wrapper.pull-right
-      //  button.lemon.btn.blue.pull-right.print-command(type='submit'): span.icon-print-6
+
+      .editor-wrapper.pull-right
+        button.lemon.btn.lime.pull-right.submitReturn(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
 
 
-    //+tabComponent(options=tabOptions)
+
+    +tabComponent(options=tabOptions)

@@ -71,7 +71,6 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
 
         metroSummary = Schema.metroSummaries.findOne({merchant: Session.get('myProfile').currentMerchant})
         Schema.metroSummaries.update metroSummary._id, $inc:{
-          productCount: -@importQuality
           stockProductCount: -@importQuality
           availableProductCount: -@importQuality
         }

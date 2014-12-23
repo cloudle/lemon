@@ -1,26 +1,22 @@
-destroySaleAndDetail = (scope, orderId)->
-  order = Schema.orders.findOne({
-    _id       : orderId
-    creator   : Session.get('myProfile').user
-    merchant  : Session.get('myProfile').currentMerchant
-    warehouse : Session.get('myProfile').currentWarehouse})
-  if order
-    for orderDetail in Schema.orderDetails.find({order: order._id}).fetch()
-      Schema.orderDetails.remove(orderDetail._id)
-    Schema.orders.remove(order._id)
+destroyReturnAndDetail = (scope, returnId)->
+  if currentReturn = Schema.returns.findOne(returnId)
+    for returnDetail in Schema.returnDetails.find({return: currentReturn._id}).fetch()
+      Schema.returnDetails.remove(returnDetail._id)
+    Schema.returns.remove(currentReturn._id)
 
-    scope.currentOrderHistory.count()
+    Schema.returns.find({creator:currentReturn.creator}).count()
   else
     -1
 
 Apps.Merchant.returnManagementInit.push (scope) ->
   scope.tabOptions =
-    source: scope.currentOrderHistory
-    currentSource: 'currentOrder'
-    caption: 'tabDisplay'
+    source: Schema.returns.find({status: 0})
+    currentSource: 'currentReturn'
+    caption: 'comment'
     key: '_id'
-    createAction: -> scope.createNewOrderAndSelected()
-    destroyAction: (instance) -> destroySaleAndDetail(scope, instance._id)
+    createAction: -> #scope.createNewreturnAndSelected()
+    destroyAction: (instance) -> destroyReturnAndDetail(scope, instance._id)
     navigateAction: (instance) ->
-      UserSession.set('currentOrder', instance._id)
-      Session.set('currentOrder', instance)
+      UserSession.set('currentReturn', instance._id)
+      Session.set('currentReturn', instance)
+      Meteor.subscribe('returnManagementData')

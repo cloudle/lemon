@@ -113,52 +113,5 @@ lemon.defineWidget Template.distributorManagementReturnDetails,
 
         #cap nhat tien phai tra
         Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
-
-
-
-
-
-
-
-
-#
-#        productDetailIds = _.uniq(_.pluck(returnDetails, 'productDetail'))
-#        productDetails = Schema.productDetails.find({_id:{$in: productDetailIds}}).fetch()
-#
-#        for productDetail in productDetails
-#          returnDetails = _.where(returnDetails, {productDetail: productDetail._id})
-#          crossProductQuality = 0
-#          crossProductQuality += item.returnQuality for item in returnDetails
-#          crossAvailable = productDetail.availableQuality - crossProductQuality
-#          if crossAvailable < 0 then throw 'So luong khong du'
-#
-#        for productDetail in productDetails
-#          totalReturnQuality = 0
-#          totalReturnPrice = 0
-#          returnDetails = _.where(returnDetails, {productDetail: productDetail._id})
-#
-#          for item in returnDetails
-#            totalReturnQuality += item.returnQuality
-#            totalReturnPrice += item.finalPrice
-#
-#          optionProduct =
-#            importQuality   : -totalReturnQuality
-#            availableQuality: -totalReturnQuality
-#            inStockQuality  : -totalReturnQuality
-#
-#          Schema.productDetails.update productDetail._id, $inc: optionProduct
-#          Schema.products.update productDetail.product, $inc: optionProduct, $inc: optionProduct
-#          Schema.distributors.update productDetail.distributor
-#          , $set:{returnImportModeEnabled: false}
-#          , $unset:{currentReturn: true}
-#          , $inc:{importTotalCash: -totalReturnPrice, importDebt: -totalReturnPrice}
-#
-#        timeLineImport = Schema.imports.findOne({distributor: productDetail.distributor, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
-#        Schema.returns.update currentReturn._id, $set: {timeLineImport: timeLineImport._id, status: 2, 'version.createdAt': new Date(), allowDelete: false}
-#        #update Metrosummary(so luong san pham mat di)
       catch error
         console.log error
-
-
-
-

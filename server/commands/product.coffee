@@ -78,7 +78,7 @@ Meteor.methods
 
         #kiem tra so luong
         countSaleQuality = 0
-        countSaleQuality += detail.quality for detail in saleDetails
+        countSaleQuality += (detail.quality - detail.returnQuality) for detail in saleDetails
 
         countImportQuality = 0
         countImportQuality += detail.importQuality for detail in combinedImportDetails
@@ -90,6 +90,7 @@ Meteor.methods
           Schema.productDetails.update productDetail._id, $set:{
             availableQuality: productDetail.importQuality
             inStockQuality:   productDetail.importQuality
+            allowDelete: false
           }
         Schema.products.update product, $set: {
           totalQuality:     totalQuality
@@ -101,7 +102,7 @@ Meteor.methods
         if countSaleQuality > countImportQuality
           console.log "So luong nhap kho du."
         else
-          subtractQualityOnSales(detail, combinedImportDetails, detail.quality) for detail in saleDetails
+          subtractQualityOnSales(detail, combinedImportDetails, (detail.quality - detail.returnQuality)) for detail in saleDetails
           Schema.products.update product._id, $set:{basicDetailModeEnabled: mode}
 
 

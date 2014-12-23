@@ -9,6 +9,7 @@ lemon.defineWidget Template.productManagementImportDetails,
 
   totalPrice: -> @importPrice * @importQuality
   expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY') else 'KHÔNG'
+  saleQuality: -> @quality - @returnQuality
 
   importDetails: ->
     importId = UI._templateInstance().data._id
