@@ -94,9 +94,10 @@ Meteor.methods
           creator : userId
           customer: customer._id
           status  : 0
+          returnMethods: 0
         }, {sort: {'version.createdAt': -1}})
         if !returnFound then returnFound = Return.createByCustomer(customer._id, profile)
-        Schema.userSessions.update {user: userId}, {$set:{currentReturn: returnFound._id}} if returnFound
+        Schema.userSessions.update {user: userId}, {$set:{currentCustomerReturn: returnFound._id}} if returnFound
       else throw 'Không tìm thấy khách hàng'
 
     catch error

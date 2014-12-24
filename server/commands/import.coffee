@@ -33,7 +33,7 @@ updateImportAndDistributor = (currentImport, distributor)->
 
 updateBuiltInOfDistributor = (distributorId, importDetails)->
   productIds = _.uniq(_.pluck(importDetails, 'product'))
-  Schema.distributors.update(distributorId, $push: {builtIn:{ $each: productIds, $slice: -50 }})
+  Schema.distributors.update(distributorId, $push: {builtIn:{ $each: productIds, $slice: -50 }, importProductList:{ $each: productIds}})
 
 Meteor.methods
   importEnabledEdit: (importId) ->

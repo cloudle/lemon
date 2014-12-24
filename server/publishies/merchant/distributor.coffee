@@ -57,14 +57,14 @@ Meteor.publishComposite 'distributorManagementData', (distributorId, currentReco
             find: (product, distributor) -> Schema.productUnits.find {product: product._id}
           ]
         ]
-      ,
-        find: (currentImport, distributor) -> Schema.returns.find {import: currentImport._id}
-        children: [
-          find: (currentReturn, distributor) -> Schema.returnDetails.find {return: currentReturn._id}
-        ]
       ]
     ,
       find: (distributor) -> Schema.transactions.find {owner: distributor._id}
+    ,
+      find: (distributor) -> Schema.returns.find {distributor: distributor._id, status: 2}
+      children: [
+        find: (currentReturn, distributor) -> Schema.returnDetails.find {return: currentReturn._id}
+      ]
     ]
   }
 

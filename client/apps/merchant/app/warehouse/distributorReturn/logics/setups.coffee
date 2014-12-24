@@ -4,8 +4,8 @@ formatDistributorSearch = (item) ->
     desc = if item.description then "(#{item.description})" else ""
     name + desc
 
-changedActionSelectDistributor = (distributorId, currentReturn)->
-  Schema.returns.update currentReturn._id, $set: {distributor: distributorId}, $unset:{
+changedActionSelectDistributor = (distributorId, currentDistributorReturn)->
+  Schema.returns.update currentDistributorReturn._id, $set: {distributor: distributorId}, $unset:{
     sale: true
     timeLineSales: true
     customer: true
@@ -20,13 +20,13 @@ Apps.Merchant.distributorReturnInit.push (scope) ->
 
         unsignedName.indexOf(unsignedTerm) > -1
       text: 'name'
-    initSelection: (element, callback) -> callback(Schema.distributors.findOne(Session.get('currentReturn')?.distributor ? 'skyReset'))
+    initSelection: (element, callback) -> callback(Schema.distributors.findOne(Session.get('currentDistributorReturn')?.distributor ? 'skyReset'))
     formatSelection: formatDistributorSearch
     formatResult: formatDistributorSearch
     id: '_id'
     placeholder: 'CHỌN NHÀ CC'
-    changeAction: (e) -> changedActionSelectDistributor(e.added._id, Session.get('currentReturn'))
-    reactiveValueGetter: -> Session.get('currentReturn')?.distributor ? 'skyReset'
+    changeAction: (e) -> changedActionSelectDistributor(e.added._id, Session.get('currentDistributorReturn'))
+    reactiveValueGetter: -> Session.get('currentDistributorReturn')?.distributor ? 'skyReset'
 
   scope.reCalculateReturn = (returnId)->
     totalPrice = 0

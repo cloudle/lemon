@@ -73,7 +73,7 @@ Meteor.methods
           returnMethods: 1
         }, {sort: {'version.createdAt': -1}})
         if !returnFound then returnFound = Return.createByDistributor(distributor._id, profile)
-        Schema.userSessions.update {user: userId}, {$set:{currentReturn: returnFound._id}} if returnFound
+        Schema.userSessions.update {user: userId}, {$set:{currentDistributorReturn: returnFound._id}} if returnFound
       else throw 'Không tìm thấy nhà cung cấp'
 
     catch error

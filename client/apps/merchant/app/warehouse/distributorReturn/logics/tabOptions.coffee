@@ -1,9 +1,9 @@
 destroyReturnAndDetail = (scope, returnId)->
-  if currentReturn = Schema.returns.findOne(returnId)
-    for returnDetail in Schema.returnDetails.find({return: currentReturn._id}).fetch()
+  if currentDistributorReturn = Schema.returns.findOne(returnId)
+    for returnDetail in Schema.returnDetails.find({return: currentDistributorReturn._id}).fetch()
       Schema.returnDetails.remove(returnDetail._id)
-    Schema.returns.remove(currentReturn._id)
-    Schema.returns.find({creator:currentReturn.creator}).count()
+    Schema.returns.remove(currentDistributorReturn._id)
+    Schema.returns.find({creator:currentDistributorReturn.creator}).count()
   else
     -1
 
@@ -25,19 +25,19 @@ createReturnAndSelected = ()->
       debtBalanceChange: 0
       latestDebtBalance: 0
     returnOption._id = Schema.returns.insert returnOption
-    UserSession.set('currentReturn', returnOption._id)
-    Session.set('currentReturn', returnOption)
+    UserSession.set('currentDistributorReturn', returnOption._id)
+    Session.set('currentDistributorReturn', returnOption)
 
 
 Apps.Merchant.distributorReturnInit.push (scope) ->
   scope.tabOptions =
     source: Schema.returns.find({status: 0})
-    currentSource: 'currentReturn'
+    currentSource: 'currentDistributorReturn'
     caption: 'comment'
     key: '_id'
     createAction: -> createReturnAndSelected()
     destroyAction: (instance) -> destroyReturnAndDetail(scope, instance._id)
     navigateAction: (instance) ->
-      UserSession.set('currentReturn', instance._id)
-      Session.set('currentReturn', instance)
+      UserSession.set('currentDistributorReturn', instance._id)
+      Session.set('currentDistributorReturn', instance)
       Meteor.subscribe('distributorReturnData')

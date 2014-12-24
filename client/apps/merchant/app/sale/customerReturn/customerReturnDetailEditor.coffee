@@ -39,8 +39,8 @@ lemon.defineHyper Template.customerReturnDetailEditor,
     @ui.$editPrice.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
 
-    @ui.$editQuality.val Session.get("returnEditingRow").unitReturnQuality
-    @ui.$editPrice.val Session.get("returnEditingRow").unitReturnsPrice
+    @ui.$editQuality.val Session.get("customerReturnEditingRow")?.unitReturnQuality
+    @ui.$editPrice.val Session.get("customerReturnEditingRow")?.unitReturnsPrice
 
     @ui.$editQuality.select()
 

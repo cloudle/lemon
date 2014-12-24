@@ -1,5 +1,5 @@
 Apps.Merchant.distributorReturnReactiveRun.push (scope) ->
-  if Session.get("currentReturn")
+  if Session.get("currentDistributorReturn")
     salesProductList = []
     scope.managedReturnProductList = []
     products = Schema.products.find().fetch()
