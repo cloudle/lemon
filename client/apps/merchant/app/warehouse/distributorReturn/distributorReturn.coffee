@@ -113,5 +113,8 @@ lemon.defineApp Template.distributorReturn,
           latestDebtBalance: distributor.importDebt - totalReturnPrice
         }
         Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
+
+        if distributor = Schema.distributors.findOne(currentDistributorReturn.distributor)
+          Meteor.call 'distributorToReturns', distributor, Session.get('myProfile')
       catch error
         console.log error

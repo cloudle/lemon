@@ -35,8 +35,9 @@ subtractQualityOnSales = (stockingItems, sellingItem , currentSale) ->
 
 
 createSaleAndSaleOrder = (order, orderDetails)->
-  currentSale = Schema.sales.findOne(Sale.insertByOrder(order))
-  if !currentSale then throw new Meteor.Error("Create sale fail.")
+  currentSaleId = Schema.sales.insert Sale.newByOrder(order)
+  if !currentSaleId then throw new Meteor.Error("Create sale fail.")
+  currentSale = Schema.sales.findOne(currentSaleId)
 
   for currentOrderDetail in orderDetails
     product = Schema.products.findOne(currentOrderDetail.product)

@@ -5,14 +5,21 @@ template(name="productManagementSalesHistorySection")
         +merchantPrintingHeader
         .printing-info
           .document-name {{name}}
-      table.lemon-grid
-        tr.table-header
-          th(style="width:auto") ĐƠN VỊ TÍNH
-          th(style="width:110px") HẠN SD
-          th(style="width:80px") QUI ĐỔI
-          th(style="width:80px") TỒN KHO
-          //th.number(style="width:120px") GIÁ NHẬP
-        if basicDetail.isShowDetail
+
+    .panel-body.debt-details
+      if basicDetail.isShowDetail
+        table.lemon-grid.safe
+          tr
+            th(style="width:auto") ĐƠN VỊ TÍNH
+            th(style="width:100px") HẠN SD
+            th(style="width:80px") T.KHO
+            th.number(style="width:100px") Q.ĐỔI
+            th.number(style="width:100px") GIÁ
+            th.number(style="width:120px") TỔNG TIỀN
+          tr.header-row
+            td(colspan="7")
+              | .
+              .bill-header <b>Nhập tồn đầu kỳ.</b>
           each basicDetail.detail
             if detailEditingMode
               +productManagementDetailEditor detailEditingData
@@ -24,37 +31,31 @@ template(name="productManagementSalesHistorySection")
                     if allowDelete
                       .lemon.rounded.tiny.btn.blue.delete-basicDetail: span.icon-minus-4
                 td {{expireDate}}
-                td {{conversionQuality}}
                 td {{unitQuality}}
-                //td.number {{formatNumber importPrice}}
-        if basicDetailModeEnabled
-          tr.group-summary-row
-            td: .lemon.btn.lime.basicDetailModeDisable.icon-ok-6 Kết Thúc
+                td.number {{conversionQuality}}
+                //td.number {{conversionQuality}}
+                //td.number {{conversionQuality}}
 
-    .panel-body.debt-details
+
       if newImport.isShowDetail
         table.lemon-grid.safe
           tr
             th(style="width:auto") NHÀ CUNG CẤP
-            th(style="width:110px") HẠN SD
-            th.number(style="width:80px") TỒN KHO
-            th.number(style="width:120px") GIÁ NHẬP
+            th(style="width:100px") HẠN SD
+            th(style="width:60px") T.KHO
+            th(style="width:70px") D.V.T
+            th.number(style="width:50px") Q.ĐỔI
+            th.number(style="width:100px") GIÁ
             th.number(style="width:120px") TỔNG TIỀN
 
           each newImport.detail
             +productManagementImportDetails this
 
     .panel-footer
+      if basicDetailModeEnabled
+        .lemon.btn.lime.basicDetailModeDisable.icon-ok-6 Kết Thúc
       .right-float
         span.s5 TỔNG TỒN
         span.s3 <b>{{formatNumber inStockQuality}}</b>
         span.s5 TỔNG NHẬP
         span.s3 <b>{{formatNumber totalQuality}}</b>
-
-template(name="productManagementImportHistoryHeader")
-  tr
-    th(style="width:auto")
-    th(style="width:100px")
-    th(style="width:80px")
-    th(style="width:85px")
-    th(style="width:115px")
