@@ -4,7 +4,7 @@ Meteor.publish 'returnDetails', (returnId) ->
   returns = Schema.returns.findOne({_id: returnId, status: {$ne: 2}})
   Schema.returnDetails.find {return: returns._id}
 
-Meteor.publishComposite 'returnManagementData', (returnId)->
+Meteor.publishComposite 'customerReturnData', (returnId)->
   self = @
   return {
     find: ->
@@ -30,16 +30,16 @@ Meteor.publishComposite 'returnManagementData', (returnId)->
           ]
         ]
       ]
-    ,
-      find: (currentReturn) -> Schema.imports.find {distributor: currentReturn.distributor}
-    ,
-      find: (currentReturn) -> Schema.productDetails.find {distributor: currentReturn.distributor}
-      children: [
-        find: (productDetail, currentReturn) -> Schema.products.find {_id: productDetail.product}
-        children: [
-          find: (product, currentReturn) -> Schema.productUnits.find {product: product._id}
-        ]
-      ]
+#    ,
+#      find: (currentReturn) -> Schema.imports.find {distributor: currentReturn.distributor}
+#    ,
+#      find: (currentReturn) -> Schema.productDetails.find {distributor: currentReturn.distributor}
+#      children: [
+#        find: (productDetail, currentReturn) -> Schema.products.find {_id: productDetail.product}
+#        children: [
+#          find: (product, currentReturn) -> Schema.productUnits.find {product: product._id}
+#        ]
+#      ]
     ]
   }
 

@@ -1,20 +1,13 @@
-template(name="returnManagement")
+template(name="customerReturn")
   #header
     .editor-row
-      //.editor-wrapper(style="width: 180px; margin-right: 5px;")
-      //  span.ilabel.optional nhân viên
-      //  +iSelect(options=sellerSelectOptions class="field")
-      //.editor-wrapper(style="width: 170px")
-      //  span.ilabel.optional khách hàng
-      //  +iSelect(options=customerSelectOptions class="field")
-
 
   #content.modern.sales-app
     .dual-content
       .dual-detail-wrapper
         .dual-detail
           .nano: .nano-content
-            +returnDetailSection currentReturn
+            +customerReturnDetailSection currentCustomerReturn
 
       .dual-addon
         .search-filter.icon-search-8
@@ -32,24 +25,10 @@ template(name="returnManagement")
                     span.icon-right-open-big.addReturnDetail
   #footer.modern
     .editor-row
-      //.editor-wrapper(style="width: 180px; margin-right: 5px;")
-      //  span.ilabel.optional phương thức trả hàng
-      //  +iSelect(options=returnSelectOptions class="field")
-
-      if showCustomerSelect
-        .editor-wrapper(style="width: 170px")
-          span.ilabel.optional khách hàng
-          +iSelect(options=customerSelectOptions class="field")
-      else
-        .editor-wrapper(style="width: 170px")
-          span.ilabel.optional nhà cung cấp
-          +iSelect(options=distributorSelectOptions class="field")
-
-
-
+      .editor-wrapper(style="width: 170px")
+        span.ilabel.optional khách hàng
+        +iSelect(options=customerSelectOptions class="field")
       .editor-wrapper.pull-right
         button.lemon.btn.lime.pull-right.submitReturn(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
-
-
 
     +tabComponent(options=tabOptions)
