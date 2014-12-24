@@ -31,15 +31,15 @@ template(name="merchantHome")
         span.top.middle.caption: h5 {{formatNumber Summary.data.customerCountAll}} KHÁCH HÀNG
         span.center.middle.caption: span.table: i.ico.huge.icon-contacts
         span.bottom.middle.caption: h3 {{formatNumber Summary.data.totalReceivableCash}} <tiny5>PHẢI THU</tiny5>
-      .tile.amethyst(class="{{metroUnLocker Summary.data.availableProductCount}}"
-      data-app='distributorReturn')
-        span.center.middle.caption: span.table: i.ico.icon-forward-outline
-        span.bottom.middle.caption TRẢ HÀNG NHẬP
       .tile.alizarin(class="{{metroUnLocker Summary.data.saleCount}}"
       data-app='customerReturn' )
         span.center.middle.caption: span.table: i.ico.icon-reply-outline
         //{{formatNumber Summary.data.returnCount}}
         span.bottom.middle.caption TRẢ HÀNG BÁN
+      .tile.amethyst(class="{{metroUnLocker Summary.data.availableProductCount}}"
+      data-app='distributorReturn')
+        span.center.middle.caption: span.table: i.ico.icon-forward-outline
+        span.bottom.middle.caption T.HÀNG NHẬP
       .tile.amethyst(class="{{metroUnLocker Summary.data.deliveryCount}}"
       data-app='deliveryManager')
         span.center.middle.caption: span.table: i.ico.icon-truck-1

@@ -7,55 +7,52 @@ template(name="productManagementSalesHistorySection")
           .document-name {{name}}
 
     .panel-body.debt-details
-      if basicDetail.isShowDetail
-        table.lemon-grid.safe
-          tr
-            th(style="width:auto") ĐƠN VỊ TÍNH
-            th(style="width:100px") HẠN SD
-            th(style="width:80px") T.KHO
-            th.number(style="width:100px") Q.ĐỔI
-            th.number(style="width:100px") GIÁ
-            th.number(style="width:120px") TỔNG TIỀN
-          tr.header-row
-            td(colspan="7")
-              | .
-              .bill-header <b>Nhập tồn đầu kỳ.</b>
+      table.lemon-grid.safe
+        tr
+          th(style="width:auto") NHÀ CUNG CẤP
+          th(style="width:100px") HẠN SD
+          th(style="width:70px") S.LƯỢNG
+          th(style="width:70px") ĐV.TÍNH
+          th.number(style="width:50px") Q.ĐỔI
+          th.number(style="width:100px") GIÁ NHẬP
+          th.number(style="width:120px") TỔNG TIỀN
+          //th(style="width:auto") ĐƠN VỊ TÍNH
+          //th(style="width:100px") HẠN SD
+          //th(style="width:80px") T.KHO
+          //th.number(style="width:100px") Q.ĐỔI
+          //th.number(style="width:100px") GIÁ
+          //th.number(style="width:120px") TỔNG TIỀN
+        tr.header-row
+          td.has-commands(colspan="7")
+            | .
+            .bill-header <b>Tồn kho đầu kỳ</b>
+            .commands
+              if basicDetailModeEnabled
+                .lemon.rounded.tiny.btn.lime.basicDetailModeDisable.icon-ok-6
+        if basicDetail.isShowDetail
           each basicDetail.detail
             if detailEditingMode
               +productManagementDetailEditor detailEditingData
             else
               tr.detail-row.edit-detail.click-enable
                 td.has-commands
-                  span {{unitName}}
+                  span
                   .commands
                     if allowDelete
                       .lemon.rounded.tiny.btn.blue.delete-basicDetail: span.icon-minus-4
                 td {{expireDate}}
                 td {{unitQuality}}
+                td {{unitName}}
                 td.number {{conversionQuality}}
-                //td.number {{conversionQuality}}
-                //td.number {{conversionQuality}}
+                td
+                td
 
-
-      if newImport.isShowDetail
-        table.lemon-grid.safe
-          tr
-            th(style="width:auto") NHÀ CUNG CẤP
-            th(style="width:100px") HẠN SD
-            th(style="width:60px") T.KHO
-            th(style="width:70px") D.V.T
-            th.number(style="width:50px") Q.ĐỔI
-            th.number(style="width:100px") GIÁ
-            th.number(style="width:120px") TỔNG TIỀN
-
+        if newImport.isShowDetail
           each newImport.detail
             +productManagementImportDetails this
 
     .panel-footer
-      if basicDetailModeEnabled
-        .lemon.btn.lime.basicDetailModeDisable.icon-ok-6 Kết Thúc
       .right-float
-        span.s5 TỔNG TỒN
-        span.s3 <b>{{formatNumber inStockQuality}}</b>
-        span.s5 TỔNG NHẬP
-        span.s3 <b>{{formatNumber totalQuality}}</b>
+        span.s5.note <b>TỔNG TỒN</b>/ TỔNG NHẬP:
+        span.s3 <b>{{formatNumber inStockQuality}} </b>
+        span.s5 /{{formatNumber totalQuality}} <b>{{basicUnit}}</b>
