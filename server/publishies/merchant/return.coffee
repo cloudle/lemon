@@ -4,6 +4,18 @@ Meteor.publish 'returnDetails', (returnId) ->
   returns = Schema.returns.findOne({_id: returnId, status: {$ne: 2}})
   Schema.returnDetails.find {return: returns._id}
 
+Meteor.publishComposite 'allCustomerReturn', ->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.returns.find {creator: myProfile.user, status: 0}
+    children: [
+      find: (currentReturn) -> Schema.returnDetails.find {return: currentReturn._id}
+    ]
+  }
+
 Meteor.publishComposite 'customerReturnData', (returnId)->
   self = @
   return {

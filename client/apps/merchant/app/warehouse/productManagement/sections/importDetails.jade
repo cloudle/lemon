@@ -1,14 +1,16 @@
 template(name="productManagementImportDetails")
   tr.header-row
-    td(colspan="6")
+    td(colspan="7")
       | .
       .bill-header <b>{{momentCalendar version.createdAt}}</b> ({{description}})
   each importDetails
     tr.detail-row
       td.first-column {{distributorName}}
       td {{expireDate}}
-      td.number {{formatNumber inStockQuality}}/{{formatNumber importQuality}}
-      td.number {{formatNumber importPrice}}
+      td {{formatNumber unitQuality}}
+      td {{unitName}}
+      td.number {{conversionQuality}}
+      td.number {{formatNumber unitPrice}}
       td.number {{formatNumber totalPrice}}
 
     each saleDetails
@@ -16,6 +18,8 @@ template(name="productManagementImportDetails")
         td.first-column
          span.icon-forward-3 {{buyerName}}
         td {{momentFormat version.createdAt "DD/MM/YYYY"}}
-        td.number {{formatNumber saleQuality}}
-        td.number {{formatNumber price}}
+        td {{unitQuality}}
+        td {{unitName}}
+        td.number {{conversionQuality}}
+        td.number {{formatNumber unitPrice}}
         td.number {{formatNumber finalPrice}}
