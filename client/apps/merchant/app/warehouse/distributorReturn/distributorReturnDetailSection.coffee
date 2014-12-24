@@ -3,15 +3,15 @@ setTime = -> Session.set('realtime-now', new Date())
 
 lemon.defineHyper Template.distributorReturnDetailSection,
   merchant: -> Schema.merchants.findOne(Session.get('myProfile')?.currentMerchant)
-  editingMode: -> Session.get("returnEditingRow")?._id is @_id
-  editingData: -> Session.get("returnEditingRow")
+  editingMode: -> Session.get("distributorReturnEditingRow")?._id is @_id
+  editingData: -> Session.get("distributorReturnEditingRow")
   productName: -> Schema.products.findOne(@product)?.name
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
 
   crossReturnAvailableQuality: ->
-    if currentReturn = Session.get('currentReturn')
+    if currentDistributorReturn = Session.get('currentDistributorReturn')
       returnDetail   = @
-      currentProduct = Schema.productDetails.find({distributor: currentReturn.distributor, product: @product}).fetch()
+      currentProduct = Schema.productDetails.find({distributor: currentDistributorReturn.distributor, product: @product}).fetch()
       sameProducts = Schema.returnDetails.find({return: @return, product: @product}).fetch()
       crossProductQuality = 0
       currentProductQuality = 0
@@ -39,7 +39,7 @@ lemon.defineHyper Template.distributorReturnDetailSection,
 
   events:
     "click .detail-row": ->
-      Session.set("returnEditingRowId", @_id)
+      Session.set("distributorReturnEditingRowId", @_id)
 
     "click .deleteReturnDetail": (event, template) ->
       Schema.returnDetails.remove @_id

@@ -11,14 +11,12 @@ Meteor.publishComposite 'customerReturnData', (returnId)->
       myProfile = Schema.userProfiles.findOne({user: self.userId})
       return EmptyQueryResult if !myProfile
       if !returnId
-        returnId = Schema.userSessions.findOne({user: myProfile.user})?.currentReturn
-      Schema.returns.find {creator: myProfile.user, status: 0}
+        returnId = Schema.userSessions.findOne({user: myProfile.user})?.currentCustomerReturn
+      Schema.returns.find {_id: returnId, creator: myProfile.user, status: 0}
     children: [
       find: (currentReturn) -> Schema.returnDetails.find {return: currentReturn._id}
     ,
       find: (currentReturn) -> Schema.customers.find {_id: currentReturn.customer}
-    ,
-      find: (currentReturn) -> Schema.distributors.find {_id: currentReturn.distributor}
     ,
       find: (currentReturn) -> Schema.sales.find {buyer: currentReturn.customer}
       children: [
@@ -30,16 +28,31 @@ Meteor.publishComposite 'customerReturnData', (returnId)->
           ]
         ]
       ]
-#    ,
-#      find: (currentReturn) -> Schema.imports.find {distributor: currentReturn.distributor}
-#    ,
-#      find: (currentReturn) -> Schema.productDetails.find {distributor: currentReturn.distributor}
-#      children: [
-#        find: (productDetail, currentReturn) -> Schema.products.find {_id: productDetail.product}
-#        children: [
-#          find: (product, currentReturn) -> Schema.productUnits.find {product: product._id}
-#        ]
-#      ]
+    ]
+  }
+
+Meteor.publishComposite 'distributorReturnData', (returnId)->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      if !returnId
+        returnId = Schema.userSessions.findOne({user: myProfile.user})?.currentDistributorReturn
+      Schema.returns.find {_id: returnId, creator: myProfile.user, status: 0}
+    children: [
+      find: (currentReturn) -> Schema.returnDetails.find {return: currentReturn._id}
+    ,
+      find: (currentReturn) -> Schema.distributors.find {_id: currentReturn.distributor}
+      children: [
+        find: (distributor, currentReturn) -> Schema.productDetails.find {distributor: distributor._id}
+        children: [
+          find: (productDetail, currentReturn) -> Schema.products.find {_id: productDetail.product}
+          children: [
+            find: (product, currentReturn) -> Schema.productUnits.find {product: product._id}
+          ]
+        ]
+      ]
     ]
   }
 

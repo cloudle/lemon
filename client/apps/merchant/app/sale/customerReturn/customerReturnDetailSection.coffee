@@ -3,8 +3,8 @@ setTime = -> Session.set('realtime-now', new Date())
 
 lemon.defineHyper Template.customerReturnDetailSection,
   merchant: -> Schema.merchants.findOne(Session.get('myProfile')?.currentMerchant)
-  editingMode: -> Session.get("returnEditingRow")?._id is @_id
-  editingData: -> Session.get("returnEditingRow")
+  editingMode: -> Session.get("customerReturnEditingRow")?._id is @_id
+  editingData: -> Session.get("customerReturnEditingRow")
   productName: -> Schema.products.findOne(@product)?.name
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
 
@@ -45,8 +45,7 @@ lemon.defineHyper Template.customerReturnDetailSection,
   destroyed: -> Meteor.clearInterval(@timeInterval)
 
   events:
-    "click .detail-row": ->
-      Session.set("customerReturnEditingRow", @_id)
+    "click .detail-row": -> Session.set("customerReturnEditingRowId", @_id)
 
     "click .deleteReturnDetail": (event, template) ->
       Schema.returnDetails.remove @_id

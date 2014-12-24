@@ -23,6 +23,10 @@ simpleSchema.distributors = new SimpleSchema
     type: [String]
     optional: true
 
+  importProductList:
+    type: [String]
+    optional: true
+
   phone:
     type: String
     optional: true

@@ -4,9 +4,9 @@ lemon.defineHyper Template.distributorReturnDetailEditor,
   productName: -> Schema.products.findOne(@product)?.name
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   crossReturnAvailableQuality: ->
-    if currentReturn = Session.get('currentReturn')
+    if currentDistributorReturn = Session.get('currentDistributorReturn')
       returnDetail   = @
-      currentProduct = Schema.productDetails.find({distributor: currentReturn.distributor, product: @product}).fetch()
+      currentProduct = Schema.productDetails.find({distributor: currentDistributorReturn.distributor, product: @product}).fetch()
       sameProducts = Schema.returnDetails.find({return: returnDetail.return, product: returnDetail.product}).fetch()
       crossProductQuality = 0
       currentProductQuality = 0
@@ -32,8 +32,8 @@ lemon.defineHyper Template.distributorReturnDetailEditor,
     @ui.$editPrice.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
 
-    @ui.$editQuality.val Session.get("returnEditingRow").unitReturnQuality
-    @ui.$editPrice.val Session.get("returnEditingRow").unitReturnsPrice
+    @ui.$editQuality.val Session.get("distributorReturnEditingRow")?.unitReturnQuality
+    @ui.$editPrice.val Session.get("distributorReturnEditingRow")?.unitReturnsPrice
 
     @ui.$editQuality.select()
 

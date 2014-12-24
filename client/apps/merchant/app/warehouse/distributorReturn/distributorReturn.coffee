@@ -1,25 +1,24 @@
 scope = logics.distributorReturn
 
 lemon.defineApp Template.distributorReturn,
-  currentReturn: -> Session.get('currentReturn')
-  showCustomerSelect: -> if Session.get('currentReturn')?.returnMethods is 0 then true else false
+  currentDistributorReturn: -> Session.get('currentDistributorReturn')
+  showCustomerSelect: -> if Session.get('currentDistributorReturn')?.returnMethods is 0 then true else false
   unitName: -> if @unit then @unit.unit else @product.basicUnit
 
   created: ->
-    lemon.dependencies.resolve('customerReturn')
+    lemon.dependencies.resolve('distributorReturn')
 
 #  rendered: ->
 #    if customer = Session.get('customerReturnCurrentCustomer')
 #      Meteor.subscribe('customerReturnProductData', customer._id)
 
   events:
-    "input .search-filter": (event, template) ->
-      Session.set("customerReturnSearchFilter", template.ui.$searchFilter.val())
+    "input .search-filter": (event, template) -> Session.set("distributorReturnSearchFilter", template.ui.$searchFilter.val())
 
     "click .addReturnDetail": (event, template) ->
-      if Session.get('currentReturn')
+      if Session.get('currentDistributorReturn')
         option =
-          return            : Session.get('currentReturn')._id
+          return            : Session.get('currentDistributorReturn')._id
           product           : @product._id
           conversionQuality : 1
           unitReturnQuality : 1
@@ -37,7 +36,7 @@ lemon.defineApp Template.distributorReturn,
         option.finalPrice    = (option.unitReturnQuality * option.unitReturnsPrice) - option.discountCash
 
         Schema.returnDetails.insert option
-        Schema.returns.update Session.get('currentReturn')._id, $inc:{
+        Schema.returns.update Session.get('currentDistributorReturn')._id, $inc:{
           debtBalanceChange: option.finalPrice
           totalPrice  : option.finalPrice + option.discountCash
           finallyPrice: option.finalPrice
@@ -45,8 +44,8 @@ lemon.defineApp Template.distributorReturn,
 
     "click .submitReturn": (event, template) ->
       try
-        currentReturn = Session.get('currentReturn')
-        returnDetails = Schema.returnDetails.find({return: currentReturn._id}).fetch()
+        currentDistributorReturn = Session.get('currentDistributorReturn')
+        returnDetails = Schema.returnDetails.find({return: currentDistributorReturn._id}).fetch()
         (if detail.returnQuality is 0 then throw 'So luong lon hon 0.') for detail in returnDetails
 
         totalReturnQuality = 0
@@ -64,114 +63,55 @@ lemon.defineApp Template.distributorReturn,
           }
         .value()
 
-        if currentReturn.customer
-          for returnDetail in returnDetails
-            quality = 0
-            Schema.sales.find({buyer: currentReturn.customer}).forEach(
-              (sale)->
-                Schema.saleDetails.find({sale: sale._id, product: returnDetail.product}).forEach(
-                  (saleDetail)-> quality += (saleDetail.quality - saleDetail.returnQuality)
-                )
-            )
-            if quality < returnDetail.quality then throw 'So luong khong du.'
+        for returnDetail in returnDetails
+          quality = 0
+          Schema.productDetails.find({
+            distributor: currentDistributorReturn.distributor
+            product: returnDetail.product
+            availableQuality: {$gt:0}
+          }).forEach((productDetail)-> quality += productDetail.availableQuality)
+          if quality < returnDetail.quality then throw 'So luong khong du.'
 
-          for returnDetail in returnDetails
-            saleDetails = []
-            Schema.sales.find({buyer: currentReturn.customer}).forEach(
-              (sale)->
-                Schema.saleDetails.find({sale: sale._id, product: returnDetail.product}).forEach(
-                  (saleDetail)-> saleDetails.push saleDetail
-                )
-            )
-            transactionQuality = 0
-            for saleDetail in saleDetails
-              requiredQuality = returnDetail.quality - transactionQuality
-              availableReturnQuality = saleDetail.quality - saleDetail.returnQuality
-              if availableReturnQuality > requiredQuality then takenQuality = requiredQuality
-              else takenQuality = availableReturnQuality
+        for returnDetail in returnDetails
+          productDetails = Schema.productDetails.find({
+            distributor: currentDistributorReturn.distributor
+            product: returnDetail.product
+            availableQuality: {$gt:0}
+          }).fetch()
 
-              product = Schema.products.findOne(saleDetail.product)
-              if product.basicDetailModeEnabled is false
-                Schema.products.update saleDetail.product, $inc:{
-                  availableQuality: takenQuality
-                  inStockQuality: takenQuality
-                }
-                Schema.productDetails.update saleDetail.productDetail, $inc:{
-                  availableQuality: takenQuality
-                  inStockQuality: takenQuality
-                }
-              Schema.saleDetails.update saleDetail._id, $inc:{returnQuality: takenQuality}
-              Schema.sales.update saleDetail.sale, $set:{allowDelete: false}
+          transactionQuality = 0
+          for productDetail in productDetails
+            requiredQuality = returnDetail.quality - transactionQuality
+            if productDetail.availableQuality > requiredQuality then takenQuality = requiredQuality
+            else takenQuality = productDetail.availableQuality
 
-              transactionQuality += takenQuality
-              if transactionQuality == returnDetail.quality then break
+            Schema.productDetails.update productDetail._id, $inc:{
+              availableQuality: -takenQuality
+              inStockQuality: -takenQuality
+              importPrice: -takenQuality
+            }
+            Schema.products.update productDetail.product  , $inc:{
+              availableQuality: -takenQuality
+              inStockQuality: -takenQuality
+              totalQuality: -takenQuality
+            }
 
-          customer = Schema.customers.findOne(currentReturn.customer)
-          Schema.customers.update customer._id, $inc:{saleTotalCash: -totalReturnPrice, saleDebt: -totalReturnPrice}
+            transactionQuality += takenQuality
+            if transactionQuality == returnDetail.quality then break
 
-          timeLineSale = Schema.sales.findOne({buyer: currentReturn.customer}, {sort: {'version.createdAt': -1}})
-          Schema.returns.update currentReturn._id, $set: {
-            timeLineSales: timeLineSale._id
-            status: 2
-            'version.createdAt': new Date()
-            allowDelete: false
-            beforeDebtBalance: customer.saleDebt
-            debtBalanceChange: totalReturnPrice
-            latestDebtBalance: customer.saleDebt - totalReturnPrice
-          }
-          Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
+        distributor = Schema.distributors.findOne(currentDistributorReturn.distributor)
+        Schema.distributors.update distributor._id, $inc:{importTotalCash: -totalReturnPrice, importDebt: -totalReturnPrice}
 
-        if currentReturn.distributor
-          for returnDetail in returnDetails
-            quality = 0
-            Schema.productDetails.find({
-              distributor: currentReturn.distributor
-              product: returnDetail.product
-              availableQuality: {$gt:0}
-            }).forEach((productDetail)-> quality += productDetail.availableQuality)
-            if quality < returnDetail.quality then throw 'So luong khong du.'
-
-          for returnDetail in returnDetails
-            productDetails = Schema.productDetails.find({
-              distributor: currentReturn.distributor
-              product: returnDetail.product
-              availableQuality: {$gt:0}
-            }).fetch()
-
-            transactionQuality = 0
-            for productDetail in productDetails
-              requiredQuality = returnDetail.quality - transactionQuality
-              if productDetail.availableQuality > requiredQuality then takenQuality = requiredQuality
-              else takenQuality = productDetail.availableQuality
-
-              Schema.productDetails.update productDetail._id, $inc:{
-                availableQuality: -takenQuality
-                inStockQuality: -takenQuality
-                importPrice: -takenQuality
-              }
-              Schema.products.update productDetail.product  , $inc:{
-                availableQuality: -takenQuality
-                inStockQuality: -takenQuality
-                totalQuality: -takenQuality
-              }
-
-              transactionQuality += takenQuality
-              if transactionQuality == returnDetail.quality then break
-
-          distributor = Schema.distributors.findOne(currentReturn.distributor)
-          Schema.distributors.update distributor._id, $inc:{importTotalCash: -totalReturnPrice, importDebt: -totalReturnPrice}
-
-          timeLineImport = Schema.imports.findOne({distributor: currentReturn.distributor, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
-          Schema.returns.update currentReturn._id, $set: {
-            timeLineImport: timeLineImport._id
-            status: 2
-            'version.createdAt': new Date()
-            allowDelete: false
-            beforeDebtBalance: customer.saleDebt
-            debtBalanceChange: totalReturnPrice
-            latestDebtBalance: customer.saleDebt - totalReturnPrice
-          }
-          Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
-
+        timeLineImport = Schema.imports.findOne({distributor: currentDistributorReturn.distributor, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
+        Schema.returns.update currentDistributorReturn._id, $set: {
+          timeLineImport: timeLineImport._id
+          status: 2
+          'version.createdAt': new Date()
+          allowDelete: false
+          beforeDebtBalance: distributor.importDebt
+          debtBalanceChange: totalReturnPrice
+          latestDebtBalance: distributor.importDebt - totalReturnPrice
+        }
+        Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
       catch error
         console.log error
