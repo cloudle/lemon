@@ -36,35 +36,23 @@ template(name="distributorManagement")
           if creationMode
             .lemon.btn.rounded.tiny.lime.icon-plus-6.create-command.createDistributorBtn
         .nano: .nano-content
-          if distributorReturnMode
+          if showFilterSearch
             .group-wrapper
-              each managedReturnProductList
-                .caption.advanced.inner
-                  +avatarImageComponent(avatar=avatarUrl alias=product.name)
+              each managedDistributorList
+                .caption.inner(class="{{activeClass}}")
+                  +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                   span.text
-                    | <b>{{product.name}}</b>
-                    if product.basicUnit
-                        | ({{unitName}})
-                    .commands
-                      span.icon-right-open-big.addReturnDetail
+                    |{{name}}
+                    if description
+                        |({{description}})
           else
-            if showFilterSearch
+            each managedDistributorList
               .group-wrapper
-                each managedDistributorList
+                .caption.group {{key}}
+                each childs
                   .caption.inner(class="{{activeClass}}")
                     +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                     span.text
                       |{{name}}
                       if description
                           |({{description}})
-            else
-              each managedDistributorList
-                .group-wrapper
-                  .caption.group {{key}}
-                  each childs
-                    .caption.inner(class="{{activeClass}}")
-                      +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
-                      span.text
-                        |{{name}}
-                        if description
-                            |({{description}})

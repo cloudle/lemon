@@ -15,7 +15,6 @@ lemon.defineWidget Template.distributorManagementImportDetails,
 
   importPrice: -> if @conversionQuality then @unitPrice else @importPrice
 
-  disableReturnMode: -> !Session.get('distributorManagementReturnMode')
   showDeleteImport: ->
     lastImportId = Session.get("distributorManagementCurrentDistributor")?.lastImport
     if @_id is lastImportId and @creator is Session.get('myProfile').user
@@ -31,33 +30,6 @@ lemon.defineWidget Template.distributorManagementImportDetails,
 
 
   events:
-    "click .createReturnProduct": (event, template) ->
-      if distributor = Session.get("distributorManagementCurrentDistributor")
-        if distributor.returnImportModeEnabled is false and distributor.currentReturn is undefined
-          returnOption =
-            merchant        : Session.get('myProfile').currentMerchant
-            warehouse       : Session.get('myProfile').currentWarehouse
-            creator         : Session.get('myProfile').user
-            returnCode      : 'TH'
-            import          : @_id
-            distributor     : @distributor
-            discountCash    : 0
-            discountPercent : 0
-            totalPrice      : 0
-            finallyPrice    : 0
-            status          : 0
-            comment         : "Trả hàng cho nhà cung cấp"
-            beforeDebtBalance: distributor.customImportDebt + distributor.importDebt
-            debtBalanceChange: 0
-            latestDebtBalance: distributor.customImportDebt + distributor.importDebt
-          returnId = Schema.returns.insert returnOption
-          returnOption._id = returnId
-          Schema.distributors.update @distributor, $set:{returnImportModeEnabled: true, currentReturn: returnId}
-
-          Session.set('distributorManagementReturnMode', true)
-          Session.set('distributorManagementCurrentReturn', returnOption)
-          $(".dual-detail .nano").nanoScroller({ scroll: 'bottom' })
-
     "click .deleteImport": (event, template) ->
       try
         currentImport = @

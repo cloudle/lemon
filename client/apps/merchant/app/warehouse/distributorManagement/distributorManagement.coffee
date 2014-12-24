@@ -6,7 +6,6 @@ lemon.defineApp Template.distributorManagement,
   currentDistributor: -> Session.get("distributorManagementCurrentDistributor")
   activeClass:-> if Session.get("distributorManagementCurrentDistributor")?._id is @._id then 'active' else ''
   creationMode: -> Session.get("distributorCreationMode")
-  distributorReturnMode: -> Session.get("distributorManagementReturnMode")
   unitName: -> if @unit then @unit.unit else @product.basicUnit
 
 #  rendered: -> $(".nano").nanoScroller()
