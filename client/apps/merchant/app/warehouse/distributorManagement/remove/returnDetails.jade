@@ -1,0 +1,29 @@
+//template(name="distributorManagementReturnDetails")
+//  tr.header-row
+//    td.has-commands(colspan="5")
+//      | .
+//      .bill-header <b>{{momentCalendar debtDate}}</b>. {{comment}}.
+//      .commands
+//        .lemon.btn.rounded.tiny.lime.icon-ok-6.submitReturn
+//        .lemon.btn.rounded.tiny.red.icon-minus-4.deleteReturn
+//  each returnDetails
+//    if returnDetailEditingMode
+//      +distributorManagementReturnDetailEditor returnDetailEditingData
+//    else
+//      tr.detail-row.edit-detail(class="{{crossReturnAvailableQuality.errorClass}}")
+//        td.has-commands
+//          |{{productName}}
+//          .commands
+//            .lemon.rounded.tiny.btn.red.deleteReturnDetail: span.icon-minus-4
+//        td.error-field
+//          span
+//            |{{formatNumber unitReturnQuality}}
+//            if crossReturnAvailableQuality.invalid
+//              span.super.s7.color-lime {{crossReturnAvailableQuality.crossAvailable}}
+//        td {{unitName}}
+//        td.number {{formatNumber unitReturnsPrice}}
+//        td.last-column.number {{formatNumber finalPrice}}
+//  tr.detail-row.summary-row
+//    td
+//    td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber finallyPrice}}</b>
+//    td.summary-total(align="right"): span.s5 <b>{{formatNumber finallyPrice}}</b>

@@ -4,8 +4,6 @@ template(name="distributorManagementImportDetails")
       | .
       .bill-header <b>{{momentCalendar debtDate}}</b>. {{description}}.
       .commands
-        if disableReturnMode
-          .lemon.rounded.tiny.btn.purple.createReturnProduct: span.icon-reply-outline
         if showDeleteImport
           .lemon.rounded.tiny.btn.red.deleteImport: span.icon-minus-4
   each importDetails
