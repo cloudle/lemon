@@ -8,4 +8,4 @@ lemon.defineApp Template.distributorManagementNavigationPartial,
     "click .distributorToReturns": (event, template) ->
       if distributor = Session.get("distributorManagementCurrentDistributor")
         Meteor.call 'distributorToReturns', distributor, Session.get('myProfile'), (error, result) ->
-          if error then console.log error else Router.go('/returnManagement')
+          if error then console.log error else Router.go('/distributorReturn')

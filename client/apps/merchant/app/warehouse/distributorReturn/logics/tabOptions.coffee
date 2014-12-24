@@ -20,7 +20,7 @@ createReturnAndSelected = ()->
       finallyPrice: 0
       comment: 'Tra Hang'
       status: 0
-      returnMethods: 0
+      returnMethods: 1
       beforeDebtBalance: 0
       debtBalanceChange: 0
       latestDebtBalance: 0
@@ -29,7 +29,7 @@ createReturnAndSelected = ()->
     Session.set('currentReturn', returnOption)
 
 
-Apps.Merchant.returnManagementInit.push (scope) ->
+Apps.Merchant.distributorReturnInit.push (scope) ->
   scope.tabOptions =
     source: Schema.returns.find({status: 0})
     currentSource: 'currentReturn'
@@ -40,4 +40,4 @@ Apps.Merchant.returnManagementInit.push (scope) ->
     navigateAction: (instance) ->
       UserSession.set('currentReturn', instance._id)
       Session.set('currentReturn', instance)
-      Meteor.subscribe('returnManagementData')
+      Meteor.subscribe('distributorReturnData')

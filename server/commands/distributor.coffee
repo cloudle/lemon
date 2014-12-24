@@ -66,10 +66,11 @@ Meteor.methods
 
       if distributor
         returnFound = Schema.returns.findOne({
-          merchant: profile.currentMerchant
-          creator : userId
-          distributor: distributor._id
-          status  : 0
+          merchant     : profile.currentMerchant
+          creator      : userId
+          distributor  : distributor._id
+          status       : 0
+          returnMethods: 1
         }, {sort: {'version.createdAt': -1}})
         if !returnFound then returnFound = Return.createByDistributor(distributor._id, profile)
         Schema.userSessions.update {user: userId}, {$set:{currentReturn: returnFound._id}} if returnFound

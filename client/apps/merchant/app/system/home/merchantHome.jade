@@ -31,18 +31,18 @@ template(name="merchantHome")
         span.top.middle.caption: h5 {{formatNumber Summary.data.customerCountAll}} KHÁCH HÀNG
         span.center.middle.caption: span.table: i.ico.huge.icon-contacts
         span.bottom.middle.caption: h3 {{formatNumber Summary.data.totalReceivableCash}} <tiny5>PHẢI THU</tiny5>
+      .tile.amethyst(class="{{metroUnLocker Summary.data.availableProductCount}}"
+      data-app='distributorReturn')
+        span.center.middle.caption: span.table: i.ico.icon-forward-3
+        span.bottom.middle.caption TRẢ HÀNG NCC
+      .tile.alizarin(class="{{metroUnLocker Summary.data.saleCount}}"
+      data-app='customerReturn' )
+        span.center.middle.caption: span.table: i.ico.icon-reply-outline
+        span.bottom.middle.caption  {{formatNumber Summary.data.returnCount}} TRẢ HÀNG
       .tile.amethyst(class="{{metroUnLocker Summary.data.deliveryCount}}"
       data-app='deliveryManager')
         span.center.middle.caption: span.table: i.ico.icon-truck-1
         span.bottom.middle.caption {{formatNumber Summary.data.deliveryCount}} GIAO HÀNG
-      .tile.alizarin(class="{{metroUnLocker Summary.data.saleCount}}"
-      data-app='returnManagement' )
-        span.center.middle.caption: span.table: i.ico.icon-reply-outline
-        span.bottom.middle.caption  {{formatNumber Summary.data.returnCount}} TRẢ HÀNG
-      .tile.green-sea(class="{{metroUnLocker Summary.data.importCount}}"
-      data-app='exportAndImportManager')
-        span.center.middle.caption: span.table: i.ico.icon-shareable
-        span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> XUẤT NHẬP KHO
       .tile.peter-river(class="{{metroUnLocker Summary.data.depositDay}}"
       data-app='merchantReport')
         span.s7.top.middle.caption DOANH THU HÔM NAY <br/> {{formatNumber Summary.data.depositDay}}

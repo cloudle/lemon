@@ -1,4 +1,4 @@
-template(name="returnDetailSection")
+template(name="distributorReturnDetailSection")
    .section.top.panel.panel-default.printable-area
       .panel-heading
          .hide-on-print
@@ -9,7 +9,6 @@ template(name="returnDetailSection")
                .document-name PHIẾU TRẢ HÀNG
 
       .panel-body
-         //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
          table.lemon-grid
             tr.table-header
                th.bill-name(style="width:auto") SẢN PHẨM
@@ -19,7 +18,7 @@ template(name="returnDetailSection")
                th.number.final-price(style="width:120px") THÀNH TIỀN
             each returnDetails
                if editingMode
-                  +returnDetailEditor editingData
+                  +distributorReturnDetailEditor editingData
                else
                   tr.detail-row.large-name: td(colspan="3")
                      span {{productName}}

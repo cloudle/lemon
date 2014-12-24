@@ -1,20 +1,20 @@
-scope = logics.returnManagement
+scope = logics.distributorReturn
 
-lemon.defineApp Template.returnManagement,
+lemon.defineApp Template.distributorReturn,
   currentReturn: -> Session.get('currentReturn')
   showCustomerSelect: -> if Session.get('currentReturn')?.returnMethods is 0 then true else false
   unitName: -> if @unit then @unit.unit else @product.basicUnit
 
   created: ->
-    lemon.dependencies.resolve('returnManagement')
+    lemon.dependencies.resolve('customerReturn')
 
 #  rendered: ->
-#    if customer = Session.get('returnManagementCurrentCustomer')
-#      Meteor.subscribe('returnManagementProductData', customer._id)
+#    if customer = Session.get('customerReturnCurrentCustomer')
+#      Meteor.subscribe('customerReturnProductData', customer._id)
 
   events:
     "input .search-filter": (event, template) ->
-      Session.set("returnManagementSearchFilter", template.ui.$searchFilter.val())
+      Session.set("customerReturnSearchFilter", template.ui.$searchFilter.val())
 
     "click .addReturnDetail": (event, template) ->
       if Session.get('currentReturn')
