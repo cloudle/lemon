@@ -26,14 +26,14 @@ Schema.add 'returns', "Return", class Return
     option
 
 
-  @createByCustomer: (customerId, myProfile)->
+  @createByCustomer: (customer, myProfile)->
     if !myProfile then myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     option =
       merchant       : myProfile.currentMerchant
       warehouse      : myProfile.currentWarehouse
       creator        : myProfile.user
-      customer       : customerId
-      comment        : 'Trả Hàng Từ Khách Hàng'
+      customer       : customer._id
+      comment        : 'Trả Hàng'
       returnCode     : "ramdom"
       discountCash   : 0
       discountPercent: 0
@@ -41,19 +41,20 @@ Schema.add 'returns', "Return", class Return
       finallyPrice   : 0
       status         : 0
       returnMethods  : 0
+      tabDisplay     : Helpers.shortName2(customer.name)
       beforeDebtBalance: 0
       debtBalanceChange: 0
       latestDebtBalance: 0
     option._id = Schema.returns.insert option
     option
 
-  @createByDistributor: (distributorId, myProfile)->
+  @createByDistributor: (distributor, myProfile)->
     if !myProfile then myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     option =
       merchant       : myProfile.currentMerchant
       warehouse      : myProfile.currentWarehouse
       creator        : myProfile.user
-      distributor    : distributorId
+      distributor    : distributor._id
       comment        : 'Trả Hàng Cho NCC'
       returnCode     : "ramdom"
       discountCash   : 0
@@ -62,6 +63,7 @@ Schema.add 'returns', "Return", class Return
       finallyPrice   : 0
       status         : 0
       returnMethods  : 1
+      tabDisplay     : Helpers.shortName2(distributor.name)
       beforeDebtBalance: 0
       debtBalanceChange: 0
       latestDebtBalance: 0

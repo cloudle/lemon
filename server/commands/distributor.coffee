@@ -72,7 +72,7 @@ Meteor.methods
           status       : 0
           returnMethods: 1
         }, {sort: {'version.createdAt': -1}})
-        if !returnFound then returnFound = Return.createByDistributor(distributor._id, profile)
+        if !returnFound then returnFound = Return.createByDistributor(distributor, profile)
         Schema.userSessions.update {user: userId}, {$set:{currentDistributorReturn: returnFound._id}} if returnFound
       else throw 'Không tìm thấy nhà cung cấp'
 
