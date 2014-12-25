@@ -6,11 +6,11 @@ template(name="saleDetailSection")
          .show-on-print
             +merchantPrintingHeader
             .bill-info
-              .seller-info NGƯỜI BÁN: {{sellerName}}
+              .seller-info {{buyerName}}
             .printing-info
               .document-name
                 span PHIẾU BÁN HÀNG <br />
-                span.s4 {{buyerName}}
+                span.s4 NGƯỜI BÁN: {{sellerName}}
 
       .panel-body
          //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")

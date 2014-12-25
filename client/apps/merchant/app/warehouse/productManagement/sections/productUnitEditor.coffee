@@ -17,7 +17,6 @@ lemon.defineHyper Template.productManagementUnitEditor,
       #TODO: Kiem tra trung ten & unit!
       unit = template.ui.$unit.val()
       barcode = template.ui.$barcode.val()
-      console.log barcode
       price = Number(template.ui.$price.inputmask('unmaskedvalue'))
       price = 0 if price < 0
 

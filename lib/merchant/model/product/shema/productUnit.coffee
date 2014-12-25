@@ -18,6 +18,10 @@ simpleSchema.productUnits = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  importPrice:
+    type: Number
+    defaultValue: 0
+
   allowDelete:
     type: Boolean
     defaultValue: true
