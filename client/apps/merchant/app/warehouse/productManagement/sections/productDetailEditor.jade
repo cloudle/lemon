@@ -8,7 +8,7 @@ template(name="productManagementDetailEditor")
     td: input(name="unitQuality" placeholder="số lượng")
     td {{unitName}}
     td.number {{conversionQuality}}
-    td
-    td
+    td: input(name="importPrice" placeholder="giá nhập")
+    td.number {{formatNumber totalPrice}}
 
     //td.number {{formatNumber importPrice}}

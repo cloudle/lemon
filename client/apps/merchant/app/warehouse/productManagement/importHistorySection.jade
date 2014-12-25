@@ -43,11 +43,11 @@ template(name="productManagementSalesHistorySection")
                     if allowDelete
                       .lemon.rounded.tiny.btn.blue.delete-basicDetail: span.icon-minus-4
                 td {{expireDate}}
-                td {{unitQuality}}
+                td {{formatNumber unitQuality}}
                 td {{unitName}}
-                td.number {{conversionQuality}}
-                td
-                td
+                td.number {{formatNumber conversionQuality}}
+                td.number {{formatNumber importPrice}}
+                td.number {{formatNumber totalPrice}}
 
         if newImport.isShowDetail
           each newImport.detail

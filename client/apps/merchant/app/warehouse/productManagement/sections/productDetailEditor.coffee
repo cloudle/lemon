@@ -1,12 +1,20 @@
 lemon.defineHyper Template.productManagementDetailEditor,
   unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
+  totalPrice: -> @importPrice*@unitQuality
+
   rendered: ->
     @ui.$expireDate.inputmask("dd/mm/yyyy")
+    if expireDate = Session.get("productManagementDetailEditingRow").expire
+      @ui.$expireDate.val moment(expireDate).format('DDMMYYY')
+
     @ui.$unitQuality.inputmask "numeric",
       {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
     @ui.$unitQuality.val Session.get("productManagementDetailEditingRow").unitQuality
-    if expireDate = Session.get("productManagementDetailEditingRow").expire
-      @ui.$expireDate.val moment(expireDate).format('DDMMYYY')
+
+    @ui.$importPrice.inputmask "numeric",
+      {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
+    @ui.$importPrice.val Session.get("productManagementDetailEditingRow").importPrice
+
 
     @ui.$unitQuality.select()
 
@@ -21,8 +29,12 @@ lemon.defineHyper Template.productManagementDetailEditor,
       unitQuality = Number(template.ui.$unitQuality.inputmask('unmaskedvalue'))
       unitQuality = 1 if unitQuality < 0
 
+      importPrice = Number(template.ui.$importPrice.inputmask('unmaskedvalue'))
+      importPrice = 0 if importPrice < 0
+
       detailOption =
         unitQuality       : unitQuality
+        importPrice       : importPrice
         importQuality     : unitQuality * @conversionQuality
         availableQuality  : unitQuality * @conversionQuality
         inStockQuality    : unitQuality * @conversionQuality

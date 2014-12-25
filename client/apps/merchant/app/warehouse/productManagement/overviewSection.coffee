@@ -9,16 +9,17 @@ lemon.defineHyper Template.productManagementOverviewSection,
   showCreateUnitMode: -> if Session.get('productManagementCurrentProduct')?.basicUnit then true else false
   basicDetailModeEnabled: -> Session.get('productManagementCurrentProduct')?.basicDetailModeEnabled
   hasUnit: -> Schema.productUnits.findOne({product: @_id})
-  averagePrice: ->
-    if product = Session.get('productManagementCurrentProduct')
-      productDetails = Schema.productDetails.find({product: product._id}).fetch()
-      totalQuality = 0
-      totalPrice = 0
-      for productDetail in productDetails
-        totalQuality += productDetail.importQuality
-        totalPrice += productDetail.importQuality * productDetail.importPrice
-      totalPrice/totalQuality
+#  averagePrice: ->
+#    if product = Session.get('productManagementCurrentProduct')
+#      productDetails = Schema.productDetails.find({product: product._id}).fetch()
+#      totalQuality = 0
+#      totalPrice = 0
+#      for productDetail in productDetails
+#        totalQuality += productDetail.importQuality
+#        totalPrice += productDetail.importQuality * productDetail.importPrice
+#      totalPrice/totalQuality
   productUnits: -> Schema.productUnits.find({product: @_id})
+
   name: ->
     Meteor.setTimeout ->
       scope.overviewTemplateInstance.ui.$productName.change()
@@ -63,28 +64,31 @@ lemon.defineHyper Template.productManagementOverviewSection,
             merchant          : product.merchant
             warehouse         : product.warehouse
             product           : product._id
+            unitPrice         : product.importPrice ? 0
+            importPrice       : product.importPrice ? 0
+            unitQuality       : 1
             conversionQuality : 1
             importQuality     : 1
             availableQuality  : 1
             inStockQuality    : 1
-            importPrice       : product.importPrice ? 0
-            unitQuality       : 1
         else
           if productUnit = Schema.productUnits.findOne({_id: @_id, product: product._id})
             detailOption =
               merchant          : product.merchant
               warehouse         : product.warehouse
               product           : product._id
+              unitPrice         : productUnit.importPrice
+              importPrice       : productUnit.importPrice
+              unitQuality       : 1
+              unit              : productUnit._id
               conversionQuality : productUnit.conversionQuality
               importQuality     : productUnit.conversionQuality
               availableQuality  : productUnit.conversionQuality
               inStockQuality    : productUnit.conversionQuality
-              unit              : productUnit._id
-              unitQuality       : 1
-              unitPrice         : 0
-              importPrice       : 0
+
         if detailOption
-          if Schema.productDetails.insert detailOption
+          productDetailId = Schema.productDetails.insert detailOption
+          if Schema.productDetails.findOne(productDetailId)
             Schema.productUnits.update detailOption.unit, $set:{allowDelete: false} if detailOption.unit
             Schema.products.update product._id, $set:{allowDelete: false}, $inc:{
               totalQuality    : detailOption.importQuality

@@ -89,5 +89,5 @@ simpleSchema.products = new SimpleSchema
 
   importPrice:
     type: Number
-    optional: true
+    defaultValue: 0
 

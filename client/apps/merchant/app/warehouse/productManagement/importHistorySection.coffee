@@ -4,7 +4,8 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
   unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   detailEditingMode: -> Session.get("productManagementDetailEditingRow")?._id is @_id
   detailEditingData: -> Session.get("productManagementDetailEditingRow")
-  expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY')
+  expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY') else 'KHÔNG'
+  totalPrice: -> @importPrice*@unitQuality
 
   basicDetail: ->
     if product = Session.get("productManagementCurrentProduct")
