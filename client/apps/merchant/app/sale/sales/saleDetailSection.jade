@@ -49,10 +49,31 @@ template(name="saleDetailSection")
                         if discountPercent
                            span.super.s7.color-lime -{{round discountPercent}}%
                      td.final-price.number <b>{{formatNumber finalPrice}}</b>
-         tr
-            td
-               input.editable.dashed.note(value="{{order.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
-            td.number(colspan="5")
-               span.s3 <b>{{formatNumber order.finalPrice}}</b> VNĐ
+            tr
+               td
+                  input.editable.dashed.note(value="{{order.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
+               td
+               td
+               td.number: span.s5 T.PHIẾU:
+               td.number(colspan="2"): span.s4 <b>{{formatNumber order.finalPrice}}</b> VNĐ
+            tr
+               td
+               td
+               td
+               td.number: span.s5 ĐÃ TRẢ :
+               td.number(colspan="2"): span.s4 <b>{{formatNumber order.currentDeposit}}</b> VNĐ
+            tr
+               td
+               td
+               td
+               td.number: span.s5 NỢ CŨ :
+               td.number(colspan="2"): span.s4 <b>{{formatNumber customerDebt}}</b> VNĐ
+            tr
+               td
+               td
+               td
+               td
+               td.number(colspan="2" style="border-top: solid 1px #d7d7d7")
+                  span.s4 <b>{{formatNumber customerFinalDebt}}</b> VNĐ
 
       .panel-footer
