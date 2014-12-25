@@ -22,14 +22,16 @@ template(name="productManagementSalesHistorySection")
           //th.number(style="width:100px") Q.ĐỔI
           //th.number(style="width:100px") GIÁ
           //th.number(style="width:120px") TỔNG TIỀN
-        tr.header-row
-          td.has-commands(colspan="7")
-            | .
-            .bill-header <b>Tồn kho đầu kỳ</b>
-            .commands
-              if basicDetailModeEnabled
-                .lemon.rounded.tiny.btn.lime.basicDetailModeDisable.icon-ok-6
+
         if basicDetail.isShowDetail
+          tr.header-row
+            td.has-commands(colspan="7")
+              | .
+              .bill-header <b>Tồn kho đầu kỳ</b>
+              .commands
+                if basicDetailModeEnabled
+                  .lemon.rounded.tiny.btn.lime.basicDetailModeDisable.icon-ok-6
+
           each basicDetail.detail
             if detailEditingMode
               +productManagementDetailEditor detailEditingData

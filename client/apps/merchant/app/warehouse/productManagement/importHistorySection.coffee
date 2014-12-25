@@ -10,7 +10,7 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
     if product = Session.get("productManagementCurrentProduct")
       productDetailFound = Schema.productDetails.find({product: product._id, import: {$exists: false}})
       return {
-        isShowDetail: if productDetailFound.count() > 0 then true else false
+        isShowDetail: if @basicDetailModeEnabled then true else productDetailFound.count() > 0
         detail: productDetailFound
       }
 

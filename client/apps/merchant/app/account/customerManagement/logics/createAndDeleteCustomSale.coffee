@@ -100,7 +100,8 @@ Apps.Merchant.customerManagementInit.push (scope) ->
 #    console.log $payDescription.val() , (paidDate > latestSale.version.createdAt if latestSale) , payAmount != "" , !isNaN(payAmount)
 
       console.log customer
-      if Schema.sales.findOne({buyer: customer._id}) and payAmount != 0 and !isNaN(payAmount) # and paidDate >= latestSale?.version.createdAt
+#      if Schema.sales.findOne({buyer: customer._id}) and payAmount != 0 and !isNaN(payAmount) # and paidDate >= latestSale?.version.createdAt
+      if payAmount != 0 and !isNaN(payAmount)
         Meteor.call('createNewReceiptCashOfSales', customer._id, payAmount, description)
         Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
         Session.set("allowCreateTransactionOfSale", false)

@@ -7,7 +7,7 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
   allowCreateTransactionOfSale: -> if Session.get("allowCreateTransactionOfSale") then '' else 'disabled'
   allowCreateTransactionOfCustomSale: -> if Session.get("allowCreateTransactionOfCustomSale") then '' else 'disabled'
 
-  showIsFoundSale: -> if Schema.sales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}).count() > 0 then "" else "display: none;"
+#  showIsFoundSale: -> if Schema.sales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}).count() > 0 then "" else "display: none;"
   isCustomSaleModeEnabled: -> if Session.get("customerManagementCurrentCustomer")?.customSaleModeEnabled then "" else "display: none;"
 
   customSale: -> Schema.customSales.find({buyer: Session.get("customerManagementCurrentCustomer")?._id}, {sort: {debtDate: 1}})

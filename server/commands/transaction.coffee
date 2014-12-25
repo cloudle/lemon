@@ -60,17 +60,35 @@ Meteor.methods
   createNewReceiptCashOfSales: (customerId, debtCash, description, paidDate = new Date())->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if customer = Schema.customers.findOne({_id: customerId, parentMerchant: profile.parentMerchant})
-        if sale = Schema.sales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
+        latestSale = Schema.sales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
+        if latestSale is undefined
+          saleOption =
+            merchant          : profile.currentMerchant
+            warehouse         : profile.currentWarehouse
+            creator           : profile.user
+            seller            : profile.user
+            buyer             : customer._id
+            orderCode         : Helpers.createSaleCode()
+            imported          : false
+            exported          : true
+            received          : true
+            status            : true
+            submitted         : true
+            description       : ''
+          saleOption._id = Schema.sales.insert saleOption
+          latestSale = saleOption if saleOption._id
+
+        if latestSale
           option =
             parentMerchant: profile.parentMerchant
             merchant      : profile.currentMerchant
             warehouse     : profile.currentWarehouse
             creator       : profile.user
             owner         : customer._id
-            latestSale    : sale._id
+            latestSale    : latestSale._id
             group         : 'sales'
             totalCash     : debtCash
-            debtDate      : if paidDate then paidDate else (new Date())
+            debtDate      : paidDate
 
           incCustomerOption = {saleDebt: -debtCash }
           if debtCash > 0

@@ -25,7 +25,7 @@ changedActionSelectCustomer = (customerId, currentOrder)->
 
     updateCustomerAllowDelete(customer)
     option.buyer = customer._id
-    option.tabDisplay = Helpers.respectName(customer.name, customer.gender)
+    option.tabDisplay = Helpers.shortName2(customer.name)
   else
     console.log 'Sai customer'; return
   Schema.orders.update(currentOrder._id, {$set: option})

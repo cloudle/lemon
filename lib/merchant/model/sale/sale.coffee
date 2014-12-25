@@ -1,19 +1,3 @@
-createSaleCode = ->
-  date = new Date()
-  day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  oldSale = Schema.sales.findOne({'version.createdAt': {$gt: day}},{sort: {'version.createdAt': -1}})
-  if oldSale
-    code = Number(oldSale.orderCode.substring(oldSale.orderCode.length-4))+1
-    if 99 < code < 999 then code = "0#{code}"
-    if 9 < code < 100 then code = "00#{code}"
-    if code < 10 then code = "000#{code}"
-    orderCode = "#{Helpers.FormatDate()}-#{code}"
-  else
-    orderCode = "#{Helpers.FormatDate()}-0001"
-  orderCode
-
-
-
 Schema.add 'sales', "Sale", class Sale
   @newByOrder: (order)->
     buyer = Schema.customers.findOne(order.buyer)
@@ -23,7 +7,7 @@ Schema.add 'sales', "Sale", class Sale
       creator           : order.creator
       seller            : order.seller
       buyer             : order.buyer
-      orderCode         : createSaleCode()
+      orderCode         : Helpers.createSaleCode()
       productCount      : order.productCount
       saleCount         : order.saleCount
       return            : false

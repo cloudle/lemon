@@ -19,9 +19,11 @@ simpleSchema.sales = new SimpleSchema
 
   productCount:
     type: Number
+    defaultValue: 0
 
   saleCount:
     type: Number
+    defaultValue: 0
 
   return:
     type: Boolean
@@ -33,9 +35,11 @@ simpleSchema.sales = new SimpleSchema
 
   returnCount:
     type: Number
+    defaultValue: 0
 
   returnQuality:
     type: Number
+    defaultValue: 0
 
   delivery:
     type: String
@@ -43,21 +47,27 @@ simpleSchema.sales = new SimpleSchema
 
   paymentMethod:
     type: Number
+    defaultValue: 0
 
   billDiscount:
     type: Boolean
+    defaultValue: false
 
   discountCash:
     type: Number
+    defaultValue: 0
 
   totalPrice:
     type: Number
+    defaultValue: 0
 
   finalPrice:
     type: Number
+    defaultValue: 0
 
   deposit:
     type: Number
+    defaultValue: 0
 
   soldAt:
     type: Date
@@ -81,9 +91,11 @@ simpleSchema.sales = new SimpleSchema
 
   debit:
     type: Number
+    defaultValue: 0
 
   paymentsDelivery:
     type: Number
+    defaultValue: 0
 
   #người xác nhận đã nhận tiền
   recipient:
@@ -92,15 +104,19 @@ simpleSchema.sales = new SimpleSchema
 
   received:
     type: Boolean
+    defaultValue: false
 
   imported:
     type: Boolean
+    defaultValue: false
 
   exported:
     type: Boolean
+    defaultValue: false
 
   status:
     type: Boolean
+    defaultValue: false
 
   success:
     type: Boolean
@@ -108,6 +124,7 @@ simpleSchema.sales = new SimpleSchema
 
   submitted:
     type: Boolean
+    defaultValue: false
 
   styles:
     type: String
