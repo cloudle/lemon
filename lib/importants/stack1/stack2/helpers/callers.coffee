@@ -8,6 +8,7 @@ Helpers.shortName = (fullName, maxlength = 6) ->
 Helpers.shortName2 = (fullName, word = 2) ->
   return undefined if !fullName
   splited = fullName?.split(' ')
+  name = ""
   if word < 1 then word = 1
   if splited.length > word
     for i in [word..1]
