@@ -26,13 +26,14 @@ lemon.defineWidget Template.customerManagementSaleDetails,
         throw 'Phiếu bán đã trả hàng không thể xóa.' if Schema.returns.find({timeLineSales: currentSales._id}).count() > 0
         throw 'Không thể xóa khi có phiếu giao hàng.' if @paymentsDelivery is 1
         customerIncOption =
+          salePaid: 0
           saleDebt: -currentSales.debtBalanceChange
           saleTotalCash: -currentSales.debtBalanceChange
 
         Schema.transactions.find({latestSale: currentSales._id}).forEach(
           (transaction) ->
-            customerIncOption.salePaid = -transaction.debtBalanceChange
-            customerIncOption.saleDebt = -(currentSales.debtBalanceChange - transaction.debtBalanceChange)
+            customerIncOption.salePaid += -transaction.debtBalanceChange
+            customerIncOption.saleDebt += -(currentSales.debtBalanceChange - transaction.debtBalanceChange)
             Schema.transactions.remove transaction._id
         )
 

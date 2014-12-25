@@ -26,13 +26,19 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       Session.set("allowCreateTransactionOfCustomSale", false)
 
   scope.checkAllowCreateTransactionOfSale = (template, customer)->
-    if latestSale = Schema.sales.findOne({buyer: customer._id}, {sort: {'version.createdAt': -1}})
-      payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+    payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+    if payAmount != 0 and !isNaN(payAmount)
+      Session.set("allowCreateTransactionOfSale", true)
+    else
+      Session.set("allowCreateTransactionOfSale", false)
 
-      if payAmount != 0 and !isNaN(payAmount)
-        Session.set("allowCreateTransactionOfSale", true)
-      else
-        Session.set("allowCreateTransactionOfSale", false)
+#    if latestSale = Schema.sales.findOne({buyer: customer._id}, {sort: {'version.createdAt': -1}})
+#      payAmount = parseInt($(template.find("[name='paySaleAmount']")).inputmask('unmaskedvalue'))
+#
+#      if payAmount != 0 and !isNaN(payAmount)
+#        Session.set("allowCreateTransactionOfSale", true)
+#      else
+#        Session.set("allowCreateTransactionOfSale", false)
 
 #      $paidDate = $(template.find("[name='paidSaleDate']")).inputmask('unmaskedvalue')
 #      paidDate  = moment($paidDate, 'DD/MM/YYYY')._d

@@ -16,36 +16,18 @@ template(name="productManagementSalesHistorySection")
           th.number(style="width:50px") Q.ĐỔI
           th.number(style="width:100px") GIÁ NHẬP
           th.number(style="width:120px") TỔNG TIỀN
-          //th(style="width:auto") ĐƠN VỊ TÍNH
-          //th(style="width:100px") HẠN SD
-          //th(style="width:80px") T.KHO
-          //th.number(style="width:100px") Q.ĐỔI
-          //th.number(style="width:100px") GIÁ
-          //th.number(style="width:120px") TỔNG TIỀN
-        tr.header-row
-          td.has-commands(colspan="7")
-            | .
-            .bill-header <b>Tồn kho đầu kỳ</b>
-            .commands
-              if basicDetailModeEnabled
-                .lemon.rounded.tiny.btn.lime.basicDetailModeDisable.icon-ok-6
+
         if basicDetail.isShowDetail
+          tr.header-row
+            td.has-commands(colspan="7")
+              | .
+              .bill-header <b>Tồn kho đầu kỳ</b>
+              .commands
+                if basicDetailModeEnabled
+                  .lemon.rounded.tiny.btn.lime.basicDetailModeDisable.icon-ok-6
+
           each basicDetail.detail
-            if detailEditingMode
-              +productManagementDetailEditor detailEditingData
-            else
-              tr.detail-row.edit-detail.click-enable
-                td.has-commands
-                  span
-                  .commands
-                    if allowDelete
-                      .lemon.rounded.tiny.btn.blue.delete-basicDetail: span.icon-minus-4
-                td {{expireDate}}
-                td {{unitQuality}}
-                td {{unitName}}
-                td.number {{conversionQuality}}
-                td
-                td
+            +productManagementBasicImportDetails this
 
         if newImport.isShowDetail
           each newImport.detail

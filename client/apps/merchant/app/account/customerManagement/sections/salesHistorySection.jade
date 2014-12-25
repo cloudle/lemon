@@ -56,7 +56,8 @@ template(name="customerManagementSalesHistorySection")
         each defaultSaleToday
           +customerManagementSaleDetails this
 
-        tr.editors.hide-on-print(style="{{showIsFoundSale}}")
+        //tr.editors.hide-on-print(style="{{showIsFoundSale}}")
+        tr.editors.hide-on-print
           td
             input.new-transaction-sale-field(name='paySaleDescription' type="text" size="10" placeholder="ghi chú thu chi")
           td(colspan="3")

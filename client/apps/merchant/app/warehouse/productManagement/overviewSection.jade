@@ -26,8 +26,9 @@ template(name="productManagementOverviewSection")
         table.lemon-grid
           tr.table-header
             th(style="width:auto") ĐƠN VỊ TÍNH
-            th(style="width:200px") MÃ VẠCH
-            th(style="width:100px") QUI ĐỔI
+            th(style="width:150px") MÃ VẠCH
+            th(style="width:80px") QUI ĐỔI
+            th.number(style="width:150px") GIÁ NHẬP
             th.number(style="width:150px") GIÁ BÁN
           each productUnits
             if unitEditingMode
@@ -43,6 +44,7 @@ template(name="productManagementOverviewSection")
                       .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
                 td {{productCode}}
                 td {{formatNumber conversionQuality}}
+                td.number {{formatNumber importPrice}} VNĐ
                 td.number {{formatNumber price}} VNĐ
 
     .panel-footer

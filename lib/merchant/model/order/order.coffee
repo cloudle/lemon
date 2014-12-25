@@ -24,7 +24,7 @@ Schema.add 'orders', "Order", class Order
       creator   : myProfile.user
       seller    : myProfile.user
       buyer     : buyer?._id ? 'null'
-      tabDisplay: if buyer then Helpers.respectName(buyer.name, buyer.gender) else 'PHIẾU BÁN HÀNG 01'
+      tabDisplay: if buyer then Helpers.shortName2(buyer.name) else 'PHIẾU BÁN HÀNG 01'
 
     orderOption._id = @schema.insert orderOption
 
