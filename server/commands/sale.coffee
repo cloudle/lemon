@@ -96,7 +96,7 @@ Meteor.methods
           status  : 0
           returnMethods: 0
         }, {sort: {'version.createdAt': -1}})
-        if !returnFound then returnFound = Return.createByCustomer(customer._id, profile)
+        if !returnFound then returnFound = Return.createByCustomer(customer, profile)
         Schema.userSessions.update {user: userId}, {$set:{currentCustomerReturn: returnFound._id}} if returnFound
       else throw 'Không tìm thấy khách hàng'
 

@@ -4,12 +4,18 @@ formatDistributorSearch = (item) ->
     desc = if item.description then "(#{item.description})" else ""
     name + desc
 
-changedActionSelectDistributor = (distributorId, currentDistributorReturn)->
-  Schema.returns.update currentDistributorReturn._id, $set: {distributor: distributorId}, $unset:{
-    sale: true
-    timeLineSales: true
-    customer: true
-  }
+changedActionSelectDistributor = (distributor, currentDistributorReturn)->
+  Schema.returns.update currentDistributorReturn._id,
+    $set: {
+      distributor: distributor._id
+      tabDisplay: Helpers.shortName2(distributor.name)
+    }
+    ,
+    $unset: {
+      sale: true
+      timeLineSales: true
+      customer: true
+    }
 
 Apps.Merchant.distributorReturnInit.push (scope) ->
   scope.distributorSelectOptions =
@@ -25,7 +31,7 @@ Apps.Merchant.distributorReturnInit.push (scope) ->
     formatResult: formatDistributorSearch
     id: '_id'
     placeholder: 'CHỌN NHÀ CC'
-    changeAction: (e) -> changedActionSelectDistributor(e.added._id, Session.get('currentDistributorReturn'))
+    changeAction: (e) -> changedActionSelectDistributor(e.added, Session.get('currentDistributorReturn'))
     reactiveValueGetter: -> Session.get('currentDistributorReturn')?.distributor ? 'skyReset'
 
   scope.reCalculateReturn = (returnId)->

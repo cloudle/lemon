@@ -11,6 +11,10 @@ simpleSchema.returns = new SimpleSchema
   returnCode:
     type: String
 
+  tabDisplay:
+    type: String
+    defaultValue: 'New Return'
+
   discountCash:
     type: Number
 

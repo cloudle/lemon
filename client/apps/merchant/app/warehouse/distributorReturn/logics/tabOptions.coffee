@@ -31,9 +31,9 @@ createReturnAndSelected = ()->
 
 Apps.Merchant.distributorReturnInit.push (scope) ->
   scope.tabOptions =
-    source: Schema.returns.find({status: 0})
+    source: Schema.returns.find({status: 0, returnMethods: 1})
     currentSource: 'currentDistributorReturn'
-    caption: 'comment'
+    caption: 'tabDisplay'
     key: '_id'
     createAction: -> createReturnAndSelected()
     destroyAction: (instance) -> destroyReturnAndDetail(scope, instance._id)
