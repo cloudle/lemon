@@ -17,6 +17,7 @@ lemon.defineHyper Template.productManagementUnitEditor,
       #TODO: Kiem tra trung ten & unit!
       unit = template.ui.$unit.val()
       barcode = template.ui.$barcode.val()
+      console.log barcode
       price = Number(template.ui.$price.inputmask('unmaskedvalue'))
       price = 0 if price < 0
 
@@ -24,9 +25,9 @@ lemon.defineHyper Template.productManagementUnitEditor,
       conversionQuality = 1 if conversionQuality < 0
 
       unitOption =
-        unit    : unit
-        barcode : barcode
-        price   : price
+        unit        : unit
+        productCode : barcode
+        price       : price
       unitOption.conversionQuality = conversionQuality if conversionQuality
       Schema.productUnits.update @_id, $set: unitOption
 

@@ -62,12 +62,13 @@ template(name="saleDetailSection")
                td
                td.number: span.s5 ĐÃ TRẢ :
                td.number(colspan="2"): span.s4 <b>{{formatNumber order.currentDeposit}}</b> VNĐ
-            tr
-               td
-               td
-               td
-               td.number: span.s5 NỢ CŨ :
-               td.number(colspan="2"): span.s4 <b>{{formatNumber customerDebt}}</b> VNĐ
+            if showCustomerOldDebt
+               tr
+                  td
+                  td
+                  td
+                  td.number: span.s5 NỢ CŨ :
+                  td.number(colspan="2"): span.s4 <b>{{formatNumber customerOldDebt}}</b> VNĐ
             tr
                td
                td

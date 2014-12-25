@@ -10,7 +10,7 @@ lemon.defineHyper Template.saleDetailSection,
   destroyed: -> Meteor.clearInterval(@timeInterval)
   buyerName: -> Schema.customers.findOne(Session.get("currentOrder")?.buyer)?.name
   sellerName: -> Schema.userProfiles.findOne({user: Session.get("currentOrder")?.seller})?.fullName
-  customerDebt: ->
+  customerOldDebt: ->
     customer = Schema.customers.findOne(Session.get("currentOrder")?.buyer)
     if customer then customer.saleDebt + customer.customSaleDebt else 0
 
@@ -19,6 +19,15 @@ lemon.defineHyper Template.saleDetailSection,
     if customer and @order
       customer.saleDebt + customer.customSaleDebt + @order.finalPrice - @order.currentDeposit
     else 0
+
+  showCustomerOldDebt: ->
+    customer = Schema.customers.findOne(Session.get("currentOrder")?.buyer)
+    if customer
+      if (customer.saleDebt + customer.customSaleDebt) is 0 then false else true
+    else
+      false
+
+
   events:
     "click .detail-row": ->
       Session.set("salesEditingRowId", @_id)
