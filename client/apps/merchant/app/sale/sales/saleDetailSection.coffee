@@ -17,7 +17,7 @@ lemon.defineHyper Template.saleDetailSection,
   customerFinalDebt: ->
     customer = Schema.customers.findOne(Session.get("currentOrder")?.buyer)
     if customer and @order
-      customer.saleDebt + customer.customSaleDebt + @order.finalPrice - @order.deposit
+      customer.saleDebt + customer.customSaleDebt + @order.finalPrice - @order.currentDeposit
     else 0
   events:
     "click .detail-row": ->
