@@ -24,11 +24,17 @@ lemon.defineHyper Template.productManagementOverviewSection,
       scope.overviewTemplateInstance.ui.$productName.change()
     , 50 if scope.overviewTemplateInstance
     @name
+  price: ->
+    Meteor.setTimeout ->
+      scope.overviewTemplateInstance.ui.$productPrice.inputmask "numeric",
+        {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false}
+    , 50 if scope.overviewTemplateInstance
+    @price
 
   rendered: ->
     scope.overviewTemplateInstance = @
     @ui.$productName.autosizeInput({space: 10})
-    @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
+    @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false})
 
   events:
     "click .avatar": (event, template) -> template.find('.avatarFile').click()
@@ -96,7 +102,8 @@ lemon.defineHyper Template.productManagementOverviewSection,
     "input .editable": (event, template) ->
       Session.set "productManagementShowEditCommand",
         template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
-        template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '')
+        template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '') or
+        template.ui.$productCode.val() isnt Session.get("productManagementCurrentProduct").productCode
 
     "keyup input.editable": (event, template) ->
       if event.which is 27
@@ -105,12 +112,15 @@ lemon.defineHyper Template.productManagementOverviewSection,
           $(event.currentTarget).change()
         else if $(event.currentTarget).attr('name') is 'productPrice'
           $(event.currentTarget).val(Session.get("productManagementCurrentProduct").price)
-
-      Session.set "productManagementShowEditCommand",
-        template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
-        Number(template.ui.$productPrice.inputmask('unmaskedvalue')) isnt (Session.get("productManagementCurrentProduct").price ? '')
-
-      scope.editProduct(template) if event.which is 13
+        else if $(event.currentTarget).attr('name') is 'productCode'
+          $(event.currentTarget).val(Session.get("productManagementCurrentProduct").productCode)
+      else if event.which is 13
+        scope.editProduct(template)
+#      else
+#        Session.set "productManagementShowEditCommand",
+#          template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
+#          Number(template.ui.$productPrice.inputmask('unmaskedvalue')) isnt (Session.get("productManagementCurrentProduct").price ? '') or
+#          template.ui.$productCode.val() isnt Session.get("productManagementCurrentProduct").productCode
 
     "click .syncProductEdit": (event, template) -> scope.editProduct(template)
     "click .productDelete": (event, template) ->

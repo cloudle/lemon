@@ -5,8 +5,12 @@ template(name="saleDetailSection")
             span <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b>
          .show-on-print
             +merchantPrintingHeader
+            .bill-info
+              .seller-info NGƯỜI BÁN: {{sellerName}}
             .printing-info
-               .document-name PHIẾU BÁN HÀNG
+              .document-name
+                span PHIẾU BÁN HÀNG <br />
+                span.s4 {{buyerName}}
 
       .panel-body
          //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
@@ -45,8 +49,10 @@ template(name="saleDetailSection")
                         if discountPercent
                            span.super.s7.color-lime -{{round discountPercent}}%
                      td.final-price.number <b>{{formatNumber finalPrice}}</b>
+         tr
+            td
+               input.editable.dashed.note(value="{{order.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
+            td.number(colspan="5")
+               span.s3 <b>{{formatNumber order.finalPrice}}</b> VNĐ
 
       .panel-footer
-         input.editable.dashed.note(value="{{order.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
-         .right-float
-            span.s3 <b>{{formatNumber order.finalPrice}}</b> VNĐ

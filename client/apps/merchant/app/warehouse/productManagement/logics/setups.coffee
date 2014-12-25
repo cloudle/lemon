@@ -11,16 +11,21 @@ Apps.Merchant.productManagementInit.push (scope) ->
     if product = Session.get("productManagementCurrentProduct")
       newName  = template.ui.$productName.val()
       newPrice = template.ui.$productPrice.inputmask('unmaskedvalue')
+      newProductCode = template.ui.$productCode.val()
       return if newName.replace("(", "").replace(")", "").trim().length < 2
       editOptions = splitName(newName)
       editOptions.price = newPrice if newPrice.length > 0
+      editOptions.productCode = newProductCode if newProductCode.length > 0
 
       productFound = Schema.products.findOne {name: editOptions.name, merchant: product.merchant} if editOptions.name.length > 0
+      barcodeFound = Schema.products.findOne {productCode: newProductCode, merchant: product.merchant} if newProductCode.length > 0
 
       if editOptions.name.length is 0
         template.ui.$productName.notify("Tên sản phẩn không thể để trống.", {position: "right"})
       else if productFound and productFound._id isnt product._id
         template.ui.$productName.notify("Tên sản phẩm đã tồn tại.", {position: "right"})
+      else if barcodeFound and barcodeFound._id isnt product._id
+        template.ui.$productCode.notify("Mã sản phẩm đã tồn tại.", {position: "right"})
       else
         if Schema.productUnits.findOne({product: product._id})
           delete editOptions.basicUnit
@@ -28,8 +33,9 @@ Apps.Merchant.productManagementInit.push (scope) ->
           Schema.products.update product._id, {$set: editOptions}, (error, result) -> if error then console.log error
         else
           Schema.products.update product._id, {$set: editOptions}, (error, result) -> if error then console.log error
-      template.ui.$productName.val editOptions.name
-      Session.set("productManagementShowEditCommand", false)
+
+        template.ui.$productName.val editOptions.name
+        Session.set("productManagementShowEditCommand", false)
 
 
   scope.createProduct = (template)->
@@ -51,12 +57,13 @@ Apps.Merchant.productManagementInit.push (scope) ->
       template.ui.$searchFilter.notify("Sản phẩm đã tồn tại.", {position: "bottom"})
     else
       while true
-        randomBarcode = (Math.floor(Math.random() * 100000000000) + 89 *100000000000).toString()
+        randomBarcode = Helpers.randomBarcode()
         existedQuery.productCode = randomBarcode
         if !Schema.products.findOne(existedQuery)
           product.productCode = randomBarcode
           productId = Schema.products.insert  product, (error, result) -> console.log error if error
           UserSession.set('currentProductManagementSelection', productId)
+          Meteor.subscribe('productManagementData', productId)
           template.ui.$searchFilter.val(''); Session.set("productManagementSearchFilter", "")
           break
       MetroSummary.updateMetroSummaryBy(['product'])
