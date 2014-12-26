@@ -17,11 +17,11 @@ Apps.Merchant.distributorManagementReactive.push (scope) ->
 
     if latestCustomImport = Schema.customImports.findOne({seller: distributorId}, {sort: {debtDate: -1}})
       if latestTransaction = Schema.transactions.findOne({latestImport: latestCustomImport._id}, {sort: {debtDate: -1}})
-        $("[name=paidDate]").val(moment(latestTransaction.debtDate).format('DDMMYYY'))
+        $("[name=paidDate]").val(moment(latestTransaction.debtDate).format('DDMMYYYY'))
       else
-        $("[name=paidDate]").val(moment(latestCustomImport.debtDate).format('DDMMYYY'))
+        $("[name=paidDate]").val(moment(latestCustomImport.debtDate).format('DDMMYYYY'))
 
-      $("[name=customImportDebtDate]").val(moment(latestCustomImport.debtDate).format('DDMMYYY'))
+      $("[name=customImportDebtDate]").val(moment(latestCustomImport.debtDate).format('DDMMYYYY'))
     else
       $("[name=paidDate]").val('')
       $("[name=customImportDebtDate]").val('')
