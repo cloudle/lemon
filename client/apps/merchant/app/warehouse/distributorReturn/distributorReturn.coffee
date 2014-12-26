@@ -22,7 +22,7 @@ lemon.defineApp Template.distributorReturn,
           product           : @product._id
           conversionQuality : 1
           unitReturnQuality : 1
-          unitReturnsPrice  : @product.price
+          unitReturnsPrice  : @product.importPrice
           price             : @product.price
           discountCash      : 0
           discountPercent   : 0
@@ -30,7 +30,7 @@ lemon.defineApp Template.distributorReturn,
         if @unit
           option.unit = @unit._id
           option.conversionQuality = @unit.conversionQuality
-          option.unitReturnsPrice  = @unit.price
+          option.unitReturnsPrice  = @unit.importPrice
 
         option.returnQuality = option.conversionQuality
         option.finalPrice    = (option.unitReturnQuality * option.unitReturnsPrice) - option.discountCash

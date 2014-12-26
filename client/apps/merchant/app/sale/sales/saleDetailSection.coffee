@@ -29,3 +29,7 @@ lemon.defineHyper Template.saleDetailSection,
     "click .deleteOrderDetail": (event, template) ->
       Schema.orderDetails.remove @_id
       logics.sales.reCalculateOrder(@order)
+
+    "input [name='orderDescription']": (event, template) ->
+      description = template.ui.$orderDescription.val()
+      Schema.orders.update Session.get("currentOrder")._id, $set:{description: description} if Session.get("currentOrder")

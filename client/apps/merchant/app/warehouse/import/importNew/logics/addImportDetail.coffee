@@ -44,18 +44,26 @@ Apps.Merchant.importInit.push (scope) ->
         warehouse     : currentImport.warehouse
         import        : currentImport._id
         product       : currentProduct.product._id
-        unitQuality   : 1
         unitPrice     : currentProduct.product.importPrice ? 0
+        unitQuality   : 1
+        importQuality : 1
+        importPrice   : currentProduct.product.importPrice
+        totalPrice    : currentProduct.product.importPrice
         conversionQuality: 1
 
       if currentProduct.unit
         importDetail.unit = currentProduct.unit._id
-        importDetail.unitPrice = currentProduct.unit.price
         importDetail.conversionQuality = currentProduct.unit.conversionQuality
+        importDetail.importQuality = importDetail.unitQuality * importDetail.conversionQuality
+        if currentProduct.unit.importPrice
+          importDetail.unitPrice     = currentProduct.unit.importPrice
+          importDetail.importPrice   = currentProduct.unit.importPrice/importDetail.conversionQuality
+          importDetail.totalPrice    = currentProduct.unit.importPrice
+        else
+          importDetail.unitPrice     = 0
+          importDetail.importPrice   = 0
+          importDetail.totalPrice    = 0
 
-      importDetail.importQuality = importDetail.unitQuality * importDetail.conversionQuality
-      importDetail.importPrice   = importDetail.unitPrice/importDetail.conversionQuality
-      importDetail.totalPrice    = importDetail.importQuality * importDetail.importPrice
 #      importDetail.provider = currentProduct.product.provider if currentProduct.product.provider
 
       existedQuery = {
