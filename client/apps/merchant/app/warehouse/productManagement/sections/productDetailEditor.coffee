@@ -42,17 +42,20 @@ lemon.defineHyper Template.productManagementDetailEditor,
         detailOption.expire = expireDate if expireDate
         Schema.productDetails.update @_id, $set: detailOption
 
-        Schema.products.update @product, $inc:{
-          totalQuality    : unitQuality * @conversionQuality - @importQuality
-          availableQuality: unitQuality * @conversionQuality - @importQuality
-          inStockQuality  : unitQuality * @conversionQuality - @importQuality
-        }
+        productOption = {totalQuality: 0, availableQuality: 0, inStockQuality: 0}
+        Schema.productDetails.find({product: @product}).forEach(
+          (detail)->
+            productOption.totalQuality     += detail.importQuality
+            productOption.availableQuality += detail.importQuality
+            productOption.inStockQuality   += detail.importQuality
+        )
+        Schema.products.update @product, $set: productOption
 
-        metroSummary = Schema.metroSummaries.findOne({merchant: Session.get('myProfile').currentMerchant})
-        Schema.metroSummaries.update metroSummary._id, $inc:{
-          stockProductCount: unitQuality * @conversionQuality - @importQuality
-          availableProductCount: unitQuality * @conversionQuality - @importQuality
-        }
+#        metroSummary = Schema.metroSummaries.findOne({merchant: Session.get('myProfile').currentMerchant})
+#        Schema.metroSummaries.update metroSummary._id, $inc:{
+#          stockProductCount: unitQuality * productDetail.conversionQuality - productDetail.importQuality
+#          availableProductCount: unitQuality * productDetail.conversionQuality - productDetail.importQuality
+#        }
 
     "keypress input[name]": (event, template)->
       if event.which is 13
