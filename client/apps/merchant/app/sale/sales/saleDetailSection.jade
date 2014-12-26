@@ -74,6 +74,7 @@ template(name="saleDetailSection")
                td.number(colspan="2"): span.s4 <b>{{formatNumber order.currentDeposit}}</b> VNĐ
             tr
                td(colspan="2")
+                  input.editable.dashed.note(value="{{order.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
                td
                td
                td.number(colspan="2" style="border-top: solid 1px #d7d7d7")
