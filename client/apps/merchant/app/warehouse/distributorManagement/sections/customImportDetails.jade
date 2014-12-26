@@ -1,7 +1,7 @@
 template(name="distributorManagementCustomImportDetails")
   tr.header-row: td(colspan="5")
     | .
-    .bill-header <b>{{momentCalendar debtDate}}</b>
+    .bill-header <b>{{momentFormat debtDate 'DD/MM/YYYY'}}</b>
     .commands
       if isCustomImportModeEnabled
         .lemon.rounded.red.btn.animated.bounceIn.deleteCustomImport: span.icon-minus-4
@@ -27,7 +27,7 @@ template(name="distributorManagementCustomImportDetails")
   each latestPaids
     tr.paid-row.top(class="{{receivableClass}}")
       td.has-commands
-        span.note {{description}}, {{momentCalendar debtDate}}.
+        span.note {{description}}, {{momentFormat debtDate 'DD/MM/YYYY'}}.
         .commands
           if isCustomImportModeEnabled
             .lemon.rounded.tiny.btn.red.deleteTransaction: span.icon-minus-4
