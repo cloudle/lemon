@@ -12,15 +12,19 @@
 
 .printing-header
   clearfix()
-  padding-bottom 15px
+  position relative
+  height 80px
   border-bottom dashed 1px #666666
   .branding
-    float right
-    padding-right 10px !important
+    absolute right 10px bottom 5px
     .company-name
+      text-align right
       font-size 30px
       text-transform uppercase
+    .company-address
+      text-align right
   .info
+    absolute bottom 5px
     color #666666
     float left
 

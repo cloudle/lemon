@@ -9,7 +9,7 @@ template(name="saleDetailSection")
               .seller-info NGƯỜI BÁN: {{sellerName}}
             .printing-info
               .document-name
-                span(style="text-transformation: uppercase")  {{buyerName}} <br />
+                span.uppercase {{buyerName}} <br />
                 span.s4 PHIẾU BÁN HÀNG
 
       .panel-body
@@ -21,7 +21,7 @@ template(name="saleDetailSection")
                th.quality(style="width:50px") SL
                th.skull(style="width:100px") ĐƠN VỊ
                th.number.bill-discount(style="width:100px") GIẢM GIÁ
-               th.number.final-price(style="width:120px") THÀNH TIỀN
+               th.number.final-price(style="width:140px") THÀNH TIỀN
             each orderDetails
                if editingMode
                   +saleDetailEditor editingData
@@ -49,36 +49,32 @@ template(name="saleDetailSection")
                         if discountPercent
                            span.super.s7.color-lime -{{round discountPercent}}%
                      td.final-price.number <b>{{formatNumber finalPrice}}</b>
+            tr.top-dashed.space
+               td(colspan="6" style="height: 25px")
+                  input.editable.dashed.note(value="{{order.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
             tr
-               td(align="center"): span.s6 NGƯỜI NHẬN
+               td(align="center"): span NGƯỜI NHẬN
                td
-               td
-               td.number: span.s5 TỔNG CỘNG:
+               td.number(colspan="2"): span.s5 TỔNG CỘNG:
                td.number(colspan="2"): span.s4 <b>{{formatNumber order.totalPrice}}</b> VNĐ
             tr
-               td(align="center"): span.s6.note (Chữ ký và Họ Tên)
+               td(align="center"): span.s6.note (<i>Chữ ký và Họ Tên</i>)
                td
-               td
-               td.number: span.s5 CHIẾT KHẤU:
+               td.number(colspan="2"): span.s5 CHIẾT KHẤU:
                td.number(colspan="2"): span.s4 <b>{{formatNumber order.discountCash}}</b> VNĐ
             tr
                td
                td
-               td
-               td.number: span.s5 TIỀN CŨ:
+               td.number(colspan="2"): span.s5 TIỀN CŨ:
                td.number(colspan="2"): span.s4 <b>{{formatNumber customerOldDebt}}</b> VNĐ
             tr
                td
                td
-               td
-               td.number: span.s5 THANH TOÁN:
+               td.number(colspan="2"): span.s5 THANH TOÁN:
                td.number(colspan="2"): span.s4 <b>{{formatNumber order.currentDeposit}}</b> VNĐ
             tr
                td(colspan="2")
-                  input.editable.dashed.note(value="{{order.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
                td
                td
                td.number(colspan="2" style="border-top: solid 1px #d7d7d7")
                   span.s4 <b>{{formatNumber customerFinalDebt}}</b> VNĐ
-
-      .panel-footer

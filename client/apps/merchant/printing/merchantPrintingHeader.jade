@@ -2,7 +2,10 @@ template(name="merchantPrintingHeader")
    .printing-header
       .branding
          .company-name {{merchantInfo.companyName}}
-         .company-address {{merchantInfo.contactAddress}}
+         .company-address
+            span {{merchantInfo.contactAddress}}
+            span.icon-location-outline
+
       .info
          span.icon-phone-circled {{merchantInfo.contactPhone}} <br/>
          span <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b>
