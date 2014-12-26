@@ -20,7 +20,11 @@ template(name="distributorManagementImportDetails")
 
   each latestPaids
     tr.paid-row.top(class="{{receivableClass}}")
-      td: span.note {{description}}, {{momentCalendar debtDate}}.
+      td.has-commands
+        span.note {{description}}, {{momentCalendar debtDate}}.
+        .commands
+          .lemon.rounded.tiny.btn.red.deleteTransaction: span.icon-minus-4
+
       td.number(colspan="3")
         span.icon-feather-1
         span.s4(class="{{finalReceivableClass}}") <b>{{formatNumberAbs totalDebtBalance}}</b>

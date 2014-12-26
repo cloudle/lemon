@@ -21,6 +21,7 @@ lemon.defineWidget Template.customerManagementSaleDetails,
 
   events:
     "click .deleteSales": (event, template) ->
+      #TODO: chuyển sang Server
       try
         currentSales = @
         throw 'Phiếu bán đã trả hàng không thể xóa.' if Schema.returns.find({timeLineSales: currentSales._id}).count() > 0
@@ -80,6 +81,50 @@ lemon.defineWidget Template.customerManagementSaleDetails,
         else
           Schema.customers.update currentSales.buyer, $inc: customerIncOption
 
+        Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
+        Meteor.call 'reCalculateMetroSummary'
+      catch error
+        console.log error
+
+    "click .deleteTransaction": (event, template) ->
+      #TODO: chuyển sang Server
+      try
+        currentTransaction = @
+        currentSales = Schema.sales.findOne(currentTransaction.latestSale)
+        throw 'Không tìm thấy Sales.' if !currentSales
+
+        customerIncOption =
+          salePaid: 0
+          saleDebt: 0
+          saleTotalCash: 0
+
+        if currentTransaction.debtBalanceChange > 0
+          customerIncOption.salePaid = -currentTransaction.debtBalanceChange
+          customerIncOption.saleDebt = currentTransaction.debtBalanceChange
+        else
+          customerIncOption.saleDebt = currentTransaction.debtBalanceChange
+          customerIncOption.saleTotalCash = currentTransaction.debtBalanceChange
+        Schema.transactions.remove currentTransaction._id
+
+        tempBeforeDebtBalance = currentSales.beforeDebtBalance
+        Schema.sales.find({buyer: currentSales.buyer, 'version.createdAt': {$gt: currentSales.version.createdAt} }
+        , {sort: {'version.createdAt': 1}}).forEach(
+          (sale) ->
+            Schema.sales.update sale._id, $set:{
+              beforeDebtBalance: tempBeforeDebtBalance
+              latestDebtBalance: tempBeforeDebtBalance + sale.debtBalanceChange
+            }
+            tempBeforeDebtBalance += sale.debtBalanceChange
+            Schema.transactions.find({latestSale: sale._id}).forEach(
+              (transaction) ->
+                Schema.transactions.update transaction._id, $set:{
+                  beforeDebtBalance: tempBeforeDebtBalance
+                  latestDebtBalance: tempBeforeDebtBalance - transaction.debtBalanceChange
+                }
+                tempBeforeDebtBalance -= transaction.debtBalanceChange
+            )
+        )
+        Schema.customers.update currentTransaction.owner, $inc: customerIncOption
         Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
         Meteor.call 'reCalculateMetroSummary'
       catch error

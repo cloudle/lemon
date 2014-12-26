@@ -72,3 +72,9 @@ lemon.defineWidget Template.distributorManagementImportDetails,
       catch error
         console.log error
 
+    "click .deleteTransaction": (event, template) ->
+      try
+#        currentTransaction =
+
+      catch error
+        console.log error
