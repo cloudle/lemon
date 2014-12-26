@@ -30,7 +30,7 @@ template(name="merchantHome")
       .tile.quatro.lime(class="{{metroUnLocker Summary.data.staffCount}}" data-app='customerManagement')
         span.top.middle.caption: h5 {{formatNumber Summary.data.customerCountAll}} KHÁCH HÀNG
         span.center.middle.caption: span.table: i.ico.huge.icon-contacts
-        span.bottom.middle.caption: h3 {{formatNumber Summary.data.totalReceivableCash}} <tiny5>PHẢI THU</tiny5>
+        span.bottom.middle.caption: h3 <tiny5>PHẢI THU</tiny5><br/>{{formatNumber Summary.data.totalReceivableCash}}
       .tile.alizarin(class="{{metroUnLocker Summary.data.saleCount}}"
       data-app='customerReturn' )
         span.center.middle.caption: span.table: i.ico.icon-reply-outline
@@ -77,7 +77,7 @@ template(name="merchantHome")
       .tile.carrot.quatro(data-app='distributorManagement')
         span.top.middle.caption: h5 {{formatNumber Summary.data.distributorCount}} NHÀ CUNG CẤP
         span.center.middle.caption: span.table: i.ico.huge.icon-anchor-outline
-        span.bottom.middle.caption: h3 {{formatNumber Summary.data.totalPayableCash}} <tiny5>PHẢI TRẢ</tiny5>
+        span.bottom.middle.caption: h3 <tiny5>PHẢI TRẢ</tiny5><br/>{{formatNumber Summary.data.totalPayableCash}}
       .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}")
         span.center.middle.caption: span.table: i.ico.icon-book
         span.bottom.middle.caption NHẬT KÝ
