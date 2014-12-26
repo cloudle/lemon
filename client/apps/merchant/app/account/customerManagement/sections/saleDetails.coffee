@@ -2,7 +2,6 @@ lemon.defineWidget Template.customerManagementSaleDetails,
   productName: -> @name ? Schema.products.findOne(@product)?.name
   totalDebtBalance: -> @latestDebtBalance + Session.get("customerManagementCurrentCustomer").customSaleDebt
   skulls: -> Schema.products.findOne(@product)?.skulls?[0]
-
   receivableClass: -> if @debtBalanceChange >= 0 then 'receive' else 'paid'
   finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
 
@@ -107,14 +106,17 @@ lemon.defineWidget Template.customerManagementSaleDetails,
         Schema.transactions.remove currentTransaction._id
 
         tempBeforeDebtBalance = currentSales.beforeDebtBalance
-        Schema.sales.find({buyer: currentSales.buyer, 'version.createdAt': {$gt: currentSales.version.createdAt} }
+        Schema.sales.find({buyer: currentSales.buyer, 'version.createdAt': {$gte: currentSales.version.createdAt} }
         , {sort: {'version.createdAt': 1}}).forEach(
           (sale) ->
+            #cập nhật phiếu bán hàng
             Schema.sales.update sale._id, $set:{
               beforeDebtBalance: tempBeforeDebtBalance
               latestDebtBalance: tempBeforeDebtBalance + sale.debtBalanceChange
             }
             tempBeforeDebtBalance += sale.debtBalanceChange
+
+            #cập nhật phiếu công nợ
             Schema.transactions.find({latestSale: sale._id}).forEach(
               (transaction) ->
                 Schema.transactions.update transaction._id, $set:{
@@ -123,6 +125,19 @@ lemon.defineWidget Template.customerManagementSaleDetails,
                 }
                 tempBeforeDebtBalance -= transaction.debtBalanceChange
             )
+
+            #cập nhật phiếu trả hàng
+            console.log sale
+            Schema.returns.find({timeLineSales: sale._id}).forEach(
+              (currentReturn) ->
+                console.log currentReturn
+                Schema.returns.update currentReturn._id, $set:{
+                  beforeDebtBalance: tempBeforeDebtBalance
+                  latestDebtBalance: tempBeforeDebtBalance - currentReturn.debtBalanceChange
+                }
+                tempBeforeDebtBalance -= currentReturn.debtBalanceChange
+            )
+
         )
         Schema.customers.update currentTransaction.owner, $inc: customerIncOption
         Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
