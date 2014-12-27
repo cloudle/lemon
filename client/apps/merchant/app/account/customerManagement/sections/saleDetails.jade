@@ -5,7 +5,7 @@ template(name="customerManagementSaleDetails")
       .bill-header
         |<b>{{momentCalendar version.createdAt}}</b>.
         if description
-          |{{description}}.
+          |{{description}}
       .commands
         if showDeleteSales
           .lemon.rounded.tiny.btn.red.deleteSales: span.icon-minus-4
@@ -38,7 +38,10 @@ template(name="customerManagementSaleDetails")
     tr.header-row
       td.has-commands(colspan="5")
         | .
-        .bill-header <b>{{momentCalendar version.createdAt}}</b>. {{comment}}.
+        .bill-header
+          |<b>Trả Hàng: {{momentCalendar version.createdAt}}.</b>
+          if comment
+            |{{comment}}
     each returnDetails
       tr.detail-row.edit-detail
         td {{productName}}

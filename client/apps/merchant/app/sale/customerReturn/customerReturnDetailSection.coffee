@@ -46,8 +46,13 @@ lemon.defineHyper Template.customerReturnDetailSection,
 
   events:
     "click .detail-row": -> Session.set("customerReturnEditingRowId", @_id)
+    "input [name='returnComment']": (event, template) ->
+      comment = template.ui.$returnComment.val()
+      Schema.returns.update Session.get("currentCustomerReturn")._id, $set:{comment: comment} if Session.get('currentCustomerReturn')
 
     "click .deleteReturnDetail": (event, template) ->
       Schema.returnDetails.remove @_id
       scope.reCalculateReturn(@return)
+
+
 

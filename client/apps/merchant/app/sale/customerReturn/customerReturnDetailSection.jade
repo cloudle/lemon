@@ -41,6 +41,6 @@ template(name="customerReturnDetailSection")
                      td.final-price.number <b>{{formatNumber finalPrice}}</b>
 
       .panel-footer
-         input.editable.dashed.note(value="{{comment}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
+         input.editable.dashed.note(name="returnComment"  value="{{comment}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
          .right-float
             span.s3 <b>{{formatNumber debtBalanceChange}}</b> VNĐ

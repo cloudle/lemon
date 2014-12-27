@@ -33,7 +33,6 @@ Schema.add 'returns', "Return", class Return
       warehouse      : myProfile.currentWarehouse
       creator        : myProfile.user
       customer       : customer._id
-      comment        : 'Trả Hàng'
       returnCode     : "ramdom"
       discountCash   : 0
       discountPercent: 0
@@ -55,7 +54,6 @@ Schema.add 'returns', "Return", class Return
       warehouse      : myProfile.currentWarehouse
       creator        : myProfile.user
       distributor    : distributor._id
-      comment        : 'Trả Hàng Cho NCC'
       returnCode     : "ramdom"
       discountCash   : 0
       discountPercent: 0

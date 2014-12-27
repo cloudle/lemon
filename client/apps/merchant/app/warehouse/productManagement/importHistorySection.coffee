@@ -12,7 +12,7 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
   newImport: ->
     if product = Session.get("productManagementCurrentProduct")
       allProductDetail = Schema.productDetails.find({product: product._id, import: {$exists: true}}).fetch()
-      currentImport = Schema.imports.find {_id: {$in: _.union(_.pluck(allProductDetail, 'import'))}}
+      currentImport = Schema.imports.find({_id: {$in: _.union(_.pluck(allProductDetail, 'import'))}}, {sort: {'version.createdAt': 1}})
       return {
         isShowDetail: if currentImport.count() > 0 then true else false
         detail: currentImport

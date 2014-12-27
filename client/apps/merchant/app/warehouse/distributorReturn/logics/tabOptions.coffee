@@ -3,7 +3,7 @@ destroyReturnAndDetail = (scope, returnId)->
     for returnDetail in Schema.returnDetails.find({return: currentDistributorReturn._id}).fetch()
       Schema.returnDetails.remove(returnDetail._id)
     Schema.returns.remove(currentDistributorReturn._id)
-    Schema.returns.find({creator:currentDistributorReturn.creator}).count()
+    Schema.returns.find({creator:currentDistributorReturn.creator}).count() - 1
   else
     -1
 
@@ -18,7 +18,6 @@ createReturnAndSelected = ()->
       discountPercent: 0
       totalPrice: 0
       finallyPrice: 0
-      comment: 'Tra Hang'
       status: 0
       returnMethods: 1
       beforeDebtBalance: 0
@@ -38,6 +37,7 @@ Apps.Merchant.distributorReturnInit.push (scope) ->
     createAction: -> createReturnAndSelected()
     destroyAction: (instance) -> destroyReturnAndDetail(scope, instance._id)
     navigateAction: (instance) ->
-      UserSession.set('currentDistributorReturn', instance._id)
-      Session.set('currentDistributorReturn', instance)
-      Meteor.subscribe('distributorReturnData')
+      if instance
+        UserSession.set('currentDistributorReturn', instance._id)
+        Session.set('currentDistributorReturn', instance)
+        Meteor.subscribe('distributorReturnData')

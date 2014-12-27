@@ -74,7 +74,7 @@ updateOrderByOrderDetailEmpty = (currentOrder)->
     discountPercent : 0
     totalPrice      : 0
     finalPrice      : 0
-    paymentMethod   : 0
+    paymentMethod   : 1
     currentDeposit  : 0
     deposit         : 0
     debit           : 0

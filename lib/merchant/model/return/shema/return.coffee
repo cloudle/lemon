@@ -13,7 +13,7 @@ simpleSchema.returns = new SimpleSchema
 
   tabDisplay:
     type: String
-    defaultValue: 'New Return'
+    defaultValue: 'Trả hàng'
 
   discountCash:
     type: Number
@@ -30,6 +30,7 @@ simpleSchema.returns = new SimpleSchema
 
   comment:
     type: String
+    optional: true
 
   status:
     type: Number
