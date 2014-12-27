@@ -18,16 +18,18 @@ Schema.add 'imports', "Import", class Import
       ]
     })
 
-  @createdNewBy: (description, distributorId, myProfile)->
+  @createdNewBy: (description, distributor, myProfile)->
     if !myProfile then myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     importOption =
       parentMerchant: myProfile.parentMerchant
       merchant      : myProfile.currentMerchant
       warehouse     : myProfile.currentWarehouse
       creator       : myProfile.user
-      description   : description ? 'New Import'
 
-    importOption.distributor = distributorId if distributorId
+    if distributor
+      importOption.distributor = distributor._id if distributor._id
+      importOption.tabDisplay = Helpers.shortName2(distributor.name) if distributor.name
+    importOption.description = description if description
     importOption._id = @schema.insert importOption
 
     if importOption._id then return importOption else return undefined

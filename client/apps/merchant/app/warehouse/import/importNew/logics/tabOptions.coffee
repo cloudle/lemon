@@ -1,5 +1,5 @@
 logics.import.createImportAndSelected = ->
-  if newImport = Import.createdNewBy('01-05-2015', null, Session.get('myProfile'))
+  if newImport = Import.createdNewBy(null, null, Session.get('myProfile'))
     Session.set('currentImport', newImport)
     UserSession.set('currentImport', newImport._id)
     return newImport
@@ -24,7 +24,7 @@ Apps.Merchant.importInit.push (scope) ->
   logics.import.tabOptions =
     source: logics.import.myHistory
     currentSource: 'currentImport'
-    caption: 'description'
+    caption: 'tabDisplay'
     key: '_id'
     createAction  : -> logics.import.createImportAndSelected()
     destroyAction : (instance) -> destroyImportAndDetail(instance._id)

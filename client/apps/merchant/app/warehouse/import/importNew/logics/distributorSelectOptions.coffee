@@ -2,9 +2,9 @@ formatDistributorSearch = (item) -> "#{item.name}" if item
 
 updateImportAndProduct = (e)->
   if e.added
-    Schema.imports.update(Session.get('currentImport')._id, {$set: {distributor: e.added._id }})
+    Schema.imports.update(Session.get('currentImport')._id, {$set: {distributor: e.added._id, tabDisplay: Helpers.shortName2(e.added.name)}})
   else
-    Schema.imports.update(Session.get('currentImport')._id, {$set: {distributor: 'skyReset' }})
+    Schema.imports.update(Session.get('currentImport')._id, {$set: {distributor: 'skyReset', tabDisplay: 'Nhập kho'}})
 
 Apps.Merchant.importInit.push (scope) ->
   logics.import.distributorSelectOptions =

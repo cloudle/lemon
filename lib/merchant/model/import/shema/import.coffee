@@ -15,8 +15,13 @@ simpleSchema.imports = new SimpleSchema
     type: String
     optional: true
 
+  tabDisplay:
+    type: String
+    defaultValue: 'Nhập kho'
+
   description:
     type: String
+    optional: true
 
   totalPrice:
     type: Number
