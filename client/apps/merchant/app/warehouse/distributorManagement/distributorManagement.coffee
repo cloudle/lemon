@@ -49,7 +49,7 @@ lemon.defineApp Template.distributorManagement,
             Meteor.subscribe('distributorManagementData', distributor._id, 0, limitExpand)
             Session.set("distributorManagementDataMaxCurrentRecords", limitExpand)
           else
-            Session.set("distributorManagementDataMaxCurrentRecords", countRecords)
+            Session.set("distributorManagementDataMaxCurrentRecords", limitExpand)
           Session.set("distributorManagementCurrentDistributor", distributor)
 
         Session.set("allowCreateCustomImport", false)

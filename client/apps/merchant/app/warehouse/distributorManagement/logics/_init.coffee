@@ -8,7 +8,7 @@ Apps.Merchant.distributorManagementReactive.push (scope) ->
 
   if distributor = Session.get("distributorManagementCurrentDistributor")
     maxRecords = Session.get("distributorManagementDataMaxCurrentRecords")
-    countRecords = Schema.customImports.find({sale: distributor._id}).count()
+    countRecords = Schema.customImports.find({seller: distributor._id}).count()
     countRecords += Schema.imports.find({distributor: distributor._id, finish: true, submitted: true}).count() if distributor.customImportModeEnabled is false
     Session.set("showExpandImportAndCustomImport", (maxRecords is countRecords))
 
