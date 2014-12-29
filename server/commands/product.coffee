@@ -62,7 +62,7 @@ Meteor.methods
           Schema.products.update product._id, $set: optionProduct
 
 
-  updateProductBasicDetailMode: (productId, mode = false)->
+  updateProductBasicDetailMode01: (productId, mode = false)->
     if product = Schema.products.findOne(productId)
       if product.basicDetailModeEnabled != mode
         saleDetails = Schema.saleDetails.find({product: product._id}).fetch()
@@ -105,8 +105,60 @@ Meteor.methods
           subtractQualityOnSales(detail, combinedImportDetails, (detail.quality - detail.returnQuality)) for detail in saleDetails
           Schema.products.update product._id, $set:{basicDetailModeEnabled: mode}
 
+  updateProductBasicDetailMode: (productId, mode = false)->
+    if product = Schema.products.findOne(productId)
+      if product.basicDetailModeEnabled != mode
+        productDetailList = []
+        saleDetails = Schema.saleDetails.find({product: product._id}).fetch()
+        if saleDetails.length > 0
+          productGroup = _.chain(saleDetails)
+          .groupBy("unit")
+          .map (group, key) ->
+            return {
+            product: key
+            quality: _.reduce(group, ((res, current) -> res + (current.quality - current.returnQuality) ), 0)
+            }
+          .value()
 
-#  insertProductAndRandomBarcode: (existedQuery, product)->
-#    barcode = (Math.floor(Math.random() * 100000000000) + 89 *100000000000).toString()
-#    existedQuery.productCode = barcode
-#    Schema.products.findOne existedQuery
+          for item in productGroup
+            if item.product is "undefined"
+              detailOption =
+                merchant          : product.merchant
+                warehouse         : product.warehouse
+                product           : product._id
+                unitPrice         : product.importPrice ? 0
+                importPrice       : product.importPrice ? 0
+                unitQuality       : item.quality
+                conversionQuality : 1
+                importQuality     : item.quality
+                availableQuality  : item.quality
+                inStockQuality    : item.quality
+            else
+              productUnit = Schema.productUnits.findOne({_id: item.product, product: product._id})
+              detailOption =
+                merchant          : product.merchant
+                warehouse         : product.warehouse
+                product           : product._id
+                unitPrice         : productUnit.importPrice
+                importPrice       : productUnit.importPrice
+                unitQuality       : item.quality/productUnit.conversionQuality
+                unit              : productUnit._id
+                conversionQuality : productUnit.conversionQuality
+                importQuality     : item.quality
+                availableQuality  : item.quality
+                inStockQuality    : item.quality
+
+            if detailOption
+              productDetailId = Schema.productDetails.insert detailOption
+              if Schema.productDetails.findOne(productDetailId)
+                productDetailList.push(productDetailId)
+                Schema.productUnits.update detailOption.unit, $set:{allowDelete: false} if detailOption.unit
+                Schema.products.update product._id, $set:{allowDelete: false}, $inc:{
+                  totalQuality    : detailOption.importQuality
+                  availableQuality: detailOption.importQuality
+                  inStockQuality  : detailOption.importQuality
+                }
+
+          importBasic = Schema.productDetails.find({_id: {$in:productDetailList} }).fetch()
+          subtractQualityOnSales(detail, importBasic, (detail.quality - detail.returnQuality)) for detail in saleDetails
+          Schema.products.update product._id, $set:{basicDetailModeEnabled: mode}
