@@ -3,8 +3,7 @@ destroyReturnAndDetail = (scope, returnId)->
     for returnDetail in Schema.returnDetails.find({return: currentDistributorReturn._id}).fetch()
       Schema.returnDetails.remove(returnDetail._id)
     Schema.returns.remove(currentDistributorReturn._id)
-    console.log Schema.returns.find({creator: currentDistributorReturn.creator}).count()
-    Schema.returns.find({creator:currentDistributorReturn.creator}).count()
+    Schema.returns.find({creator:currentDistributorReturn.creator, status: 0, returnMethods: 1}).count()
   else
     -1
 

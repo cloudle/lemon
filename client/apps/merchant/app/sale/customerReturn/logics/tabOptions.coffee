@@ -3,7 +3,7 @@ destroyReturnAndDetail = (scope, returnId)->
     Schema.returns.remove(currentCustomerReturn._id)
     for returnDetail in Schema.returnDetails.find({return: currentCustomerReturn._id}).fetch()
       Schema.returnDetails.remove(returnDetail._id)
-    Schema.returns.find({creator:currentCustomerReturn.creator}).count() - 1
+    Schema.returns.find({creator:currentCustomerReturn.creator, status: 0, returnMethods: 0}).count()
   else
     -1
 

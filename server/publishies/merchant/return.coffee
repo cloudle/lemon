@@ -10,10 +10,22 @@ Meteor.publishComposite 'allCustomerReturn', ->
     find: ->
       myProfile = Schema.userProfiles.findOne({user: self.userId})
       return EmptyQueryResult if !myProfile
-      Schema.returns.find {creator: myProfile.user, status: 0}
+      Schema.returns.find {creator: myProfile.user, status: 0, returnMethods: 0}
     children: [
       find: (currentReturn) -> Schema.returnDetails.find {return: currentReturn._id}
     ]
+  }
+
+Meteor.publishComposite 'allDistributorReturn', ->
+  self = @
+  return {
+  find: ->
+    myProfile = Schema.userProfiles.findOne({user: self.userId})
+    return EmptyQueryResult if !myProfile
+    Schema.returns.find {creator: myProfile.user, status: 0, returnMethods: 1}
+  children: [
+    find: (currentReturn) -> Schema.returnDetails.find {return: currentReturn._id}
+  ]
   }
 
 Meteor.publishComposite 'customerReturnData', (returnId)->
