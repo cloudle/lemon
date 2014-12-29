@@ -53,7 +53,7 @@ createSaleAndSaleOrder = (order, orderDetails)->
       ).fetch()
       combinedProductDetails = importBasic.concat(importProductDetails)
       subtractQualityOnSales(combinedProductDetails, currentOrderDetail, currentSale)
-    Schema.products.update product._id, $set:{allowDelete : false}
+    Schema.products.update product._id, $set:{allowDelete : false}, $inc:{salesQuality: currentOrderDetail.quality}
 
   option = {status: true}
   if currentSale.paymentsDelivery == 1

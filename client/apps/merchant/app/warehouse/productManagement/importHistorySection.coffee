@@ -1,9 +1,9 @@
 scope = logics.productManagement
 
 lemon.defineHyper Template.productManagementSalesHistorySection,
-  isShowDisableMode: ->
-    if @basicDetailModeEnabled is true and @totalQuality >= @salesQuality then true
-    else false
+  isShowDisableMode: -> if @basicDetailModeEnabled is true and @totalQuality >= @salesQuality then true else false
+  buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
+  unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
 
 
   basicDetail: ->
@@ -22,6 +22,8 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
         isShowDetail: if currentImport.count() > 0 then true else false
         detail: currentImport
       }
+
+  allSaleDetails: -> Schema.saleDetails.find({product: @_id})
 
   events:
     "click .basicDetailModeDisable": ->

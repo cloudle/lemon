@@ -47,7 +47,7 @@ Meteor.publishComposite 'productManagementData', (productId, currentRecords = 0)
           find: (currentImport, product) -> Schema.distributors.find {_id: currentImport.distributor}
         ]
       ,
-        find: (productDetail, product) -> Schema.saleDetails.find {productDetail: productDetail._id}
+        find: (productDetail, product) -> if product.basicDetailModeEnabled then EmptyQueryResult else Schema.saleDetails.find {productDetail: productDetail._id}
         children: [
           find: (saleDetail, product) -> Schema.sales.find {_id: saleDetail.sale}
           children: [
@@ -56,6 +56,14 @@ Meteor.publishComposite 'productManagementData', (productId, currentRecords = 0)
         ]
       ,
         find: (productDetail, product) -> Schema.providers.find {_id: productDetail.provider}
+      ]
+    ,
+      find: (product) -> if product.basicDetailModeEnabled then Schema.saleDetails.find {product: product._id} else EmptyQueryResult
+      children: [
+        find: (saleDetail, product) -> Schema.sales.find {_id: saleDetail.sale}
+        children: [
+          find: (sale, product) -> Schema.customers.find {_id: sale.buyer}
+        ]
       ]
     ]
   }
@@ -71,9 +79,7 @@ Schema.products.allow
   update: (userId, product) -> true
   remove: (userId, product) ->
     productInUse = Schema.importDetails.findOne {product: product._id}
-    saleProduct = Schema.saleDetails.findOne {product: product._id}
-    orderProduct = Schema.orderDetails.findOne {product: product._id}
-    return product.totalQuality == 0 and !productInUse and !saleProduct and !orderProduct
+    return product.totalQuality == 0 and !productInUse
 
 Schema.productDetails.allow
   insert: -> true

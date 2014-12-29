@@ -94,6 +94,7 @@ lemon.defineApp Template.customerReturn,
               Schema.products.update saleDetail.product, $inc:{
                 availableQuality: takenQuality
                 inStockQuality: takenQuality
+                salesQuality: -takenQuality
               }
               Schema.productDetails.update saleDetail.productDetail, $inc:{
                 availableQuality: takenQuality

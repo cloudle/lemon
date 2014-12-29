@@ -13,13 +13,14 @@ template(name="productManagementImportDetails")
       td.number {{formatNumber unitPrice}}
       td.number {{formatNumber totalPrice}}
 
-    each saleDetails
-      tr.detail-row
-        td.first-column
-         span.icon-forward-3 {{buyerName}}
-        td {{momentFormat version.createdAt "DD/MM/YYYY"}}
-        td {{unitQuality}}
-        td {{unitName}}
-        td.number {{conversionQuality}}
-        td.number {{formatNumber unitPrice}}
-        td.number {{formatNumber finalPrice}}
+    if isShowDisableMode
+      each saleDetails
+        tr.detail-row
+          td.first-column
+           span.icon-forward-3 {{buyerName}}
+          td {{momentFormat version.createdAt "DD/MM/YYYY"}}
+          td {{unitQuality}}
+          td {{unitName}}
+          td.number {{conversionQuality}}
+          td.number {{formatNumber unitPrice}}
+          td.number {{formatNumber finalPrice}}

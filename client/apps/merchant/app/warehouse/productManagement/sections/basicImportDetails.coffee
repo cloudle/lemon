@@ -1,4 +1,5 @@
 lemon.defineWidget Template.productManagementBasicImportDetails,
+  isShowDisableMode: -> Session.get("productManagementCurrentProduct")?.basicDetailModeEnabled
   saleDetails: -> Schema.saleDetails.find {productDetail: @_id}
   buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
 
@@ -7,6 +8,7 @@ lemon.defineWidget Template.productManagementBasicImportDetails,
   expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY') else 'KHÔNG'
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   totalPrice: -> @importPrice*@unitQuality
+  isShowDisableMode: -> !Session.get("productManagementCurrentProduct")?.basicDetailModeEnabled
 
   events:
     "click .edit-detail": ->

@@ -2,6 +2,7 @@ lemon.defineWidget Template.productManagementImportDetails,
   productName: -> @name ? Schema.products.findOne(@product)?.name
   totalDebtBalance: -> @latestDebtBalance + Session.get("productManagementCurrentProduct").customSaleDebt
   providerName: -> Schema.providers.findOne(@provider)?.name
+  isShowDisableMode: -> !Session.get("productManagementCurrentProduct")?.basicDetailModeEnabled
 
   distributorName: ->
     if distributorId = Schema.imports.findOne(@import).distributor

@@ -29,6 +29,18 @@ template(name="productManagementSalesHistorySection")
           each basicDetail.detail
             +productManagementBasicImportDetails this
 
+          if basicDetailModeEnabled
+            each allSaleDetails
+              tr.detail-row
+                td.first-column
+                  span.icon-forward-3 {{buyerName}}
+                td {{momentFormat version.createdAt "DD/MM/YYYY"}}
+                td {{unitQuality}}
+                td {{unitName}}
+                td.number {{conversionQuality}}
+                td.number {{formatNumber unitPrice}}
+                td.number {{formatNumber finalPrice}}
+
         if newImport.isShowDetail
           each newImport.detail
             +productManagementImportDetails this

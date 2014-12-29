@@ -15,6 +15,7 @@ template(name="productManagementBasicImportDetails")
       td.number {{formatNumber importPrice}}
       td.number {{formatNumber totalPrice}}
 
+  if isShowDisableMode
     each saleDetails
       tr.detail-row
         td.first-column
