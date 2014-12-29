@@ -97,16 +97,16 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 
 
   scope.createTransactionOfImport = (template, distributor)->
-    if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
-      $payDescription = template.ui.$payImportDescription
-      $payAmount = template.ui.$payImportAmount
-      payAmount = parseInt($(template.find("[name='payImportAmount']")).inputmask('unmaskedvalue'))
+#    if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
+    $payDescription = template.ui.$payImportDescription
+    $payAmount = template.ui.$payImportAmount
+    payAmount = Math.abs(parseInt($(template.find("[name='payImportAmount']")).inputmask('unmaskedvalue')))
 
-      if latestImport and !isNaN(payAmount) and payAmount != 0
-        Meteor.call('createNewReceiptCashOfImport', distributor._id, payAmount, $payDescription.val())
-        Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
-        Session.set("allowCreateTransactionOfImport", false)
-        $payDescription.val(''); $payAmount.val('')
+    if !isNaN(payAmount) and payAmount != 0
+      Meteor.call('createNewReceiptCashOfImport', distributor._id, payAmount, $payDescription.val())
+      Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
+      Session.set("allowCreateTransactionOfImport", false)
+      $payDescription.val(''); $payAmount.val('')
 
 
 #    if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})

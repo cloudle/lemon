@@ -3,7 +3,9 @@ destroyReturnAndDetail = (scope, returnId)->
     for returnDetail in Schema.returnDetails.find({return: currentDistributorReturn._id}).fetch()
       Schema.returnDetails.remove(returnDetail._id)
     Schema.returns.remove(currentDistributorReturn._id)
-    Schema.returns.find({creator:currentDistributorReturn.creator, status: 0, returnMethods: 1}).count()
+    countReturn = Schema.returns.find({creator: Session.get('myProfile').user, status: 0, returnMethods: 1}).count()
+    console.log countReturn
+    countReturn
   else
     -1
 
@@ -29,15 +31,16 @@ createReturnAndSelected = ()->
 
 
 Apps.Merchant.distributorReturnInit.push (scope) ->
-  scope.tabOptions =
-    source: Schema.returns.find({status: 0, returnMethods: 1})
-    currentSource: 'currentDistributorReturn'
-    caption: 'tabDisplay'
-    key: '_id'
-    createAction: -> createReturnAndSelected()
-    destroyAction: (instance) -> destroyReturnAndDetail(scope, instance._id)
-    navigateAction: (instance) ->
-      if instance
-        UserSession.set('currentDistributorReturn', instance._id)
-        Session.set('currentDistributorReturn', instance)
-        Meteor.subscribe('distributorReturnData')
+  if Session.get('myProfile')
+    scope.tabOptions =
+      source: Schema.returns.find({creator: Session.get('myProfile').user, status: 0, returnMethods: 1})
+      currentSource: 'currentDistributorReturn'
+      caption: 'tabDisplay'
+      key: '_id'
+      createAction: -> createReturnAndSelected()
+      destroyAction: (instance) -> destroyReturnAndDetail(scope, instance._id)
+      navigateAction: (instance) ->
+        if instance
+          UserSession.set('currentDistributorReturn', instance._id)
+          Session.set('currentDistributorReturn', instance)
+          Meteor.subscribe('distributorReturnData')
