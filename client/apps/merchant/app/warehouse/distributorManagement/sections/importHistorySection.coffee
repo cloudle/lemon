@@ -5,10 +5,6 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
   allowCreateCustomImport: -> if Session.get("allowCreateCustomImport") then '' else 'disabled'
   allowCreateTransactionOfImport: -> if Session.get("allowCreateTransactionOfImport") then '' else 'disabled'
   allowCreateTransactionOfCustomImport: -> if Session.get("allowCreateTransactionOfCustomImport") then '' else 'disabled'
-  showAddTransactionOfImport: ->
-    if distributor = Session.get("distributorManagementCurrentDistributor")
-      importFound = Schema.imports.findOne {distributor: distributor._id, finish: true, submitted: true}
-      if importFound then "" else "display: none;"
 
   showExpandImportAndCustomImport: -> Session.get("showExpandImportAndCustomImport")
   isCustomImportModeEnabled: -> if Session.get("distributorManagementCurrentDistributor")?.customImportModeEnabled then "" else "display: none;"

@@ -8,8 +8,8 @@ template(name="distributorManagementImportsHistorySection")
 
       table.lemon-grid: tr
         th(style="width:auto") SẢN PHẨM
-        th(style="width:80px") SỐ LƯỢNG
-        th(style="width:100px") D.V.T
+        th(style="width:80px") SL
+        th(style="width:100px") ĐVT
         th.number(style="width:120px") ĐƠN GIÁ
         th.number(style="width:180px") THÀNH TIỀN
     .panel-body.debt-details
@@ -53,7 +53,7 @@ template(name="distributorManagementImportsHistorySection")
         each defaultImport
           +distributorManagementImportDetails this
 
-        tr.editors(style="{{showAddTransactionOfImport}}")
+        tr.editors
           td
             input.new-transaction-import-field(name='payImportDescription' type="text" size="10" placeholder="ghi chú trả tiền")
           td(colspan="3")
