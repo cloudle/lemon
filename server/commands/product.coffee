@@ -40,7 +40,7 @@ subtractQualityOnSales = (saleDetail, productDetails, salesQuality)->
           finalPrice   : -newSaleDetail.finalPrice
         Schema.saleDetails.update saleDetail._id, $unset:{productDetail: true}, $inc:saleDetailOption
 
-      Schema.productDetails.update productDetail._id, $inc:{inStockQuality: -takenQuality, availableQuality: -takenQuality}
+      Schema.productDetails.update productDetail._id, $set:{allowDelete: false}, $inc:{inStockQuality: -takenQuality, availableQuality: -takenQuality}
       Schema.products.update productDetail.product, $inc:{inStockQuality: -takenQuality, availableQuality: -takenQuality}
 
       transactionQuality += takenQuality
@@ -109,6 +109,7 @@ Meteor.methods
     if product = Schema.products.findOne(productId)
       if product.basicDetailModeEnabled != mode
         productDetailList = []
+        Schema.productDetails.find({product: product._id}).forEach((detail) -> Schema.productDetails.update detail, $set:{allowDelete: false})
         saleDetails = Schema.saleDetails.find({product: product._id}).fetch()
         if saleDetails.length > 0
           productGroup = _.chain(saleDetails)
