@@ -5,19 +5,15 @@ lemon.defineWidget Template.distributorManagementImportDetails,
   skulls: -> Schema.products.findOne(@product)?.skulls?[0]
 
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
-  quality: ->
-    if @conversionQuality then @unitQuality
-    else @importQuality
-
-  totalPrice: ->
-    if @conversionQuality then @unitQuality*@unitPrice
-    else @importQuality*@importPrice
-
+  quality: -> if @conversionQuality then @unitQuality else @importQuality
+  totalPrice: -> if @conversionQuality then @unitQuality*@unitPrice else @importQuality*@importPrice
   importPrice: -> if @conversionQuality then @unitPrice else @importPrice
 
   showDeleteImport: ->
     if @creator is Session.get('myProfile').user
       new Date(@version.createdAt.getFullYear(), @version.createdAt.getMonth(), @version.createdAt.getDate() + 1, @version.createdAt.getHours(), @version.createdAt.getMinutes(), @version.createdAt.getSeconds()) > new Date()
+
+  showDeleteTransaction: -> new Date(@debtDate.getFullYear(), @debtDate.getMonth(), @debtDate.getDate() + 1, @debtDate.getHours(), @debtDate.getMinutes(), @debtDate.getSeconds()) > new Date()
 
   importDetails: ->
     importId = UI._templateInstance().data._id

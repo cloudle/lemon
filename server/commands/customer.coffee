@@ -70,6 +70,13 @@ Meteor.methods
     try
       profile = Schema.userProfiles.findOne({user: Meteor.userId()}); if !profile then throw 'Không tìm thấy profile'
       currentTransaction = Schema.transactions.findOne(transactionId); if !currentTransaction then throw 'Không tìm thấy Transaction'
+      validDateTransaction = new Date(currentTransaction.debtDate.getFullYear(),
+          currentTransaction.debtDate.getMonth(),
+          currentTransaction.debtDate.getDate() + 1,
+          currentTransaction.debtDate.getHours(),
+          currentTransaction.debtDate.getMinutes(),
+          currentTransaction.debtDate.getSeconds()
+        ); if validDateTransaction < new Date() then 'Transaction vượt quá 24h.'
       currentSales = Schema.sales.findOne(currentTransaction.latestSale); if !currentSales then throw 'Không tìm thấy Sale'
 
       customerIncOption =

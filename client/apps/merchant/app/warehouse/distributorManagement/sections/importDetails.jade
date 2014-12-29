@@ -23,7 +23,8 @@ template(name="distributorManagementImportDetails")
       td.has-commands
         span.note {{description}}, {{momentCalendar debtDate}}.
         .commands
-          .lemon.rounded.tiny.btn.red.deleteTransaction: span.icon-minus-4
+          if showDeleteTransaction
+            .lemon.rounded.tiny.btn.red.deleteTransaction: span.icon-minus-4
 
       td.number(colspan="3")
         span.icon-feather-1

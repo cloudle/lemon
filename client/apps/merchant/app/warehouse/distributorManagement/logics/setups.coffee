@@ -46,12 +46,18 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 #      Session.set("allowCreateTransactionOfCustomImport", false)
 
   scope.checkAllowCreateTransactionOfImport = (template, distributor)->
-    if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
-      payAmount = parseInt($(template.find("[name='payImportAmount']")).inputmask('unmaskedvalue'))
-      if payAmount != 0 and !isNaN(payAmount)
-        Session.set("allowCreateTransactionOfImport", true)
-      else
-        Session.set("allowCreateTransactionOfImport", false)
+    payAmount = parseInt($(template.find("[name='payImportAmount']")).inputmask('unmaskedvalue'))
+    if payAmount != 0 and !isNaN(payAmount)
+      Session.set("allowCreateTransactionOfImport", true)
+    else
+      Session.set("allowCreateTransactionOfImport", false)
+
+#    if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
+#      payAmount = parseInt($(template.find("[name='payImportAmount']")).inputmask('unmaskedvalue'))
+#      if payAmount != 0 and !isNaN(payAmount)
+#        Session.set("allowCreateTransactionOfImport", true)
+#      else
+#        Session.set("allowCreateTransactionOfImport", false)
 #      latestTransaction = Schema.transactions.findOne({latestImport: latestImport._id}, {sort: {debtDate: -1}})
 #
 #      $paidDate = $(template.find("[name='paidImportDate']")).inputmask('unmaskedvalue')

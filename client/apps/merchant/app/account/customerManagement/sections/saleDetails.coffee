@@ -4,11 +4,7 @@ lemon.defineWidget Template.customerManagementSaleDetails,
   skulls: -> Schema.products.findOne(@product)?.skulls?[0]
   receivableClass: -> if @debtBalanceChange >= 0 then 'receive' else 'paid'
   finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
-
-  isShowDeleteTransaction: ->
-    new Date(@version.createdAt.getFullYear(), @version.createdAt.getMonth(), @version.createdAt.getDate() + 1, @version.createdAt.getHours(), @version.createdAt.getMinutes(), @version.createdAt.getSeconds()) > new Date()
-
-
+  isShowDeleteTransaction: -> new Date(@debtDate.getFullYear(), @debtDate.getMonth(), @debtDate.getDate() + 1, @debtDate.getHours(), @debtDate.getMinutes(), @debtDate.getSeconds()) > new Date()
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   showDeleteSales: ->
     if @creator is Session.get('myProfile').user and @paymentsDelivery is 0

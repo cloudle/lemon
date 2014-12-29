@@ -120,8 +120,14 @@ Meteor.methods
     try
       profile = Schema.userProfiles.findOne({user: Meteor.userId()}); if !profile then throw 'Không tìm thấy profile'
       currentTransaction = Schema.transactions.findOne(transactionId); if !currentTransaction then throw 'Không tìm thấy Transaction'
-      currentImport = Schema.imports.findOne(currentTransaction.latestImport)
-      throw 'Không tìm thấy Import.' if !currentImport
+      validDateTransaction = new Date(currentTransaction.debtDate.getFullYear(),
+        currentTransaction.debtDate.getMonth(),
+        currentTransaction.debtDate.getDate() + 1,
+        currentTransaction.debtDate.getHours(),
+        currentTransaction.debtDate.getMinutes(),
+        currentTransaction.debtDate.getSeconds()
+        ); if validDateTransaction < new Date() then throw 'Transaction đã quá 24h.'
+      currentImport = Schema.imports.findOne(currentTransaction.latestImport); if !currentImport then throw 'Không tìm thấy Import.'
 
       distributorIncOption =
         importPaid: 0

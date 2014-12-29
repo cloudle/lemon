@@ -260,7 +260,19 @@ Meteor.methods
             latestImport: latestImport._id
             parentMerchant: profile.parentMerchant
           }, {sort: {debtDate: -1, 'version.createdAt': -1}}) then updateTransactionAllowDelete(latestTransaction._id)
-
+        else
+          importOption =
+            parentMerchant: profile.parentMerchant
+            merchant      : profile.currentMerchant
+            warehouse     : profile.currentWarehouse
+            creator       : profile.user
+            distributor   : distributor._id
+            description   : 'Trả tiền NCC'
+            finish        : true
+            submitted     : true
+          newImportId = Schema.imports.insert importOption
+          latestImport = Schema.imports.findOne(newImportId)
+        if latestImport
           createTransactionOfImport(profile, distributor, latestImport._id, debtCash,  new Date(), description)
           updateCustomImportDenyDelete(latestImport._id)
 
