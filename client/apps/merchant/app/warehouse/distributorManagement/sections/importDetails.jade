@@ -2,7 +2,7 @@ template(name="distributorManagementImportDetails")
   tr.header-row
     td.has-commands(colspan="5")
       | .
-      .bill-header <b>{{momentCalendar version.createdAt}}</b>. {{description}}.
+      .bill-header <b>{{momentCalendar version.createdAt}}</b>. {{description}}
       .commands
         if showDeleteImport
           .lemon.rounded.tiny.btn.red.deleteImport: span.icon-minus-4
@@ -34,7 +34,7 @@ template(name="distributorManagementImportDetails")
     tr.header-row
       td.has-commands(colspan="5")
         | .
-        .bill-header <b>{{momentCalendar version.createdAt}}</b>. {{comment}}.
+        .bill-header <b>Trả Hàng: {{momentCalendar version.createdAt}}</b>. {{comment}}
     each returnDetails
         tr.detail-row.edit-detail
           td {{productName}}

@@ -1,6 +1,11 @@
 scope = logics.productManagement
 
 lemon.defineHyper Template.productManagementSalesHistorySection,
+  isShowDisableMode: ->
+    if @basicDetailModeEnabled is true and @totalQuality >= @salesQuality then true
+    else false
+
+
   basicDetail: ->
     if product = Session.get("productManagementCurrentProduct")
       productDetailFound = Schema.productDetails.find({product: product._id, import: {$exists: false}})

@@ -48,7 +48,7 @@ subtractQualityOnSales = (saleDetail, productDetails, salesQuality)->
 
 
 Meteor.methods
-  calculateAllProductTotalQualityAndAvailableQuality:->
+  calculateAllProductTotalQualityAndAvailableQuality: ->
     profile = Schema.userProfiles.findOne({user: Meteor.userId()})
     if profile
       allMerchant  = Schema.merchants.find({$or:[{_id: profile.parentMerchant }, {parent: profile.parentMerchant}]}).fetch()
@@ -61,8 +61,19 @@ Meteor.methods
             optionProduct.inStockQuality   += productDetail.inStockQuality
           Schema.products.update product._id, $set: optionProduct
 
+  calculateAllProductSalesQuality: ->
+    profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    if profile
+      allMerchant  = Schema.merchants.find({$or:[{_id: profile.parentMerchant }, {parent: profile.parentMerchant}]}).fetch()
+      for merchant in allMerchant
+        for product in Schema.products.find({merchant: merchant._id}).fetch()
+          optionProduct ={salesQuality: 0}
+          optionProduct.salesQuality += (saleDetail.quality - saleDetail.returnQuality) for saleDetail in Schema.saleDetails.find({product: product._id}).fetch()
+          Schema.products.update product._id, $set: optionProduct
 
-  updateProductBasicDetailMode01: (productId, mode = false)->
+
+
+  updateProductBasicDetailMode: (productId, mode = false)->
     if product = Schema.products.findOne(productId)
       if product.basicDetailModeEnabled != mode
         saleDetails = Schema.saleDetails.find({product: product._id}).fetch()
@@ -105,7 +116,7 @@ Meteor.methods
           subtractQualityOnSales(detail, combinedImportDetails, (detail.quality - detail.returnQuality)) for detail in saleDetails
           Schema.products.update product._id, $set:{basicDetailModeEnabled: mode}
 
-  updateProductBasicDetailMode: (productId, mode = false)->
+  updateProductBasicDetailMode01: (productId, mode = false)->
     if product = Schema.products.findOne(productId)
       if product.basicDetailModeEnabled != mode
         productDetailList = []

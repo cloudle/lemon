@@ -23,7 +23,7 @@ template(name="productManagementSalesHistorySection")
               | .
               .bill-header <b>Tồn kho đầu kỳ</b>
               .commands
-                if basicDetailModeEnabled
+                if isShowDisableMode
                   .lemon.rounded.tiny.btn.lime.basicDetailModeDisable.icon-ok-6
 
           each basicDetail.detail
@@ -34,7 +34,14 @@ template(name="productManagementSalesHistorySection")
             +productManagementImportDetails this
 
     .panel-footer
-      .right-float
-        span.s5.note <b>TỔNG TỒN</b>/ TỔNG NHẬP:
-        span.s3 <b>{{formatNumber inStockQuality}} </b>
-        span.s5 /{{formatNumber totalQuality}} <b>{{basicUnit}}</b>
+      if basicDetailModeEnabled
+        .right-float
+          span.s5.note <b>TỔNG BÁN</b>/ TỔNG NHẬP:
+          span.s3 <b>{{formatNumber salesQuality}}</b>
+          span.s5 /{{formatNumber totalQuality}} <b>{{basicUnit}}</b>
+
+      else
+        .right-float
+          span.s5.note <b>TỔNG TỒN</b>/ TỔNG NHẬP:
+          span.s3 <b>{{formatNumber inStockQuality}}</b>
+          span.s5 /{{formatNumber totalQuality}} <b>{{basicUnit}}</b>
