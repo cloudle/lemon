@@ -71,7 +71,8 @@ Schema.products.allow
   update: (userId, product) -> true
   remove: (userId, product) ->
     productInUse = Schema.importDetails.findOne {product: product._id}
-    return product.totalQuality == 0 and !productInUse
+    saleProduct = Schema.saleDetails.findOne {product: product._id}
+    return product.totalQuality == 0 and !productInUse and !saleProduct
 
 Schema.productDetails.allow
   insert: -> true
