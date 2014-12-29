@@ -91,13 +91,13 @@ Meteor.methods
           throw 'Đã bán hàng khong thể xóa'
 
       distributorIncOption =
+        importPaid: 0
         importDebt: -currentImport.debtBalanceChange
         importTotalCash: -currentImport.debtBalanceChange
 
-      transactions = Schema.transactions.find({latestImport: currentImport._id})
-      for transaction in transactions
-        distributorIncOption.importPaid = -transaction.debtBalanceChange
-        distributorIncOption.importDebt = -(currentImport.debtBalanceChange - transaction.debtBalanceChange)
+      for transaction in Schema.transactions.find({latestImport: currentImport._id}).fetch()
+        distributorIncOption.importPaid += -transaction.debtBalanceChange
+        distributorIncOption.importDebt += -(currentImport.debtBalanceChange - transaction.debtBalanceChange)
         Schema.transactions.remove transaction._id
 
       for productDetail in productDetails
@@ -141,6 +141,7 @@ Meteor.methods
         distributorIncOption.importDebt = currentTransaction.debtBalanceChange
         distributorIncOption.importTotalCash = currentTransaction.debtBalanceChange
       Schema.transactions.remove currentTransaction._id
+#      if currentImport.debtBalanceChange is 0 then Schema.imports.remove currentImport._id
 
       tempBeforeDebtBalance = currentImport.beforeDebtBalance
       Schema.imports.find({distributor: currentImport.distributor, 'version.createdAt': {$gte: currentImport.version.createdAt} }
