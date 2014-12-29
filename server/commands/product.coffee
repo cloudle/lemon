@@ -109,57 +109,76 @@ Meteor.methods
     if product = Schema.products.findOne(productId)
       if product.basicDetailModeEnabled != mode
         productDetailList = []
-        Schema.productDetails.find({product: product._id}).forEach((detail) -> Schema.productDetails.update detail, $set:{allowDelete: false})
+        totalImportQuality = 0
+        totalQuality = 0
+        Schema.productDetails.find({product: product._id}).forEach(
+          (detail) ->
+            Schema.productDetails.update detail, $set:{allowDelete: false}
+            totalImportQuality += detail.importQuality
+        )
         saleDetails = Schema.saleDetails.find({product: product._id}).fetch()
         if saleDetails.length > 0
-          productGroup = _.chain(saleDetails)
-          .groupBy("unit")
-          .map (group, key) ->
-            return {
-            product: key
-            quality: _.reduce(group, ((res, current) -> res + (current.quality - current.returnQuality) ), 0)
-            }
-          .value()
+          totalQuality += (detail.quality - detail.returnQuality) for detail in saleDetails
+#          productGroup = _.chain(saleDetails)
+#          .groupBy("unit")
+#          .map (group, key) ->
+#            return {
+#            product: key
+#            quality: _.reduce(group, ((res, current) -> res + (current.quality - current.returnQuality) ), 0)
+#            }
+#          .value()
 
-          for item in productGroup
-            if item.product is "undefined"
-              detailOption =
-                merchant          : product.merchant
-                warehouse         : product.warehouse
-                product           : product._id
-                unitPrice         : product.importPrice ? 0
-                importPrice       : product.importPrice ? 0
-                unitQuality       : item.quality
-                conversionQuality : 1
-                importQuality     : item.quality
-                availableQuality  : item.quality
-                inStockQuality    : item.quality
-            else
-              productUnit = Schema.productUnits.findOne({_id: item.product, product: product._id})
-              detailOption =
-                merchant          : product.merchant
-                warehouse         : product.warehouse
-                product           : product._id
-                unitPrice         : productUnit.importPrice
-                importPrice       : productUnit.importPrice
-                unitQuality       : item.quality/productUnit.conversionQuality
-                unit              : productUnit._id
-                conversionQuality : productUnit.conversionQuality
-                importQuality     : item.quality
-                availableQuality  : item.quality
-                inStockQuality    : item.quality
+#          for item in productGroup
+#            if item.product is "undefined"
+#              detailOption =
+#                merchant          : product.merchant
+#                warehouse         : product.warehouse
+#                product           : product._id
+#                unitPrice         : product.importPrice ? 0
+#                importPrice       : product.importPrice ? 0
+#                unitQuality       : item.quality
+#                conversionQuality : 1
+#                importQuality     : item.quality
+#                availableQuality  : item.quality
+#                inStockQuality    : item.quality
+#            else
+#              productUnit = Schema.productUnits.findOne({_id: item.product, product: product._id})
+#                detailOption =
+#                  merchant          : product.merchant
+#                  warehouse         : product.warehouse
+#                  product           : product._id
+#                  unitPrice         : productUnit.importPrice
+#                  importPrice       : productUnit.importPrice
+#                  unitQuality       : item.quality/productUnit.conversionQuality
+#                  unit              : productUnit._id
+#                  conversionQuality : productUnit.conversionQuality
+#                  importQuality     : item.quality
+#                  availableQuality  : item.quality
+#                  inStockQuality    : item.quality
+          detailOption =
+            merchant          : product.merchant
+            warehouse         : product.warehouse
+            product           : product._id
+            unitPrice         : product.importPrice ? 0
+            importPrice       : product.importPrice ? 0
+            unitQuality       : totalQuality
+            conversionQuality : 1
+            importQuality     : totalQuality
+            availableQuality  : totalQuality
+            inStockQuality    : totalQuality
 
-            if detailOption
-              productDetailId = Schema.productDetails.insert detailOption
-              if Schema.productDetails.findOne(productDetailId)
-                productDetailList.push(productDetailId)
-                Schema.productUnits.update detailOption.unit, $set:{allowDelete: false} if detailOption.unit
-                Schema.products.update product._id, $set:{allowDelete: false}, $inc:{
-                  totalQuality    : detailOption.importQuality
-                  availableQuality: detailOption.importQuality
-                  inStockQuality  : detailOption.importQuality
-                }
+          if detailOption
+            productDetailId = Schema.productDetails.insert detailOption
+            if Schema.productDetails.findOne(productDetailId)
+              productDetailList.push(productDetailId)
+              Schema.productUnits.update detailOption.unit, $set:{allowDelete: false} if detailOption.unit
 
           importBasic = Schema.productDetails.find({_id: {$in:productDetailList} }).fetch()
           subtractQualityOnSales(detail, importBasic, (detail.quality - detail.returnQuality)) for detail in saleDetails
-          Schema.products.update product._id, $set:{basicDetailModeEnabled: mode}
+          Schema.products.update product._id, $set:{
+            basicDetailModeEnabled: mode
+            allowDelete     : false
+            totalQuality    : totalImportQuality + totalQuality
+            availableQuality: totalImportQuality
+            inStockQuality  : totalImportQuality
+          }
