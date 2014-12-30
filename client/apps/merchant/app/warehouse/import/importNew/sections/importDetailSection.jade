@@ -1,15 +1,19 @@
 template(name="importDetailSection")
    .section.top.panel.panel-default.printable-area
-      .panel-heading.printing-header
-         span.hide-on-print <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b><br/>
+      .panel-heading
+         .hide-on-print
+            span <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b><br/>
          .show-on-print
             +merchantPrintingHeader
+            .bill-info
+               .seller-info NGƯỜI BÁN: {{sellerName}}
             .printing-info
                .document-name PHIẾU NHẬP KHO
+
       .panel-body
          //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
          table.lemon-grid
-            tr
+            tr.table-header
                th(style="width:auto") SẢN PHẨM
                th(style="width:90px") HẾT HẠN
                th(style="width:50px") SL
@@ -34,8 +38,41 @@ template(name="importDetailSection")
                      td.editable-field.number {{formatNumber unitPrice}}
                      td.number <b>{{formatNumber totalPrice}}</b>
 
+            tr.top-dashed.space
+               td(colspan="6" style="height: 25px")
+                  input.editable.dashed.note(name='importDescription' value="{{import.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
+            tr
+               td(align="center"): span NGƯỜI GIAO
+               td
+               td.number(colspan="2"): span.s5 TỔNG CỘNG:
+               td.number(colspan="2"): span.s4 <b>{{formatNumber import.totalPrice}}</b> VNĐ
+            //tr
+            //   td(align="center"): span.s6.note (<i>Chữ ký và Họ Tên</i>)
+            //   td
+            //   td.number(colspan="2"): span.s5 CHIẾT KHẤU:
+            //   td.number(colspan="2"): span.s4 <b>{{formatNumber order.discountCash}}</b> VNĐ
+            tr
+               td(align="center"): span.s6.note (<i>Chữ ký và Họ Tên</i>)
+               td
+               td.number(colspan="2"): span.s5 TIỀN CŨ:
+               td.number(colspan="2"): span.s4 <b>{{formatNumber distributorOldDebt}}</b> VNĐ
+            tr
+               td
+               td
+               td.number(colspan="2"): span.s5 THANH TOÁN:
+               td.number(colspan="2"): span.s4 <b>{{formatNumber import.deposit}}</b> VNĐ
+            tr
+               td(colspan="2")
+               td
+               td
+               td.number(colspan="2" style="border-top: solid 1px #d7d7d7")
+                  span.s4 <b>{{formatNumber distributorFinalDebt}}</b> VNĐ
+
+
+
+
 
       .panel-footer
-         input.editable.dashed.note(name='importDescription' value="{{import.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
+
          .right-float
-            span.s3 <b>{{formatNumber import.totalPrice}}</b> VNĐ
+            span.s3

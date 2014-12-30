@@ -49,6 +49,7 @@ template(name="saleDetailSection")
                         if discountPercent
                            span.super.s7.color-lime -{{round discountPercent}}%
                      td.final-price.number <b>{{formatNumber finalPrice}}</b>
+
             tr.top-dashed.space
                td(colspan="6" style="height: 25px")
                   input.editable.dashed.note(name="orderDescription" value="{{order.description}}" placeholder="ghi chú đơn hàng" size="40" maxlength="120")
