@@ -141,7 +141,7 @@ Meteor.methods
         distributorIncOption.importDebt = currentTransaction.debtBalanceChange
         distributorIncOption.importTotalCash = currentTransaction.debtBalanceChange
       Schema.transactions.remove currentTransaction._id
-#      if currentImport.debtBalanceChange is 0 then Schema.imports.remove currentImport._id
+      if currentImport.debtBalanceChange is 0 and Schema.transactions.find(latestImport: currentImport._id).count() is 0 then Schema.imports.remove currentImport._id
 
       tempBeforeDebtBalance = currentImport.beforeDebtBalance
       Schema.imports.find({distributor: currentImport.distributor, 'version.createdAt': {$gte: currentImport.version.createdAt} }

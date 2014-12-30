@@ -267,7 +267,6 @@ Meteor.methods
             warehouse     : profile.currentWarehouse
             creator       : profile.user
             distributor   : distributor._id
-            description   : 'Trả tiền NCC'
             finish        : true
             submitted     : true
           newImportId = Schema.imports.insert importOption

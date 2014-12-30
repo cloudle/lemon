@@ -2,7 +2,7 @@ template(name="distributorManagementImportDetails")
   tr.header-row
     td.has-commands(colspan="5")
       | .
-      .bill-header <b>{{momentCalendar version.createdAt}}</b>. {{description}}
+      .bill-header <b>{{momentCalendar version.createdAt}}</b> {{description}}
       .commands
         if showDeleteImport
           .lemon.rounded.tiny.btn.red.deleteImport: span.icon-minus-4
@@ -13,15 +13,17 @@ template(name="distributorManagementImportDetails")
       td {{unitName}}
       td.number {{formatNumber importPrice}}
       td.last-column.number {{formatNumber totalPrice}}
-  tr.detail-row.summary-row
-    td
-    td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
-    td.summary-total(align="right"): span.s5 <b>{{formatNumber debtBalanceChange}}</b>
+
+  if importDetailCount
+    tr.detail-row.summary-row
+      td
+      td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
+      td.summary-total(align="right"): span.s5 <b>{{formatNumber debtBalanceChange}}</b>
 
   each latestPaids
     tr.paid-row.top(class="{{receivableClass}}")
       td.has-commands
-        span.note {{description}}, {{momentCalendar debtDate}}.
+        span.note {{description}}, {{momentCalendar debtDate}}
         .commands
           if showDeleteTransaction
             .lemon.rounded.tiny.btn.red.deleteTransaction: span.icon-minus-4
@@ -35,7 +37,7 @@ template(name="distributorManagementImportDetails")
     tr.header-row
       td.has-commands(colspan="5")
         | .
-        .bill-header <b>Trả Hàng: {{momentCalendar version.createdAt}}</b>. {{comment}}
+        .bill-header <b>Trả Hàng: {{momentCalendar version.createdAt}}</b> {{comment}}
     each returnDetails
         tr.detail-row.edit-detail
           td {{productName}}

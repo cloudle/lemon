@@ -91,6 +91,7 @@ Meteor.methods
         customerIncOption.saleDebt = currentTransaction.debtBalanceChange
         customerIncOption.saleTotalCash = currentTransaction.debtBalanceChange
       Schema.transactions.remove currentTransaction._id
+      if currentSales.debtBalanceChange is 0 and Schema.transactions.find(latestSale: currentSales._id).count() is 0 then Schema.sales.remove currentSales._id
 
       tempBeforeDebtBalance = currentSales.beforeDebtBalance
       Schema.sales.find({buyer: currentSales.buyer, 'version.createdAt': {$gte: currentSales.version.createdAt} }

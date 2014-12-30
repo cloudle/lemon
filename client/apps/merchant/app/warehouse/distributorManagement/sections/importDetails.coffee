@@ -15,6 +15,12 @@ lemon.defineWidget Template.distributorManagementImportDetails,
 
   showDeleteTransaction: -> new Date(@debtDate.getFullYear(), @debtDate.getMonth(), @debtDate.getDate() + 1, @debtDate.getHours(), @debtDate.getMinutes(), @debtDate.getSeconds()) > new Date()
 
+
+  importDetailCount: ->
+    importId = UI._templateInstance().data._id
+    Schema.productDetails.find({import: importId}, {sort: {'version.createdAt': 1}}).count()
+
+
   importDetails: ->
     importId = UI._templateInstance().data._id
     Schema.productDetails.find {import: importId}, {sort: {'version.createdAt': 1}}

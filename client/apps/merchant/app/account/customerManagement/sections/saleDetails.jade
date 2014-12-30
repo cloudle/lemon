@@ -3,7 +3,7 @@ template(name="customerManagementSaleDetails")
     td.has-commands(colspan="5")
       | .
       .bill-header
-        |<b>{{momentCalendar version.createdAt}}</b>.
+        |<b>{{momentCalendar version.createdAt}}</b>
         if description
           |{{description}}
       .commands
@@ -13,19 +13,20 @@ template(name="customerManagementSaleDetails")
   each saleDetails
     tr.detail-row
       td.first-column {{productName}}
-      td {{formatNumber unitQuality}}
+      td {{unitSaleQuality}}
       td {{unitName}}
       td.number {{formatNumber unitPrice}}
       td.last-column.number {{formatNumber finalPrice}}
-  tr.detail-row.summary-row
-    td.note
-    td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
-    td.summary-total(align="right"): span.s5 <b>{{formatNumber finalPrice}}</b>
+  if saleDetailCount
+    tr.detail-row.summary-row
+      td.note
+      td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
+      td.summary-total(align="right"): span.s5 <b>{{formatNumber finalPrice}}</b>
 
   each latestPaids
     tr.paid-row.top(class="{{receivableClass}}")
       td.has-commands
-        span.note {{description}}, {{momentCalendar debtDate}}.
+        span.note {{description}}, {{momentCalendar debtDate}}
         .commands
           if isShowDeleteTransaction
             .lemon.rounded.tiny.btn.red.deleteTransaction: span.icon-minus-4
@@ -40,7 +41,7 @@ template(name="customerManagementSaleDetails")
       td.has-commands(colspan="5")
         | .
         .bill-header
-          |<b>Trả Hàng: {{momentCalendar version.createdAt}}.</b>
+          |<b>Trả Hàng: {{momentCalendar version.createdAt}} </b>
           if comment
             |{{comment}}
     each returnDetails

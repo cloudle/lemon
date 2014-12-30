@@ -4,6 +4,7 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
   isShowDisableMode: -> if @basicDetailModeEnabled is true and @totalQuality >= @salesQuality then true else false
   buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
+  unitSaleQuality: -> Math.round(@quality/@conversionQuality*100)/100
 
 
   basicDetail: ->

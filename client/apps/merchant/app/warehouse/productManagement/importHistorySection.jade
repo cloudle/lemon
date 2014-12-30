@@ -10,10 +10,10 @@ template(name="productManagementSalesHistorySection")
       table.lemon-grid.safe
         tr
           th(style="width:auto") NHÀ CUNG CẤP
-          th(style="width:100px") HẠN SD
-          th(style="width:70px") S.LƯỢNG
-          th(style="width:70px") ĐV.TÍNH
-          th.number(style="width:50px") Q.ĐỔI
+          th(style="width:100px") HẠN/ GD
+          th(style="width:70px") SL
+          th(style="width:70px") ĐƠN VỊ
+          th.number(style="width:50px") QUI ĐỔI
           th.number(style="width:100px") GIÁ NHẬP
           th.number(style="width:120px") TỔNG TIỀN
 
@@ -35,7 +35,7 @@ template(name="productManagementSalesHistorySection")
                 td.first-column
                   span.icon-forward-3 {{buyerName}}
                 td {{momentFormat version.createdAt "DD/MM/YYYY"}}
-                td {{unitQuality}}
+                td {{unitSaleQuality}}
                 td {{unitName}}
                 td.number {{conversionQuality}}
                 td.number {{formatNumber unitPrice}}
