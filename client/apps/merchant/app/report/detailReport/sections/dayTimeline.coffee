@@ -59,12 +59,13 @@ lemon.defineHyper Template.merchantReportDayTimeline,
         { debtBalanceChange: { $exists: true }}
         { beforeDebtBalance: { $exists: true }}
         { latestDebtBalance: { $exists: true }}
-        { dueDay: {$gt: startDate} }
-        { dueDay: {$lt: toDate} }
+        { debtDate: {$gt: startDate} }
+        { debtDate: {$lt: toDate} }
       ]
     }).fetch()
     sales = Schema.sales.find({
         $and: [
+          {debtBalanceChange: {$gt: 0}}
           {'version.createdAt': {$gt: startDate}}
           {'version.createdAt': {$lt: toDate}}
         ]
@@ -73,6 +74,7 @@ lemon.defineHyper Template.merchantReportDayTimeline,
       $and: [
         {finish: true}
         {submitted: true}
+        {debtBalanceChange: {$gt: 0}}
         {'version.createdAt': {$gt: startDate}}
         {'version.createdAt': {$lt: toDate}}
       ]).fetch()

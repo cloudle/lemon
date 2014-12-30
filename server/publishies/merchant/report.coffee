@@ -63,14 +63,14 @@ Meteor.publishComposite 'merchantReportData', (branchIds, startDate = new Date()
       }
     ,
       find: (branch) -> Schema.transactions.find {
-          $and: [
-            { merchant: branch._id }
-            { debtBalanceChange: { $exists: true }}
-            { beforeDebtBalance: { $exists: true }}
-            { latestDebtBalance: { $exists: true }}
-            { dueDay: {$gt: startDate} }
-            { dueDay: {$lt: toDate} }
-          ]
-        }
+        $and: [
+          { merchant: branch._id }
+          { debtBalanceChange: { $exists: true }}
+          { beforeDebtBalance: { $exists: true }}
+          { latestDebtBalance: { $exists: true }}
+          { debtDate: {$gt: startDate} }
+          { debtDate: {$lt: toDate} }
+        ]
+      }
     ]
   }
