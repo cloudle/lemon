@@ -46,6 +46,33 @@ subtractQualityOnSales = (saleDetail, productDetails, salesQuality)->
       transactionQuality += takenQuality
       if transactionQuality == salesQuality then break
 
+setOption = (type, smallerUnit, currentUnit, detail)->
+  if type is 'saleDetail'
+    option =
+      conversionQuality: detail.conversionQuality*smallerUnit.conversionQuality
+      price            : detail.price/smallerUnit.conversionQuality
+      quality          : detail.quality*smallerUnit.conversionQuality
+      returnQuality    : detail.returnQuality*smallerUnit.conversionQuality
+    option.unit = smallerUnit._id if smallerUnit._id is currentUnit._id
+
+  else if type is 'productDetail'
+    option =
+      conversionQuality: detail.conversionQuality*smallerUnit.conversionQuality
+      importQuality    : detail.importQuality*smallerUnit.conversionQuality
+      availableQuality : detail.availableQuality*smallerUnit.conversionQuality
+      inStockQuality   : detail.inStockQuality*smallerUnit.conversionQuality
+    option.unit = smallerUnit._id if smallerUnit._id is currentUnit._id
+
+  else if type is 'returnDetail'
+    option =
+      conversionQuality: detail.conversionQuality*smallerUnit.conversionQuality
+      price            : detail.price/smallerUnit.conversionQuality
+      returnQuality    : detail.returnQuality*smallerUnit.conversionQuality
+    option.unit = smallerUnit._id if smallerUnit._id is currentUnit._id
+
+  return option
+
+
 
 Meteor.methods
   calculateAllProductTotalQualityAndAvailableQuality: ->
@@ -62,16 +89,13 @@ Meteor.methods
           Schema.products.update product._id, $set: optionProduct
 
   calculateAllProductSalesQuality: ->
-    profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-    if profile
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       allMerchant  = Schema.merchants.find({$or:[{_id: profile.parentMerchant }, {parent: profile.parentMerchant}]}).fetch()
       for merchant in allMerchant
         for product in Schema.products.find({merchant: merchant._id}).fetch()
           optionProduct ={salesQuality: 0}
           optionProduct.salesQuality += (saleDetail.quality - saleDetail.returnQuality) for saleDetail in Schema.saleDetails.find({product: product._id}).fetch()
           Schema.products.update product._id, $set: optionProduct
-
-
 
   updateProductBasicDetailMode: (productId, mode = false)->
     if product = Schema.products.findOne(productId)
@@ -193,3 +217,70 @@ Meteor.methods
             availableQuality: totalImportQuality
             inStockQuality  : totalImportQuality
           }
+
+  changedSmallerUnit: (productId, unitId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if product = Schema.products.findOne({_id: productId, merchant: profile.currentMerchant})
+        if smallerUnit = Schema.productUnits.findOne({_id: unitId, product: product._id, allowDelete: true})
+          #Tim tat cac du lieu lien qua toi DVT co ban
+          Schema.orderDetails.find({product: product._id, unit:{$exists: false}}).forEach(
+            (detail) -> Schema.orderDetails.update detail._id, $set: setOption('saleDetail', smallerUnit, smallerUnit, detail))
+
+          Schema.saleDetails.find({product: product._id, unit:{$exists: false}}).forEach(
+            (detail) -> Schema.saleDetails.update detail._id, $set: setOption('saleDetail', smallerUnit, smallerUnit, detail))
+
+          Schema.importDetails.find({product: product._id, unit:{$exists: false}}).forEach(
+            (detail) -> Schema.importDetails.update detail._id, $set: setOption('productDetail', smallerUnit, smallerUnit, detail))
+
+          Schema.productDetails.find({product: product._id, unit:{$exists: false}}).forEach(
+            (detail) -> Schema.productDetails.update detail._id, $set: setOption('productDetail', smallerUnit, smallerUnit, detail))
+
+          Schema.returnDetails.find({product: product._id, unit:{$exists: false}}).forEach(
+            (detail) -> Schema.returnDetails.update detail._id, $set: setOption('returnDetail', smallerUnit, smallerUnit, detail))
+
+          #Cap nhat product
+          productOption =
+            basicUnit       : smallerUnit.unit
+            productCode     : smallerUnit.productCode
+            price           : smallerUnit.price
+            importPrice     : smallerUnit.importPrice
+            salesQuality    : product.salesQuality*smallerUnit.conversionQuality
+            totalQuality    : product.totalQuality*smallerUnit.conversionQuality
+            availableQuality: product.availableQuality*smallerUnit.conversionQuality
+            inStockQuality  : product.inStockQuality*smallerUnit.conversionQuality
+
+          smallerUnitOption =
+            productCode      : product.productCode
+            unit             : product.basicUnit
+            conversionQuality: smallerUnit.conversionQuality
+            price            : product.price
+            importPrice      : product.importPrice
+            allowDelete      : product.allowDelete
+            smallerUnit      : false
+
+          Schema.products.update product._id, $set: productOption
+          Schema.productUnits.update smallerUnit._id, $set: smallerUnitOption
+
+          #Cap nhat productUnit co lai
+          Schema.productUnits.find({_id: { $ne: smallerUnit._id }, product: product._id}).forEach(
+            (productUnit) ->
+              Schema.orderDetails.find({product: product._id, unit: productUnit._id}).forEach(
+                (detail) -> Schema.orderDetails.update detail._id, $set: setOption('saleDetail', smallerUnit, productUnit, detail))
+
+              Schema.saleDetails.find({product: product._id, unit: productUnit._id}).forEach(
+                (detail) -> Schema.saleDetails.update detail._id, $set: setOption('saleDetail', smallerUnit, productUnit, detail))
+
+              Schema.importDetails.find({product: product._id, unit: productUnit._id}).forEach(
+                (detail) -> Schema.importDetails.update detail._id, $set: setOption('productDetail', smallerUnit, productUnit, detail))
+
+              Schema.productDetails.find({product: product._id, unit: productUnit._id}).forEach(
+                (detail) -> Schema.productDetails.update detail._id, $set: setOption('productDetail', smallerUnit, productUnit, detail))
+
+              Schema.returnDetails.find({product: product._id, unit: productUnit._id}).forEach(
+                (detail) -> Schema.returnDetails.update detail._id, $set: setOption('returnDetail', smallerUnit, productUnit, detail))
+
+              Schema.productUnits.update productUnit._id, $set:{conversionQuality: productUnit.conversionQuality*smallerUnit.conversionQuality}
+          )
+
+
+

@@ -11,7 +11,7 @@ simpleSchema.productUnits = new SimpleSchema
 
   conversionQuality:
     type: Number
-    min: 0
+    min: 1
     defaultValue: 1
 
   price:

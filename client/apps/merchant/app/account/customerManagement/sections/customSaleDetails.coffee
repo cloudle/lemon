@@ -8,6 +8,10 @@ lemon.defineWidget Template.customerManagementCustomSaleDetails,
   receivableClass: -> if @debtBalanceChange >= 0 then 'receive' else 'paid'
   finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
 
+  customSaleDetailCount: ->
+    customSaleId = UI._templateInstance().data._id
+    Schema.customSaleDetails.find({customSale: customSaleId}).count() > 0
+
   isCustomSaleModeEnabled: ->
     customer = Session.get("customerManagementCurrentCustomer")
     if @allowDelete and customer?.customSaleModeEnabled then true else false

@@ -19,10 +19,11 @@ template(name="customerManagementCustomSaleDetails")
       td.number {{formatNumber finalPrice}}
   if isCustomSaleDetailCreator
     +customerManagementCustomSaleDetailCreator
-  tr.detail-row.summary-row
-    td: span.note {{description}}
-    td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber latestDebtBalance}}</b>
-    td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>
+  if customSaleDetailCount
+    tr.detail-row.summary-row
+      td: span.note {{description}}
+      td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber latestDebtBalance}}</b>
+      td.summary-total(align="right"): span.s5 <b>{{formatNumber totalCash}}</b>
 
   each latestPaids
     tr.paid-row.top(class="{{receivableClass}}")

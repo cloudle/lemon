@@ -3,6 +3,8 @@ template(name="productManagementUnitEditor")
     td.has-commands
       input(name="unit" placeholder="đơn vị tính" value="{{unit}}")
       .commands
+        if showChangeSmallerUnit
+          .lemon.rounded.tiny.btn.wisteria.animated.bounceIn.changeSmallerUnit: span.icon-loop-outline
         if allowDelete
           .lemon.rounded.tiny.btn.blue.animated.bounceIn.delete-unit: span.icon-minus-4
         if basicDetailModeEnabled

@@ -1,5 +1,7 @@
 lemon.defineHyper Template.productManagementUnitEditor,
   basicDetailModeEnabled: -> Session.get('productManagementCurrentProduct')?.basicDetailModeEnabled
+  showChangeSmallerUnit: ->
+    if @unit?.length > 0 and @conversionQuality > 1 and @productCode?.length is 11 and @allowDelete is true then true else false
 
   rendered: ->
     @ui.$price.inputmask "numeric",
@@ -26,8 +28,9 @@ lemon.defineHyper Template.productManagementUnitEditor,
       price = 0 if price < 0
       importPrice = 0 if importPrice < 0
 
-      conversionQuality = Number(template.ui.$conversionQuality.inputmask('unmaskedvalue'))
-      conversionQuality = 1 if conversionQuality < 0
+      if @allowDelete
+        conversionQuality = Math.abs(Number(template.ui.$conversionQuality.inputmask('unmaskedvalue')))
+        conversionQuality = 1 if conversionQuality < 1
 
       unitOption =
         unit        : unit
@@ -40,6 +43,10 @@ lemon.defineHyper Template.productManagementUnitEditor,
       if event.which is 13
         Session.set("productManagementUnitEditingRow")
         Session.set("productManagementUnitEditingRowId")
+
+    "click .changeSmallerUnit": (event, template) ->
+      if @allowDelete and Session.get('productManagementCurrentProduct')
+        Meteor.call 'changedSmallerUnit', Session.get('productManagementCurrentProduct')._id, @_id
 
 
 

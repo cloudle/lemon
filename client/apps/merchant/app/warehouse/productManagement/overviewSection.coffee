@@ -50,8 +50,12 @@ lemon.defineHyper Template.productManagementOverviewSection,
     "click .createUnit": ->
       if @basicUnit
         newId = Schema.productUnits.insert {
-          product: @_id
-          productCode: Helpers.randomBarcode()
+          product          : @_id
+          productCode      : Helpers.randomBarcode()
+          conversionQuality: 1
+          price            : 0
+          importPrice      : 0
+          allowDelete      : true
         }
         Session.set("productManagementUnitEditingRowId", newId)
 
