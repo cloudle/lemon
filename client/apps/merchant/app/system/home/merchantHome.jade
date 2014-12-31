@@ -44,9 +44,9 @@ template(name="merchantHome")
       data-app='deliveryManager')
         span.center.middle.caption: span.table: i.ico.icon-truck-1
         span.bottom.middle.caption {{formatNumber Summary.data.deliveryCount}} GIAO HÀNG
-      .tile.peter-river(class="{{metroUnLocker Summary.data.depositDay}}"
+      .tile.peter-river(class="{{metroUnLocker revenueDay}}"
       data-app='merchantReport')
-        span.s7.top.middle.caption DOANH THU HÔM NAY <br/> {{formatNumber Summary.data.depositDay}}
+        span.s7.top.middle.caption DOANH THU HÔM NAY <br/> {{formatNumber revenueDay}}
         span.center.middle.caption: span.table: i.ico.icon-chart-pie-outline
         span.bottom.middle.caption BÁO CÁO
       .tile.teal(class="{{metroUnLocker Summary.data.saleCount}}"

@@ -1,6 +1,7 @@
 scope = logics.merchantHome
 
 lemon.defineApp Template.merchantHome,
+  revenueDay: -> @Summary.data.salesMoneyDay - @Summary.data.importMoneyDay + @Summary.data.returnMoneyOfDistributorDay - @Summary.data.returnMoneyOfCustomerDay
   rendered: ->
     console.log('starting tour...')
     Apps.currentTour.init()

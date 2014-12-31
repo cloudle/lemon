@@ -34,7 +34,7 @@ lemon.defineHyper Template.merchantReportDayTimeline,
     else if @timelineType is 'return'
       meta.icon = 'icon-reply-outline'
       meta.color = 'pumpkin'
-      meta.message = "#{meta.creatorFullName} thực hiện trả hàng với tổng giá trị #{accounting.formatNumber(@finallyPrice)} VNĐ.
+      meta.message = "#{meta.creatorFullName} thực hiện trả hàng với tổng giá trị #{if @returnMethods is 0 then '-' else ''}#{accounting.formatNumber(@finallyPrice)} VNĐ.
                      Cân bằng nợ mới nhất từ #{accounting.formatNumber(@beforeDebtBalance)} VNĐ, thành
                      #{accounting.formatNumber(@latestDebtBalance)} VNĐ."
 
@@ -54,17 +54,19 @@ lemon.defineHyper Template.merchantReportDayTimeline,
     toDate    = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1)
 
     totalRevenue = 0
-    transactions = Schema.transactions.find( {
-      $and: [
-        { debtBalanceChange: { $exists: true }}
-        { beforeDebtBalance: { $exists: true }}
-        { latestDebtBalance: { $exists: true }}
-        { debtDate: {$gt: startDate} }
-        { debtDate: {$lt: toDate} }
-      ]
-    }).fetch()
+    transactions = []
+#    transactions = Schema.transactions.find( {
+#      $and: [
+#        { debtBalanceChange: { $exists: true }}
+#        { beforeDebtBalance: { $exists: true }}
+#        { latestDebtBalance: { $exists: true }}
+#        { debtDate: {$gt: startDate} }
+#        { debtDate: {$lt: toDate} }
+#      ]
+#    }).fetch()
     sales = Schema.sales.find({
         $and: [
+          {merchant: Session.get('myProfile').currentMerchant}
           {debtBalanceChange: {$gt: 0}}
           {'version.createdAt': {$gt: startDate}}
           {'version.createdAt': {$lt: toDate}}
@@ -72,6 +74,7 @@ lemon.defineHyper Template.merchantReportDayTimeline,
       }).fetch()
     imports = Schema.imports.find(
       $and: [
+        {merchant: Session.get('myProfile').currentMerchant}
         {finish: true}
         {submitted: true}
         {debtBalanceChange: {$gt: 0}}
@@ -80,13 +83,14 @@ lemon.defineHyper Template.merchantReportDayTimeline,
       ]).fetch()
     returns = Schema.returns.find({
       $and: [
+        {merchant: Session.get('myProfile').currentMerchant}
         {status  : 2}
         {'version.createdAt': {$gt: startDate}}
         {'version.createdAt': {$lt: toDate}}
       ]
     }).fetch()
 
-    combined = transactions.concat(sales).concat(imports)
+    combined = transactions.concat(sales).concat(imports).concat(returns)
     sorted = _.sortBy combined, (item) ->
       if item.group
         item.timelineType = 'transaction'
@@ -113,8 +117,12 @@ lemon.defineHyper Template.merchantReportDayTimeline,
         item.latestDebtBalance = totalRevenue
       else if item.returnCode
         item.timelineType = 'return'
-        totalRevenue -= item.finallyPrice
-        item.merchantRevenueDay = totalRevenue
+        item.beforeDebtBalance = totalRevenue
+        if item.returnMethods is 0
+          totalRevenue -= item.finallyPrice
+        else
+          totalRevenue += item.finallyPrice
+        item.latestDebtBalance = totalRevenue
       else
         item.timelineType = 'import'
         item.beforeDebtBalance = totalRevenue

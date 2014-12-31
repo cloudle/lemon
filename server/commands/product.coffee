@@ -282,5 +282,7 @@ Meteor.methods
               Schema.productUnits.update productUnit._id, $set:{conversionQuality: productUnit.conversionQuality*smallerUnit.conversionQuality}
           )
 
+          return smallerUnitOption
+
 
 

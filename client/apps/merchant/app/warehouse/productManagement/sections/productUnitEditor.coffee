@@ -49,8 +49,8 @@ lemon.defineHyper Template.productManagementUnitEditor,
         Meteor.call 'changedSmallerUnit', Session.get('productManagementCurrentProduct')._id, @_id, (error, result) ->
           if error then console.log error
           else
-            template.ui.$importPrice.val Session.get('productManagementCurrentProduct').importPrice
-            template.ui.$price.val Session.get('productManagementCurrentProduct').price
+            template.ui.$importPrice.val result.importPrice
+            template.ui.$price.val result.price
 
 
 

@@ -123,6 +123,10 @@ simpleSchema.metroSummaries = new SimpleSchema
 
   version: { type: simpleSchema.Version }
 #------------------------------------------
+  notifyExpire:
+    type: Boolean
+    defaultValue: false
+
   totalReceivableCash:
     type: Number
     defaultValue: 0
@@ -131,7 +135,23 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 #------------------------------------------
-
+  #tien ban hang cua hom nay
+  salesMoneyDay:
+    type: Number
+    defaultValue: 0
+  #tien nhap hang cua hom nay
+  importMoneyDay:
+    type: Number
+    defaultValue: 0
+  #tien tra hang (khach hang) cua hom nay
+  returnMoneyOfDistributorDay:
+    type: Number
+    defaultValue: 0
+  #tien ban hang (nha cung cap) cua hom nay
+  returnMoneyOfCustomerDay:
+    type: Number
+    defaultValue: 0
+#------------------------------------------
   discountDay:
     type: Number
     defaultValue: 0
@@ -156,8 +176,5 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 
-#------------------------------------------
-  notifyExpire:
-    type: Boolean
-    defaultValue: false
+
 

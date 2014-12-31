@@ -144,7 +144,6 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
         option = {staffCountAll: -1}
         option.staffCount = -1 if item.merchant is profile.currentMerchant
         Schema.metroSummaries.update item._id, $inc: option
-    
 
   @updateMetroSummaryBySale: (saleId)->
     if sale = Schema.sales.findOne({_id: saleId, received: true})
@@ -160,23 +159,17 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
         saleRevenueCash       : sale.finalPrice
         stockProductCount     : -sale.saleCount if sale.success == true
 
-        depositDay            : sale.deposit
-        debitDay              : sale.debit
-        discountDay           : sale.totalPrice - sale.finalPrice
-        revenueDay            : sale.finalPrice
-        cogsDay               : 0
+        depositDay    : sale.deposit
+        debitDay      : sale.debit
+        discountDay   : sale.totalPrice - sale.finalPrice
+        revenueDay    : sale.finalPrice
+        cogsDay       : 0
+
+        salesMoneyDay : sale.finalPrice
 
       if sale.paymentsDelivery is 1
         incOption.deliveryCount        = 1
         incOption.deliveryProductCount = sale.saleCount
-
-#      incOption.cogsDay += detail.totalCogs for detail in saleDetails.fetch()
-#      incOption.profitabilityDay = sale.finalPrice - incOption.cogsDay
-#
-#      oldSale = Schema.sales.findOne({$and: [
-#        {merchant: sale.merchant}
-#        {'version.createdAt': {$lt: sale.version.createdAt}}
-#      ]}, {sort: {'version.createdAt': -1}})
 
       metroSummary = Schema.metroSummaries.findOne({merchant: sale.merchant})
       Schema.metroSummaries.update metroSummary._id, $inc: incOption, $set: setOption
@@ -366,3 +359,28 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
           option.productCount = productCount.count()
 
         Schema.metroSummaries.update item._id, $set: option
+
+
+  @updateMyMetroSummaryBy: (context, id)->
+    profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    if profile
+      option = {}
+      metroSummary = Schema.metroSummaries.find({merchant: profile.currentMerchant})
+
+      if _.contains(context,'sale')
+        saleFound = Schema.sales.findOne({_id: id, merchant: profile.currentMerchant})
+        option.salesMoneyDay = saleFound.debtBalanceChange if saleFound
+
+      if _.contains(context,'import')
+        importFound = Schema.imports.findOne({_id: id, merchant: profile.currentMerchant, finish: true, submitted: true})
+        option.salesMoneyDay = importFound.debtBalanceChange if importFound
+
+      if _.contains(context,'return')
+        returnFound = Schema.sales.findOne({_id: id, merchant: profile.currentMerchant, status: 2})
+        if returnFound?.returnMethods is 0
+          option.returnMoneyOfCustomerDay = returnFound.debtBalanceChange
+        else
+          option.returnMoneyOfDistributorDay = returnFound.debtBalanceChange
+
+
+      Schema.metroSummaries.update metroSummary._id, $inc: option if metroSummary
