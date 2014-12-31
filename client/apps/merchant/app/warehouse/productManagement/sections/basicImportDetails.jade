@@ -8,9 +8,9 @@ template(name="productManagementBasicImportDetails")
         .commands
           if allowDelete
             .lemon.rounded.tiny.btn.blue.delete-basicDetail: span.icon-minus-4
-      td {{expireDate}}
-      td {{formatNumber unitQuality}}
-      td {{unitName}}
+      td(align="center") {{expireDate}}
+      td.number {{formatNumber unitQuality}}
+      td(align="center") {{unitName}}
       td.number {{formatNumber conversionQuality}}
       td.number {{formatNumber importPrice}}
       td.number {{formatNumber totalPrice}}
@@ -20,9 +20,9 @@ template(name="productManagementBasicImportDetails")
       tr.detail-row
         td.first-column
          span.icon-forward-3 {{buyerName}}
-        td {{momentFormat version.createdAt "DD/MM/YYYY"}}
-        td {{unitSaleQuality}}
-        td {{unitName}}
+        td(align="center") {{momentFormat version.createdAt "DD/MM/YYYY"}}
+        td.number {{unitSaleQuality}}
+        td(align="center") {{unitName}}
         td.number {{conversionQuality}}
         td.number {{formatNumber unitPrice}}
         td.number {{formatNumber finalPrice}}

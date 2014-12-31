@@ -15,9 +15,13 @@ template(name="merchantHome")
         span.s7.top.middle.caption PHẢI THU <br/> {{formatNumber Summary.data.saleDebitCash}}
         span.center.middle.caption: span.table: i.ico.icon-credit-card
         span.bottom.middle.caption CÔNG NỢ
-      .tile.orange(class="{{metroUnLocker Summary.data.importCount}}" data-app='accountingManager')
-        span.center.middle.caption: span.table: i.ico.icon-money
-        span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> THU TIỀN
+      .tile.amethyst(class="{{metroUnLocker Summary.data.deliveryCount}}"
+      data-app='deliveryManager')
+        span.center.middle.caption: span.table: i.ico.icon-truck-1
+        span.bottom.middle.caption {{formatNumber Summary.data.deliveryCount}} GIAO HÀNG
+      //.tile.orange(class="{{metroUnLocker Summary.data.importCount}}" data-app='accountingManager')
+      //  span.center.middle.caption: span.table: i.ico.icon-money
+      //  span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> THU TIỀN
 
     .tile-group-3
       .tile.double.orange#saleManager(class="{{metroUnLocker Summary.data.productCount}}{{metroUnLocker Summary.data.customerCountAll}}{{metroUnLocker Summary.data.staffCountAll}}" data-app='sales')
@@ -40,15 +44,13 @@ template(name="merchantHome")
       data-app='distributorReturn')
         span.center.middle.caption: span.table: i.ico.icon-forward-outline
         span.bottom.middle.caption TRẢ HÀNG NHẬP
-      .tile.amethyst(class="{{metroUnLocker Summary.data.deliveryCount}}"
-      data-app='deliveryManager')
-        span.center.middle.caption: span.table: i.ico.icon-truck-1
-        span.bottom.middle.caption {{formatNumber Summary.data.deliveryCount}} GIAO HÀNG
-      .tile.peter-river(class="{{metroUnLocker revenueDay}}"
-      data-app='merchantReport')
-        span.s7.top.middle.caption DOANH THU HÔM NAY <br/> {{formatNumber revenueDay}}
-        span.center.middle.caption: span.table: i.ico.icon-chart-pie-outline
-        span.bottom.middle.caption BÁO CÁO
+      .tile.peter-river.double(class="{{metroUnLocker merchantReportLock}}"  data-app='merchantReport')
+        span.top.left.caption: h3 {{formatNumber revenueDay}} <tiny5>DOANH THU</tiny5>
+        span.center.left.caption
+          span.table
+            i.ico.icon-chart-pie-outline
+            | <tiny5>BÁO CÁO</tiny5>
+        //span.bottom.left.caption: h4 {{formatNumber profitabilityDay}} <tiny5>LỢI NHUẬN HÔM NAY</tiny5>
       .tile.teal(class="{{metroUnLocker Summary.data.saleCount}}"
       data-app='billManager')
         span.center.middle.caption: span.table: i.ico.icon-clipboard

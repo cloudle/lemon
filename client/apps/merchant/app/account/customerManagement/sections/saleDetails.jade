@@ -13,8 +13,8 @@ template(name="customerManagementSaleDetails")
   each saleDetails
     tr.detail-row
       td.first-column {{productName}}
-      td {{unitSaleQuality}}
-      td {{unitName}}
+      td.number {{unitSaleQuality}}
+      td(align="center") {{unitName}}
       td.number {{formatNumber unitPrice}}
       td.last-column.number {{formatNumber finalPrice}}
   if saleDetailCount

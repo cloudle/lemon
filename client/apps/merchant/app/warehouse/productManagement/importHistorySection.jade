@@ -9,12 +9,12 @@ template(name="productManagementSalesHistorySection")
     .panel-body.debt-details
       table.lemon-grid.safe
         tr
-          th(style="width:auto") NHÀ CUNG CẤP
-          th(style="width:100px") HẠN/ GD
-          th(style="width:70px") SL
-          th(style="width:70px") ĐƠN VỊ
+          th(style="width:auto") NHÀ CUNG CẤP/K.HÀNG
+          th(style="width:100px; text-align:center") HẠN/GD
+          th.number(style="width:50px") SL
+          th(style="width:80px; text-align:center") ĐƠN VỊ
           th.number(style="width:60px") QUI ĐỔI
-          th.number(style="width:100px") GIÁ NHẬP
+          th.number(style="width:100px") GIÁ
           th.number(style="width:120px") TỔNG TIỀN
 
         if basicDetail.isShowDetail
@@ -34,9 +34,9 @@ template(name="productManagementSalesHistorySection")
               tr.detail-row
                 td.first-column
                   span.icon-forward-3 {{buyerName}}
-                td {{momentFormat version.createdAt "DD/MM/YYYY"}}
-                td {{unitSaleQuality}}
-                td {{unitName}}
+                td(align="center") {{momentFormat version.createdAt "DD/MM/YYYY"}}
+                td.number {{unitSaleQuality}}
+                td(align="center") {{unitName}}
                 td.number {{conversionQuality}}
                 td.number {{formatNumber unitPrice}}
                 td.number {{formatNumber finalPrice}}

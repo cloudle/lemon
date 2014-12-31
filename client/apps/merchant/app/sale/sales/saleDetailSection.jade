@@ -17,9 +17,9 @@ template(name="saleDetailSection")
          table.lemon-grid
             tr.table-header
                th.bill-name(style="width:auto") SẢN PHẨM
-               th.price(style="width:100px") ĐƠN GIÁ
-               th.quality(style="width:50px") SL
-               th.skull(style="width:100px") ĐƠN VỊ
+               th.number.price(style="width:100px") ĐƠN GIÁ
+               th.number.quality(style="width:50px") SL
+               th.skull(style="width:100px; text-align:center") ĐƠN VỊ
                th.number.bill-discount(style="width:100px") GIẢM GIÁ
                th.number.final-price(style="width:140px") THÀNH TIỀN
             each orderDetails
@@ -37,18 +37,18 @@ template(name="saleDetailSection")
                       |{{product.name}}
                       .commands
                         .lemon.rounded.tiny.btn.blue.deleteOrderDetail: span.icon-minus-4
-                     td.price.editable-field {{formatNumber unitPrice}}
-                     td.quality.editable-field.error-field
+                     td.number.price.editable-field {{formatNumber unitPrice}}
+                     td.number.quality.editable-field.error-field
                         span
                            |{{formatNumber unitQuality}}
                            if crossBillAvailableQuality.invalid
                               span.super.s7.color-lime {{crossBillAvailableQuality.crossAvailable}}
-                     td.skull {{unitName}}
-                     td.bill-discount.editable-field.number
+                     td(align="center").skull {{unitName}}
+                     td.number.bill-discount.editable-field
                         span {{formatNumber discountCash}}
                         if discountPercent
                            span.super.s7.color-lime -{{round discountPercent}}%
-                     td.final-price.number <b>{{formatNumber finalPrice}}</b>
+                     td.number.final-price <b>{{formatNumber finalPrice}}</b>
 
             tr.top-dashed.space
                td(colspan="6" style="height: 25px")

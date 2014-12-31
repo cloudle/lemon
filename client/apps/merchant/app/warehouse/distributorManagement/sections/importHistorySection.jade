@@ -8,10 +8,10 @@ template(name="distributorManagementImportsHistorySection")
 
       table.lemon-grid: tr
         th(style="width:auto") SẢN PHẨM
-        th(style="width:80px") SL
-        th(style="width:100px") ĐƠN VỊ
+        th.number(style="width:80px") SL
+        th(style="width:100px; text-align:center") ĐƠN VỊ
         th.number(style="width:120px") ĐƠN GIÁ
-        th.number(style="width:180px") THÀNH TIỀN
+        th.number(style="width:175px") THÀNH TIỀN
     .panel-body.debt-details
       table.lemon-grid
         +distributorManagementImportHistoryHeader
@@ -73,4 +73,4 @@ template(name="distributorManagementImportHistoryHeader")
     th(style="width:80px")
     th(style="width:100px")
     th(style="width:120px")
-    th(style="width:180px")
+    th(style="width:182px")

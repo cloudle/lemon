@@ -21,9 +21,9 @@ lemon.defineHyper Template.saleDetailEditor,
   unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   rendered: ->
     @ui.$editQuality.inputmask "numeric",
-        {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
+        {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
     @ui.$editPrice.inputmask "numeric",
-        {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
+        {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
     @ui.$editDiscountCash.inputmask "numeric",
         {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
 

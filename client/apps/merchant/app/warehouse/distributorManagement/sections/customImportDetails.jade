@@ -13,8 +13,8 @@ template(name="distributorManagementCustomImportDetails")
         .commands
           if isCustomImportModeEnabled
             .lemon.rounded.tiny.btn.red.deleteCustomImportDetail: span.icon-minus-4
-      td {{formatNumber quality}}
-      td {{skulls}}
+      td.number {{formatNumber quality}}
+      td(align="center") {{skulls}}
       td.number {{formatNumber price}}
       td.number {{formatNumber finalPrice}}
   if isCustomImportDetailCreator
@@ -40,7 +40,7 @@ template(name="distributorManagementCustomImportDetails")
 template(name="distributorManagementCustomImportDetailCreator")
     tr.editors.dual-border.animated.fadeIn
       td: input(name='productName' type="text" size="10" placeholder="tên sản phẩm")
-      td: input(name='quality' type="text" size="10" placeholder="sl")
-      td: input(name='skulls' type="text" size="10" placeholder="quy cách")
+      td: input.number(name='quality' type="text" size="10" placeholder="sl")
+      td: input(name='skulls' type="text" size="10" placeholder="quy cách" style="text-align:center")
       td: input.number(name='price' type="text" size="10" placeholder="đơn giá")
       td: .lemon.btn.rounded.orange.pull-right.createCustomImportDetail.icon-plus-6

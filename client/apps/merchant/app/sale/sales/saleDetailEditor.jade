@@ -12,6 +12,6 @@ template(name="saleDetailEditor")
         .lemon.rounded.tiny.btn.blue.animated.bounceIn.deleteOrderDetail: span.icon-minus-4
     td.price: input(name="editPrice" min="0")
     td.quality: input.error-field(name="editQuality" min="0")
-    td.skull {{unitName}}
-    td.bill-discount.number: input(name="editDiscountCash" min="0")
-    td.final-price.number <b>{{formatNumber finalPrice}}</b>
+    td.skull(align="center") {{unitName}}
+    td.bill-discount: input(name="editDiscountCash" min="0")
+    td.number.final-price <b>{{formatNumber finalPrice}}</b>

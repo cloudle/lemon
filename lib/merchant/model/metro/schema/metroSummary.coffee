@@ -135,6 +135,10 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 #------------------------------------------
+  #loi nhuan ngay
+  profitabilityDay:
+    type: Number
+    defaultValue: 0
   #tien ban hang cua hom nay
   salesMoneyDay:
     type: Number
@@ -171,10 +175,7 @@ simpleSchema.metroSummaries = new SimpleSchema
   cogsDay:
     type: Number
     defaultValue: 0
-  #loi nhuan
-  profitabilityDay:
-    type: Number
-    defaultValue: 0
+
 
 
 
