@@ -165,8 +165,6 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
         revenueDay    : sale.finalPrice
         cogsDay       : 0
 
-        salesMoneyDay : sale.finalPrice
-
       if sale.paymentsDelivery is 1
         incOption.deliveryCount        = 1
         incOption.deliveryProductCount = sale.saleCount
