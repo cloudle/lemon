@@ -28,18 +28,20 @@ Meteor.methods
       Schema.saleDetails.find({sale: currentSales._id}).forEach(
         (detail)->
           Schema.saleDetails.remove detail._id
+          if product = Schema.products.findOne(detail.product)
+            if product.basicDetailModeEnabled is false
+              Schema.productDetails.update detail.productDetail, $inc: {
+                availableQuality : detail.quality
+                inStockQuality   : detail.quality
+              }
 
-          product = Schema.products.findOne(detail.product)
-          if product.basicDetailModeEnabled is false
-            Schema.productDetails.update detail.productDetail, $inc: {
-              availableQuality : detail.quality
-              inStockQuality   : detail.quality
-            }
-
-            Schema.products.update detail.product, $inc: {
-              availableQuality: detail.quality
-              inStockQuality  : detail.quality
-            }
+              Schema.products.update detail.product, $inc: {
+                salesQuality    : -detail.quality
+                availableQuality: detail.quality
+                inStockQuality  : detail.quality
+              }
+            else
+              Schema.products.update detail.product, $inc: {salesQuality: -detail.quality}
       )
 
       tempBeforeDebtBalance = currentSales.beforeDebtBalance
@@ -128,9 +130,3 @@ Meteor.methods
       Schema.customers.update currentTransaction.owner, $inc: customerIncOption
     catch error
       throw new Meteor.Error('deleteTransaction', error)
-
-
-
-#  updateImportAndImport: ->
-#    Schema.imports.find({finish: true, submitted: true}).forEach((item)-> Schema.imports.update item._id, $set: {'version.createdAt': item.version.updateAt})
-#    Schema.returns.find({status: 2}).forEach((item)-> Schema.returns.update item._id, $set: {'version.createdAt': item.version.updateAt})

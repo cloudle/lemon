@@ -10,16 +10,17 @@ simpleSchema.returnDetails  = new SimpleSchema
   import:
     type: String
     optional: true
-
-  productDetail:
-    type: String
-    optional: true
 #----------------------------
   return:
     type: String
 
   product:
     type: String
+
+  productDetail:
+    type: [Object]
+    blackbox: true
+    optional: true
 
   unit:
     type: String

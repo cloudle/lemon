@@ -13,6 +13,8 @@ template(name="productManagementImportDetails")
       td.number {{formatNumber unitPrice}}
       td.number {{formatNumber totalPrice}}
 
+    +productManagementReturnDetails returnDetails
+
     if isShowDisableMode
       each saleDetails
         tr.detail-row
@@ -24,3 +26,16 @@ template(name="productManagementImportDetails")
           td.number {{conversionQuality}}
           td.number {{formatNumber unitPrice}}
           td.number {{formatNumber finalPrice}}
+
+
+template(name="productManagementReturnDetails")
+  each returnDetails
+    tr.detail-row
+      td.first-column
+        span.icon-reply-3 Trả hàng NCC
+      td(align="center") {{momentFormat version.createdAt "DD/MM/YYYY"}}
+      td.number {{returnQuality}}
+      td(align="center") {{unitName}}
+      td.number {{conversionQuality}}
+      td.number {{formatNumber unitReturnsPrice}}
+      td.number {{formatNumber returnFinalPrice}}

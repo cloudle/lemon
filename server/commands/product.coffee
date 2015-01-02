@@ -294,16 +294,23 @@ Meteor.methods
             (saleDetail) ->
               if saleDetail.productDetail
                 productDetail = Schema.productDetails.findOne(saleDetail.productDetail)
-                totalCogs = saleDetail.quality * (productDetail.importPrice/productDetail.conversionQuality)
+                totalCogs = Math.round(saleDetail.quality * productDetail.importPrice)
               else
                 if saleDetail.unit
-                  totalCogs = (saleDetail.quality/saleDetail.conversionQuality) * Schema.productUnits.findOne(saleDetail.unit)?.importPrice
+                  totalCogs = Math.round((saleDetail.quality/saleDetail.conversionQuality) * Schema.productUnits.findOne(saleDetail.unit)?.importPrice)
                 else
-                  totalCogs = (saleDetail.quality/saleDetail.conversionQuality) * Schema.products.findOne(saleDetail.product)?.importPrice
+                  totalCogs = Math.round((saleDetail.quality/saleDetail.conversionQuality) * Schema.products.findOne(saleDetail.product)?.importPrice)
 
               Schema.saleDetails.update saleDetail._id, $set:{totalCogs: totalCogs}
           )
       )
+
+  calculateProductImportPrice: ->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      Schema.productDetails.find({merchant: profile.currentMerchant}).forEach(
+        (detail) -> Schema.productDetails.update detail._id, $set:{importPrice: detail.unitPrice/detail.conversionQuality}
+      )
+
 
   calculateABC: ->
     profile = Schema.userProfiles.findOne({user: Meteor.userId()})

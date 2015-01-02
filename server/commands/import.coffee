@@ -99,6 +99,7 @@ Meteor.methods
         transaction = Transaction.newByImport(warehouseImport)
         transactionDetail = TransactionDetail.newByTransaction(transaction)
         MetroSummary.updateMetroSummaryByImport(importId)
+        MetroSummary.updateMyMetroSummaryBy(['createdImport'],  importId)
       return ('Phiếu nhập kho đã được duyệt')
     else
       throw new Meteor.Error('importError', 'Đã có lỗi trong quá trình xác nhận')

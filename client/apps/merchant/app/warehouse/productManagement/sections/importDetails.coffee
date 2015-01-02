@@ -9,14 +9,36 @@ lemon.defineWidget Template.productManagementImportDetails,
     if distributorId = Schema.imports.findOne(@import).distributor
       Schema.distributors.findOne(distributorId)?.name
 
+  buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
+
   totalPrice: -> @importPrice * @importQuality
   expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY') else 'KHÔNG'
   saleQuality: -> @quality - @returnQuality
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
+
+  distributorReturnQuality: (temp)->
+    console.log @
 
   importDetails: ->
     importId = UI._templateInstance().data._id
     Schema.productDetails.find {import: importId, product: Session.get("productManagementCurrentProduct")._id}
 
   saleDetails: -> Schema.saleDetails.find {productDetail: @_id}
-  buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
+  returnDetails: ->
+    return {
+      productDetail: @
+      returnDetails: Schema.returnDetails.find {productDetail: $elemMatch: {productDetail: @_id}}
+    }
+
+lemon.defineWidget Template.productManagementReturnDetails,
+  unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
+  returnQuality: ->
+    for detail in @productDetail
+      if detail.productDetail is UI._templateInstance().data.productDetail._id
+        return detail.returnQuality/@conversionQuality
+
+  returnFinalPrice: ->
+    for detail in @productDetail
+      if detail.productDetail is UI._templateInstance().data.productDetail._id
+        return detail.returnQuality*@unitReturnsPrice/@conversionQuality
+

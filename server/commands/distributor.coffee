@@ -107,7 +107,7 @@ Meteor.methods
           availableQuality  : -productDetail.importQuality
           inStockQuality    : -productDetail.importQuality
         }
-
+      MetroSummary.updateMyMetroSummaryBy(['deleteImport'],  currentImport._id)
       Schema.imports.remove currentImport._id
       Schema.importDetails.find({import: currentImport._id}).forEach((detail)-> Schema.importDetails.remove detail._id)
 

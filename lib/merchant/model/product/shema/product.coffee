@@ -44,6 +44,16 @@ simpleSchema.products = new SimpleSchema
     defaultValue: 0
     optional: true
 
+  returnQualityByCustomer:
+    type: Number
+    defaultValue: 0
+    optional: true
+
+  returnQualityByDistributor:
+    type: Number
+    defaultValue: 0
+    optional: true
+
   totalQuality:
     type: Number
     defaultValue: 0

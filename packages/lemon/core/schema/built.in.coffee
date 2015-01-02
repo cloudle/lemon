@@ -32,3 +32,12 @@ simpleSchema.ChildProduct = new SimpleSchema
 
   quality:
     type: Number
+
+simpleSchema.ChildProductDetail = new SimpleSchema
+  detail:
+    type: String
+    optional: true
+
+  returnQuality:
+    type: Number
+    optional: true

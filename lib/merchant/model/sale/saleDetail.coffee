@@ -16,7 +16,7 @@ Schema.add 'saleDetails', "SaleDetail", class SaleDetail
       conversionQuality: product.conversionQuality
 
     option.unit = product.unit if product.unit
-    option.totalCogs = quality * (productDetail.importPrice/productDetail.conversionQuality)
+    option.totalCogs = Math.round(quality * productDetail.importPrice)
 
     if currentSale.billDiscount
       if currentSale.discountCash == 0
@@ -50,9 +50,9 @@ Schema.add 'saleDetails', "SaleDetail", class SaleDetail
 
     if orderDetail.unit
       option.unit = orderDetail.unit
-      option.totalCogs = (orderDetail.quality/orderDetail.conversionQuality) * Schema.productUnits.findOne(orderDetail.unit)?.importPrice
+      option.totalCogs = Math.round((orderDetail.quality/orderDetail.conversionQuality) * Schema.productUnits.findOne(orderDetail.unit)?.importPrice)
     else
-      option.totalCogs = (orderDetail.quality/orderDetail.conversionQuality) * Schema.products.findOne(orderDetail.product)?.importPrice
+      option.totalCogs = Math.round((orderDetail.quality/orderDetail.conversionQuality) * Schema.products.findOne(orderDetail.product)?.importPrice)
 
     option._id = @schema.insert option
     option

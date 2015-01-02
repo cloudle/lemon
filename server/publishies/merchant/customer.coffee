@@ -91,6 +91,7 @@ Schema.customers.allow
     anySaleFound = Schema.sales.findOne {buyer: customer._id}
     anyCustomSaleFound = Schema.customSales.findOne {buyer: customer._id}
     anyTransactionFound = Schema.transactions.findOne {owner: customer._id}
+    if anySaleFound or anyCustomSaleFound or anyTransactionFound then Schema.customers.update customer._id, $set:{allowDelete: false}
     return anySaleFound is undefined and anyTransactionFound is undefined and anyCustomSaleFound is undefined
 
 
