@@ -45,12 +45,12 @@ template(name="merchantHome")
         span.center.middle.caption: span.table: i.ico.icon-forward-outline
         span.bottom.middle.caption TRẢ HÀNG NHẬP
       .tile.peter-river.double(class="{{metroUnLocker merchantReportLock}}"  data-app='merchantReport')
-        span.top.left.caption: h3 {{formatNumber revenueDay}} <tiny5>DOANH THU</tiny5>
+        span.top.left.caption: h4 {{formatNumber revenueDay}} <tiny5>DOANH THU HÔM NAY</tiny5>
         span.center.left.caption
           span.table
             i.ico.icon-chart-pie-outline
             | <tiny5>BÁO CÁO</tiny5>
-        //span.bottom.left.caption: h4 {{formatNumber profitabilityDay}} <tiny5>LỢI NHUẬN HÔM NAY</tiny5>
+        span.bottom.left.caption: h4 {{formatNumber Summary.data.profitabilityDay}} <tiny5>LỢI NHUẬN HÔM NAY</tiny5>
       .tile.teal(class="{{metroUnLocker Summary.data.saleCount}}"
       data-app='billManager')
         span.center.middle.caption: span.table: i.ico.icon-clipboard

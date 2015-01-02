@@ -365,22 +365,45 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
     profile = Schema.userProfiles.findOne({user: Meteor.userId()})
     if profile
       option = {}
-      metroSummary = Schema.metroSummaries.find({merchant: profile.currentMerchant})
 
-      if _.contains(context,'sale')
+      if _.contains(context,'createSale')
         saleFound = Schema.sales.findOne({_id: id, merchant: profile.currentMerchant})
         option.salesMoneyDay = saleFound.debtBalanceChange if saleFound
+      if _.contains(context,'deleteSale')
+        saleFound = Schema.sales.findOne({_id: id, merchant: profile.currentMerchant})
+        option.salesMoneyDay = -saleFound.debtBalanceChange if saleFound
 
-      if _.contains(context,'import')
+      if _.contains(context,'createdImport')
         importFound = Schema.imports.findOne({_id: id, merchant: profile.currentMerchant, finish: true, submitted: true})
         option.salesMoneyDay = importFound.debtBalanceChange if importFound
+      if _.contains(context,'deleteImport')
+        importFound = Schema.imports.findOne({_id: id, merchant: profile.currentMerchant, finish: true, submitted: true})
+        option.salesMoneyDay = -importFound.debtBalanceChange if importFound
 
-      if _.contains(context,'return')
+      if _.contains(context,'createReturn')
         returnFound = Schema.sales.findOne({_id: id, merchant: profile.currentMerchant, status: 2})
-        if returnFound?.returnMethods is 0
-          option.returnMoneyOfCustomerDay = returnFound.debtBalanceChange
-        else
-          option.returnMoneyOfDistributorDay = returnFound.debtBalanceChange
+        if returnFound?.returnMethods is 0 then option.returnMoneyOfCustomerDay = returnFound.debtBalanceChange
+        else option.returnMoneyOfDistributorDay = returnFound.debtBalanceChange
+      if _.contains(context,'deleteReturn')
+        returnFound = Schema.sales.findOne({_id: id, merchant: profile.currentMerchant, status: 2})
+        if returnFound?.returnMethods is 0 then option.returnMoneyOfCustomerDay = -returnFound.debtBalanceChange
+        else option.returnMoneyOfDistributorDay = -returnFound.debtBalanceChange
 
-
+      metroSummary = Schema.metroSummaries.findOne({merchant: profile.currentMerchant})
       Schema.metroSummaries.update metroSummary._id, $inc: option if metroSummary
+
+  @updateMyMetroSummaryByProfitability: ->
+    profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    if profile
+      profitabilityDay = 0
+      metroSummary = Schema.metroSummaries.findOne({merchant: profile.currentMerchant})
+      toDate = new Date((new Date()).getFullYear(), (new Date()).getMonth(), (new Date()).getDate())
+      Schema.sales.find({ merchant: profile.currentMerchant, 'version.createdAt': {$gte: toDate} }).forEach(
+        (sale) ->
+          Schema.saleDetails.find({sale: sale._id}).forEach(
+            (saleDetail) ->
+              if !saleDetail.totalCogs then saleDetail.totalCogs = 0
+              profitabilityDay += saleDetail.finalPrice - saleDetail.totalCogs
+          )
+      )
+      Schema.metroSummaries.update metroSummary._id, $set:{profitabilityDay: profitabilityDay}

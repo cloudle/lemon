@@ -14,7 +14,9 @@ Schema.add 'saleDetails', "SaleDetail", class SaleDetail
       unitQuality   : product.unitQuality
       unitPrice     : product.unitPrice
       conversionQuality: product.conversionQuality
+
     option.unit = product.unit if product.unit
+    option.totalCogs = quality * (productDetail.importPrice/productDetail.conversionQuality)
 
     if currentSale.billDiscount
       if currentSale.discountCash == 0
@@ -23,10 +25,9 @@ Schema.add 'saleDetails', "SaleDetail", class SaleDetail
         option.discountPercent = currentSale.discountCash/(currentSale.totalPrice/100)
     else
       option.discountPercent = product.discountPercent
-    option.finalPrice = option.totalPrice * (100 - option.discountPercent)/100
-    option.discountCash   = option.totalPrice - option.finalPrice
-#    option.totalCogs = productDetail.importPrice * quality
 
+    option.finalPrice   = option.totalPrice * (100 - option.discountPercent)/100
+    option.discountCash = option.totalPrice - option.finalPrice
     option._id = @schema.insert option
     option
 
@@ -46,6 +47,12 @@ Schema.add 'saleDetails', "SaleDetail", class SaleDetail
       unitQuality      : orderDetail.unitQuality
       unitPrice        : orderDetail.unitPrice
       conversionQuality: orderDetail.conversionQuality
-    option.unit = orderDetail.unit if orderDetail.unit
+
+    if orderDetail.unit
+      option.unit = orderDetail.unit
+      option.totalCogs = (orderDetail.quality/orderDetail.conversionQuality) * Schema.productUnits.findOne(orderDetail.unit)?.importPrice
+    else
+      option.totalCogs = (orderDetail.quality/orderDetail.conversionQuality) * Schema.products.findOne(orderDetail.product)?.importPrice
+
     option._id = @schema.insert option
     option

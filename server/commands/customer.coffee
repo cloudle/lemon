@@ -23,7 +23,7 @@ Meteor.methods
           customerIncOption.saleDebt += -(currentSales.debtBalanceChange - transaction.debtBalanceChange)
           Schema.transactions.remove transaction._id
       )
-
+      MetroSummary.updateMyMetroSummaryBy(['deleteSale'], currentSales._id)
       Schema.sales.remove currentSales._id
       Schema.saleDetails.find({sale: currentSales._id}).forEach(
         (detail)->
@@ -62,6 +62,7 @@ Meteor.methods
       )
 
       Schema.customers.update currentSales.buyer, $inc: customerIncOption
+      MetroSummary.updateMyMetroSummaryByProfitability()
 
     catch error
       throw new Meteor.Error('deleteTransaction', error)

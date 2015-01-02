@@ -119,5 +119,9 @@ Meteor.methods
       removeOrderAndOrderDetail(currentOrder, userProfile)
       updateCustomerByNewSales(sale, userProfile)
 
+
+    MetroSummary.updateMyMetroSummaryBy(['createSale'], sale._id)
+    MetroSummary.updateMyMetroSummaryByProfitability()
+
     Meteor.call 'newSaleDefault', userProfile, sale._id
     return sale._id

@@ -284,5 +284,53 @@ Meteor.methods
 
           return smallerUnitOption
 
+  calculateSaleDetailByTotalCogs: ->
+    profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    if profile
+      toDate = new Date((new Date()).getFullYear(), (new Date()).getMonth(), (new Date()).getDate())
+      Schema.sales.find({merchant: profile.currentMerchant, 'version.createdAt': {$gte: toDate} }).forEach(
+        (sale) ->
+          Schema.saleDetails.find({sale: sale._id}).forEach(
+            (saleDetail) ->
+              if saleDetail.productDetail
+                productDetail = Schema.productDetails.findOne(saleDetail.productDetail)
+                totalCogs = saleDetail.quality * (productDetail.importPrice/productDetail.conversionQuality)
+              else
+                if saleDetail.unit
+                  totalCogs = (saleDetail.quality/saleDetail.conversionQuality) * Schema.productUnits.findOne(saleDetail.unit)?.importPrice
+                else
+                  totalCogs = (saleDetail.quality/saleDetail.conversionQuality) * Schema.products.findOne(saleDetail.product)?.importPrice
+
+              Schema.saleDetails.update saleDetail._id, $set:{totalCogs: totalCogs}
+          )
+      )
+
+  calculateABC: ->
+    profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    if profile
+      toDate = new Date((new Date()).getFullYear(), (new Date()).getMonth(), (new Date()).getDate())
+      option =
+        salesMoneyDay : 0
+        importMoneyDay: 0
+        returnMoneyOfDistributorDay: 0
+        returnMoneyOfCustomerDay   : 0
+
+      Schema.sales.find({ merchant: profile.currentMerchant, 'version.createdAt': {$gte: toDate} }).forEach(
+        (sale) -> option.salesMoneyDay += sale.debtBalanceChange
+      )
+
+      Schema.imports.find({ merchant: profile.currentMerchant, 'version.createdAt': {$gte: toDate}, finish: true, submitted: true}).forEach(
+        (currentImport) -> option.importMoneyDay += currentImport.debtBalanceChange
+      )
+
+      Schema.returns.find({ merchant: profile.currentMerchant, 'version.createdAt': {$gte: toDate}, status: 2 }).forEach(
+        (currentReturn) ->
+          if currentReturn.returnMethods is 0
+            option.returnMoneyOfCustomerDay += currentReturn.debtBalanceChange
+          else
+            option.returnMoneyOfDistributorDay += currentReturn.debtBalanceChange
+      )
+
+      Schema.metroSummaries.update({merchant: profile.currentMerchant},{$set: option})
 
 
