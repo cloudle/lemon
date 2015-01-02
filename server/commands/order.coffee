@@ -120,7 +120,7 @@ Meteor.methods
       updateCustomerByNewSales(sale, userProfile)
 
 
-    MetroSummary.updateMyMetroSummaryBy(['createSale'], sale._id)
+#    MetroSummary.updateMyMetroSummaryBy(['createSale'], sale._id)
     MetroSummary.updateMyMetroSummaryByProfitability()
 
     Meteor.call 'newSaleDefault', userProfile, sale._id
