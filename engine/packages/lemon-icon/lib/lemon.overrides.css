@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'lemon';
+    src: url('/engine/packages/lemon-icon/font/lemon.eot?79902154');
+    src: url('/engine/packages/lemon-icon/font/lemon.eot?79902154#iefix') format('embedded-opentype'),
+         /*url('/packages/lemon-icon/font/lemon.woff?79902154') format('woff'),*/
+         /*url('/packages/lemon-icon/font/lemon.ttf?79902154') format('truetype'),*/
+         url('/engine/packages/lemon-icon/font/lemon.svg?79902154#lemon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
