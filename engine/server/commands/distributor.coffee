@@ -20,10 +20,17 @@ Meteor.methods
         importDebt            : 0
         importTotalCash       : 0
 
-      Schema.customImports.find({seller: distributor._id}).forEach(
+      tempBeforeDebtBalance = 0
+      Schema.customImports.find({seller: distributor._id}, {sort: {'version.createdAt': 1}}).forEach(
         (customImport) ->
           distributorOption.customImportDebt += customImport.debtBalanceChange
           distributorOption.customImportTotalCash += customImport.debtBalanceChange
+
+          Schema.customImports.update customImport._id, $set:{
+            beforeDebtBalance: tempBeforeDebtBalance
+            latestDebtBalance: tempBeforeDebtBalance + customImport.debtBalanceChange
+          }
+          tempBeforeDebtBalance += customImport.debtBalanceChange
 
           Schema.transactions.find({latestImport: customImport._id}).forEach(
             (transaction) ->
@@ -34,13 +41,22 @@ Meteor.methods
                 distributorOption.customImportDebt      += transaction.debtBalanceChange
                 distributorOption.customImportLoan      += transaction.debtBalanceChange
                 distributorOption.customImportTotalCash += transaction.debtBalanceChange
+
+              Schema.transactions.update transaction._id, $set:{
+                beforeDebtBalance: tempBeforeDebtBalance
+                latestDebtBalance: tempBeforeDebtBalance - transaction.debtBalanceChange
+              }
+              tempBeforeDebtBalance -= transaction.debtBalanceChange
           )
       )
 
-      Schema.imports.find({distributor: distributor._id}).forEach(
+      tempBeforeDebtBalance = 0
+      Schema.imports.find({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': 1}}).forEach(
         (currentImport) ->
           distributorOption.importDebt      += currentImport.debtBalanceChange
           distributorOption.importTotalCash += currentImport.debtBalanceChange
+
+          tempBeforeDebtBalance += currentImport.debtBalanceChange
 
           Schema.transactions.find({latestImport: currentImport._id}).forEach(
             (transaction)->
@@ -50,12 +66,24 @@ Meteor.methods
               else
                 distributorOption.importDebt      += transaction.debtBalanceChange
                 distributorOption.importTotalCash += transaction.debtBalanceChange
+
+              Schema.transactions.update transaction._id, $set:{
+                beforeDebtBalance: tempBeforeDebtBalance
+                latestDebtBalance: tempBeforeDebtBalance - transaction.debtBalanceChange
+              }
+              tempBeforeDebtBalance -= transaction.debtBalanceChange
           )
 
-          Schema.returns.find({timeLineImport: currentImport._id}).forEach(
+          Schema.returns.find({timeLineImport: currentImport._id, status: 2}).forEach(
             (currentReturn) ->
               distributorOption.importDebt      -= currentReturn.debtBalanceChange
               distributorOption.importTotalCash -= currentReturn.debtBalanceChange
+
+              Schema.returns.update currentReturn._id, $set:{
+                beforeDebtBalance: tempBeforeDebtBalance
+                latestDebtBalance: tempBeforeDebtBalance - currentReturn.debtBalanceChange
+              }
+              tempBeforeDebtBalance -= currentReturn.debtBalanceChange
           )
       )
 

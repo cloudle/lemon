@@ -3,7 +3,9 @@ lemon.defineWidget Template.customerManagementSaleDetails,
   totalDebtBalance: -> @latestDebtBalance + Session.get("customerManagementCurrentCustomer").customSaleDebt
   skulls: -> Schema.products.findOne(@product)?.skulls?[0]
   receivableClass: -> if @debtBalanceChange >= 0 then 'receive' else 'paid'
-  finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
+  finalReceivableClass: ->
+    latestDebtBalance = @latestDebtBalance + Session.get("customerManagementCurrentCustomer").customSaleDebt
+    if latestDebtBalance >= 0 then 'receive' else 'paid'
   isShowDeleteTransaction: -> new Date(@debtDate.getFullYear(), @debtDate.getMonth(), @debtDate.getDate() + 1, @debtDate.getHours(), @debtDate.getMinutes(), @debtDate.getSeconds()) > new Date()
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   unitSaleQuality: -> Math.round(@quality/@conversionQuality*100)/100

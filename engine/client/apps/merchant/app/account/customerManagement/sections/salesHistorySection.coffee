@@ -42,7 +42,7 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
     "click .customSaleModeDisable":  (event, template) ->
       scope.customSaleModeDisable(customer._id) if customer = Session.get("customerManagementCurrentCustomer")
 
-#----Create-Transaction-Of-CustomSale-----------------------------------------------------------------------
+#----Create-CustomSale-------------------------------------------------------------------------------------
     "keydown input.new-bill-field.number": (event, template) ->
       if customer = Session.get("customerManagementCurrentCustomer")
         scope.checkAllowCreateCustomSale(template, customer) if event.which is 8

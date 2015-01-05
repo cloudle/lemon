@@ -1,8 +1,14 @@
 lemon.defineWidget Template.distributorManagementImportDetails,
   receivableClass: -> if @debtBalanceChange >= 0 then 'paid' else 'receive'
+  finalReceivableClass: ->
+    latestDebtBalance = @latestDebtBalance + Session.get("distributorManagementCurrentDistributor")?.customImportDebt
+    if latestDebtBalance >= 0 then 'receive' else 'paid'
   productName: -> @name ? Schema.products.findOne(@product)?.name
   totalDebtBalance: -> @latestDebtBalance + Session.get("distributorManagementCurrentDistributor")?.customImportDebt
   skulls: -> Schema.products.findOne(@product)?.skulls?[0]
+
+
+
 
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   quality: -> if @conversionQuality then @unitQuality else @importQuality
