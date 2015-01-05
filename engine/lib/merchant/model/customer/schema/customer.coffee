@@ -87,6 +87,10 @@ simpleSchema.customers = new SimpleSchema
     type: String
     optional: true
 
+  debtBalance:
+    type: Number
+    defaultValue: 0
+
 #----------------------------------------------
   totalCustomSaleDeposit:
     type: Number
@@ -100,14 +104,6 @@ simpleSchema.customers = new SimpleSchema
     type: Number
     defaultValue: 0
 #----------------------------------------------
-  customSaleModeEnabled:
-    type: Boolean
-    defaultValue: true
-
-  debtBalance:
-    type: Number
-    defaultValue: 0
-
   customSalePaid:
     type: Number
     defaultValue: 0
@@ -131,3 +127,7 @@ simpleSchema.customers = new SimpleSchema
   saleTotalCash:
     type: Number
     defaultValue: 0
+#------------------------------------------------
+  customSaleModeEnabled:
+    type: Boolean
+    defaultValue: true
