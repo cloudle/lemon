@@ -11,7 +11,7 @@ lemon.defineWidget Template.productManagementImportDetails,
 
   buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
 
-  totalPrice: -> @importPrice * @importQuality
+  totalPrice: -> @unitPrice * @unitQuality
   expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY') else 'KHÔNG'
   saleQuality: -> @quality - @returnQuality
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
