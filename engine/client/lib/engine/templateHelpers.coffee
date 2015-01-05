@@ -5,7 +5,7 @@ Template.registerHelper 'appCollapseClass', -> if Session.get('collapse') then '
 
 Template.registerHelper 'dayOfWeek', -> moment(Session.get('realtime-now')).format("dddd")
 Template.registerHelper 'timeDMY', -> moment(Session.get('realtime-now')).format("DD/MM/YYYY")
-Template.registerHelper 'timeHM', -> moment(Session.get('realtime-now')).format("hh:mm")
+Template.registerHelper 'timeHM', -> moment(Session.get('realtime-now')).format("HH:mm")
 Template.registerHelper 'timeS', -> moment(Session.get('realtime-now')).format("ss")
 
 Template.registerHelper 'sessionGet', (name) -> Session.get(name)
@@ -45,10 +45,10 @@ Template.registerHelper 'crossBillAvailableQuality', ->
     }
   else
     return {
-      crossAvailable: crossAvailable
-      isValid: crossAvailable > 0
-      invalid: crossAvailable < 0
-      errorClass: if crossAvailable >= 0 then '' else 'errors'
+    crossAvailable: crossAvailable
+    isValid: crossAvailable > 0
+    invalid: crossAvailable < 0
+    errorClass: if crossAvailable >= 0 then '' else 'errors'
     }
 
 Template.registerHelper 'aliasLetter', (fullAlias) -> fullAlias?.substring(0,1)

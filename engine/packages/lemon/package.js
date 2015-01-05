@@ -8,10 +8,6 @@ Package.onUse(function(api) {
   api.versionsFrom('METEOR@0.9.1.1');
 
   api.addFiles([
-    'core/templateHelpers.coffee'
-  ], 'client');
-
-  api.addFiles([
     'namespace.coffee',
 
     'core/core.coffee',
