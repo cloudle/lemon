@@ -293,7 +293,11 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
   @updateMyMetroSummaryBy: (context, id)->
     profile = Schema.userProfiles.findOne({user: Meteor.userId()})
     if profile
-      option = {}
+      option =
+        salesMoneyDay: 0
+        importMoneyDay: 0
+        returnMoneyOfCustomerDay: 0
+        returnMoneyOfDistributorDay: 0
 
       if _.contains(context,'createSale')
         saleFound = Schema.sales.findOne({_id: id, merchant: profile.currentMerchant})
@@ -304,13 +308,14 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
 
       if _.contains(context,'createdImport')
         importFound = Schema.imports.findOne({_id: id, merchant: profile.currentMerchant, finish: true, submitted: true})
-        option.salesMoneyDay = importFound.debtBalanceChange if importFound
+        option.importMoneyDay = importFound.debtBalanceChange if importFound
       if _.contains(context,'deleteImport')
         importFound = Schema.imports.findOne({_id: id, merchant: profile.currentMerchant, finish: true, submitted: true})
-        option.salesMoneyDay = -importFound.debtBalanceChange if importFound
+        option.importMoneyDay = -importFound.debtBalanceChange if importFound
 
       if _.contains(context,'createReturn')
         returnFound = Schema.returns.findOne({_id: id, merchant: profile.currentMerchant, status: 2})
+        console.log returnFound
         if returnFound?.returnMethods is 0 then option.returnMoneyOfCustomerDay = returnFound.debtBalanceChange
         else option.returnMoneyOfDistributorDay = returnFound.debtBalanceChange
       if _.contains(context,'deleteReturn')
@@ -318,8 +323,8 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
         if returnFound?.returnMethods is 0 then option.returnMoneyOfCustomerDay = -returnFound.debtBalanceChange
         else option.returnMoneyOfDistributorDay = -returnFound.debtBalanceChange
 
-      metroSummary = Schema.metroSummaries.findOne({merchant: profile.currentMerchant})
-      Schema.metroSummaries.update metroSummary._id, $inc: option if metroSummary
+      if metroSummary = Schema.metroSummaries.findOne({merchant: profile.currentMerchant})
+        Schema.metroSummaries.update metroSummary._id, $inc: option
 
   @updateMyMetroSummaryByProfitability: ->
     profile = Schema.userProfiles.findOne({user: Meteor.userId()})

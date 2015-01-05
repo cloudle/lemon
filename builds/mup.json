@@ -21,15 +21,16 @@
   "setupPhantom": false,
 
   // Application name (No spaces)
-  "appName": "lemonEds",
+//  "appName": "lemonEds",
+  "appName": "lemonTest",
 
   // Location of app (local directory)
-  "app": "~/Project/lemon",
+  "app": "~/Project/lemon/engine",
 
   // Configure environment
   "env": {
 //    "METEOR_ENV": "development",
-    "PORT": 80,
+    "PORT": 2015,
     "ROOT_URL": "http://gera.vn",
     "MONGO_URL": "mongodb://localhost:27017/edsBeta",
     "MAIL_URL": "smtp://thienbantech@gmail.com:thienban2014@stmp.gmail.com:465/"

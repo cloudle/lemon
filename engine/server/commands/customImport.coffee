@@ -145,6 +145,27 @@ createTransactionOfImport = (profile, distributor, latestImportId, debtCash, pai
 
   Schema.transactions.insert option
 
+reUpdateTransactionAndReturn = (latestImport)->
+  tempBeforeDebtBalance = latestImport.latestDebtBalance
+  Schema.transactions.find({latestImport: latestImport._id}).forEach(
+    (transaction) ->
+      Schema.transactions.update transaction._id, $set:{
+        beforeDebtBalance: tempBeforeDebtBalance
+        latestDebtBalance: tempBeforeDebtBalance - transaction.debtBalanceChange
+      }
+      tempBeforeDebtBalance = tempBeforeDebtBalance - transaction.debtBalanceChange
+  )
+
+
+  Schema.returns.find({timeLineImport: latestImport._id}).forEach(
+    (currentReturn) ->
+      Schema.returns.update currentReturn._id, $set:{
+        beforeDebtBalance: tempBeforeDebtBalance
+        latestDebtBalance: tempBeforeDebtBalance - currentReturn.debtBalanceChange
+      }
+      tempBeforeDebtBalance = tempBeforeDebtBalance - currentReturn.debtBalanceChange
+  )
+
 
 Meteor.methods
   createNewCustomImport: (customImport)->
@@ -273,6 +294,7 @@ Meteor.methods
           latestImport = Schema.imports.findOne(newImportId)
         if latestImport
           createTransactionOfImport(profile, distributor, latestImport._id, debtCash,  new Date(), description)
+          reUpdateTransactionAndReturn(latestImport)
           updateCustomImportDenyDelete(latestImport._id)
 
           incCustomerOption = {importDebt: -debtCash}
