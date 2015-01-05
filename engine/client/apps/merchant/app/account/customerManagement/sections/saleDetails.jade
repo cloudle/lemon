@@ -46,9 +46,9 @@ template(name="customerManagementSaleDetails")
             |{{comment}}
     each returnDetails
       tr.detail-row.edit-detail
-        td {{productName}}
-        td {{formatNumber unitReturnQuality}}
-        td {{unitName}}
+        td.first-column {{productName}}
+        td.number {{formatNumber unitReturnQuality}}
+        td(align="center") {{unitName}}
         td.number {{formatNumber unitReturnsPrice}}
         td.last-column.number {{formatNumber finalPrice}}
     tr.detail-row.summary-row
