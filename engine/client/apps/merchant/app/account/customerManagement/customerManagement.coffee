@@ -29,8 +29,7 @@ lemon.defineApp Template.customerManagement,
         Session.set("customerManagementCurrentCustomer", Schema.customers.findOne(currentCustomer))
 
   events:
-    "input .search-filter": (event, template) ->
-      Session.set("customerManagementSearchFilter", template.ui.$searchFilter.val())
+    "input .search-filter": (event, template) -> Session.set("customerManagementSearchFilter", template.ui.$searchFilter.val())
     "keypress input[name='searchFilter']": (event, template)->
       scope.createCustomer(template) if event.which is 13 and Session.get("customerManagementCreationMode")
     "click .createCustomerBtn": (event, template) -> scope.createCustomer(template)

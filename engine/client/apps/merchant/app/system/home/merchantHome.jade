@@ -49,7 +49,7 @@ template(name="merchantHome")
         span.center.left.caption: span.table
           i.ico.icon-chart-pie-outline
           | <tiny5>BÁO CÁO</tiny5>
-        span.bottom.left.caption: h3 {{formatNumber revenueDay}} <tiny5>DOANH THU HÔM NAY</tiny5>
+        span.bottom.left.caption: h3 {{formatNumber revenueDay}} <br /><tiny5>DOANH THU NGÀY</tiny5>
         //span.bottom.left.caption: h4 {{formatNumber Summary.data.profitabilityDay}} <tiny5>LỢI NHUẬN HÔM NAY</tiny5>
       .tile.dark(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='inventoryHistory')
@@ -92,9 +92,9 @@ template(name="merchantHome")
         span.bottom.middle.caption {{formatNumber Summary.data.warehouseCount}}<br />KHO HÀNG
       .tile.double.belize-hole(data-app='productManagement')
         span.center.right.caption: span.table
-          | <tiny5>SẢN PHẨM</tiny5>
+          //| <tiny5>SẢN PHẨM</tiny5>
           i.ico.icon-puzzle-outline
-        span.bottom.right.caption: h3 <tiny5>CHỦNG LOẠI</tiny5> {{formatNumber Summary.data.productCount}}
+        span.bottom.right.caption: h3 <tiny5>SẢN PHẨM</tiny5> {{formatNumber Summary.data.productCount}}
       .tile.alizarin(class="{{metroUnLocker Summary.data.saleCount}}"
       data-app='export')
         span.center.middle.caption: span.table

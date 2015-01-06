@@ -3,10 +3,12 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
     customers = Schema.customers.find({parentMerchant: Session.get("myProfile").parentMerchant}).fetch()
     scope.managedCustomerList = []
     if Session.get("customerManagementSearchFilter")?.length > 0
-      scope.managedCustomerList = _.filter customers, (item) ->
-        unsignedTerm = Helpers.RemoveVnSigns Session.get("customerManagementSearchFilter")
-        unsignedName = Helpers.RemoveVnSigns item.name
-        unsignedName.indexOf(unsignedTerm) > -1
+      unsignedSearch = Helpers.RemoveVnSigns Session.get("customerManagementSearchFilter")
+      
+      for customer in customers
+        unsignedName = Helpers.RemoveVnSigns customer.name
+        scope.managedCustomerList.push customer if unsignedName.indexOf(unsignedSearch) > -1
+
     else
       groupedCustomers = _.groupBy customers, (customer) -> customer.name.split(' ').pop().substr(0, 1).toLowerCase()
       scope.managedCustomerList.push {key: key, childs: childs} for key, childs of groupedCustomers

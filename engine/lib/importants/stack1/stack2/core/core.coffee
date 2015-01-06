@@ -102,6 +102,14 @@ Helpers.RemoveVnSigns = (source) ->
   str = str.replace /^\-+|\-+$/g, "" #cắt bỏ ký tự - ở đầu và cuối chuỗi
   str
 
+Helpers.deferredAction = (action, uniqueName, timeOut = 200) ->
+  Meteor.clearTimeout(Apps.currentDefferedTimeout) if Apps.currentDefferedActionName is uniqueName
+
+  Apps.currentDefferedTimeout = Meteor.setTimeout ->
+    action()
+  , timeOut
+
+  Apps.currentDefferedActionName = uniqueName if uniqueName
 Helpers.animateUsing = (selector, animationType) ->
   $element = $(selector)
   $element.removeClass()
