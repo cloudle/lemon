@@ -4,7 +4,7 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
     scope.managedCustomerList = []
     if Session.get("customerManagementSearchFilter")?.length > 0
       unsignedSearch = Helpers.RemoveVnSigns Session.get("customerManagementSearchFilter")
-      
+
       for customer in customers
         unsignedName = Helpers.RemoveVnSigns customer.name
         scope.managedCustomerList.push customer if unsignedName.indexOf(unsignedSearch) > -1
