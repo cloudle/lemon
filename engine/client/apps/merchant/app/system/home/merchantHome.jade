@@ -38,13 +38,15 @@ template(name="merchantHome")
         span.bottom.middle.caption: h3 <tiny5>PHẢI THU</tiny5><br/>{{formatNumber Summary.data.totalReceivableCash}}
       .tile.alizarin(class="{{metroUnLocker Summary.data.saleCount}}"
       data-app='customerReturn' )
+        span.top.middle.caption TRẢ HÀNG
         span.center.middle.caption: span.table: i.ico.icon-reply-outline
         //{{formatNumber Summary.data.returnCount}}
-        span.bottom.middle.caption TRẢ HÀNG BÁN
+        span.s4.bottom.middle.caption BÁN
       .tile.amethyst(class="{{metroUnLocker Summary.data.availableProductCount}}"
       data-app='distributorReturn')
+        span.top.middle.caption TRẢ HÀNG
         span.center.middle.caption: span.table: i.ico.icon-forward-outline
-        span.bottom.middle.caption TRẢ HÀNG NHẬP
+        span.s4.bottom.middle.caption NHẬP
       .tile.peter-river.double(class="{{metroUnLocker merchantReportLock}}"  data-app='merchantReport')
         span.center.left.caption: span.table
           i.ico.icon-chart-pie-outline
@@ -53,8 +55,9 @@ template(name="merchantHome")
         //span.bottom.left.caption: h4 {{formatNumber Summary.data.profitabilityDay}} <tiny5>LỢI NHUẬN HÔM NAY</tiny5>
       .tile.dark(class="{{metroUnLocker Summary.data.importCount}}"
       data-app='inventoryHistory')
+        span.top.middle.caption {{formatNumber Summary.data.inventoryCount}}
         span.center.middle.caption: span.table: i.ico.icon-edit
-        span.bottom.middle.caption {{formatNumber Summary.data.inventoryCount}}<br />KIỂM KHO
+        span.bottom.middle.caption KIỂM KHO
 
     .tile-group-3
       .tile.green-sea.double(class="{{metroUnLocker Summary.data.warehouseCount}}"
@@ -87,9 +90,10 @@ template(name="merchantHome")
       //  span.bottom.middle.caption {{formatNumber Summary.data.merchantCount}}<br />CHI NHÁNH
       .tile.lime(class="{{metroUnLocker Summary.data.warehouseCount}}"
       data-app='warehouseManager')
+        span.top.middle.caption {{formatNumber Summary.data.warehouseCount}}
         span.center.middle.caption: span.table
           i.ico.icon-home-outline
-        span.bottom.middle.caption {{formatNumber Summary.data.warehouseCount}}<br />KHO HÀNG
+        span.bottom.middle.caption KHO HÀNG
       .tile.double.belize-hole(data-app='productManagement')
         span.center.right.caption: span.table
           //| <tiny5>SẢN PHẨM</tiny5>
