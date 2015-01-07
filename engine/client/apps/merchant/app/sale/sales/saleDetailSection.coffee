@@ -6,10 +6,9 @@ lemon.defineHyper Template.saleDetailSection,
   editingData: -> Session.get("salesEditingRow")
   product: -> Schema.products.findOne(@product)
   unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
-  created: -> @timeInterval = Meteor.setInterval(setTime, 1000)
-  destroyed: -> Meteor.clearInterval(@timeInterval)
   buyerName: -> Schema.customers.findOne(Session.get("currentOrder")?.buyer)?.name
   sellerName: -> Schema.userProfiles.findOne({user: Session.get("currentOrder")?.seller})?.fullName
+  orderDescription: -> Session.get("currentOrderDescription") ? @order?.description
   customerOldDebt: ->
     customer = Schema.customers.findOne(Session.get("currentOrder")?.buyer)
     if customer then customer.saleDebt + customer.customSaleDebt else 0
@@ -19,6 +18,11 @@ lemon.defineHyper Template.saleDetailSection,
     if customer and @order
       customer.saleDebt + customer.customSaleDebt + @order.finalPrice - @order.currentDeposit
     else 0
+
+  created: -> @timeInterval = Meteor.setInterval(setTime, 1000)
+  destroyed: ->
+    Meteor.clearInterval(@timeInterval)
+    Session.set("currentOrderDescription")
 
 
   events:
@@ -31,5 +35,10 @@ lemon.defineHyper Template.saleDetailSection,
       logics.sales.reCalculateOrder(@order)
 
     "input [name='orderDescription']": (event, template) ->
-      description = template.ui.$orderDescription.val()
-      Schema.orders.update Session.get("currentOrder")._id, $set:{description: description} if Session.get("currentOrder")
+      Helpers.deferredAction ->
+        description = template.ui.$orderDescription.val()
+        Session.set("currentOrderDescription", description)
+        Schema.orders.update Session.get("currentOrder")._id, $set:{description: description} if Session.get("currentOrder")
+      , "currentSaleUpdateDescription", 1000
+
+

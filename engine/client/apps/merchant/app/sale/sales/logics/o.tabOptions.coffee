@@ -24,3 +24,4 @@ Apps.Merchant.salesInit.push (scope) ->
     navigateAction: (instance) ->
       UserSession.set('currentOrder', instance._id)
       Session.set('currentOrder', instance)
+      Session.set("currentOrderDescription", instance.description)

@@ -29,7 +29,9 @@ lemon.defineApp Template.distributorManagement,
 
   events:
     "input .search-filter": (event, template) ->
-      Session.set("distributorManagementSearchFilter", template.ui.$searchFilter.val())
+      Helpers.deferredAction ->
+        Session.set("distributorManagementSearchFilter", template.ui.$searchFilter.val())
+      , "distributorManagementSearchPeople"
 
     "keypress input[name='searchFilter']": (event, template)->
       if event.which is 13 and Session.get("distributorManagementSearchFilter")?.trim().length > 1 and Session.get("distributorCreationMode")

@@ -54,7 +54,11 @@ lemon.defineApp Template.import,
 
     "click .print-command": -> window.print()
     "click .createProductBtn": (event, template) -> scope.createProduct(template)
-    "input .search-filter": (event, template) -> Session.set("importManagementSearchFilter", template.ui.$searchFilter.val())
+    "input .search-filter": (event, template) ->
+      Helpers.deferredAction ->
+        Session.set("importManagementSearchFilter", template.ui.$searchFilter.val())
+      , "importManagementSearchProduct"
+
     "keypress input[name='searchFilter']": (event, template)->
       if event.which is 13 and Session.get("importManagementSearchFilter")?.trim().length > 1
         scope.createProduct(template)

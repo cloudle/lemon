@@ -35,7 +35,10 @@ lemon.defineApp Template.sales,
 
   events:
     "input .search-filter": (event, template) ->
-      Session.set("salesCurrentProductSearchFilter", template.ui.$searchFilter.val())
+      Helpers.deferredAction ->
+        Session.set("salesCurrentProductSearchFilter", template.ui.$searchFilter.val())
+      , "salesCurrentProductSearchProduct"
+
 #    "keypress input[name='searchFilter']": (event, template)->
 #      scope.createCustomer(template) if event.which is 13 and Session.get("salesCurrentProductCreationMode")
 #    "click .createCustomerBtn": (event, template) -> scope.createCustomer(template)

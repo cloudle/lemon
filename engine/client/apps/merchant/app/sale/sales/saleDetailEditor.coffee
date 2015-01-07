@@ -1,3 +1,5 @@
+scope = logics.sales
+
 lemon.defineHyper Template.saleDetailEditor,
 #  price: ->
 #    Meteor.setTimeout ->
@@ -36,30 +38,12 @@ lemon.defineHyper Template.saleDetailEditor,
 
   events:
     "keyup input[name]": (event, template) ->
-      unitQuality = Number(template.ui.$editQuality.inputmask('unmaskedvalue'))
-      unitPrice   = Number(template.ui.$editPrice.inputmask('unmaskedvalue'))
-      discountCash = Number(template.ui.$editDiscountCash.inputmask('unmaskedvalue'))
-      totalPrice = unitQuality * unitPrice
-      if totalPrice > 0
-        finalPrice = totalPrice - discountCash
-        discountPercent = (discountCash * 100) / totalPrice
-      else
-        finalPrice = 0
-        discountCash = 0
-        discountPercent = 0
+      saleDetail = @
+      Helpers.deferredAction ->
+        scope.updateSaleDetail(saleDetail, template)
+      , "salesCurrentProductCalculateSaleDetail"
 
-      optionDetail =
-        unitQuality: unitQuality
-        unitPrice: unitPrice
-        quality: @conversionQuality * unitQuality
-        price: unitPrice/@conversionQuality
-        discountCash: discountCash
-        discountPercent: discountPercent
-        totalPrice: totalPrice
-        finalPrice: finalPrice
 
-      Schema.orderDetails.update @_id, $set: optionDetail
-      logics.sales.reCalculateOrder(@order)
 
     "click .deleteOrderDetail": (event, template) ->
       Schema.orderDetails.remove @_id

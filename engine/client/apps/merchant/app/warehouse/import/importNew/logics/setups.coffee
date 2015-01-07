@@ -34,8 +34,6 @@ Apps.Merchant.importInit.push (scope) ->
     Schema.products.update Session.get("importCurrentProduct")._id, {$set: editOptions}, (error, result) ->
       if error then console.log error else template.ui.$productName.val Session.get("importCurrentProduct").name
 
-
-
   scope.createProduct = (template)->
     fullText    = Session.get("importManagementSearchFilter")
     nameOptions = splitName(fullText)
@@ -64,3 +62,30 @@ Apps.Merchant.importInit.push (scope) ->
           template.ui.$searchFilter.val(''); Session.set("importManagementSearchFilter", "")
           break
       MetroSummary.updateMetroSummaryBy(['product'])
+
+  scope.updateImportDetail = (importDetail, template) ->
+    currentImport = Session.get("currentImport")
+    if currentImport._id is importDetail.import
+      unitQuality   = Number(template.ui.$editImportQuality.inputmask('unmaskedvalue'))
+      unitPrice     = Number(template.ui.$editImportPrice.inputmask('unmaskedvalue'))
+
+      $expireDate = template.ui.$editExpireDate.inputmask('unmaskedvalue')
+      isValidDate = $expireDate.length is 8 and moment($expireDate, 'DD/MM/YYYY').isValid()
+      if isValidDate then expireDate = moment($expireDate, 'DD/MM/YYYY')._d else expireDate = undefined
+
+      totalPrice = unitQuality * unitPrice
+
+      setOption =
+        unitQuality  : unitQuality
+        unitPrice    : unitPrice
+        importQuality: unitQuality*importDetail.conversionQuality
+        importPrice  : unitPrice/importDetail.conversionQuality
+        totalPrice   : totalPrice
+      setOption.expire = expireDate if expireDate
+      Schema.importDetails.update importDetail._id, $set: setOption
+
+      importTotalPrice = 0
+      Schema.importDetails.find({import: importDetail.import}).forEach((detail)-> importTotalPrice += detail.totalPrice)
+
+      if currentImport.deposit < 0 then currentImport.deposit = 0
+      Schema.imports.update currentImport._id, $set:{totalPrice: importTotalPrice, debit: importTotalPrice - currentImport.deposit}

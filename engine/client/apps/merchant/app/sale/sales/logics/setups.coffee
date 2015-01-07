@@ -41,3 +41,28 @@ Apps.Merchant.salesInit.push (scope) ->
         currentDiscountCash   : order.currentDiscountCash
         currentDiscountPercent: order.currentDiscountPercent
 
+  scope.updateSaleDetail = (saleDetail, template)->
+    unitQuality = Number(template.ui.$editQuality.inputmask('unmaskedvalue'))
+    unitPrice   = Number(template.ui.$editPrice.inputmask('unmaskedvalue'))
+    discountCash = Number(template.ui.$editDiscountCash.inputmask('unmaskedvalue'))
+    totalPrice = unitQuality * unitPrice
+    if totalPrice > 0
+      finalPrice = totalPrice - discountCash
+      discountPercent = (discountCash * 100) / totalPrice
+    else
+      finalPrice = 0
+      discountCash = 0
+      discountPercent = 0
+
+    optionDetail =
+      unitQuality: unitQuality
+      unitPrice: unitPrice
+      quality: saleDetail.conversionQuality * unitQuality
+      price: unitPrice/saleDetail.conversionQuality
+      discountCash: discountCash
+      discountPercent: discountPercent
+      totalPrice: totalPrice
+      finalPrice: finalPrice
+
+    Schema.orderDetails.update saleDetail._id, $set: optionDetail
+    scope.reCalculateOrder(saleDetail.order)

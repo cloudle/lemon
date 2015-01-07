@@ -31,6 +31,7 @@ Apps.Merchant.importInit.push (scope) ->
     navigateAction: (instance) ->
       UserSession.set('currentImport', instance._id)
       Session.set('currentImport', instance)
+      Session.set("currentImportDescription", instance.description)
 
 
 
