@@ -2,7 +2,6 @@ scope = logics.distributorReturn
 
 lemon.defineHyper Template.distributorReturnDetailEditor,
   productName: -> Schema.products.findOne(@product)?.name
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   crossReturnAvailableQuality: ->
     if currentDistributorReturn = Session.get('currentDistributorReturn')
       returnDetail   = @
@@ -43,7 +42,7 @@ lemon.defineHyper Template.distributorReturnDetailEditor,
       returnDetail = @
       Helpers.deferredAction ->
         scope.updateDistributorReturnDetail(returnDetail, template)
-      , "distributorReturnUpdateReturnDetail"
+      , "customerReturnUpdateReturnDetail"
 
     "click .deleteReturnDetail": (event, template) ->
       returnDetail = @

@@ -3,10 +3,12 @@ Apps.Merchant.productManagementReactive.push (scope) ->
     products = Schema.products.find({merchant: Session.get("myProfile").currentMerchant}).fetch()
     scope.managedProductList = []
     if Session.get("productManagementSearchFilter")?.length > 0
-      scope.managedProductList = _.filter products, (item) ->
-        unsignedTerm = Helpers.RemoveVnSigns Session.get("productManagementSearchFilter")
-        unsignedName = Helpers.RemoveVnSigns item.name
-        unsignedName.indexOf(unsignedTerm) > -1
+      unsignedSearch = Helpers.RemoveVnSigns Session.get("productManagementSearchFilter")
+
+      for product in products
+        unsignedName = Helpers.RemoveVnSigns product.name
+        scope.managedProductList.push product if unsignedName.indexOf(unsignedSearch) > -1
+
     else
       groupedProducts = _.groupBy products, (product) -> product.name.substr(0, 1).toLowerCase()
       scope.managedProductList.push {key: key, childs: childs} for key, childs of groupedProducts

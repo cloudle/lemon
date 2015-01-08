@@ -1,6 +1,5 @@
 #lemon.defineHyper Template.distributorManagementReturnDetailEditor,
 #  productName: -> @name ? Schema.products.findOne(@product)?.name
-#  unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
 #  crossReturnAvailableQuality: ->
 #    currentProduct = Schema.productDetails.find({import: @import, product: @product}).fetch()
 #    sameProducts = Schema.returnDetails.find({return: @return, productDetail: @productDetail}).fetch()

@@ -39,11 +39,14 @@ lemon.defineHyper Template.saleDetailEditor,
   events:
     "keyup input[name]": (event, template) ->
       saleDetail = @
-      Helpers.deferredAction ->
+      if event.which is 13
         scope.updateSaleDetail(saleDetail, template)
-      , "salesCurrentProductCalculateSaleDetail"
-
-
+        Session.set("salesEditingRow")
+        Session.set("salesEditingRowId")
+      else
+        Helpers.deferredAction ->
+          scope.updateSaleDetail(saleDetail, template)
+        , "salesCurrentProductCalculateSaleDetail"
 
     "click .deleteOrderDetail": (event, template) ->
       Schema.orderDetails.remove @_id

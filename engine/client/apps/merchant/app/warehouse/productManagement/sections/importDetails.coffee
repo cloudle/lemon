@@ -14,7 +14,6 @@ lemon.defineWidget Template.productManagementImportDetails,
   totalPrice: -> @unitPrice * @unitQuality
   expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY') else 'KHÔNG'
   saleQuality: -> @quality - @returnQuality
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
 
   distributorReturnQuality: (temp)->
     console.log @
@@ -31,7 +30,6 @@ lemon.defineWidget Template.productManagementImportDetails,
     }
 
 lemon.defineWidget Template.productManagementReturnDetails,
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   returnQuality: ->
     for detail in @productDetail
       if detail.productDetail is UI._templateInstance().data.productDetail._id

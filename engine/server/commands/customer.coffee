@@ -52,35 +52,34 @@ Meteor.methods
           }
           tempBeforeDebtBalance += currentSale.debtBalanceChange
 
-          Schema.transactions.find({latestSale: currentSale._id}).forEach(
-            (transaction)->
-              if transaction.debtBalanceChange > 0
-                customerOption.salePaid += transaction.debtBalanceChange
-                customerOption.saleDebt -= transaction.debtBalanceChange
+          transactions = Schema.transactions.find({latestSale: currentSale._id}).fetch()
+          returns      = Schema.returns.find({timeLineSales: currentSale._id}).fetch()
+          dependsData = _.sortBy transactions.concat(returns), (item) -> item.version.createdAt
+
+          for data in dependsData
+            if data.latestSale
+              if data.debtBalanceChange > 0
+                customerOption.salePaid += data.debtBalanceChange
+                customerOption.saleDebt -= data.debtBalanceChange
               else
-                customerOption.saleDebt      -= transaction.debtBalanceChange
-                customerOption.saleTotalCash -= transaction.debtBalanceChange
+                customerOption.saleDebt      -= data.debtBalanceChange
+                customerOption.saleTotalCash -= data.debtBalanceChange
 
-              Schema.transactions.update transaction._id, $set:{
+              Schema.transactions.update data._id, $set:{
                 beforeDebtBalance: tempBeforeDebtBalance
-                latestDebtBalance: tempBeforeDebtBalance - transaction.debtBalanceChange
+                latestDebtBalance: tempBeforeDebtBalance - data.debtBalanceChange
               }
-              tempBeforeDebtBalance -= transaction.debtBalanceChange
-          )
+              tempBeforeDebtBalance -= data.debtBalanceChange
+            else
+              customerOption.saleDebt      -= data.debtBalanceChange
+              customerOption.saleTotalCash -= data.debtBalanceChange
 
-          Schema.returns.find({timeLineSales: currentSale._id, status: 2}).forEach(
-            (currentReturn) ->
-              customerOption.saleDebt      -= currentReturn.debtBalanceChange
-              customerOption.saleTotalCash -= currentReturn.debtBalanceChange
-
-              Schema.returns.update currentReturn._id, $set:{
+              Schema.returns.update data._id, $set:{
                 beforeDebtBalance: tempBeforeDebtBalance
-                latestDebtBalance: tempBeforeDebtBalance - currentReturn.debtBalanceChange
+                latestDebtBalance: tempBeforeDebtBalance - data.debtBalanceChange
               }
-              tempBeforeDebtBalance -= currentReturn.debtBalanceChange
-          )
+              tempBeforeDebtBalance -= data.debtBalanceChange
       )
-
       Schema.customers.update customer._id, $set: customerOption
 
   updateCustomerDebitAndPurchase: ->
@@ -170,7 +169,7 @@ Meteor.methods
           currentTransaction.debtDate.getMinutes(),
           currentTransaction.debtDate.getSeconds()
         ); if validDateTransaction < new Date() then 'Transaction vượt quá 24h.'
-      currentSales = Schema.sales.findOne(currentTransaction.latestSale); if !currentSales then throw 'Không tìm thấy Sale'
+      currentSale = Schema.sales.findOne(currentTransaction.latestSale); if !currentSale then throw 'Không tìm thấy Sale'
 
       customerIncOption =
         salePaid: 0
@@ -184,12 +183,16 @@ Meteor.methods
         customerIncOption.saleDebt = currentTransaction.debtBalanceChange
         customerIncOption.saleTotalCash = currentTransaction.debtBalanceChange
       Schema.transactions.remove currentTransaction._id
-      if currentSales.debtBalanceChange is 0 and Schema.transactions.find(latestSale: currentSales._id).count() is 0 then Schema.sales.remove currentSales._id
+      if currentSale.debtBalanceChange is 0 and Schema.transactions.find(latestSale: currentSale._id).count() is 0 then Schema.sales.remove currentSales._id
 
-      tempBeforeDebtBalance = currentSales.beforeDebtBalance
-      Schema.sales.find({buyer: currentSales.buyer, 'version.createdAt': {$gte: currentSales.version.createdAt} }
+      tempBeforeDebtBalance = currentSale.beforeDebtBalance
+      Schema.sales.find({buyer: currentSale.buyer, 'version.createdAt': {$gte: currentSale.version.createdAt} }
       , {sort: {'version.createdAt': 1}}).forEach(
         (sale) ->
+          transactions = Schema.transactions.find({latestSale: sale._id}).fetch()
+          returns = Schema.returns.find({timeLineSales: sale._id}).fetch()
+          dependsData = _.sortBy transactions.concat(returns), (item) -> item.version.createdAt
+
           #cập nhật phiếu bán hàng
           Schema.sales.update sale._id, $set:{
             beforeDebtBalance: tempBeforeDebtBalance
@@ -197,25 +200,21 @@ Meteor.methods
           }
           tempBeforeDebtBalance += sale.debtBalanceChange
 
-          #cập nhật phiếu công nợ
-          Schema.transactions.find({latestSale: sale._id}).forEach(
-            (transaction) ->
-              Schema.transactions.update transaction._id, $set:{
+          for data in dependsData
+            if data.latestSale
+              #cập nhật phiếu công nợ
+              Schema.transactions.update data._id, $set:{
                 beforeDebtBalance: tempBeforeDebtBalance
-                latestDebtBalance: tempBeforeDebtBalance - transaction.debtBalanceChange
+                latestDebtBalance: tempBeforeDebtBalance - data.debtBalanceChange
               }
-              tempBeforeDebtBalance -= transaction.debtBalanceChange
-          )
-
-          #cập nhật phiếu trả hàng
-          Schema.returns.find({timeLineSales: sale._id}).forEach(
-            (currentReturn) ->
-              Schema.returns.update currentReturn._id, $set:{
+              tempBeforeDebtBalance -= data.debtBalanceChange
+            else
+              #cập nhật phiếu trả hàng
+              Schema.returns.update data._id, $set:{
                 beforeDebtBalance: tempBeforeDebtBalance
-                latestDebtBalance: tempBeforeDebtBalance - currentReturn.debtBalanceChange
+                latestDebtBalance: tempBeforeDebtBalance - data.debtBalanceChange
               }
-              tempBeforeDebtBalance -= currentReturn.debtBalanceChange
-          )
+              tempBeforeDebtBalance -= data.debtBalanceChange
         )
       Schema.customers.update currentTransaction.owner, $inc: customerIncOption
     catch error

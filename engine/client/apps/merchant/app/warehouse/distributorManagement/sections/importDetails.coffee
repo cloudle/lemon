@@ -10,7 +10,6 @@ lemon.defineWidget Template.distributorManagementImportDetails,
 
 
 
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   quality: -> if @conversionQuality then @unitQuality else @importQuality
   totalPrice: -> if @conversionQuality then @unitQuality*@unitPrice else @importQuality*@importPrice
   importPrice: -> if @conversionQuality then @unitPrice else @importPrice

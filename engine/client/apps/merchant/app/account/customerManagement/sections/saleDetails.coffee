@@ -7,8 +7,8 @@ lemon.defineWidget Template.customerManagementSaleDetails,
     latestDebtBalance = @latestDebtBalance + Session.get("customerManagementCurrentCustomer").customSaleDebt
     if latestDebtBalance >= 0 then 'receive' else 'paid'
   isShowDeleteTransaction: -> new Date(@debtDate.getFullYear(), @debtDate.getMonth(), @debtDate.getDate() + 1, @debtDate.getHours(), @debtDate.getMinutes(), @debtDate.getSeconds()) > new Date()
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   unitSaleQuality: -> Math.round(@quality/@conversionQuality*100)/100
+  isLatestPaids: -> if @latestSale then true else false
   showDeleteSales: ->
     if @creator is Session.get('myProfile').user and @paymentsDelivery is 0
       new Date(@version.createdAt.getFullYear(), @version.createdAt.getMonth(), @version.createdAt.getDate() + 1, @version.createdAt.getHours(), @version.createdAt.getMinutes(), @version.createdAt.getSeconds()) > new Date()
@@ -25,6 +25,13 @@ lemon.defineWidget Template.customerManagementSaleDetails,
 
   latestPaids: -> Schema.transactions.find({latestSale: @_id}, {sort: {debtDate: 1}})
   returns: -> Schema.returns.find({timeLineSales: @_id})
+
+  dependsData: ->
+    transactions = Schema.transactions.find({latestSale: @_id}, {sort: {debtDate: 1}}).fetch()
+    returns = Schema.returns.find({timeLineSales: @_id}).fetch()
+    combined = transactions.concat(returns)
+    sorted = _.sortBy combined, (item) -> item.version.createdAt
+
   returnDetails: -> Schema.returnDetails.find({return: @_id})
 
   events:

@@ -25,6 +25,7 @@ Template.registerHelper 'productCodeFromId', (id) -> Schema.products.findOne(id)
 Template.registerHelper 'skullsNameFromId', (id) -> Schema.products.findOne(id)?.skulls
 Template.registerHelper 'userNameFromId', (id) -> Schema.userProfiles.findOne({user: id})?.fullName ? Meteor.users.findOne(id)?.emails[0].address
 Template.registerHelper 'ownerNameFromId', (id) -> Schema.customers.findOne(id)?.name
+Template.registerHelper 'unitName', -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
 
 Template.registerHelper 'allowAction', (val) -> if val then '' else 'disabled'
 

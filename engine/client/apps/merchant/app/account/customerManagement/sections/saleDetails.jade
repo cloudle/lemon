@@ -23,35 +23,36 @@ template(name="customerManagementSaleDetails")
       td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
       td.summary-total(align="right"): span.s5 <b>{{formatNumber finalPrice}}</b>
 
-  each latestPaids
-    tr.paid-row.top(class="{{receivableClass}}")
-      td.has-commands
-        span.note {{description}}, {{momentCalendar debtDate}}
-        .commands
-          if isShowDeleteTransaction
-            .lemon.rounded.tiny.btn.red.deleteTransaction: span.icon-minus-4
+  each dependsData
+    if isLatestPaids
+      tr.paid-row.top(class="{{receivableClass}}")
+        td.has-commands
+          span.note {{description}}, {{momentCalendar debtDate}}
+          .commands
+            if isShowDeleteTransaction
+              .lemon.rounded.tiny.btn.red.deleteTransaction: span.icon-minus-4
 
-      td.number(colspan="3")
-        span.icon-feather-1
-        span.s4(class="{{finalReceivableClass}}") <b>{{formatNumberAbs totalDebtBalance}}</b>
-      td.number: span(class="{{receivableClass}}") <b>{{formatNumberAbs debtBalanceChange}}</b>
+        td.number(colspan="3")
+          span.icon-feather-1
+          span.s4(class="{{finalReceivableClass}}") <b>{{formatNumberAbs totalDebtBalance}}</b>
+        td.number: span(class="{{receivableClass}}") <b>{{formatNumberAbs debtBalanceChange}}</b>
+    else
+      tr.header-row
+        td.has-commands(colspan="5")
+          | .
+          .bill-header
+            |<b>Trả Hàng: {{momentCalendar version.createdAt}} </b>
+            if comment
+              |{{comment}}
+      each returnDetails
+        tr.detail-row.edit-detail
+          td.first-column {{productName}}
+          td.number {{formatNumber unitReturnQuality}}
+          td(align="center") {{unitName}}
+          td.number {{formatNumber unitReturnsPrice}}
+          td.last-column.number {{formatNumber finalPrice}}
 
-  each returns
-    tr.header-row
-      td.has-commands(colspan="5")
-        | .
-        .bill-header
-          |<b>Trả Hàng: {{momentCalendar version.createdAt}} </b>
-          if comment
-            |{{comment}}
-    each returnDetails
-      tr.detail-row.edit-detail
-        td.first-column {{productName}}
-        td.number {{formatNumber unitReturnQuality}}
-        td(align="center") {{unitName}}
-        td.number {{formatNumber unitReturnsPrice}}
-        td.last-column.number {{formatNumber finalPrice}}
-    tr.detail-row.summary-row
-      td
-      td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
-      td.summary-total(align="right"): span.s5 <b>{{formatNumber debtBalanceChange}}</b>
+      tr.detail-row.summary-row
+        td
+        td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
+        td.summary-total(align="right"): span.s5 <b>{{formatNumber debtBalanceChange}}</b>

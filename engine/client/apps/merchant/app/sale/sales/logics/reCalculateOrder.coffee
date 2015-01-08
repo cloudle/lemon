@@ -33,17 +33,20 @@ calculateDefaultOrder = (currentOrder, orderDetails)->
   for detail in orderDetails
     orderUpdate.totalPrice += detail.quality * detail.price
     orderUpdate.saleCount += detail.quality
-    if currentOrder.billDiscount
-      orderUpdate.discountCash = orderUpdate.discountCash
-    else
-      orderUpdate.discountCash += detail.discountCash
-  orderUpdate.discountPercent = orderUpdate.discountCash/orderUpdate.totalPrice*100
-  orderUpdate.finalPrice      = orderUpdate.totalPrice - orderUpdate.discountCash
+
+    if currentOrder.billDiscount then orderUpdate.discountCash = orderUpdate.discountCash
+    else orderUpdate.discountCash += detail.discountCash
+
+  if orderUpdate.totalPrice is 0 then orderUpdate.discountPercent = 0
+  else orderUpdate.discountPercent = orderUpdate.discountCash/orderUpdate.totalPrice*100
+
+  orderUpdate.finalPrice = orderUpdate.totalPrice - orderUpdate.discountCash
   orderUpdate
 
 updateOrderByOrderDetail = (currentOrder, orderDetails)->
   orderOptionDefault = calculateDefaultOrder(currentOrder, orderDetails)
   updateOrder = calculateOrderDeposit(currentOrder, orderOptionDefault)
+
   if currentOrder.paymentMethod is 0
     updateOrder.currentDeposit = updateOrder.finalPrice
     updateOrder.deposit = updateOrder.finalPrice
@@ -89,8 +92,3 @@ Apps.Merchant.salesInit.push ->
         updateOrderByOrderDetail(currentOrder, orderDetails)
       else
         updateOrderByOrderDetailEmpty(currentOrder)
-
-
-
-
-

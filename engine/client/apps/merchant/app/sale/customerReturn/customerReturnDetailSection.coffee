@@ -8,7 +8,6 @@ lemon.defineHyper Template.customerReturnDetailSection,
   editingMode: -> Session.get("customerReturnEditingRow")?._id is @_id
   editingData: -> Session.get("customerReturnEditingRow")
   productName: -> Schema.products.findOne(@product)?.name
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   returnComment: -> Session.get("currentCustomerReturnComment") ? Session.get("currentCustomerReturn")?.comment
 
   crossReturnAvailableQuality: ->

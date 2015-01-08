@@ -6,7 +6,6 @@ lemon.defineWidget Template.productManagementBasicImportDetails,
   detailEditingMode: -> Session.get("productManagementDetailEditingRow")?._id is @_id
   detailEditingData: -> Session.get("productManagementDetailEditingRow")
   expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY') else 'KHÔNG'
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   totalPrice: -> @unitPrice*@unitQuality
   unitSaleQuality: -> Math.round(@quality/@conversionQuality*100)/100
   isShowDisableMode: -> !Session.get("productManagementCurrentProduct")?.basicDetailModeEnabled
