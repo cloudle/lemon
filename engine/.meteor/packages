@@ -14,7 +14,6 @@ zimme:iron-router-active
 mrt:nvd3js
 d3
 
-meteorhacks:zones
 meteorhacks:fast-render
 meteorhacks:subs-manager
 
@@ -38,3 +37,4 @@ multiply:iron-router-progress
 meteorhacks:kadira
 
 tmeasday:publish-counts
+matteodem:easy-search

@@ -1,10 +1,11 @@
 template(name="sales")
   #header
     .editor-row
-      .editor-wrapper(style="width: 180px; margin-right: 5px;")
+      .editor-wrapper.dual-spacer
+      .editor-wrapper(style="width: 200px; margin-right: 5px;")
         span.ilabel.optional nhân viên
         +iSelect(options=sellerSelectOptions class="field")
-      .editor-wrapper(style="width: 170px")
+      .editor-wrapper(style="width: 220px")
         span.ilabel.optional khách hàng
         +iSelect(options=customerSelectOptions class="field")
 
@@ -102,13 +103,14 @@ template(name="sales")
         +iSpinEdit(options=billPercentDiscountOptions)
 
     .editor-row
-      .editor-wrapper(style="width: 100px")
+      .editor-wrapper.dual-spacer
+      .editor-wrapper(style="width: 200px")
         span.ilabel.optional thanh toán
         +iSelect(options=paymentMethodSelectOption class="field")
-      .editor-wrapper(style="width: 110px")
+      .editor-wrapper(style="width: 220px")
         span.ilabel.optional giao hàng
         +iSelect(options=paymentsDeliverySelectOption class="field")
-      .editor-wrapper(style="width: 170px")
+      .editor-wrapper(style="width: 160px")
         span.ilabel.center tiền nhận vào
         +iSpinEdit(options=depositOptions)
 

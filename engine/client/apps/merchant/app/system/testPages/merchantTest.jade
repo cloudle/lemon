@@ -3,11 +3,22 @@ template(name="merchantTest")
     .caption-row: .title TEST PAGE
     .btn.default.defferedBtn Click
     input.defferedTxt(type="text")
-  #content
-    .segments-container.size3
-      #step1.segments-column
-        h1 col1
-      #step2.segments-column
-        h1 col2
-      #step3.segments-column
-        h1 col3
+  #content.modern
+    .dual-content
+      .dual-detail-wrapper
+        .dual-detail
+          .nano: .nano-content
+            span content
+
+      .dual-addon
+        .search-filter.icon-search-8
+          +esInput(index="products" name='searchFilter' placeholder="tìm sản phẩm...")
+        .nano: .nano-content
+          +ifEsIsSearching(index="products")
+            span Đang tìm...
+          else
+            +esEach(index="products")
+              span {{name}} <br />
+          +ifEsHasNoResults(index="players")
+            span Không tìm thấy!
+
