@@ -36,10 +36,10 @@ lemon.defineApp Template.import,
         Session.set('importCurrentProduct', Schema.products.findOne currentImport.currentProduct)
         scope.currentImportDetails = ImportDetail.findBy(currentImport._id)
 
-  rendered: ->
-    logics.import.templateInstance = @
-    @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
-    @ui.$depositCash.val Session.get('currentImport')?.deposit ? 0
+#  rendered: ->
+#    logics.import.templateInstance = @
+#    @ui.$depositCash.inputmask("numeric", {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11})
+#    @ui.$depositCash.val Session.get('currentImport')?.deposit ? 0
 
   events:
 #    "click .add-product": (event, template) -> $(template.find '#addProduct').modal()
@@ -53,6 +53,7 @@ lemon.defineApp Template.import,
 #    'click .createImportDetail': (event, template)-> scope.addImportDetail(event, template)
 
     "click .print-command": -> window.print()
+
     "click .createProductBtn": (event, template) -> scope.createProduct(template)
     "input .search-filter": (event, template) ->
       Helpers.deferredAction ->
@@ -60,9 +61,9 @@ lemon.defineApp Template.import,
       , "importManagementSearchProduct"
 
     "keypress input[name='searchFilter']": (event, template)->
-      if event.which is 13 and Session.get("importManagementSearchFilter")?.trim().length > 1
-        scope.createProduct(template)
+      scope.createProduct(template) if event.which is 13 and Session.get("importManagementSearchFilter")?.trim().length > 1
 
+    "click .enableEditProduct": -> Session.set('showEditProduct', !Session.get('showEditProduct'))
     "click .product-selection": (event, template) ->
       if currentImport = Session.get('currentImport')
         currentImport.currentProduct = @product._id
@@ -99,13 +100,6 @@ lemon.defineApp Template.import,
 #
 #          $("[name=productPrice]").val(product.price)
 #          $("[name=productImportPrice]").val(product.importPrice)
-
-    "click .enableEditProduct": -> Session.set('showEditProduct', !Session.get('showEditProduct'))
-
-    'keyup .deposit': (event, template)->
-      if currentImport = Session.get('currentImport')
-        deposit = Math.abs($(template.find(".deposit")).inputmask('unmaskedvalue'))
-        Schema.imports.update(currentImport._id, $set:{deposit: deposit, debit: currentImport.totalPrice - deposit})
 
     'click .addImportDetail': (event, template)->
       if importDetail = Schema.importDetails.findOne(scope.addImportDetail(@))

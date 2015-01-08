@@ -105,15 +105,15 @@ template(name="import")
 
 
 
-  #footer
+  #footer.modern
     .editor-row
+      .editor-wrapper.dual-spacer
       .editor-wrapper(style="width:180px")
         span.ilabel.optional công ty cung cấp
         +iSelect(options=distributorSelectOptions class="field")
-      .editor-wrapper(style="width: 140px")
-        span.ilabel.optional tiền đã trả
-        input.deposit(name='depositCash')
-
+      .editor-wrapper(style="width: 160px")
+        span.ilabel.center tiền nhận vào
+        +iSpinEdit(options=depositOptions)
 
       //if showSubmit
       .editor-wrapper.right(style="width: 120px")

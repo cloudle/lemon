@@ -35,6 +35,7 @@ importRoute =
       qualityOptions    : scope.qualityOptions
       importPriceOptions: scope.importPriceOptions
       salePriceOptions  : scope.salePriceOptions
+      depositOptions: scope.depositOptions
 
       currentImport: Session.get('currentImport')
       importDetails:

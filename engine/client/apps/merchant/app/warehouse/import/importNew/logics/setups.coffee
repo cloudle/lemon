@@ -89,3 +89,15 @@ Apps.Merchant.importInit.push (scope) ->
 
       if currentImport.deposit < 0 then currentImport.deposit = 0
       Schema.imports.update currentImport._id, $set:{totalPrice: importTotalPrice, debit: importTotalPrice - currentImport.deposit}
+
+  scope.depositOptions =
+    reactiveSetter: (val) ->
+      if currentImport = Session.get("currentImport")
+        Schema.imports.update(currentImport._id, $set:{deposit: val, debit: currentImport.totalPrice - val})
+    reactiveValue: -> Session.get("currentImport")?.deposit ? 0
+    reactiveMax: -> 99999999999
+    reactiveMin: -> 0
+    reactiveStep: -> 1000
+    others:
+      forcestepdivisibility: 'none'
+
