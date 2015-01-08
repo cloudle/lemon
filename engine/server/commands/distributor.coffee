@@ -207,23 +207,19 @@ Meteor.methods
           }
           tempBeforeDebtBalance += myImport.debtBalanceChange
 
-          Schema.transactions.find({latestImport: myImport._id}).forEach(
-            (transaction) ->
-              Schema.transactions.update transaction._id, $set:{
-                beforeDebtBalance: tempBeforeDebtBalance
-                latestDebtBalance: tempBeforeDebtBalance - transaction.debtBalanceChange
-              }
-              tempBeforeDebtBalance -= transaction.debtBalanceChange
-          )
+          transactions = Schema.transactions.find({latestImport: myImport._id}).fetch()
+          returns      = Schema.returns.find({timeLineImport: myImport._id}).fetch()
+          dependsData = _.sortBy transactions.concat(returns), (item) -> item.version.createdAt
 
-          Schema.returns.find({timeLineImport: myImport._id}).forEach(
-            (currentReturn) ->
-              Schema.returns.update currentReturn._id, $set:{
-                beforeDebtBalance: tempBeforeDebtBalance
-                latestDebtBalance: tempBeforeDebtBalance - currentReturn.debtBalanceChange
-              }
-              tempBeforeDebtBalance -= currentReturn.debtBalanceChange
-          )
+          for data in dependsData
+            optionSet =
+              beforeDebtBalance: tempBeforeDebtBalance
+              latestDebtBalance: tempBeforeDebtBalance - data.debtBalanceChange
+
+            if data.latestImport then Schema.transactions.update data._id, $set: optionSet
+            else Schema.returns.update data._id, $set: optionSet
+
+            tempBeforeDebtBalance -= data.debtBalanceChange
       )
 
       Schema.distributors.update currentImport.distributor, $inc: distributorIncOption

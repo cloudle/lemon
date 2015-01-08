@@ -31,7 +31,7 @@ Meteor.methods
         updateCustomer(currentSale.buyer, customerOption)
         MetroSummary.updateMetroSummaryBySale(currentSale._id)
         if currentSale.deposit > 0
-          Meteor.call 'createNewReceiptCashOfSales', currentSale.buyer, currentSale.deposit
+          Meteor.call 'createNewReceiptCashOfSales', currentSale.buyer, currentSale.deposit, 'Tiền Mặt'
 #        Meteor.call 'saleConfirmByAccounting', profile, currentSale._id
 
 

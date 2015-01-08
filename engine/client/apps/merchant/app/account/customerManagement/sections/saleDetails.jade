@@ -17,6 +17,7 @@ template(name="customerManagementSaleDetails")
       td(align="center") {{unitName}}
       td.number {{formatNumber unitPrice}}
       td.last-column.number {{formatNumber finalPrice}}
+
   if saleDetailCount
     tr.detail-row.summary-row
       td.note
@@ -24,7 +25,7 @@ template(name="customerManagementSaleDetails")
       td.summary-total(align="right"): span.s5 <b>{{formatNumber finalPrice}}</b>
 
   each dependsData
-    if isLatestPaids
+    if latestSale
       tr.paid-row.top(class="{{receivableClass}}")
         td.has-commands
           span.note {{description}}, {{momentCalendar debtDate}}

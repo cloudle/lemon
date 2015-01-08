@@ -121,14 +121,14 @@ createTransactionOfCustomImport = (profile, distributor, latestCustomImportId, d
 
   Schema.transactions.insert option
 
-createTransactionOfImport = (profile, distributor, latestImportId, debtCash, paidDate, description)->
+createTransactionOfImport = (profile, distributor, latestImport, debtCash, paidDate, description)->
   option =
     parentMerchant    : profile.parentMerchant
     merchant          : profile.currentMerchant
     warehouse         : profile.currentWarehouse
     creator           : profile.user
     owner             : distributor._id
-    latestImport      : latestImportId
+    latestImport      : latestImport._id
     group             : 'import'
     totalCash         : debtCash
     debtDate          : paidDate
@@ -142,29 +142,8 @@ createTransactionOfImport = (profile, distributor, latestImportId, debtCash, pai
   else
     option.description = if description?.length > 0 then description else 'Mượn Tiền'
     option.receivable  = true
-
   Schema.transactions.insert option
 
-reUpdateTransactionAndReturn = (latestImport)->
-  tempBeforeDebtBalance = latestImport.latestDebtBalance
-  Schema.transactions.find({latestImport: latestImport._id}).forEach(
-    (transaction) ->
-      Schema.transactions.update transaction._id, $set:{
-        beforeDebtBalance: tempBeforeDebtBalance
-        latestDebtBalance: tempBeforeDebtBalance - transaction.debtBalanceChange
-      }
-      tempBeforeDebtBalance = tempBeforeDebtBalance - transaction.debtBalanceChange
-  )
-
-
-  Schema.returns.find({timeLineImport: latestImport._id}).forEach(
-    (currentReturn) ->
-      Schema.returns.update currentReturn._id, $set:{
-        beforeDebtBalance: tempBeforeDebtBalance
-        latestDebtBalance: tempBeforeDebtBalance - currentReturn.debtBalanceChange
-      }
-      tempBeforeDebtBalance = tempBeforeDebtBalance - currentReturn.debtBalanceChange
-  )
 
 
 Meteor.methods
@@ -275,13 +254,8 @@ Meteor.methods
   createNewReceiptCashOfImport: (distributorId, debtCash, description)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant: profile.parentMerchant})
-        if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
-          if latestTransaction = Schema.transactions.findOne({
-            owner: distributor._id
-            latestImport: latestImport._id
-            parentMerchant: profile.parentMerchant
-          }, {sort: {debtDate: -1, 'version.createdAt': -1}}) then updateTransactionAllowDelete(latestTransaction._id)
-        else
+        latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})
+        if !latestImport
           importOption =
             parentMerchant: profile.parentMerchant
             merchant      : profile.currentMerchant
@@ -292,9 +266,9 @@ Meteor.methods
             submitted     : true
           newImportId = Schema.imports.insert importOption
           latestImport = Schema.imports.findOne(newImportId)
+
         if latestImport
-          createTransactionOfImport(profile, distributor, latestImport._id, debtCash,  new Date(), description)
-          reUpdateTransactionAndReturn(latestImport)
+          createTransactionOfImport(profile, distributor, latestImport, debtCash,  new Date(), description)
           updateCustomImportDenyDelete(latestImport._id)
 
           incCustomerOption = {importDebt: -debtCash}

@@ -7,9 +7,6 @@ lemon.defineWidget Template.distributorManagementImportDetails,
   totalDebtBalance: -> @latestDebtBalance + Session.get("distributorManagementCurrentDistributor")?.customImportDebt
   skulls: -> Schema.products.findOne(@product)?.skulls?[0]
 
-
-
-
   quality: -> if @conversionQuality then @unitQuality else @importQuality
   totalPrice: -> if @conversionQuality then @unitQuality*@unitPrice else @importQuality*@importPrice
   importPrice: -> if @conversionQuality then @unitPrice else @importPrice
@@ -25,15 +22,16 @@ lemon.defineWidget Template.distributorManagementImportDetails,
     importId = UI._templateInstance().data._id
     Schema.productDetails.find({import: importId}, {sort: {'version.createdAt': 1}}).count()
 
-
   importDetails: ->
     importId = UI._templateInstance().data._id
     Schema.productDetails.find {import: importId}, {sort: {'version.createdAt': 1}}
 
-  latestPaids: -> Schema.transactions.find({latestImport: @_id})
-  returns: -> Schema.returns.find({timeLineImport: @_id})
-  returnDetails: -> Schema.returnDetails.find({return: @_id})
+  dependsData: ->
+    transactions = Schema.transactions.find({latestImport: @_id}).fetch()
+    returns = Schema.returns.find({timeLineImport: @_id}).fetch()
+    _.sortBy transactions.concat(returns), (item) -> item.version.createdAt
 
+  returnDetails: -> Schema.returnDetails.find({return: @_id})
 
   events:
     "click .deleteImport": (event, template) ->

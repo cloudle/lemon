@@ -106,7 +106,7 @@ Meteor.methods
           option.latestDebtBalance = customer.saleDebt - debtCash
           Schema.transactions.insert option
 
-          Schema.transactions.find({latestSale: latestSale._id}).forEach(
+          Schema.transactions.find({latestSale: latestSale._id}, {sort: {'version.createdAt': 1}}).forEach(
             (transaction) ->
               Schema.transactions.update transaction._id, $set:{
                 beforeDebtBalance: tempBeforeDebtBalance
@@ -115,15 +115,14 @@ Meteor.methods
               tempBeforeDebtBalance = tempBeforeDebtBalance - transaction.debtBalanceChange
           )
 
-
-          Schema.returns.find({timeLineSales: latestSale._id}).forEach(
-            (currentReturn) ->
-              Schema.returns.update currentReturn._id, $set:{
-                beforeDebtBalance: tempBeforeDebtBalance
-                latestDebtBalance: tempBeforeDebtBalance - currentReturn.debtBalanceChange
-              }
-              tempBeforeDebtBalance = tempBeforeDebtBalance - currentReturn.debtBalanceChange
-          )
+#          Schema.returns.find({timeLineSales: latestSale._id}).forEach(
+#            (currentReturn) ->
+#              Schema.returns.update currentReturn._id, $set:{
+#                beforeDebtBalance: tempBeforeDebtBalance
+#                latestDebtBalance: tempBeforeDebtBalance - currentReturn.debtBalanceChange
+#              }
+#              tempBeforeDebtBalance = tempBeforeDebtBalance - currentReturn.debtBalanceChange
+#          )
 
           Schema.customers.update customer._id, $inc: incCustomerOption
 
