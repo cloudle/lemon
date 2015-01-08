@@ -15,32 +15,30 @@ getNextVersion = (currentVersion, step) ->
 Schema.add 'systems', "System", class System
   @init: -> Schema.systems.insert({version: '0.0.1' }) if Schema.systems.find().count() is 0
   @upgrade: (step = 0.1) ->
-    zone.run =>
-      currentVersion = @schema.findOne()
-      nextVersion = getNextVersion(currentVersion, step)
+    currentVersion = @schema.findOne()
+    nextVersion = getNextVersion(currentVersion, step)
 
-      updates = Schema.kaizens.find({$and: [doneKPIs, finishAfterCurrentVersion(currentVersion)]}).fetch()
+    updates = Schema.kaizens.find({$and: [doneKPIs, finishAfterCurrentVersion(currentVersion)]}).fetch()
 
-      if updates.length is 0
-        console.log "Upgrading cancelled, there is no change since previous update!"
-      else
-        for update in updates
-          Schema.migrations.insert
-            systemVersion: nextVersion
-            description: update.description
-            creator: update.creator
-            owner: update.owner
-            group: [update.group]
+    if updates.length is 0
+      console.log "Upgrading cancelled, there is no change since previous update!"
+    else
+      for update in updates
+        Schema.migrations.insert
+          systemVersion: nextVersion
+          description: update.description
+          creator: update.creator
+          owner: update.owner
+          group: [update.group]
 
-        @schema.update(currentVersion._id, {$set: {version: nextVersion}})
-        console.log "System successfully upgraded to version #{nextVersion}"
+      @schema.update(currentVersion._id, {$set: {version: nextVersion}})
+      console.log "System successfully upgraded to version #{nextVersion}"
 
   @checkUpdates: ->
-    zone.run =>
-      currentVersion = Schema.systems.findOne()
-      updates = Schema.kaizens.find({$and: [doneKPIs, finishAfterCurrentVersion(currentVersion)]}).fetch()
-      console.log "There is #{updates.length} updates since previous version:"
-      console.log "#{update.group}: #{update.description}" for update in updates
+    currentVersion = Schema.systems.findOne()
+    updates = Schema.kaizens.find({$and: [doneKPIs, finishAfterCurrentVersion(currentVersion)]}).fetch()
+    console.log "There is #{updates.length} updates since previous version:"
+    console.log "#{update.group}: #{update.description}" for update in updates
 
 if Meteor.isClient
   Meteor.subscribe('system')

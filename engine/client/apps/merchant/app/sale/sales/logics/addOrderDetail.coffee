@@ -52,28 +52,27 @@ checkingAddOrderDetail= (newOrderDetail, orderDetails)->
 
 Apps.Merchant.salesInit.push ->
   logics.sales.addOrderDetail = (productId, unitId = null, quality = 1, price = null, discountCash = null)->
-    zone.run =>
-      currentOrder = Session.get('currentOrder')
-      if !product = Schema.products.findOne(productId) then return console.log('productId không tồn tại.')
-      if unitId
-        productUnit = Schema.productUnits.findOne({_id: unitId, product: productId})
-        if !productUnit then return console.log('unitId không tồn tại.')
-      else productUnit = undefined
+    currentOrder = Session.get('currentOrder')
+    if !product = Schema.products.findOne(productId) then return console.log('productId không tồn tại.')
+    if unitId
+      productUnit = Schema.productUnits.findOne({_id: unitId, product: productId})
+      if !productUnit then return console.log('unitId không tồn tại.')
+    else productUnit = undefined
 
-      if price is null or price < 0
-        if productUnit then price = productUnit.price
-        else price = product.price
+    if price is null or price < 0
+      if productUnit then price = productUnit.price
+      else price = product.price
 
-      if discountCash is null || discountCash < 0 then discountCash = 0
-      else if discountCash > quality * price then discountCash = quality * price
+    if discountCash is null || discountCash < 0 then discountCash = 0
+    else if discountCash > quality * price then discountCash = quality * price
 
 
 #      if logics.sales.validation.orderDetail(productId, quality, price, discountCash, product)
 
-      newOrderDetail = optionOrderDetail(currentOrder, product, productUnit,  quality, price, discountCash)
-      console.log newOrderDetail
-      #kiem tra orderDetail co ton tai hay ko, neu co cong so luong, tinh gia tong , ko thi them moi
-      orderDetails = Schema.orderDetails.find({order: currentOrder._id}).fetch()
-      orderId = checkingAddOrderDetail(newOrderDetail, orderDetails)
-      logics.sales.reCalculateOrder(currentOrder._id)
-      return orderId
+    newOrderDetail = optionOrderDetail(currentOrder, product, productUnit,  quality, price, discountCash)
+    console.log newOrderDetail
+    #kiem tra orderDetail co ton tai hay ko, neu co cong so luong, tinh gia tong , ko thi them moi
+    orderDetails = Schema.orderDetails.find({order: currentOrder._id}).fetch()
+    orderId = checkingAddOrderDetail(newOrderDetail, orderDetails)
+    logics.sales.reCalculateOrder(currentOrder._id)
+    return orderId

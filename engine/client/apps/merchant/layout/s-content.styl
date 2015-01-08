@@ -44,7 +44,11 @@ editor-font-size = 12px
     min-height 5px
     clearfix()
     &.modern
+      padding-top 0
       border-top solid 1px #d7d7d7
+      .tab-component
+        margin-left 259px
+        border-left solid 1px #cfcfcf
     &.gray
       /*background #f7f7f7 url(images/dot-bg.png) repeat center top*/
       $noise-material(#f7f7f7, 'light')
@@ -53,6 +57,13 @@ editor-font-size = 12px
       border-bottom solid 1px #dfdfdf
       margin-bottom 10px
 
+    .editor-wrapper
+      .select2component > a
+        .select2-arrow
+          line-height 23px
+          top -15px
+          &:before
+            content '\E899'
 
 .editor-row
   clearfix()
@@ -62,22 +73,77 @@ editor-font-size = 12px
   float left
   position relative
   padding-left 5px
-  padding-top 5px
   &.right { float: right; padding-right: 5px; padding-left: 0; }
+  &.dual-spacer
+    width 260px
+    min-height 50px
+    border-right solid 1px #cfcfcf
+  &:first-child
+    padding-left 0
 
   .field
-    width 100%; margin 5px 0
+    width 100%
+
   .switchery
     margin 6px 0
+  .select2component > a
+    height 50px; font-size 14px
+    border none; border-radius 0
+    padding-top 20px
+    overflow inherit
+
+    .select2-chosen
+      margin-right 40px
+    .select2-arrow
+      border solid 3px #DFDFDF
+      background-color #FFFFFF
+      border-radius 50%
+      width 30px; height 30px; line-height 25px
+      absolute right 5px top 35px
+      z-index 99999
+      transition right 0.5s
+      &:before
+        lemon-icon('\E896')
+        margin-left 5px
+
+      > b
+        display none
+
+  .select2-dropdown-open > a
+    border none !important
+    .select2-arrow
+      right -14px
+      &:before
+        content '\E8DF' !important
+        color #D0D0D0
+
+  .input-group.bootstrap-touchspin
+    padding-top 20px
+    .bootstrap-touchspin-down, .bootstrap-touchspin-up
+      border solid 3px #DFDFDF !important
+      border-radius 50%
+      border-left-color inherit
+      border-right-color inherit
+      padding 1px !important
+    .input-group-btn:first-child
+      absolute right 65px top -14px
+    .input-group-btn:last-child
+      absolute right 32px top -14px
+
+    input
+      border none; box-shadow none
+      font-size 18px
+
   .ilabel
-    absolute left 15px top 0; z-index 10
+    pointer-events none
+    absolute left 10px top 4px; z-index 10
     padding 0 4px; line-height 10px
-    font-size 10px
+    font-size 11px
     text-align center
-    color #fff; background-color #F35112
+    color #BABABA
     border-radius top 2px
-    &.optional
-      background-color: lime;
+    /*&.optional*/
+      /*color lime;*/
     &.center
       left: 50%;
       transform translate(-50%, 0)
