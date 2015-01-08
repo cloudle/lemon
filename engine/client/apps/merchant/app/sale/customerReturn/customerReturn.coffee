@@ -13,7 +13,11 @@ lemon.defineApp Template.customerReturn,
 #      Meteor.subscribe('customerReturnProductData', customer._id)
 
   events:
-    "input .search-filter": (event, template) -> Session.set("customerReturnSearchFilter", template.ui.$searchFilter.val())
+    "input .search-filter": (event, template) ->
+      Helpers.deferredAction ->
+        Session.set("customerReturnSearchFilter", template.ui.$searchFilter.val())
+      , "currentCustomerReturnSearchProduct"
+
 
     "click .addReturnDetail": (event, template) ->
       if Session.get('currentCustomerReturn')

@@ -4,7 +4,7 @@ lemon.defineHyper Template.customerReturnDetailEditor,
   productName: -> Schema.products.findOne(@product)?.name
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
   crossReturnAvailableQuality: ->
-    returnDetail   = @
+    returnDetail = @
     if currentReturn = Session.get('currentReturn')
       currentProduct = []
       Schema.sales.find({buyer: currentReturn.customer}).forEach(
@@ -47,21 +47,13 @@ lemon.defineHyper Template.customerReturnDetailEditor,
 
   events:
     "keyup input[name]": (event, template) ->
-      unitQuality = Math.abs(Number(template.ui.$editQuality.inputmask('unmaskedvalue')))
-      unitPrice   = Math.abs(Number(template.ui.$editPrice.inputmask('unmaskedvalue')))
-      totalPrice = unitQuality * unitPrice
+      returnDetail = @
+      Helpers.deferredAction ->
+        scope.updateCustomerReturnDetail(returnDetail, template)
+      , "customerReturnUpdateReturnDetail"
 
-      optionDetail =
-        unitReturnQuality: unitQuality
-        unitReturnsPrice: unitPrice
-        returnQuality: @conversionQuality * unitQuality
-        price: unitPrice/@conversionQuality
-        totalPrice: totalPrice
-        finalPrice: totalPrice
-
-      Schema.returnDetails.update @_id, $set: optionDetail
-      scope.reCalculateReturn(@return)
 
     "click .deleteReturnDetail": (event, template) ->
-      Schema.returnDetails.remove @_id
-      scope.reCalculateReturn(@return)
+      returnDetail = @
+      Schema.returnDetails.remove returnDetail._id
+      scope.reCalculateReturn(returnDetail.return)

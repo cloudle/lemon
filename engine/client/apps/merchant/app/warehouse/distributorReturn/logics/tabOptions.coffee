@@ -15,7 +15,7 @@ createReturnAndSelected = ()->
       merchant: profile.currentMerchant
       warehouse: profile.currentWarehouse
       creator: profile.user
-      returnCode: 'TH'
+      returnCode: 'TH-NCC'
       discountCash: 0
       discountPercent: 0
       totalPrice: 0
@@ -25,6 +25,8 @@ createReturnAndSelected = ()->
       beforeDebtBalance: 0
       debtBalanceChange: 0
       latestDebtBalance: 0
+      tabDisplay: 'Trả Hàng NCC'
+
     returnOption._id = Schema.returns.insert returnOption
     UserSession.set('currentDistributorReturn', returnOption._id)
     Session.set('currentDistributorReturn', returnOption)
@@ -43,4 +45,5 @@ Apps.Merchant.distributorReturnInit.push (scope) ->
         if instance
           UserSession.set('currentDistributorReturn', instance._id)
           Session.set('currentDistributorReturn', instance)
+          Session.set("currentDistributorReturnComment", instance.comment)
           Meteor.subscribe('distributorReturnData')

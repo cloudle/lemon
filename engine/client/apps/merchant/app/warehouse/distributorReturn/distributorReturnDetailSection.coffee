@@ -7,12 +7,13 @@ lemon.defineHyper Template.distributorReturnDetailSection,
   editingData: -> Session.get("distributorReturnEditingRow")
   productName: -> Schema.products.findOne(@product)?.name
   unitName: -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
+  returnComment: -> Session.get("currentDistributorReturnComment") ? Session.get("currentDistributorReturn")?.comment
 
   crossReturnAvailableQuality: ->
     if currentDistributorReturn = Session.get('currentDistributorReturn')
       returnDetail   = @
-      currentProduct = Schema.productDetails.find({distributor: currentDistributorReturn.distributor, product: @product}).fetch()
-      sameProducts = Schema.returnDetails.find({return: @return, product: @product}).fetch()
+      currentProduct = Schema.productDetails.find({distributor: currentDistributorReturn.distributor, product: returnDetail.product}).fetch()
+      sameProducts = Schema.returnDetails.find({return: returnDetail.return, product: returnDetail.product}).fetch()
       crossProductQuality = 0
       currentProductQuality = 0
       crossProductQuality += item.returnQuality for item in sameProducts
@@ -20,9 +21,9 @@ lemon.defineHyper Template.distributorReturnDetailSection,
 
       crossAvailable = currentProductQuality - crossProductQuality
       if crossAvailable < 0
-        crossAvailable = Math.ceil(Math.abs(crossAvailable/@conversionQuality))*(-1)
+        crossAvailable = Math.ceil(Math.abs(crossAvailable/returnDetail.conversionQuality))*(-1)
       else
-        Math.ceil(Math.abs(crossAvailable/@conversionQuality))
+        Math.ceil(Math.abs(crossAvailable/returnDetail.conversionQuality))
 
       return {
         crossAvailable: crossAvailable
@@ -31,17 +32,25 @@ lemon.defineHyper Template.distributorReturnDetailSection,
         errorClass: if crossAvailable >= 0 then '' else 'errors'
       }
 
-
-
   returnDetails: -> Schema.returnDetails.find({return: @_id}).fetch()
   created: -> @timeInterval = Meteor.setInterval(setTime, 1000)
-  destroyed: -> Meteor.clearInterval(@timeInterval)
+  destroyed: ->
+    Meteor.clearInterval(@timeInterval)
+    Session.set("currentDistributorReturnComment")
 
   events:
     "click .detail-row": ->
       Session.set("distributorReturnEditingRowId", @_id)
 
-    "click .deleteReturnDetail": (event, template) ->
-      Schema.returnDetails.remove @_id
-      scope.reCalculateReturn(@return)
+    "input [name='returnComment']": (event, template) ->
+      Helpers.deferredAction ->
+        if Session.get('currentDistributorReturn')
+          comment = template.ui.$returnComment.val()
+          Session.set("currentDistributorReturnComment", comment)
+          Schema.returns.update Session.get("currentDistributorReturn")._id, $set:{comment: comment}
+      , "distributorReturnUpdateComment", 1000
 
+    "click .deleteReturnDetail": (event, template) ->
+      returnDetail = @
+      Schema.returnDetails.remove returnDetail._id
+      scope.reCalculateReturn(returnDetail.return)

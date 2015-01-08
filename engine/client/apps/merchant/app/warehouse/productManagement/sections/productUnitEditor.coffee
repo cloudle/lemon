@@ -1,3 +1,4 @@
+scope = logics.productManagement
 lemon.defineHyper Template.productManagementUnitEditor,
   basicDetailModeEnabled: -> Session.get('productManagementCurrentProduct')?.basicDetailModeEnabled
   showChangeSmallerUnit: ->
@@ -21,28 +22,15 @@ lemon.defineHyper Template.productManagementUnitEditor,
   events:
     "keyup input[name]": (event, template) ->
       #TODO: Kiem tra trung ten & unit!
-      unit        = template.ui.$unit.val()
-      barcode     = template.ui.$barcode.val()
-      price       = Number(template.ui.$price.inputmask('unmaskedvalue'))
-      importPrice = Number(template.ui.$importPrice.inputmask('unmaskedvalue'))
-      price = 0 if price < 0
-      importPrice = 0 if importPrice < 0
-
-      if @allowDelete
-        conversionQuality = Math.abs(Number(template.ui.$conversionQuality.inputmask('unmaskedvalue')))
-        conversionQuality = 1 if conversionQuality < 1
-
-      unitOption =
-        unit        : unit
-        productCode : barcode
-        price       : price
-        importPrice : importPrice
-      unitOption.conversionQuality = conversionQuality if conversionQuality
-      Schema.productUnits.update @_id, $set: unitOption
-
+      productUnit = @
       if event.which is 13
+        scope.updateProductUnit(productUnit, template)
         Session.set("productManagementUnitEditingRow")
         Session.set("productManagementUnitEditingRowId")
+      else
+        Helpers.deferredAction ->
+          scope.updateProductUnit(productUnit, template)
+        , "productManagementUpdateProductUnit"
 
     "click .changeSmallerUnit": (event, template) ->
       if @allowDelete and Session.get('productManagementCurrentProduct')

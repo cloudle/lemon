@@ -24,6 +24,7 @@ Helpers.shortName2 = (fullName, word = 2) ->
 Helpers.respectName = (fullName, gender) -> "#{if gender then 'Anh' else 'Chị'} #{fullName.split(' ').pop()}"
 Helpers.firstName = (fullName) -> fullName?.split(' ').pop()
 
+Helpers.Number = (numberText) -> number = Number(numberText); if isNaN(number) then number = 0 else Math.floor(number)
 Helpers.createSaleCode = ->
   date = new Date()
   day = new Date(date.getFullYear(), date.getMonth(), date.getDate());

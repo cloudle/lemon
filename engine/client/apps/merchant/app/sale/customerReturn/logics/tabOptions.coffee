@@ -15,7 +15,7 @@ createReturnAndSelected = ()->
       merchant: profile.currentMerchant
       warehouse: profile.currentWarehouse
       creator: profile.user
-      returnCode: 'TH'
+      returnCode: 'TH-KH'
       discountCash: 0
       discountPercent: 0
       totalPrice: 0
@@ -43,4 +43,5 @@ Apps.Merchant.customerReturnInit.push (scope) ->
         if instance
           UserSession.set('currentCustomerReturn', instance._id)
           Session.set('currentCustomerReturn', instance)
+          Session.set("currentCustomerReturnComment", instance.comment)
           Meteor.subscribe('customerReturnData')

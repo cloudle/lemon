@@ -12,5 +12,5 @@ template(name="distributorReturnDetailEditor")
         .lemon.rounded.tiny.btn.blue.animated.bounceIn.deleteReturnDetail: span.icon-minus-4
     td.price: input(name="editPrice" min="0")
     td.quality: input.error-field(name="editQuality" min="0")
-    td.skull.note {{unitName}}
+    td(align="center").skull.note {{unitName}}
     td.final-price.note.number <b>{{formatNumber finalPrice}}</b>

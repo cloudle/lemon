@@ -40,21 +40,12 @@ lemon.defineHyper Template.distributorReturnDetailEditor,
 
   events:
     "keyup input[name]": (event, template) ->
-      unitQuality = Math.abs(Number(template.ui.$editQuality.inputmask('unmaskedvalue')))
-      unitPrice   = Math.abs(Number(template.ui.$editPrice.inputmask('unmaskedvalue')))
-      totalPrice = unitQuality * unitPrice
-
-      optionDetail =
-        unitReturnQuality: unitQuality
-        unitReturnsPrice: unitPrice
-        returnQuality: @conversionQuality * unitQuality
-        price: unitPrice/@conversionQuality
-        totalPrice: totalPrice
-        finalPrice: totalPrice
-
-      Schema.returnDetails.update @_id, $set: optionDetail
-      scope.reCalculateReturn(@return)
+      returnDetail = @
+      Helpers.deferredAction ->
+        scope.updateDistributorReturnDetail(returnDetail, template)
+      , "distributorReturnUpdateReturnDetail"
 
     "click .deleteReturnDetail": (event, template) ->
-      Schema.returnDetails.remove @_id
-      scope.reCalculateReturn(@return)
+      returnDetail = @
+      Schema.returnDetails.remove returnDetail._id
+      scope.reCalculateReturn(returnDetail.return)

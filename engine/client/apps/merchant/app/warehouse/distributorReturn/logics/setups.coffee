@@ -50,3 +50,18 @@ Apps.Merchant.distributorReturnInit.push (scope) ->
       debtBalanceChange: totalPrice - discountCash
     }
 
+  scope.updateDistributorReturnDetail = (returnDetail, template)->
+    unitQuality = Math.abs(Helpers.Number(template.ui.$editQuality.inputmask('unmaskedvalue')))
+    unitPrice   = Math.abs(Helpers.Number(template.ui.$editPrice.inputmask('unmaskedvalue')))
+    totalPrice = unitQuality * unitPrice
+
+    optionDetail =
+      unitReturnQuality: unitQuality
+      unitReturnsPrice: unitPrice
+      returnQuality: returnDetail.conversionQuality * unitQuality
+      price: unitPrice/returnDetail.conversionQuality
+      totalPrice: totalPrice
+      finalPrice: totalPrice
+
+    Schema.returnDetails.update returnDetail._id, $set: optionDetail
+    scope.reCalculateReturn(returnDetail.return)
