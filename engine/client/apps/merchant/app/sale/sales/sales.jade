@@ -61,11 +61,13 @@ template(name="sales")
                   .caption.advanced.inner.product-selection(class="{{productSelectionActiveClass}}")
                     +avatarImageComponent(avatar=avatarUrl alias=name)
                     span.text
-                      | <b>{{product.name}}</b>
-                      if product.basicUnit
-                        | ({{unitName}})
+                      | {{product.name}}
                       .commands
                         span.icon-right-open-big.addSaleDetail
+                    if product.basicUnit
+                      span.left-info {{unitName}}
+                    span.right-info {{formatNumber product.price}} VNĐ
+
   #footer.modern
     .editor-row.extra(name='delivery')
       .editor-wrapper.right(style="width:200px")
