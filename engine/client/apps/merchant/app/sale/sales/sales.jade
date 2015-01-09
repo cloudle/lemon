@@ -70,19 +70,19 @@ template(name="sales")
     .editor-row.extra(name='delivery')
       .editor-wrapper.right(style="width:200px")
         span.ilabel ghi chú
-        input.comment(value="#{deliveryDetail.comment}")
+        input.comment(value="#{deliveryDetail.comment}" tabindex="5")
       .editor-wrapper.right(style="width:100px")
         span.ilabel ngày giao hàng
-        input(name="deliveryDate" binding="datePicker" todayHighlight="true" maxlength="20")
+        input(name="deliveryDate" binding="datePicker" todayHighlight="true" maxlength="20" tabindex="4")
       .editor-wrapper.right(style="width:300px")
         span.ilabel địa chỉ giao hàng
-        input.deliveryAddress(value="#{deliveryDetail.deliveryAddress}")
+        input.deliveryAddress(value="#{deliveryDetail.deliveryAddress}" tabindex="3")
       .editor-wrapper.right(style="width:130px")
         span.ilabel số điện thoại
-        input.contactPhone(value="#{deliveryDetail.contactPhone}")
+        input.contactPhone(value="#{deliveryDetail.contactPhone}" tabindex="2")
       .editor-wrapper.right(style="width:170px")
         span.ilabel tên người nhận
-        input.contactName(value="#{deliveryDetail.contactName}")
+        input.contactName(value="#{deliveryDetail.contactName}" tabindex="1")
 
     .editor-row.extra(name='advanced')
       .editor-wrapper(style="width: 200px; margin-right: 5px;")
@@ -118,9 +118,9 @@ template(name="sales")
       //  input(binding="switch" type="checkbox" name="advancedMode")
 
       .editor-wrapper.pull-right
-        button.lemon.btn.lime.pull-right.finish(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
+        button.flat.btn.lime.pull-right.finish(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
       .editor-wrapper.pull-right
-        button.lemon.btn.blue.pull-right.print-command(type='submit'): span.icon-print-6
+        button.flat.btn.blue.pull-right.print-command(type='submit'): span.icon-print-6
 
       //.editor-wrapper.pull-right(style="width: 120px")
       //  span.ilabel.optional.right thực thu

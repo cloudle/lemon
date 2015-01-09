@@ -46,16 +46,12 @@ editor-font-size = 12px
     &.modern
       padding-top 0
       border-top solid 1px #d7d7d7
-      .tab-component
-        margin-left 259px
-        border-left solid 1px #cfcfcf
     &.gray
       /*background #f7f7f7 url(images/dot-bg.png) repeat center top*/
       $noise-material(#f7f7f7, 'light')
     .extra
       display none
       border-bottom solid 1px #dfdfdf
-      margin-bottom 10px
 
     .editor-wrapper
       .select2component > a
@@ -149,16 +145,18 @@ editor-font-size = 12px
       transform translate(-50%, 0)
     &.right
       left: auto; right: 15px
+
+.editor-wrapper
   .btn
     margin 5px 0; padding 4px 12px
     border-radius 3px
   > input
-    outline: none
-    border 1px solid #DFDFDF
-    width 100%; margin 5px 0
-    padding 0 7px; line-height 28px
+    outline: none; border none
+    margin 15px 0 5px 0; width 100%
+    border-bottom dashed 1px orange
+    padding 0 7px 0 14px; line-height 28px
     border-radius 3px
-    font-size: editor-font-size
+    font-size: 13px
     &:disabled
       background-color #fff
 

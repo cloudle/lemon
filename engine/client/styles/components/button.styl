@@ -44,3 +44,21 @@
       margin-right 2px
       margin-left 2px
 
+.editor-wrapper .flat.btn
+  outline none !important
+  margin 0; padding-top 15px
+  border-radius 0
+  min-height 50px
+  background-color #E1EAF0
+  border-left solid 1px #DDD
+  border-right solid 1px #DDD
+  font-size 16px
+  transition color 0.5s, background-color 0.5s
+  for $color in colors
+    &:hover
+      color #FFFFFF
+    &.{$color[0]}
+      background-color lighten($color[1], 45)
+      color darken($color[1], 10)
+      &:hover
+        background-color lighten($color[1], 25)
