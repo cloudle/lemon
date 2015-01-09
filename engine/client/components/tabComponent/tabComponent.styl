@@ -9,17 +9,17 @@ ul.tab-component
 
   li
     unselectable()
-    background-color #DFDFDF
+    background-color #F0F0F0
     max-width 150px
     display inline; float:left
     position relative
     border solid 1px #D3D3D3
-    border-right none
-    margin-top -1px
+    margin -1px -1px 0 0
     &:last-child { border-right: solid 1px #d3d3d3; }
     &.active
       background-color #fff
-      /*border-top-color transparent*/
+      z-index 1
+      border-top-color #e6e6e6
 
     &:not(.active):hover { background-color: #e6e6e6; }
     .title

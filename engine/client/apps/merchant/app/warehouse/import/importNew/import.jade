@@ -111,21 +111,21 @@ template(name="import")
       .editor-wrapper(style="width:180px")
         span.ilabel.optional công ty cung cấp
         +iSelect(options=distributorSelectOptions class="field")
-      .editor-wrapper(style="width: 160px")
-        span.ilabel.center tiền nhận vào
-        +iSpinEdit(options=depositOptions)
 
       //if showSubmit
-      .editor-wrapper.right(style="width: 120px")
-        button.lemon.btn.blue.icon-ok-6.right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN
-      //if showEdit
-      .editor-wrapper.right(style="width: 120px")
-        button.lemon.btn.carrot.icon-pencil-circled.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
-      //if showFinish
-      .editor-wrapper.right(style="width: 120px")
-        button.lemon.btn.lime.icon-award.right.finishImport(type='submit' style="margin-right: 5px;") HOÀN TẤT
       .editor-wrapper.right
-        button.lemon.btn.blue.pull-right.print-command(type='submit'): span.icon-print-6
+        button.flat.btn.blue.icon-ok-6.submitImport(type='submit') XÁC NHẬN
+      //if showEdit
+      .editor-wrapper.right
+        button.flat.btn.carrot.icon-pencil-circled.editImport(type='submit') CHỈNH SỬA
+      //if showFinish
+      .editor-wrapper.right
+        button.flat.btn.lime.icon-award.finishImport(type='submit') HOÀN TẤT
+      .editor-wrapper.right
+        button.flat.btn.blue.print-command(type='submit'): span.icon-print-6
+      .editor-wrapper.right(style="width: 160px; padding-right: 20px")
+        span.ilabel.center tiền nhận vào
+        +iSpinEdit(options=depositOptions)
 
       //.editor-wrapper.right(style="width: 120px")
       //  span.ilabel.optional tiền còn nợ
@@ -140,6 +140,5 @@ template(name="import")
       //.editor-wrapper.right(style="width: 300px")
         //span.ilabel description
         //input.description(value="{{currentImport.description}}")
-
 
     +tabComponent(options=tabOptions)
