@@ -108,15 +108,19 @@ Meteor.methods
 
       Schema.transactions.find({latestSale: currentSales._id}).forEach(
         (transaction) ->
-          customerIncOption.salePaid += -transaction.debtBalanceChange
-          customerIncOption.saleDebt += -(currentSales.debtBalanceChange - transaction.debtBalanceChange)
+          if transaction.debtBalanceChange > 0
+            customerIncOption.salePaid += -transaction.debtBalanceChange
+            customerIncOption.saleDebt += transaction.debtBalanceChange
+          else
+            customerIncOption.saleDebt += transaction.debtBalanceChange
+            customerIncOption.saleTotalCash += transaction.debtBalanceChange
+
           Schema.transactions.remove transaction._id
       )
       MetroSummary.updateMyMetroSummaryBy(['deleteSale'], currentSales._id)
       Schema.sales.remove currentSales._id
       Schema.saleDetails.find({sale: currentSales._id}).forEach(
         (detail)->
-          Schema.saleDetails.remove detail._id
           if product = Schema.products.findOne(detail.product)
             if product.basicDetailModeEnabled is false
               Schema.productDetails.update detail.productDetail, $inc: {
@@ -129,8 +133,9 @@ Meteor.methods
                 availableQuality: detail.quality
                 inStockQuality  : detail.quality
               }
-            else
-              Schema.products.update detail.product, $inc: {salesQuality: -detail.quality}
+            else Schema.products.update detail.product, $inc: {salesQuality: -detail.quality}
+
+          Schema.saleDetails.remove detail._id
       )
 
       tempBeforeDebtBalance = currentSales.beforeDebtBalance
