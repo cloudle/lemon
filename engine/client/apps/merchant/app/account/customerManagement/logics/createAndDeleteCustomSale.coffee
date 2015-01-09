@@ -19,7 +19,9 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         beforeDebtBalance: customer.customSaleDebt
         latestDebtBalance: customer.customSaleDebt
 
-      Meteor.call('createCustomSale', option)
+      Meteor.call 'createCustomSale', option, (error, result) ->
+        if Schema.customSales.find({buyer: customer._id}).count() is 0
+          Meteor.subscribe('customerManagementData', customer._id, 0, 5)
       $debtDate.val(''); $description.val('')
 
   scope.createCustomSaleDetail = (customSale, template) ->
@@ -78,9 +80,11 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
 
       if latestCustomSale is undefined || (paidDate >= latestCustomSale.debtDate and !isNaN(payAmount))
-        Meteor.call('createNewReceiptCashOfCustomSale', customer._id, payAmount, $payDescription.val(), paidDate)
+        Meteor.call 'createNewReceiptCashOfCustomSale', customer._id, payAmount, $payDescription.val(), paidDate, (error, result) ->
+          if Schema.customSales.find({buyer: customer._id}).count() is 0
+            Meteor.subscribe('customerManagementData', customer._id, 0, 5)
         Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
-        Session.set("allowCreateTransactionOfCustomSale", false)
+        Session.set "allowCreateTransactionOfCustomSale", false
         $payDescription.val(''); $payAmount.val('');# $paidDate.val('')
 
   scope.createTransactionOfSale = (template) ->

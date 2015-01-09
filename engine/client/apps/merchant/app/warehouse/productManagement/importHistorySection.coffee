@@ -29,8 +29,8 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
     "click .basicDetailModeDisable": ->
       if product = Session.get("productManagementCurrentProduct")
         if product.basicDetailModeEnabled is true
-          Meteor.call('updateProductBasicDetailMode', product._id)
-          Meteor.subscribe('productManagementData', product._id)
+          Meteor.call 'updateProductBasicDetailMode', product._id, (error, result) ->
+            Meteor.subscribe('productManagementData', product._id)
           Session.set("productManagementDetailEditingRowId")
           Session.set("productManagementDetailEditingRow")
           Session.set("productManagementUnitEditingRowId")

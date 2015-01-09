@@ -186,10 +186,8 @@ Meteor.methods
 
           if transaction.latestSale is latestCustomSale._id and transaction._id is latestTransaction._id
             incCustomerOption = {customSaleDebt: transaction.debtBalanceChange }
-            if transaction.debtBalanceChange > 0
-              incCustomerOption.customSalePaid = transaction.debtBalanceChange
-            else
-              incCustomerOption.customSaleTotalCash = transaction.debtBalanceChange
+            if transaction.debtBalanceChange > 0 then incCustomerOption.customSalePaid = transaction.debtBalanceChange
+            else incCustomerOption.customSaleTotalCash = transaction.debtBalanceChange
             Schema.customers.update transaction.owner, $inc: incCustomerOption
             Schema.transactions.remove transaction._id
 
@@ -197,4 +195,4 @@ Meteor.methods
             if latestTransaction
               Schema.transactions.update latestTransaction._id, $set:{allowDelete: true}
             else
-              Schema.customSales.update latestCustomSale._id, $set:{allowDelete: true}
+              Schema.customSales.update transaction.latestSale, $set:{allowDelete: true}
