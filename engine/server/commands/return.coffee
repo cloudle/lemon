@@ -167,6 +167,7 @@ Meteor.methods
           transactionQuality += takenQuality
           if transactionQuality == returnDetail.quality then break
 
+      totalReturnPrice = Math.round(totalReturnPrice)
       customer = Schema.customers.findOne(currentCustomerReturn.customer)
       Schema.customers.update customer._id, $inc:{saleTotalCash: -totalReturnPrice, saleDebt: -totalReturnPrice}
 

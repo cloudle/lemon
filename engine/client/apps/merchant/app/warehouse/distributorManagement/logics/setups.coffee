@@ -164,4 +164,5 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
   scope.deleteDistributor = (distributor) ->
     if distributor.allowDelete
       Schema.distributors.remove distributor._id
+      MetroSummary.updateMetroSummaryBy(['distributor'])
       UserSession.set('currentDistributorManagementSelection', Schema.distributors.findOne()?._id ? '')

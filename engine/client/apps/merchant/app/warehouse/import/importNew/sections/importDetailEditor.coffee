@@ -19,8 +19,12 @@ lemon.defineHyper Template.importDetailEditor,
 
   events:
     "keyup input[name]": (event, template) ->
-      if event.which is 8 || event.which is 46 || 47 < event.which < 58 || 95 < event.which < 106
-        importDetail = @
+      importDetail = @
+      if event.which is 13
+        scope.updateImportDetail(importDetail, template)
+        Session.set("importEditingRow")
+        Session.set("importEditingRowId")
+      else if event.which is 8 || event.which is 46 || 47 < event.which < 58 || 95 < event.which < 106
         Helpers.deferredAction ->
           scope.updateImportDetail(importDetail, template)
         , "importManagementSearchUpdateImportDetail"

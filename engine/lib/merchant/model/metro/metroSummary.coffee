@@ -268,8 +268,7 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
       if _.contains(context,'product')
         productCount = Schema.products.find({merchant: profile.currentMerchant})
 
-      metroSummary = Schema.metroSummaries.find({parentMerchant: profile.parentMerchant})
-      for item in metroSummary.fetch()
+      for item in Schema.metroSummaries.find({parentMerchant: profile.parentMerchant}).fetch()
         option = {}
         if _.contains(context,'branch')
           option.merchantCount = merchantCount.count()

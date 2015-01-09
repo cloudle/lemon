@@ -11,8 +11,8 @@ lemon.defineHyper Template.customerReturnDetailSection,
   returnComment: -> Session.get("currentCustomerReturnComment") ? Session.get("currentCustomerReturn")?.comment
 
   crossReturnAvailableQuality: ->
+    returnDetail = @
     if currentCustomerReturn = Session.get('currentCustomerReturn')
-      returnDetail = @
       currentProduct = []
       Schema.sales.find({buyer: currentCustomerReturn.customer}).forEach(
         (sale)->

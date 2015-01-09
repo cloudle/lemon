@@ -4,7 +4,7 @@ lemon.defineHyper Template.customerReturnDetailEditor,
   productName: -> Schema.products.findOne(@product)?.name
   crossReturnAvailableQuality: ->
     returnDetail = @
-    if currentReturn = Session.get('currentReturn')
+    if currentReturn = Session.get('currentCustomerReturn')
       currentProduct = []
       Schema.sales.find({buyer: currentReturn.customer}).forEach(
         (sale)->
@@ -47,9 +47,14 @@ lemon.defineHyper Template.customerReturnDetailEditor,
   events:
     "keyup input[name]": (event, template) ->
       returnDetail = @
-      Helpers.deferredAction ->
+      if event.which is 13
         scope.updateCustomerReturnDetail(returnDetail, template)
-      , "customerReturnUpdateReturnDetail"
+        Session.set("customerReturnEditingRow")
+        Session.set("customerReturnEditingRowId")
+      else
+        Helpers.deferredAction ->
+          scope.updateCustomerReturnDetail(returnDetail, template)
+        , "customerReturnUpdateReturnDetail"
 
 
     "click .deleteReturnDetail": (event, template) ->

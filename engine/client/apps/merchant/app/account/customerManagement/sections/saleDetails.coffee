@@ -9,7 +9,7 @@ lemon.defineWidget Template.customerManagementSaleDetails,
   isShowDeleteTransaction: -> new Date(@debtDate.getFullYear(), @debtDate.getMonth(), @debtDate.getDate() + 1, @debtDate.getHours(), @debtDate.getMinutes(), @debtDate.getSeconds()) > new Date()
   unitSaleQuality: -> Math.round(@quality/@conversionQuality*100)/100
   showDeleteSales: ->
-    if @creator is Session.get('myProfile').user and @paymentsDelivery is 0
+    if @creator is Session.get('myProfile').user and @paymentsDelivery is 0 and !Schema.returns.findOne({timeLineSales: @_id})
       new Date(@version.createdAt.getFullYear(), @version.createdAt.getMonth(), @version.createdAt.getDate() + 1, @version.createdAt.getHours(), @version.createdAt.getMinutes(), @version.createdAt.getSeconds()) > new Date()
 
   saleDetailCount: ->

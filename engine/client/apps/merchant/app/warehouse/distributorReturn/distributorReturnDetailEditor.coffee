@@ -5,7 +5,7 @@ lemon.defineHyper Template.distributorReturnDetailEditor,
   crossReturnAvailableQuality: ->
     if currentDistributorReturn = Session.get('currentDistributorReturn')
       returnDetail   = @
-      currentProduct = Schema.productDetails.find({distributor: currentDistributorReturn.distributor, product: @product}).fetch()
+      currentProduct = Schema.productDetails.find({distributor: currentDistributorReturn.distributor, product: returnDetail.product}).fetch()
       sameProducts = Schema.returnDetails.find({return: returnDetail.return, product: returnDetail.product}).fetch()
       crossProductQuality = 0
       currentProductQuality = 0
@@ -40,9 +40,14 @@ lemon.defineHyper Template.distributorReturnDetailEditor,
   events:
     "keyup input[name]": (event, template) ->
       returnDetail = @
-      Helpers.deferredAction ->
+      if event.which is 13
         scope.updateDistributorReturnDetail(returnDetail, template)
-      , "customerReturnUpdateReturnDetail"
+        Session.set("distributorReturnEditingRow")
+        Session.set("distributorReturnEditingRowId")
+      else
+        Helpers.deferredAction ->
+          scope.updateDistributorReturnDetail(returnDetail, template)
+        , "distributorReturnUpdateReturnDetail"
 
     "click .deleteReturnDetail": (event, template) ->
       returnDetail = @

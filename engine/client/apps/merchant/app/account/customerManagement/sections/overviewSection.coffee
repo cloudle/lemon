@@ -44,5 +44,6 @@ lemon.defineHyper Template.customerManagementOverviewSection,
     "click .customerDelete": (event, template) ->
       if @allowDelete
         Schema.customers.remove @_id
+        MetroSummary.updateMetroSummaryBy(['customer'])
         UserSession.set('currentCustomerManagementSelection', Schema.customers.findOne()?._id ? '')
 

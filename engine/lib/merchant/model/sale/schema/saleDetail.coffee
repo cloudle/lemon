@@ -37,6 +37,7 @@ simpleSchema.saleDetails = new SimpleSchema
 
   finalPrice:
     type: Number
+    decimal: true
 
   totalCogs:
     type: Number
