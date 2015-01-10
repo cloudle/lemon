@@ -8,6 +8,9 @@ saleRoute =
       Apps.setup(scope, Apps.Merchant.salesInit, 'sales')
       Session.set "currentAppInfo",
         name: "bán hàng"
+        navigationPartial:
+          template: "salesNavigationPartial"
+          data: {}
       @next()
 #      Apps.setup(scope, Apps.Merchant.salesReload)
   data: ->

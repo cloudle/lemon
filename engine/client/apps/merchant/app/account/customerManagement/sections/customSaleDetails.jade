@@ -3,7 +3,7 @@ template(name="customerManagementCustomSaleDetails")
     | .
     .bill-header <b>{{momentFormat debtDate 'DD/MM/YYYY'}}</b>
     .commands
-      if isCustomSaleModeEnabled
+      if isShowDeleteCustomSale
         .lemon.rounded.red.btn.animated.bounceIn.deleteCustomSale: span.icon-minus-4
 
   each customSaleDetails

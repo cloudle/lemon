@@ -21,10 +21,10 @@ updateLatestTransactionDenyDelete = (ownerId)->
   (Schema.transactions.update transaction._id, $set:{allowDelete: false}) for transaction in latestTransactions
 
 calculateCustomSale = (customSaleId, customSaleDetailFinalPrice)->
-  if Schema.customSaleDetails.findOne({customSale: customSaleId}) is undefined
-    setOption = {allowDelete: true}
+  if Schema.transactions.findOne({latestSale: customSaleId})
+    setOption = {allowDelete: false}
   else
-    setOption = {}
+    setOption = {allowDelete: true}
 
   incCustomSaleOption = {
     totalCash        : customSaleDetailFinalPrice

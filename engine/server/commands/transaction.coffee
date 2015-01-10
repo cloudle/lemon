@@ -175,6 +175,7 @@ Meteor.methods
           Schema.transactions.insert option
           Schema.customSales.update latestCustomSale._id, $set:{allowDelete: false}
           Schema.customers.update customer._id, $inc: incCustomerOption
+          return latestCustomSale._id
 
   deleteTransactionOfCustomSale: (transactionId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
