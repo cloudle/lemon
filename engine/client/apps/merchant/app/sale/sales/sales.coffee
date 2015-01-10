@@ -8,6 +8,9 @@ lemon.defineApp Template.sales,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
 
   unitName: -> if @unit then @unit.unit else @product.basicUnit
+  availableUnit: ->
+    if @unit then (@product.availableQuality / @unit.conversionQuality) else @product.availableQuality
+
   productSelectionActiveClass: ->
     if order = Session.get('currentOrder')
       if @unit
@@ -72,8 +75,12 @@ lemon.defineApp Template.sales,
           currentOrder.currentDiscountCash
         )
 
-    "click .addSaleDetail": -> Session.set("salesEditingRowId", scope.addOrderDetail @product._id, @unit?._id)
+    "dblclick": ->
+      Session.set("salesEditingRowId", scope.addOrderDetail @product._id, @unit?._id)
 
+    "click .addSaleDetail": ->
+      Session.set("salesEditingRowId", scope.addOrderDetail @product._id, @unit?._id)
+      event.stopPropagation()
 
     "click .print-command": (event, template) -> window.print()
     'click .finish': (event, template)->
