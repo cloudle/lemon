@@ -15,6 +15,22 @@ Meteor.publish 'availableCustomerAreas', ->
   return [] if !myProfile
   Schema.customerAreas.find({parentMerchant: myProfile.parentMerchant})
 
+
+
+Meteor.publishComposite 'customerManagementDataByCustomSale', (customerId, customSaleId)->
+  self = @
+  return {
+    find: ->
+      myProfile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile
+      Schema.customSales.find {_id: customSaleId, buyer: customerId, parentMerchant: myProfile.parentMerchant}
+    children: [
+      find: (customSale) -> Schema.customSaleDetails.find {customSale: customSale._id}
+    ,
+      find: (customSale) -> Schema.transactions.find {latestSale: customSale._id}
+    ]
+  }
+
 Meteor.publishComposite 'customerManagementData', (customerId, currentRecords = 0, limitRecords = 5)->
   self = @
   salesCount = Schema.sales.find({buyer: customerId}, {sort: {'version.createdAt': 1}}).count()

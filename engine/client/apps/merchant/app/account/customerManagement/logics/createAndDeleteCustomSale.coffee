@@ -50,15 +50,18 @@ Apps.Merchant.customerManagementInit.push (scope) ->
 
       latestCustomSale = Schema.customSales.findOne({buyer: customSale.buyer}, {sort: {debtDate: -1}})
       if customSale._id is latestCustomSale._id
-        Meteor.call('updateCustomSaleByCreateCustomSaleDetail', customSaleDetail)
+        Meteor.call 'updateCustomSaleByCreateCustomSaleDetail', customSaleDetail, (error, result) ->
+          Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
       $productName.val(''); $price.val(''); $quality.val(''); $skulls.val('')
       $productName.focus()
 
   scope.deleteCustomSaleDetail = (customSaleDetailId) ->
-    Meteor.call('updateCustomSaleByDeleteCustomSaleDetail', customSaleDetailId)
+    Meteor.call 'updateCustomSaleByDeleteCustomSaleDetail', customSaleDetailId, (error, result) ->
+      Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
 
   scope.deleteTransactionCustomSale = (transactionCustomSaleDetailId) ->
-    Meteor.call('deleteTransactionOfCustomSale', transactionCustomSaleDetailId)
+    Meteor.call 'deleteTransactionOfCustomSale', transactionCustomSaleDetailId, (error, result) ->
+      Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
 
   scope.customSaleModeDisable = (customerId) ->
     customer = Schema.customers.findOne({_id: customerId, parentMerchant:Session.get('myProfile').parentMerchant})
@@ -81,9 +84,8 @@ Apps.Merchant.customerManagementInit.push (scope) ->
 
       if latestCustomSale is undefined || (paidDate >= latestCustomSale.debtDate and !isNaN(payAmount))
         Meteor.call 'createNewReceiptCashOfCustomSale', customer._id, payAmount, $payDescription.val(), paidDate, (error, result) ->
-          if Schema.customSales.find({buyer: customer._id}).count() is 0
-            Meteor.subscribe('customerManagementData', customer._id, 0, 5)
-        Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
+          Meteor.subscribe('customerManagementDataByCustomSale', customer._id, result)
+          Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
         Session.set "allowCreateTransactionOfCustomSale", false
         $payDescription.val(''); $payAmount.val('');# $paidDate.val('')
 

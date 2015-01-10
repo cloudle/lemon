@@ -23,11 +23,10 @@ Schema.add 'orders', "Order", class Order
       warehouse : myProfile.currentWarehouse
       creator   : myProfile.user
       seller    : myProfile.user
-      buyer     : buyer?._id ? 'null'
       tabDisplay: if buyer then Helpers.shortName2(buyer.name) else 'PHIẾU BÁN HÀNG 01'
 
-    orderOption._id = @schema.insert orderOption
-
+    orderOption.buyer = buyer._id if buyer?._id
+    orderOption._id   = @schema.insert orderOption
     return orderOption
 
 

@@ -12,6 +12,10 @@ lemon.defineWidget Template.customerManagementCustomSaleDetails,
     customSaleId = UI._templateInstance().data._id
     Schema.customSaleDetails.find({customSale: customSaleId}).count() > 0
 
+  isShowDeleteCustomSale: ->
+    customer = Session.get("customerManagementCurrentCustomer")
+    if customer?.customSaleModeEnabled and (@allowDelete || !Schema.transactions.findOne({latestSale: @_id})) then true else false
+
   isCustomSaleModeEnabled: ->
     customer = Session.get("customerManagementCurrentCustomer")
     if @allowDelete and customer?.customSaleModeEnabled then true else false

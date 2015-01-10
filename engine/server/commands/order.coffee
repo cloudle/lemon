@@ -87,7 +87,7 @@ updateCustomerByNewSales = (sale, profile)->
     saleDebt     : sale.debtBalanceChange
     saleTotalCash: sale.debtBalanceChange
   }
-  Schema.customers.update sale.buyer, $inc: incCustomerOption
+  Schema.customers.update sale.buyer, $set:{allowDelete: false}, $inc: incCustomerOption
 
 
 Meteor.methods
