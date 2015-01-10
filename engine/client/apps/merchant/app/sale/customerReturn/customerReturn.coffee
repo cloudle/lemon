@@ -4,6 +4,7 @@ lemon.defineApp Template.customerReturn,
   currentCustomerReturn: -> Session.get('currentCustomerReturn')
   showCustomerSelect: -> if Session.get('currentCustomerReturn')?.returnMethods is 0 then true else false
   unitName: -> if @unit then @unit.unit else @product.basicUnit
+  allowSuccessReturn: -> if Session.get('currentCustomerReturn')?.customer then '' else 'disabled'
 
   created: ->
     lemon.dependencies.resolve('customerReturn')

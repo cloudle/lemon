@@ -13,7 +13,8 @@ lemon.defineWidget Template.distributorManagementImportDetails,
 
   showDeleteImport: ->
     if @creator is Session.get('myProfile').user
-      new Date(@version.createdAt.getFullYear(), @version.createdAt.getMonth(), @version.createdAt.getDate() + 1, @version.createdAt.getHours(), @version.createdAt.getMinutes(), @version.createdAt.getSeconds()) > new Date()
+      createDate = new Date(@version.createdAt.getFullYear(), @version.createdAt.getMonth(), @version.createdAt.getDate() + 1, @version.createdAt.getHours(), @version.createdAt.getMinutes(), @version.createdAt.getSeconds())
+      createDate > new Date() and !Schema.returns.findOne({timeLineImport: @_id})
 
   showDeleteTransaction: -> new Date(@debtDate.getFullYear(), @debtDate.getMonth(), @debtDate.getDate() + 1, @debtDate.getHours(), @debtDate.getMinutes(), @debtDate.getSeconds()) > new Date()
 

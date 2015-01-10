@@ -4,6 +4,7 @@ lemon.defineApp Template.distributorReturn,
   currentDistributorReturn: -> Session.get('currentDistributorReturn')
   showCustomerSelect: -> if Session.get('currentDistributorReturn')?.returnMethods is 0 then true else false
   unitName: -> if @unit then @unit.unit else @product.basicUnit
+  allowSuccessReturn: -> if Session.get('currentDistributorReturn')?.distributor then '' else 'disabled'
 
   created: ->
     lemon.dependencies.resolve('distributorReturn')
@@ -20,7 +21,7 @@ lemon.defineApp Template.distributorReturn,
 
 
     "click .addReturnDetail": (event, template) ->
-      if Session.get('currentDistributorReturn')
+      if Session.get('currentDistributorReturn')?.customer
         option =
           return            : Session.get('currentDistributorReturn')._id
           product           : @product._id

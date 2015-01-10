@@ -24,11 +24,12 @@ template(name="customerReturn")
                   .commands
                     span.icon-right-open-big.addReturnDetail
   #footer.modern
+    .editor-wrapper.dual-spacer
     .editor-row
       .editor-wrapper(style="width: 170px")
         span.ilabel.optional khách hàng
         +iSelect(options=customerSelectOptions class="field")
       .editor-wrapper.pull-right
-        button.lemon.btn.lime.pull-right.submitReturn(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
+        button.lemon.btn.lime.pull-right.submitReturn(class="{{allowSuccessReturn}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
 
     +tabComponent(options=tabOptions)

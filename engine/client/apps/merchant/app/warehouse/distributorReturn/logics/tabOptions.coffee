@@ -25,7 +25,7 @@ createReturnAndSelected = ()->
       beforeDebtBalance: 0
       debtBalanceChange: 0
       latestDebtBalance: 0
-      tabDisplay: 'Trả Hàng NCC'
+      tabDisplay: 'Trả Hàng Nhập'
 
     returnOption._id = Schema.returns.insert returnOption
     UserSession.set('currentDistributorReturn', returnOption._id)
