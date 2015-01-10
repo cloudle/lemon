@@ -2,11 +2,18 @@ template(name="merchantPrintDesigner")
   .section.top.panel.panel-default.printable-area
     .panel-heading
       .printing-header
+        .rounded-location: .rounded-wrapper
+          img(src="/images/white-pixel.jpg")
+          .rounded-icon.icon-location-outline
+        .rounded-phone: .rounded-wrapper
+          img(src="/images/white-pixel.jpg")
+          .rounded-icon.icon-phone-circled
         .branding
           .company-name {{merchantInfo.companyName}}
           .company-address {{merchantInfo.contactAddress}}
         .info
-          span.icon-phone-circled {{merchantInfo.contactPhone}}
+          .document-time <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b>
+          .company-phone {{merchantInfo.contactPhone}} <br/>
       .printing-info
         .document-name PHIẾU BÁN HÀNG
     .panel-body.printing-content

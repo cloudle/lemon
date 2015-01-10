@@ -47,12 +47,15 @@ template(name="sales")
               each allProductInCurrentWarehouse
                 .caption.advanced.inner.product-selection(class="{{productSelectionActiveClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=name)
-                  span.text
-                    | <b>{{product.name}}</b>
-                    if product.basicUnit
-                      | ({{unitName}})
+                  span.text {{product.name}}
                     .commands
                       span.icon-right-open-big.addSaleDetail
+                  span.right-info
+                    if product.basicDetailModeEnabled
+                      i.icon-search-outline
+                    else
+                      |{{formatNumber availableUnit}}
+                    |{{unitName}}
           else
             each allProductInCurrentWarehouse
               .group-wrapper
@@ -60,13 +63,17 @@ template(name="sales")
                 each childs
                   .caption.advanced.inner.product-selection(class="{{productSelectionActiveClass}}")
                     +avatarImageComponent(avatar=avatarUrl alias=name)
-                    span.text
-                      | {{product.name}}
+                    span.text {{product.name}}
                       .commands
                         span.icon-right-open-big.addSaleDetail
-                    if product.basicUnit
-                      span.left-info {{unitName}}
-                    span.right-info {{formatNumber product.price}} VNĐ
+                    //if product.basicUnit
+                    //  span.left-info
+                    span.right-info
+                      if product.basicDetailModeEnabled
+                        i.icon-search-outline
+                      else
+                        |{{formatNumber availableUnit}}
+                      |{{unitName}}
 
   #footer.modern
     .editor-row.extra(name='delivery')
