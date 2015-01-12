@@ -9,11 +9,14 @@ template(name="merchantPrintDesigner")
           img(src="/images/white-pixel.jpg")
           .rounded-icon.icon-phone-circled
         .branding
-          .company-name {{merchantInfo.companyName}}
-          .company-address {{merchantInfo.contactAddress}}
+          .company-name
+            input.editable.right-align(value="{{merchantInfo.companyName}}")
+          .company-address
+            input.editable.right-align(value="{{merchantInfo.contactAddress}}")
         .info
           .document-time <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b>
-          .company-phone {{merchantInfo.contactPhone}} <br/>
+          .company-phone
+            input.editable(value="{{merchantInfo.contactPhone}}")
       .printing-info
         .document-name PHIẾU BÁN HÀNG
     .panel-body.printing-content
@@ -21,4 +24,8 @@ template(name="merchantPrintDesigner")
       each bodySpaceIterator
         .empty-dashed-line
     .panel-footer.printing-footer
-      h1 footer
+      .grea-print-message
+        .rounded-gera-logo: .rounded-wrapper
+          img(src="/images/white-pixel.jpg")
+          img.rounded-img(src="/images/gera-small.png")
+        i In từ hệ thống EDS - công ty Công Nghệ Thiên Ban (0838 111 766)

@@ -23,38 +23,90 @@
       text-transform uppercase
     .company-address
       text-align right
-      margin-right 43px !important
+      margin-right 46px !important
+      font-weight bolder
   .info
-    absolute bottom 1px
+    absolute bottom 0
     color #666666
     float left
     .company-phone
-      margin-left 50px !important
+      margin-left 54px !important
+      font-weight bolder
 
   .rounded-phone
     absolute bottom -19px left 10px
   .rounded-location
     absolute bottom -19px right 10px
-
   .rounded-wrapper
     position relative
     .rounded-icon
       absolute top 0 left 0
-      border-radius 50%;
+      border-radius 50%
       padding 4px; font-size 18px
       border solid 4px #dfdfdf
+
     img
-      width 35px; height 35px
+      width 40px; height 40px
+
+  @media print
+    .company-address, .company-phone
+      font-weight normal !important
+    .rounded-location, .rounded-phone
+      bottom -22px
+
+    .rounded-wrapper
+      .rounded-icon
+        padding 5px; font-size 22px
+        border solid 6px #C7C7C7
+      img
+        width 43px; height 43px
 
 .printing-info
   padding-top 25px
   .document-name
     font-size 30px; font-weight lighter
     text-align center
+  .document-info
+    clearfix()
+    margin-bottom 10px !important
+    .left-info
+      float left
+      margin-left 20px !important
+    .right-info
+      float right; text-align right
+      margin-right 20px !important
+
+.panel-footer .grea-print-message
+  position relative; width 100%
+  i
+    margin-left 58px
+  .rounded-gera-logo
+    absolute top -35px left 10px
+  .rounded-wrapper
+    position relative
+    .rounded-img
+      absolute top 0 left 0
+      border-radius 50%
+      width 47px; height 47px
+      border solid 1px #C7C7C7
+      padding 3px !important
 
 .bill-info
   clearfix()
   .seller-info
-    float left
+    float left; margin-left 54px !important
+  .bill-no
+    float right; margin-right 54px !important
+
   .buyer-info
     float right
+
+@media print
+  .grea-print-message
+    i
+      color #888888 !important
+      margin-left 58px !important
+    .rounded-gera-logo
+      top -25px !important
+  .document-info
+    color #888888 !important

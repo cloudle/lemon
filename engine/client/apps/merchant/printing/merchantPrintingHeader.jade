@@ -1,11 +1,14 @@
 template(name="merchantPrintingHeader")
    .printing-header
+      .rounded-location: .rounded-wrapper
+         img(src="/images/white-pixel.jpg")
+         .rounded-icon.icon-location-outline
+      .rounded-phone: .rounded-wrapper
+         img(src="/images/white-pixel.jpg")
+         .rounded-icon.icon-phone-circled
       .branding
          .company-name {{merchantInfo.companyName}}
-         .company-address
-            span {{merchantInfo.contactAddress}}
-            span.icon-location-outline
-
+         .company-address {{merchantInfo.contactAddress}}
       .info
-         span <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b> <br/>
-         span.icon-phone-circled {{merchantInfo.contactPhone}}
+         .document-time <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b>
+         .company-phone {{merchantInfo.contactPhone}} <br/>

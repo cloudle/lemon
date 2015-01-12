@@ -7,7 +7,9 @@ lemon.defineHyper Template.saleDetailSection,
   product: -> Schema.products.findOne(@product)
   unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   buyerName: -> Schema.customers.findOne(Session.get("currentOrder")?.buyer)?.name
+  buyer: -> Schema.customers.findOne(Session.get("currentOrder")?.buyer)
   sellerName: -> Schema.userProfiles.findOne({user: Session.get("currentOrder")?.seller})?.fullName
+
   orderDescription: -> Session.get("currentOrderDescription") ? @order?.description
   customerOldDebt: ->
     customer = Schema.customers.findOne(Session.get("currentOrder")?.buyer)

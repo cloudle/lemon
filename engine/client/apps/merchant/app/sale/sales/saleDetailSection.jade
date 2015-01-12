@@ -6,11 +6,20 @@ template(name="saleDetailSection")
          .show-on-print
             +merchantPrintingHeader
             .bill-info
-              .seller-info NGƯỜI BÁN: {{sellerName}}
+              .seller-info {{sellerName}} bán hàng
+              .bill-no Phiếu 0001
             .printing-info
               .document-name
-                span.uppercase {{buyerName}} <br />
-                span.s4 PHIẾU BÁN HÀNG
+                span.s4 PHIẾU BÁN HÀNG <br />
+                span.uppercase {{buyer.name}}
+              .document-info
+                .right-info
+                  if buyer.phone
+                    span {{buyer.phone}}
+                    span.icon-phone-circled <br/>
+                  if buyer.address
+                    span {{buyer.address}}
+                    span.icon-location-outline
 
       .panel-body
          //+gridComponent(options=saleDetailOptions wrapperClass="detail-grid row" animation="bounceInDown")
@@ -59,7 +68,7 @@ template(name="saleDetailSection")
                td.number(colspan="2"): span.s5 TỔNG CỘNG:
                td.number(colspan="2"): span.s4 <b>{{formatNumber order.totalPrice}}</b> VNĐ
             tr
-               td(align="center"): span.s6.note (<i>Chữ ký và Họ Tên</i>)
+               td
                td
                td.number(colspan="2"): span.s5 CHIẾT KHẤU:
                td.number(colspan="2"): span.s4 <b>{{formatNumber order.discountCash}}</b> VNĐ
@@ -69,7 +78,7 @@ template(name="saleDetailSection")
                td.number(colspan="2"): span.s5 TIỀN CŨ:
                td.number(colspan="2"): span.s4 <b>{{formatNumber customerOldDebt}}</b> VNĐ
             tr
-               td
+               td(align="center"): span.s6.note (<i>Chữ ký và Họ Tên</i>)
                td
                td.number(colspan="2"): span.s5 THANH TOÁN:
                td.number(colspan="2"): span.s4 <b>{{formatNumber order.currentDeposit}}</b> VNĐ
@@ -79,3 +88,10 @@ template(name="saleDetailSection")
                td
                td.number(colspan="2" style="border-top: solid 1px #d7d7d7")
                   span.s4 <b>{{formatNumber customerFinalDebt}}</b> VNĐ
+
+      .panel-footer.show-on-print
+         .grea-print-message
+            .rounded-gera-logo: .rounded-wrapper
+               img(src="/images/white-pixel.jpg")
+               img.rounded-img(src="/images/gera-small.png")
+            i In từ hệ thống EDS - công ty Công Nghệ Thiên Ban (0838 111 766)
