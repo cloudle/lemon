@@ -6,13 +6,6 @@ newTransactionAndDetail = (currentSale)->
   transaction       = Transaction.newBySale(currentSale)
   transactionDetail = TransactionDetail.newByTransaction(transaction)
 
-orderCodeCreate = (text)->
-  code = Number(text)+1
-  if 99 < code < 999 then code = "0#{code}"
-  if 9 < code < 100 then code = "00#{code}"
-  if code < 10 then code = "000#{code}"
-  return code
-
 Meteor.methods
   confirmReceiveSale: (id)->
     try
@@ -118,9 +111,10 @@ Meteor.methods
           orderCode = '0000'
           Schema.sales.find({buyer: customer._id},{sort: {'version.createdAt': 1}}).forEach(
             (sale)->
-              orderCode = orderCodeCreate(orderCode)
+              orderCode = Helpers.orderCodeCreate(orderCode)
               Schema.sales.update sale._id, $set:{orderCode: orderCode}
           )
+          Schema.customers.update customer._id, $set:{billNo: orderCode}
       )
 
     catch error

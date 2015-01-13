@@ -13,6 +13,7 @@ Schema.add 'userProfiles', "UserProfile", class UserProfile
       systemVersion     : Schema.systems.findOne().version
     option
 
+  #ngung khong su dung
   updateNewMerchant: ->
     merchantPackages = Schema.merchantPackages.findOne({user: @data.user})
     userProfile = Schema.userProfiles.findOne(@id)

@@ -131,3 +131,7 @@ simpleSchema.customers = new SimpleSchema
   customSaleModeEnabled:
     type: Boolean
     defaultValue: true
+
+  billNo:
+    type: String
+    optional: true

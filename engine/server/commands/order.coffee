@@ -81,13 +81,14 @@ removeOrderAndOrderDetail = (order, userProfile)->
   Order.remove(order._id)
   OrderDetail.remove({order: order._id})
 
-updateCustomerByNewSales = (sale, profile)->
+updateCustomerByNewSales = (sale, orderDetails)->
   incCustomerOption = {
     debtBalance  : sale.debtBalanceChange
     saleDebt     : sale.debtBalanceChange
     saleTotalCash: sale.debtBalanceChange
   }
-  Schema.customers.update sale.buyer, $set:{allowDelete: false}, $inc: incCustomerOption
+  productIds = _.uniq(_.pluck(orderDetails, 'product'))
+  Schema.customers.update sale.buyer, $set:{allowDelete: false, billNo: sale.orderCode}, $inc: incCustomerOption, $push: {builtIn:{ $each: productIds, $slice: -50 }}
 
 
 Meteor.methods
@@ -96,6 +97,7 @@ Meteor.methods
     if !userProfile then throw new Meteor.Error("User chưa đăng nhập."); return
     currentOrder = Schema.orders.findOne({
       _id       : orderId
+      status    : 0
       creator   : userProfile.user
       merchant  : userProfile.currentMerchant
       warehouse : userProfile.currentWarehouse})
@@ -111,17 +113,18 @@ Meteor.methods
     result = checkProductInStockQuality(orderDetails, products)
     if result.error then throw new Meteor.Error(result.error.item)
 
-    sale = createSaleAndSaleOrder(currentOrder, orderDetails)
-    if sale
-      productIds = _.uniq(_.pluck(orderDetails, 'product'))
-      Schema.customers.update(sale.buyer, $push: {builtIn:{ $each: productIds, $slice: -50 }})
+    Schema.orders.update currentOrder._id, $set:{status: 1}
+    if currentOrder = Schema.orders.findOne({_id: orderId, status: 1})
+      if sale = createSaleAndSaleOrder(currentOrder, orderDetails)
+  #      productIds = _.uniq(_.pluck(orderDetails, 'product'))
+  #      Schema.customers.update(sale.buyer, $push: {builtIn:{ $each: productIds, $slice: -50 }})
 
-      removeOrderAndOrderDetail(currentOrder, userProfile)
-      updateCustomerByNewSales(sale, userProfile)
+        removeOrderAndOrderDetail(currentOrder, userProfile)
+        updateCustomerByNewSales(sale, orderDetails)
 
 
-    MetroSummary.updateMyMetroSummaryBy(['createSale'], sale._id)
-    MetroSummary.updateMyMetroSummaryByProfitability()
+      MetroSummary.updateMyMetroSummaryBy(['createSale'], sale._id)
+      MetroSummary.updateMyMetroSummaryByProfitability()
 
-    Meteor.call 'newSaleDefault', userProfile, sale._id
-    return sale._id
+      Meteor.call 'newSaleDefault', userProfile, sale._id
+      return sale._id

@@ -16,12 +16,14 @@ calculateDepositAndDebitByBill = (currentOrder, orderUpdate)->
   else
     orderUpdate.deposit = currentOrder.currentDeposit
     orderUpdate.debit = orderUpdate.finalPrice - currentOrder.currentDeposit
+
+  orderUpdate.paymentMethod = 1 if orderUpdate.totalPrice is 0
   orderUpdate
 
 calculateOrderDeposit= (currentOrder, orderOptionDefault)->
   switch currentOrder.paymentMethod
-    when 0 then calculateDepositAndDebitByProduct(currentOrder, orderOptionDefault) #Tính theo từng sp
-    when 1 then calculateDepositAndDebitByBill(currentOrder, orderOptionDefault) #Tính theo tổng bill
+    when 0 then calculateDepositAndDebitByProduct(currentOrder, orderOptionDefault)
+    when 1 then calculateDepositAndDebitByBill(currentOrder, orderOptionDefault)
 
 calculateDefaultOrder = (currentOrder, orderDetails)->
   orderUpdate =
