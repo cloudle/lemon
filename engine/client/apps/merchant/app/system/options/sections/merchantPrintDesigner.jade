@@ -1,7 +1,9 @@
 template(name="merchantPrintDesigner")
-  .section.top.panel.panel-default.printable-area
+  .section.top.panel.panel-default.printable-area.animated.fadeIn
     .panel-heading
       .printing-header
+        if allowUpdateDesigner
+          .lemon.rounded.lime.btn.icon-ok-6.updateCompanyInfoCommand
         .rounded-location: .rounded-wrapper
           img(src="/images/white-pixel.jpg")
           .rounded-icon.icon-location-outline
@@ -10,13 +12,13 @@ template(name="merchantPrintDesigner")
           .rounded-icon.icon-phone-circled
         .branding
           .company-name
-            input.editable.right-align(value="{{merchantInfo.companyName}}")
+            input.editable.right-align(name="companyName" value="{{companyName}}")
           .company-address
-            input.editable.right-align(value="{{merchantInfo.contactAddress}}")
+            input.editable.right-align(name="companyAddress" value="{{contactAddress}}")
         .info
           .document-time <b>{{timeHM}}<sup>{{timeS}}</sup></b>, ngày <b>{{timeDMY}}</b> <b>{{fullDay}}</b>
           .company-phone
-            input.editable(value="{{merchantInfo.contactPhone}}")
+            input.editable(name="companyPhone" value="{{contactPhone}}" maxlength="26" size="21")
       .printing-info
         .document-name PHIẾU BÁN HÀNG
     .panel-body.printing-content

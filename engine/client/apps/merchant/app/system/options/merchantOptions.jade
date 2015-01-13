@@ -4,15 +4,24 @@ template(name="merchantOptions")
       .dual-detail-wrapper
         .dual-detail
           .nano: .nano-content
-            +merchantPrintDesigner
+            +UI.dynamic(template=currentSectionDynamic.template data=currentSectionDynamic.data)
+            //+merchantPrintDesigner merchantProfile
       .dual-addon
         .nano: .nano-content
           .group-wrapper
             each settings.common
-              .caption.inner
+              .caption.inner(class="{{optionActiveClass}}")
+                span.avatar.letter(class="{{icon}}")
                 span.text <b>{{display}}</b>
           .group-wrapper
             .caption.group VĂN BẢN
             each settings.printing
-              .caption.inner
+              .caption.inner(class="{{optionActiveClass}}")
+                span.avatar.letter(class="{{icon}}")
                 span.text <b>{{display}}</b>
+
+  #footer.modern
+    .editor-row
+      .editor-wrapper.dual-spacer
+      .editor-wrapper.right
+        button.flat.btn.lime.pull-right.finish ÁP DỤNG
