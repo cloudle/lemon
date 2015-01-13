@@ -54,17 +54,26 @@ lemon.defineApp Template.sales,
 
     "change [name ='deliveryDate']": (event, template) -> scope.updateDeliveryDate()
 
-    'blur .contactName': (event, template)->
-      scope.updateDeliveryContactName(template.find(".contactName"))
+    'input .contactName': (event, template)->
+      Helpers.deferredAction ->
+        scope.updateDeliveryContactName(template.find(".contactName"))
+      , "salesCurrentProductSearchProduct"
 
-    'blur .contactPhone': (event, template)->
-      scope.updateDeliveryContactPhone(template.find(".contactPhone"))
+    'input .contactPhone': (event, template)->
+      Helpers.deferredAction ->
+        scope.updateDeliveryContactPhone(template.find(".contactPhone"))
+      , "salesCurrentProductSearchProduct"
 
-    'blur .deliveryAddress': (event, template)->
-      scope.updateDeliveryAddress(template.find(".deliveryAddress"))
+    'input .deliveryAddress': (event, template)->
+      Helpers.deferredAction ->
+        scope.updateDeliveryAddress(template.find(".deliveryAddress"))
+      , "salesCurrentProductSearchProduct"
 
-    'blur .comment': (event, template)->
-      scope.updateDeliveryComment(template.find(".comment"))
+    'input .comment': (event, template)->
+      Helpers.deferredAction ->
+        scope.updateDeliveryComment(template.find(".comment"))
+      , "salesCurrentProductSearchProduct"
+
 
     'click .addOrderDetail': () ->
       if currentOrder = Session.get('currentOrder')

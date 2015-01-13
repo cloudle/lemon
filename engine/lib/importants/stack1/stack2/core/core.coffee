@@ -25,18 +25,22 @@ Helpers.respectName = (fullName, gender) -> "#{if gender then 'Anh' else 'Chị'
 Helpers.firstName = (fullName) -> fullName?.split(' ').pop()
 
 Helpers.Number = (numberText) -> number = Number(numberText); if isNaN(number) then number = 0 else Math.floor(number)
-Helpers.createSaleCode = ->
-  date = new Date()
-  day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  oldSale = Schema.sales.findOne({'version.createdAt': {$gt: day}},{sort: {'version.createdAt': -1}})
+
+Helpers.createSaleCode = (buyerId)->
+#  date = new Date()
+#  day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  oldSale = Schema.sales.findOne({buyer: buyerId},{sort: {'version.createdAt': -1}})
+#  oldSale = Schema.sales.findOne({buyer: buyerId, 'version.createdAt': {$gt: day}},{sort: {'version.createdAt': -1}})
   if oldSale
     code = Number(oldSale.orderCode.substring(oldSale.orderCode.length-4))+1
     if 99 < code < 999 then code = "0#{code}"
     if 9 < code < 100 then code = "00#{code}"
     if code < 10 then code = "000#{code}"
-    orderCode = "#{Helpers.FormatDate()}-#{code}"
+    orderCode = "#{code}"
+#    orderCode = "#{Helpers.FormatDate()}-#{code}"
   else
-    orderCode = "#{Helpers.FormatDate()}-0001"
+    orderCode = "0001"
+#    orderCode = "#{Helpers.FormatDate()}-0001"
   orderCode
 
 colors = ['green', 'light-green', 'yellow', 'orange', 'blue', 'dark-blue', 'lime', 'pink', 'red', 'purple', 'dark',

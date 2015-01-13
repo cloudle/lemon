@@ -1,9 +1,7 @@
 simpleSchema.productUnits = new SimpleSchema
-  product:
-    type: String
-
   productCode:
     type: String
+    optional: true
 
   unit:
     type: String
@@ -12,21 +10,41 @@ simpleSchema.productUnits = new SimpleSchema
   conversionQuality:
     type: Number
     min: 1
-    defaultValue: 1
+    optional: true
 
   price:
     type: Number
-    defaultValue: 0
+    min: 0
+    optional: true
 
   importPrice:
     type: Number
-    defaultValue: 0
+    min: 0
+    optional: true
 
   allowDelete:
     type: Boolean
     defaultValue: true
 
   version: { type: simpleSchema.Version }
+#-----------------------------------------------
+  product:
+    type: String
+
+  buildInProductUnit:
+    type: String
+    optional: true
+
+  expireDate:
+    type: Date
+    optional: true
+
+  buildIn:
+    type: Boolean
+    defaultValue: true
+
+
+
 
 Schema.add "productUnits", "ProductUnit", class ProductUnit
   @name: "Product Unit"

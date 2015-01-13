@@ -7,7 +7,7 @@ Schema.add 'sales', "Sale", class Sale
       creator           : order.creator
       seller            : order.seller
       buyer             : order.buyer
-      orderCode         : Helpers.createSaleCode()
+      orderCode         : Helpers.createSaleCode(buyer._id)
       productCount      : order.productCount
       saleCount         : order.saleCount
       return            : false

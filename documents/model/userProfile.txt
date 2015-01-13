@@ -1,0 +1,18 @@
+UserProfile:
+    parentMerchant (String): id của chi nhánh chính
+    currentMerchant (String): id của chi nhánh đang làm việc
+    currentWarehouse (String): id của kho hàng đang làm việc
+
+    user (String): id tài khoản đang dùng
+    creator (String): id người tạo
+    isRoot (Boolean): true là tài khoản gốc của chi nhánh chính
+    userType (String): nhóm người sử dụng (ví dụ; gera, merchant)
+
+    fullName (String): tên
+    gender (Boolean): true là Nam, false là Nữ
+    avatar (String): hình ảnh đại diện
+    dateOfBirth (Date): sinh nhật
+    startWorkingDate (Date): ngày gia nhập
+
+    allowDelete (Boolean): true có thể xóa tài khản
+    roles ([String]): nhóm id phân quyền trong bản Roles

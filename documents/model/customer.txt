@@ -1,0 +1,40 @@
+Customer:
+    parentMerchant (String):
+    currentMerchant (String):
+    creator (String):
+
+    areaMerchant (String):
+    areas ([String]): list các khu vực
+
+    builtIn ([String]):
+    saleProductList ([String]): list sản phẩm đã mua
+
+    name (String): tên
+    pronoun (String): chức vụ
+    companyName (String): cty đang làm
+    phone (String): số dt
+    address (String): địa chỉ
+    email (String): email liên lạc
+    dateOfBirth (Date): sinh nhật
+    description (String): ghi chú về khách hàng
+    avatar (String):
+    gender (Boolean): true là Nam, false là Nữ
+    allowDelete (Boolean): true có thể xóa khách hàng
+
+
+    totalCustomSaleDeposit (String):
+    totalCustomSalePurchases (String):
+    depositCash (String):
+
+    customSalePaid      (Number): tổng tiền khách hàng trả nợ củ
+    customSaleDebt      (Number): tổng tiền khách hàng nợ củ
+    customSaleTotalCash (Number): tổng tiền khách hàng giao dịch cũ
+
+    salePaid      (Number): tổng tiền khách hàng trả
+    saleDebt      (Number): tổng tiền khách hàng nợ
+    saleTotalCash (Number): tổng tiền khách hàng giao dịch
+    customSaleModeEnabled (Boolean): true là bật chế độ thêm nợ cũ
+
+
+
+

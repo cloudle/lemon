@@ -1,4 +1,8 @@
 simpleSchema.productLosts = new SimpleSchema
+  parentMerchant:
+    type: String
+    optional: true
+
   merchant:
     type: String
 

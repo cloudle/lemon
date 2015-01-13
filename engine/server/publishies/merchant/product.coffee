@@ -107,3 +107,23 @@ Schema.productUnits.allow
   insert: -> true
   update: -> true
   remove: -> true
+
+Schema.buildInProductUnits.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
+Schema.buildInProducts.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
+Schema.branchProducts.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+    
+Schema.merchantProducts.allow
+  insert: -> true
+  update: -> true
+  remove: -> true

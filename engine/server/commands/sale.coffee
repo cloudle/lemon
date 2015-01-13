@@ -6,6 +6,12 @@ newTransactionAndDetail = (currentSale)->
   transaction       = Transaction.newBySale(currentSale)
   transactionDetail = TransactionDetail.newByTransaction(transaction)
 
+orderCodeCreate = (text)->
+  code = Number(text)+1
+  if 99 < code < 999 then code = "0#{code}"
+  if 9 < code < 100 then code = "00#{code}"
+  if code < 10 then code = "000#{code}"
+  return code
 
 Meteor.methods
   confirmReceiveSale: (id)->
@@ -66,7 +72,7 @@ Meteor.methods
     catch error
       throw new Meteor.Error('confirmReceiveSale', error)
 
-  customerToSales : (customer, profile)->
+  customerToSales: (customer, profile)->
     try
       throw 'Chưa đăng nhập.' if !userId = Meteor.userId()
       profile = Schema.userProfiles.findOne({user: userId}) if !profile || profile.user != userId
@@ -82,7 +88,7 @@ Meteor.methods
     catch error
       throw new Meteor.Error('customerToSales', error)
 
-  customerToReturns : (customer, profile)->
+  customerToReturns: (customer, profile)->
     try
       throw 'Chưa đăng nhập.' if !userId = Meteor.userId()
       profile = Schema.userProfiles.findOne({user: userId}) if !profile || profile.user != userId
@@ -102,3 +108,20 @@ Meteor.methods
 
     catch error
       throw new Meteor.Error('customerToReturns', error)
+
+  reUpdateOrderCode: (profile)->
+    try
+      throw 'Chưa đăng nhập.' if !userId = Meteor.userId()
+      profile = Schema.userProfiles.findOne({user: userId}) if !profile || profile.user != userId
+      Schema.customers.find({parentMerchant: profile.parentMerchant}).forEach(
+        (customer)->
+          orderCode = '0000'
+          Schema.sales.find({buyer: customer._id},{sort: {'version.createdAt': 1}}).forEach(
+            (sale)->
+              orderCode = orderCodeCreate(orderCode)
+              Schema.sales.update sale._id, $set:{orderCode: orderCode}
+          )
+      )
+
+    catch error
+      throw new Meteor.Error('reUpdateOrderCode', error)

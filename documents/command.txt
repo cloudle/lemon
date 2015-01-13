@@ -1,0 +1,44 @@
+Branch:
+    createNewBranch: (name, address)->
+    destroyBranch: (branchId)->
+
+Customer:
+    calculateCustomer: (id)->
+    updateCustomerDebitAndPurchase: ->
+    customerManagementDeleteSale: (saleId)->
+    customerManagementDeleteTransaction: (transactionId)->
+
+CustomImport:
+    createNewCustomImport: (customImport)->
+    deleteCustomImport: (customImportId)->
+    updateCustomImportByCreateCustomImportDetail: (customImportDetail)->
+    updateCustomImportByDeleteCustomImportDetail: (customImportDetailId)->
+    createNewReceiptCashOfCustomImport: (distributorId, debtCash, description, paidDate = new Date())->
+    deleteTransactionOfCustomImport: (transactionId)->
+    createNewReceiptCashOfImport: (distributorId, debtCash, description)->
+    calculateCustomImportByDistributor: (distributorId)->
+    calculateImportByDistributor: (distributorId)->
+
+CustomSale:
+    createCustomSale: (customSale)->
+    deleteCustomSale: (customSaleId)->
+    updateCustomSaleByCreateCustomSaleDetail: (customSaleDetail)->
+    updateCustomSaleByDeleteCustomSaleDetail: (customSaleDetailId)->
+    calculateCustomSaleByCustomer: (customerId)->
+    calculateSaleByCustomer: (customerId)->
+
+Delivery:
+Distributor:
+Import:
+Inventory:
+Merchant:
+MerchantProfile:
+MetroSummary:
+Notification:
+Order:
+Product:
+Return:
+Sale:
+Staff:
+Transaction:
+SubmitExportAndImport:
