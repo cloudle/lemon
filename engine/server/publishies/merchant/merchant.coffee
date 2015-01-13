@@ -15,11 +15,11 @@ Meteor.publish 'myMerchantAndWarehouse', ->
   [myMerchant, myWarehouse]
 
 
-Meteor.publish 'myMerchantProfiles', ->
+Meteor.publish 'myBranchProfiles', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
 
-  parentMerchantProfile = Schema.merchantProfiles.findOne({merchant: myProfile.parentMerchant})
+  parentMerchantProfile = Schema.branchProfiles.findOne({merchant: myProfile.parentMerchant})
   if !parentMerchantProfile?.latestCheckSummaryDate || parentMerchantProfile?.latestCheckSummaryDate.toDateString() != (new Date()).toDateString()
     Apps.Merchant.checkSummaryDate(myProfile)
 
@@ -35,10 +35,10 @@ Meteor.publish 'myMerchantProfiles', ->
   myMerchantProfileQuery = {merchant: myProfile.currentMerchant}
   parentMerchantProfileQuery = {merchant: myProfile.parentMerchant}
 
-  Schema.merchantProfiles.find
+  Schema.branchProfiles.find
     merchant: { $in: [myProfile.currentMerchant, myProfile.parentMerchant] }
 
-Schema.merchantProfiles.allow
+Schema.branchProfiles.allow
   insert: -> true
   update: -> true
   remove: -> true

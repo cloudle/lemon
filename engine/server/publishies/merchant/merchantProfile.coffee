@@ -1,10 +1,10 @@
-Meteor.publish 'myPurchase', ->
+Meteor.publish 'myMerchantProfile', ->
   return [] if !@userId
   profile = Schema.userProfiles.findOne({user: @userId})
   return [] if !profile
-  Schema.merchantPurchases.find({merchant: profile.currentMerchant})
+  Schema.merchantProfiles.find({merchant: profile.currentMerchant})
 
-Schema.merchantPurchases.allow
+Schema.merchantProfiles.allow
   insert: -> true
   update: -> true
   remove: -> true

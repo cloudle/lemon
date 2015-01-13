@@ -8,7 +8,7 @@ Meteor.methods
       return
 
     merchantId = Schema.merchants.insert({owner: userId, creator: userId, name: companyName})
-    Schema.merchantPurchases.insert
+    Schema.merchantProfiles.insert
       merchant          : merchantId
       merchantRegistered: false
       user              : userId
@@ -32,7 +32,7 @@ Meteor.methods
       systemVersion     : Schema.systems.findOne().version
 
     Schema.metroSummaries.insert MetroSummary.newByMerchant(merchantId)
-    Schema.merchantProfiles.insert { merchant: merchantId }
+    Schema.branchProfiles.insert { merchant: merchantId }
 
     Schema.userSessions.insert { user: userId }
 
@@ -118,5 +118,5 @@ Meteor.methods
 
   checkExpireDateTransaction: (transactionId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      if parentMerchantProfile = Schema.merchantProfiles.findOne({merchant: profile.parentMerchant})
+      if parentMerchantProfile = Schema.branchProfiles.findOne({merchant: profile.parentMerchant})
         Apps.Merchant.checkExpireDateCreateTransaction(profile, transactionId, parentMerchantProfile.notifyReceivableExpireRange ? 90)

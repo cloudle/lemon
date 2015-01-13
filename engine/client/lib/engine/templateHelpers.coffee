@@ -1,5 +1,5 @@
 Template.registerHelper 'systemVersion', -> Schema.systems.findOne()?.version ? '?'
-Template.registerHelper 'merchantInfo', -> Schema.merchantPurchases.findOne({merchant: Session.get("myProfile").currentMerchant})
+Template.registerHelper 'merchantInfo', -> Schema.merchantProfiles.findOne({merchant: Session.get("myProfile").currentMerchant})
 Template.registerHelper 'currentAppInfo', -> Session.get("currentAppInfo")
 Template.registerHelper 'appCollapseClass', -> if Session.get('collapse') then 'icon-angle-double-left' else 'icon-angle-double-right'
 

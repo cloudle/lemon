@@ -30,10 +30,12 @@ simpleSchema.products = new SimpleSchema
   price:
     type: Number
     optional: true
+    defaultValue: 0
 
   importPrice:
     type: Number
     optional: true
+    defaultValue: 0
 
   styles:
     type: String

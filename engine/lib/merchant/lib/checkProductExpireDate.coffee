@@ -32,10 +32,10 @@ Apps.Merchant.checkProductExpireDate = (profile, value)->
         expireDate    : productDetail.expire
       Schema.expiringProducts.insert(expiringProduct)
 
-    Schema.merchantProfiles.update({merchant: profile.parentMerchant}, {$set:{latestCheckExpire: new Date()}})
+    Schema.branchProfiles.update({merchant: profile.parentMerchant}, {$set:{latestCheckExpire: new Date()}})
 
     for merchantId in _.union(_.pluck(productDetails, 'merchant'))
       if Schema.expiringProducts.findOne({merchant: merchantId})
-        Schema.merchantProfiles.update({merchant: merchantId}, {$set:{hasExpiringProduct: true}})
+        Schema.branchProfiles.update({merchant: merchantId}, {$set:{hasExpiringProduct: true}})
       else
-        Schema.merchantProfiles.update({merchant: merchantId}, {$set:{hasExpiringProduct: false}})
+        Schema.branchProfiles.update({merchant: merchantId}, {$set:{hasExpiringProduct: false}})

@@ -3,7 +3,7 @@ scope = logics.merchantWizard
 lemon.addRoute
   path: '/merchantWizard'
   layoutTemplate: 'subHomeLayout'
-  waitOnDependency: 'merchantPurchase'
+  waitOnDependency: 'merchantProfile'
   onBeforeAction: ->
     if @ready()
       Apps.setup(scope, Apps.Home.merchantWizardInit, 'merchantWizard')
@@ -16,5 +16,5 @@ lemon.addRoute
       oneYearsPackageOption: scope.oneYearsPackageOption
       threeYearsPackageOption: scope.threeYearsPackageOption
       fiveYearsPackageOption: scope.fiveYearsPackageOption
-      purchase: scope.purchase
+      merchantProfile: scope.merchantProfile
     }

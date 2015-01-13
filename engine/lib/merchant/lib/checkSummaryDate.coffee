@@ -33,4 +33,4 @@ Apps.Merchant.checkSummaryDate = (profile)->
       )
 
       Schema.metroSummaries.update({merchant: branch._id},{$set: option})
-    Schema.merchantProfiles.update({merchant: profile.parentMerchant}, {$set:{latestCheckSummaryDate: new Date()}})
+    Schema.branchProfiles.update({merchant: profile.parentMerchant}, {$set:{latestCheckSummaryDate: new Date()}})

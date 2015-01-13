@@ -1,4 +1,4 @@
-Schema.merchantProfiles = new Mongo.Collection('merchantProfiles')
+Schema.branchProfiles = new Mongo.Collection('branchProfiles')
 #
 #@MerchantProfile =
 #  set: (key, value, getRoot = true, applyOnBranch = false) ->

@@ -1,11 +1,11 @@
 lemon.dependencies.add 'userInfo', ['myOption', 'myProfile', 'mySession']
-lemon.dependencies.add 'essentials', ['userInfo', 'myPurchase']#, 'fake']
+lemon.dependencies.add 'essentials', ['userInfo', 'myMerchantProfile']#, 'fake']
 
 lemon.dependencies.add 'home', ['essentials']
-lemon.dependencies.add 'merchantPurchase', ['essentials']
+lemon.dependencies.add 'merchantProfile', ['essentials']
 
 #lemon.dependencies.add 'merchantInfo', ['myMerchant', 'myWarehouse']
-lemon.dependencies.add 'merchantEssential', ['essentials', 'myMetroSummaries', 'myMerchantAndWarehouse', 'myMerchantProfiles', 'currentMerchantRoles']
+lemon.dependencies.add 'merchantEssential', ['essentials', 'myMetroSummaries', 'myMerchantAndWarehouse', 'myBranchProfiles', 'currentMerchantRoles']
 lemon.dependencies.add 'merchantMessenger', ['myMerchantUserProfiles', 'unreadMessages']
 lemon.dependencies.add 'merchantNotification', ['unreadNotifications']
 lemon.dependencies.add 'merchantEssentialOnce', ['merchantEssential', 'merchantNotification', 'merchantMessenger']

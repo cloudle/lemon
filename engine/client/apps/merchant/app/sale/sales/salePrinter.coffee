@@ -1,5 +1,5 @@
 lemon.defineWidget Template.salePrinter,
-  merchant: -> Schema.merchantPurchases.findOne({merchant: Session.get('myProfile')?.currentMerchant})
+  merchant: -> Schema.merchantProfiles.findOne({merchant: Session.get('myProfile')?.currentMerchant})
   dayOfWeek: -> moment(Session.get('realtime-now')).format("dddd")
   timeDMY: -> moment(Session.get('realtime-now')).format("DD/MM/YYYY")
   timeHM: -> moment(Session.get('realtime-now')).format("hh:mm")

@@ -43,11 +43,12 @@ Apps.Merchant.productManagementInit.push (scope) ->
     nameOptions = splitName(fullText)
 
     product =
-      merchant  : Session.get('myProfile').currentMerchant
-      warehouse : Session.get('myProfile').currentWarehouse
-      creator   : Session.get('myProfile').user
-      name      : nameOptions.name
-      styles    : Helpers.RandomColor()
+      parentMerchant: Session.get('myProfile').parentMerchant
+      merchant      : Session.get('myProfile').currentMerchant
+      warehouse     : Session.get('myProfile').currentWarehouse
+      creator       : Session.get('myProfile').user
+      name          : nameOptions.name
+      styles        : Helpers.RandomColor()
     product.basicUnit = nameOptions.basicUnit if nameOptions.basicUnit
 
     existedQuery = {name: product.name, merchant: Session.get('myProfile').currentMerchant}

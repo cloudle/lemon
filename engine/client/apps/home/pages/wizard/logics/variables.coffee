@@ -1,2 +1,2 @@
 Apps.Home.merchantWizardReactive.push (scope) ->
-  scope.purchase = Schema.merchantPurchases.findOne({merchant: Session.get('myProfile')?.currentMerchant})
+  scope.merchantProfile = Schema.merchantProfiles.findOne({merchant: Session.get('myProfile')?.currentMerchant})

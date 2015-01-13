@@ -1,4 +1,4 @@
-simpleSchema.merchantPurchases = new SimpleSchema
+simpleSchema.merchantProfiles = new SimpleSchema
   merchant:
     type: String
     optional: true
@@ -96,4 +96,4 @@ simpleSchema.merchantPurchases = new SimpleSchema
 
   version: { type: simpleSchema.Version }
 
-Schema.add 'merchantPurchases'
+Schema.add 'merchantProfiles'
