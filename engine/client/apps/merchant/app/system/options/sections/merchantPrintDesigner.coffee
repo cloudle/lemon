@@ -24,6 +24,7 @@ lemon.defineHyper Template.merchantPrintDesigner,
   allowUpdateDesigner: -> Session.get("merchantOptionsCompanyInfoChanged")
   events:
     "input .editable": (event, template) -> updateAllowEditBillDesign(template)
-    "click .updateCompanyInfoCommand": (event, template) -> updateCompanyInfo(template)
     "keyup .editable": (event, template) ->
       updateCompanyInfo(template) if event.which is 13
+    "click .updateCompanyInfoCommand": (event, template) -> updateCompanyInfo(template)
+    "click .printDesignPreview": (event, template) -> window.print()

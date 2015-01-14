@@ -9,3 +9,25 @@
     &:last-child
       border-bottom none
 
+  .panel-heading.collapsible-caption
+    background-color #F4F4F4 !important
+    font-weight bolder; text-transform uppercase
+    > span:before
+      margin-right 8px
+  .collapsibe-row
+    clearfix()
+    padding 0 10px
+    height 40px
+    line-height @height
+    border-bottom solid 1px #dddddd
+    &.dual-border
+      border-top solid 1px #dddddd
+
+    .description
+      float left
+      padding-left 23px
+      width 200px
+    .input-field
+      float left
+      width 65%
+      height 39px; line-height 39px

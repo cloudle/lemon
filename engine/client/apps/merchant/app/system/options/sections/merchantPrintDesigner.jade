@@ -1,9 +1,10 @@
 template(name="merchantPrintDesigner")
-  .section.top.panel.panel-default.printable-area.animated.fadeIn
+  .section.top.panel.panel-default.printable-area
     .panel-heading
       .printing-header
+        .lemon.rounded.blue.btn.icon-print-6.printDesignPreview.hide-on-print
         if allowUpdateDesigner
-          .lemon.rounded.lime.btn.icon-ok-6.updateCompanyInfoCommand
+          .lemon.rounded.lime.btn.icon-ok-6.updateCompanyInfoCommand.hide-on-print
         .rounded-location: .rounded-wrapper
           img(src="/images/white-pixel.jpg")
           .rounded-icon.icon-location-outline
