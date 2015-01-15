@@ -32,11 +32,33 @@ Apps.Merchant.merchantOptionsReactive.push (scope) ->
 
 Apps.Merchant.merchantOptionsInit.push (scope) ->
   scope.checkUpdateAccountOption = (template) ->
-    console.log template.datePicker.$dateOfBirth.datepicker().data().datepicker.dates[0]
     Session.set "merchantAccountOptionShowEditCommand",
       template.ui.$fullName.val() isnt (Session.get("myProfile").fullName ? '') or
       Session.get("merchantAccountOptionsGenderSelection") isnt (Session.get("myProfile").gender) or
-      template.datePicker.$dateOfBirth.datepicker().data().datepicker.dates[0] isnt (Session.get("myProfile").dateOfBirth ? undefined) or
+      template.datePicker.$dateOfBirth.datepicker().data().datepicker.dates[0].toDateString() isnt (Session.get("myProfile").dateOfBirth.toDateString() ? undefined) or
       template.ui.$address.val() isnt (Session.get("myProfile").address ? '') or
       template.ui.$email.val() isnt (Session.get("myProfile").email ? '') or
       template.ui.$im.val() isnt (Session.get("myProfile").im ? '')
+
+  scope.updateAccountOption = (template)->
+    if Session.get "merchantAccountOptionShowEditCommand"
+      profile     = Session.get("myProfile")
+      fullName    = template.ui.$fullName.val()
+      gender      = Session.get("merchantAccountOptionsGenderSelection")
+      dateOfBirth = template.datePicker.$dateOfBirth.datepicker().data().datepicker.dates[0]
+      address     = template.ui.$address.val()
+      email       = template.ui.$email.val()
+      im          = template.ui.$im.val()
+
+      accountProfileOption ={}
+      accountProfileOption.fullName    = fullName if fullName isnt (profile.fullName ? '')
+      accountProfileOption.gender      = gender if gender isnt profile.gender
+      accountProfileOption.dateOfBirth = dateOfBirth if dateOfBirth.toDateString() isnt (profile.dateOfBirth.toDateString() ? undefined)
+      accountProfileOption.address     = address if address isnt (profile.address ? '')
+      accountProfileOption.email       = email if email isnt (profile.email ? '')
+      accountProfileOption.im          = im if im isnt (profile.im ? '')
+
+      Schema.userProfiles.update profile._id, $set: accountProfileOption
+      Session.set "merchantAccountOptionShowEditCommand"
+
+

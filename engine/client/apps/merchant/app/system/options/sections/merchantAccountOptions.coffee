@@ -19,5 +19,7 @@ lemon.defineHyper Template.merchantAccountOptions,
 
     "change [name='dateOfBirth']": (event, template) -> scope.checkUpdateAccountOption(template)
     "input .accountProfileOption": (event, template) -> scope.checkUpdateAccountOption(template)
+    "keyup .accountProfileOption": (event, template) -> scope.updateAccountOption(template) if event.which is 13
+    "click .syncAccountProfileEdit": (event, template) -> scope.updateAccountOption(template)
 
 
