@@ -33,7 +33,7 @@
     "PORT": 2015,
 //    "PORT": 80,
     "ROOT_URL": "http://gera.vn",
-    "MONGO_URL": "mongodb://localhost:27017/edsBeta",
+    "MONGO_URL": "mongodb://localhost:27017/edsClone2015",
     "MAIL_URL": "smtp://thienbantech@gmail.com:thienban2014@stmp.gmail.com:465/"
   },
 

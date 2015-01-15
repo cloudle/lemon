@@ -18,5 +18,12 @@ lemon.addRoute
 
     return {
       settings: scope.settings
+      merchantProfile: scope.myMerchantProfile
     }
 , Apps.Merchant.RouterBase
+
+Apps.Merchant.merchantOptionsReactive.push (scope) ->
+  if Session.get("myProfile")
+    scope.myMerchantProfile = Schema.merchantProfiles.findOne {merchant: Session.get("myProfile").parentMerchant}
+    if !Session.get("merchantOptionsCurrentDynamics")
+      Session.set "merchantOptionsCurrentDynamics", { template: "merchantAccountOptions", data: scope.myMerchantProfile }

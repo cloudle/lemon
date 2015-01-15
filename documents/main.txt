@@ -1,5 +1,5 @@
 export MONGO_URL=mongodb://gera.vn/edsBeta
-export MONGO_URL=mongodb://gera.vn/edsClone
+export MONGO_URL=mongodb://gera.vn/edsClone2015
 sudo mount --bind /home/vagrant/lemon/local/ /vagrant/lemon/engine/.meteor/local/ & cd /vagrant/lemon/engine
 export MONGO_URL=mongodb://localhost:27017/lemon
 export MAIL_URL=smtp://lehaoson@gmail.com:Ultimate7@stmp.gmail.com:465/
