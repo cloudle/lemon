@@ -19,11 +19,13 @@ lemon.addRoute
     return {
       settings: scope.settings
       merchantProfile: scope.myMerchantProfile
+      myProfile: scope.myProfile
     }
 , Apps.Merchant.RouterBase
 
 Apps.Merchant.merchantOptionsReactive.push (scope) ->
   if Session.get("myProfile")
+    scope.myProfile = Session.get("myProfile")
     scope.myMerchantProfile = Schema.merchantProfiles.findOne {merchant: Session.get("myProfile").parentMerchant}
-    if !Session.get("merchantOptionsCurrentDynamics")
-      Session.set "merchantOptionsCurrentDynamics", { template: "merchantAccountOptions", data: scope.myMerchantProfile }
+    if !Session.get("merchantOptionsCurrentDynamics") and scope.settings?.common
+      Session.set "merchantOptionsCurrentDynamics", scope.settings.common[1]

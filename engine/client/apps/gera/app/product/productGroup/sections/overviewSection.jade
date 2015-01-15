@@ -1,0 +1,20 @@
+template(name="geraProductGroupOverviewSection")
+  .section.top.panel.panel-default
+    input.hidden.avatarFile(type="file")
+    .panel-heading
+      +avatarImageComponent(avatar=avatarUrl alias=name)
+      .caption
+        input.editable.dashed(name="productName" value="{{name}}" maxlength="50" placeholder="tên nhóm"
+        data-toggle="tooltip" data-container="body" data-placement="right" title="tên nhóm")
+
+      .sub1: input.editable.dashed(name="description" value="{{description}}" maxlength="100" placeholder="ghi chú"
+      data-toggle="tooltip" data-container="body" data-placement="right" title="ghi chú")
+
+      .commands
+        if showEditCommand
+          .lemon.btn.rounded.lime.icon-ok-6.syncProductEdit
+        if showDeleteCommand
+          .lemon.btn.rounded.red.icon-minus-4.productDelete
+
+    .panel-footer
+      span.icon-angle-right

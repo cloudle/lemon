@@ -4,16 +4,20 @@ template(name="geraProductManagementOverviewSection")
     .panel-heading
       +avatarImageComponent(avatar=avatarUrl alias=name)
       .caption
-        input.editable.dashed(name="productName" value="{{name}}" maxlength="50")
+        input.editable.dashed(name="productName" value="{{name}}" maxlength="50" placeholder="tên sản phẩm"
+        data-toggle="tooltip" data-container="body" data-placement="right" title="tên sản phẩm")
         if basicUnit
           span.blured-color ({{basicUnit}})
-          if basicDetailModeEnabled
-            .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
+
       .sub1: input.editable.dashed(name="productPrice" value="{{price}}" maxlength="20" style="width: 125px" placeholder="giá bán"
       data-toggle="tooltip" data-container="body" data-placement="right" title="giá bán")
-      //.sub2: span.blured-color Giá nhập cuối: {{formatNumber importPrice}} vnđ - Giá trung bình: {{formatNumber averagePrice}} vnđ
-      .sub2: input.editable(name="productCode" value="{{productCode}}" maxlength="20" size="20" placeholder="mã sản phẩm"
+
+      .sub2: input.editable(name="productImportPrice" value="{{importPrice}}" maxlength="20" size="20" placeholder="giá nhập"
+      data-toggle="tooltip" data-container="body" data-placement="right" title="giá nhập")
+
+      .sub3: input.editable(name="productCode" value="{{productCode}}" maxlength="20" size="20" placeholder="mã sản phẩm"
       data-toggle="tooltip" data-container="body" data-placement="right" title="mã sản phẩm")
+
       .commands
         if showCreateUnitMode
           .lemon.btn.rounded.lime.icon-flow-merge.createUnit
@@ -21,6 +25,7 @@ template(name="geraProductManagementOverviewSection")
           .lemon.btn.rounded.lime.icon-ok-6.syncProductEdit
         if showDeleteCommand
           .lemon.btn.rounded.red.icon-minus-4.productDelete
+
     if hasUnit
       .panel-body
         table.lemon-grid
@@ -32,7 +37,7 @@ template(name="geraProductManagementOverviewSection")
             th.number(style="width:150px") GIÁ BÁN
           each productUnits
             if unitEditingMode
-              +productManagementUnitEditor unitEditingData
+              +geraProductManagementUnitEditor unitEditingData
             else
               tr.detail-row.edit-unit.click-enable
                 td.has-commands
@@ -40,8 +45,6 @@ template(name="geraProductManagementOverviewSection")
                   .commands
                     if allowDelete
                       .lemon.rounded.tiny.btn.blue.delete-unit: span.icon-minus-4
-                    if basicDetailModeEnabled
-                      .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
                 td {{productCode}}
                 td {{conversionQuality}}
                 td.number {{formatNumber importPrice}} VNĐ

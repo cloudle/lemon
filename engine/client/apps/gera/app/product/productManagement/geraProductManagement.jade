@@ -1,4 +1,10 @@
 template(name="geraProductManagement")
+  #header
+    .editor-row
+      .editor-wrapper.dual-spacer
+        span.ilabel.optional nhóm sản phẩm
+        +iSelect(options=productGroupSelectOptions class="field")
+
   #content.modern.product-management
     .dual-content
       .dual-detail-wrapper
@@ -15,7 +21,7 @@ template(name="geraProductManagement")
             .group-wrapper
               each managedProductList
                 .caption.inner(class="{{activeClass}}")
-                  +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                  +avatarImageComponent(avatar=imageUrl alias=name instance=this)
                   span.text
                     |{{name}}
                     if basicUnit
@@ -26,7 +32,7 @@ template(name="geraProductManagement")
                 .caption.group {{key}}
                 each childs
                   .caption.inner(class="{{activeClass}}")
-                    +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                    +avatarImageComponent(avatar=imageUrl alias=name instance=this)
                     span.text
                       |{{name}}
                       if basicUnit

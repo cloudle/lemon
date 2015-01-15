@@ -27,6 +27,7 @@ Template.registerHelper 'userNameFromId', (id) -> Schema.userProfiles.findOne({u
 Template.registerHelper 'ownerNameFromId', (id) -> Schema.customers.findOne(id)?.name
 Template.registerHelper 'unitName', -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
 
+Template.registerHelper 'genderString', (gender) -> if gender then 'Nam' else 'Nữ'
 Template.registerHelper 'allowAction', (val) -> if val then '' else 'disabled'
 
 Template.registerHelper 'crossBillAvailableQuality', ->

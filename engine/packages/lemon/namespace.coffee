@@ -11,4 +11,6 @@ modulus.routes = []
 
 @Apps = {}
 Apps.Merchant = {}
+Apps.Gera = {}
+Apps.Agency = {}
 

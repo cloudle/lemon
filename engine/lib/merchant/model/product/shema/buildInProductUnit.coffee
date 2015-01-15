@@ -1,4 +1,7 @@
 simpleSchema.buildInProductUnits = new SimpleSchema
+  creator:
+    type: String
+
   buildInProduct:
     type: String
 
@@ -22,6 +25,17 @@ simpleSchema.buildInProductUnits = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  status:
+    type: String
+    defaultValue: 'New'
+
+  allowDelete:
+    type: Boolean
+    defaultValue: true
+
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
   version: { type: simpleSchema.Version }
 
 Schema.add "buildInProductUnits", "BuildInProductUnits", class BuildInProductUnits

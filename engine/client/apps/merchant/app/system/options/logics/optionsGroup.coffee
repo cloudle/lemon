@@ -10,7 +10,7 @@ Apps.Merchant.merchantOptionsInit.push (scope) ->
     display: "tài khoản"
     icon: "icon-group"
     template: "merchantAccountOptions"
-    data: undefined
+    data: Session.get("myProfile")
   ,
     display: "doanh nghiệp"
     icon: "icon-location-1"

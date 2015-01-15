@@ -93,27 +93,12 @@ Schema.productLosts.allow
   update: -> true
   remove: -> true
 
-Schema.productGroups.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
-
 Schema.expiringProducts.allow
   insert: -> true
   update: -> true
   remove: -> true
 
 Schema.productUnits.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
-
-Schema.buildInProductUnits.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
-
-Schema.buildInProducts.allow
   insert: -> true
   update: -> true
   remove: -> true

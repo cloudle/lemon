@@ -30,6 +30,18 @@ simpleSchema.userProfiles = new SimpleSchema
     type: String
     optional: true
 
+  email:
+    type: String
+    optional: true
+
+  im:
+    type: String
+    optional: true
+
+  address:
+    type: String
+    optional: true
+
   dateOfBirth:
     type: Date
     optional: true

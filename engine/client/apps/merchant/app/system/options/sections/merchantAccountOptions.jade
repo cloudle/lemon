@@ -5,23 +5,24 @@ template(name="merchantAccountOptions")
     .panel-body
       .collapsible-row
         .description Họ tên
-        input.input-field(value="Lê Ngọc Sơn")
+        input.input-field(value="{{profile.fullName}}")
       .collapsible-row
         .description Giới tính
+        .input-field {{genderString gender}}
         .commands
           input(binding="switch" type="checkbox" name="gender")
       .collapsible-row
         .description Sinh nhật
-        input.input-field(placeholder="chưa cập nhật")
+        input.input-field(name="dateOfBirth" binding="datePicker" todayHighlight="true" maxlength="20" tabindex="4")
       .collapsible-row
         .description Địa chỉ hiện tại
-        input.input-field(placeholder="chưa cập nhật")
+        input.input-field(value="{{address}}" placeholder="chưa cập nhật")
       .collapsible-row
         .description Địa chỉ Email
-        input.input-field(placeholder="chưa cập nhật")
+        input.input-field(value="{{email}}" placeholder="chưa cập nhật")
       .collapsible-row
         .description Địa chỉ Skype
-        input.input-field(placeholder="chưa cập nhật")
+        input.input-field(value="{{im}}" placeholder="chưa cập nhật")
 
 
   .section.top.panel.panel-default.options-section

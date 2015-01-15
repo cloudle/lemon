@@ -1,6 +1,8 @@
 @Helpers = {}
 Apps.Home = {}
 Apps.Merchant = {}
+Apps.Gera = {}
+Apps.Agency = {}
 
 Helpers.shortName = (fullName, maxlength = 6) ->
   return undefined if !fullName

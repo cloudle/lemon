@@ -1,10 +1,6 @@
 simpleSchema.productGroups = new SimpleSchema
   parentMerchant:
     type: String
-    optional: true
-
-  merchant:
-    type: String
 
   creator:
     type: String
@@ -20,9 +16,21 @@ simpleSchema.productGroups = new SimpleSchema
     type: String
     optional: true
 
+  parentGroup:
+    type: [String]
+    optional: true
+
   childGroup:
     type: [String]
     optional: true
+
+  description:
+    type: String
+    optional: true
+
+  buildIn:
+    type: Boolean
+    defaultValue: false
 
   allowDelete:
     type: Boolean
