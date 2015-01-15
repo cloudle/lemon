@@ -56,6 +56,7 @@ bindingDatePicker = (context) ->
     name = $item.attr('name')
     options = {}
     options.language = 'vi'
+    options.autoclose = true
     options.todayHighlight = true if $item.attr('todayHighlight') is true
     $item.datepicker(options)
     context.datePicker["$#{name}"] = $item
