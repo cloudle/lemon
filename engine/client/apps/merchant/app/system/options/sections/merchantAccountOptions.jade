@@ -1,16 +1,39 @@
 template(name="merchantAccountOptions")
-  .section.top.panel.panel-default.printable-area
-    .panel-heading.collapsible-caption
+  .section.top.panel.panel-default.options-section
+    .panel-heading
+      span.icon-contacts Hồ sơ
+    .panel-body
+      .collapsible-row
+        .description Họ tên
+        input.input-field(value="Lê Ngọc Sơn")
+      .collapsible-row
+        .description Giới tính
+        .commands
+          input(binding="switch" type="checkbox" name="gender")
+      .collapsible-row
+        .description Sinh nhật
+        input.input-field(placeholder="chưa cập nhật")
+      .collapsible-row
+        .description Địa chỉ hiện tại
+        input.input-field(placeholder="chưa cập nhật")
+      .collapsible-row
+        .description Địa chỉ Email
+        input.input-field(placeholder="chưa cập nhật")
+      .collapsible-row
+        .description Địa chỉ Skype
+        input.input-field(placeholder="chưa cập nhật")
+
+
+  .section.top.panel.panel-default.options-section
+    .panel-heading
       span.icon-key-outline Đổi mật khẩu
     .panel-body
-      .collapsibe-row
+      .collapsible-row
         .description Mật khẩu hiện tại
-        input.input-field(placeholder="nhập mật khẩu hiện tại")
-      .collapsibe-row
+        input.input-field(type="password" maxlength="40" placeholder="nhập mật khẩu hiện tại")
+      .collapsible-row
         .description Mật khẩu mới
-        input.input-field(placeholder="nhập mật khẩu mới")
-      .collapsibe-row
+        input.input-field(type="password" maxlength="40" placeholder="nhập mật khẩu mới")
+      .collapsible-row
         .description Xác nhận mật khẩu
-        input.input-field(placeholder="nhập lại mật khẩu mới")
-      .collapsibe-row
-        span XÁC NHẬN
+        input.input-field(type="password" maxlength="40" placeholder="nhập lại mật khẩu mới")

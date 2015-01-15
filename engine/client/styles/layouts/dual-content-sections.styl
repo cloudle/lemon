@@ -1,5 +1,6 @@
 @require '../lib.import.styl'
 
+heavy-rounded = 5px
 .dual-content .section
   .empty-dashed-line
     width 100%; height 30px
@@ -9,25 +10,53 @@
     &:last-child
       border-bottom none
 
-  .panel-heading.collapsible-caption
-    background-color #F4F4F4 !important
-    font-weight bolder; text-transform uppercase
-    > span:before
-      margin-right 8px
-  .collapsibe-row
-    clearfix()
-    padding 0 10px
-    height 40px
-    line-height @height
-    border-bottom solid 1px #dddddd
-    &.dual-border
-      border-top solid 1px #dddddd
+  &.options-section
+    border-radius heavy-rounded !important
 
-    .description
-      float left
-      padding-left 23px
-      width 200px
-    .input-field
-      float left
-      width 65%
-      height 39px; line-height 39px
+    .panel-heading
+      /*background-color #FFFFFF !important*/
+      font-weight lighter; text-transform uppercase
+      border-radius top heavy-rounded !important
+      color #7C7C7C
+      > span:before
+        margin-right 8px
+        font-size 18px
+        color #C2C2C2
+
+    .panel-body
+      border-top solid 1px #F0F0F0 !important
+    .panel-footer
+      border-radius bottom heavy-rounded !important
+      padding 0 10px
+
+    .collapsible-row
+      clearfix()
+      padding 0 10px
+      height 40px
+      line-height @height
+      border-bottom solid 1px #F0F0F0
+      &.dual-border
+        border-top solid 1px #F0F0F0
+
+      .description
+        float left
+        padding-left 28px
+        width 180px
+        font-weight lighter; color #424242
+      .input-field
+        float left
+        width 60%
+        height 39px; line-height 39px
+      .commands
+        float right
+        .switchery
+          display block
+          margin-top 7px
+
+      input.input-field[type="text"]
+        font-weight bolder
+
+    .collapsible-row:last-child
+      border-bottom none
+
+

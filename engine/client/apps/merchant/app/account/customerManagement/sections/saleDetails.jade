@@ -1,7 +1,7 @@
 template(name="customerManagementSaleDetails")
   tr.header-row
     td.has-commands(colspan="5")
-      | .
+      | &nbsp;
       .bill-header
         |<b>{{momentCalendar version.createdAt}}</b>
         if description
@@ -40,7 +40,7 @@ template(name="customerManagementSaleDetails")
     else
       tr.header-row
         td.has-commands(colspan="5")
-          | .
+          | &nbsp;
           .bill-header
             |<b>Trả Hàng: {{momentCalendar version.createdAt}} </b>
             if comment

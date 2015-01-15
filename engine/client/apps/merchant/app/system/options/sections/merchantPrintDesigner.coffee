@@ -22,6 +22,7 @@ lemon.defineHyper Template.merchantPrintDesigner,
     array.push i for i in [0...totalDecoratorTiles]
     array
   allowUpdateDesigner: -> Session.get("merchantOptionsCompanyInfoChanged")
+  rendered: -> console.log 'printDesignerRendered'
   events:
     "input .editable": (event, template) -> updateAllowEditBillDesign(template)
     "keyup .editable": (event, template) ->

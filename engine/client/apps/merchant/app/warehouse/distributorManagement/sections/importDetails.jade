@@ -1,7 +1,7 @@
 template(name="distributorManagementImportDetails")
   tr.header-row
     td.has-commands(colspan="5")
-      | .
+      | &nbsp;
       .bill-header <b>{{momentCalendar version.createdAt}}</b> {{description}}
       .commands
         if showDeleteImport
@@ -37,7 +37,7 @@ template(name="distributorManagementImportDetails")
     else
       tr.header-row
         td.has-commands(colspan="5")
-          | .
+          | &nbsp;
           .bill-header <b>Trả Hàng: {{momentCalendar version.createdAt}}</b> {{comment}}
       each returnDetails
         tr.detail-row.edit-detail

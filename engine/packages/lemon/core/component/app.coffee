@@ -10,3 +10,10 @@ lemon.defineApp = (source, destination) ->
     helpers.autoBinding(@)
     helpers.invokeIfNeccessary(destination.rendered, @)
     helpers.arrangeAppLayout()
+
+lemon.defineAppContainer = (source, destination) ->
+  source[name] = value for name, value of destination when !_(exceptions).contains(name)
+
+  source.rendered = ->
+    helpers.invokeIfNeccessary(destination.rendered, @)
+    helpers.arrangeAppLayout()
