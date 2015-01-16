@@ -76,14 +76,19 @@ Apps.Merchant.merchantOptionsInit.push (scope) ->
 
   scope.updateAccountOptionChangePassword = (template)->
     if Session.get("merchantAccountOptionChangePasswordCommand")
-      oldPassword     = template.ui.$oldPassword.val()
-      newPassword     = template.ui.$newPassword.val()
-      confirmPassword = template.ui.$confirmPassword.val()
+      oldPassword     = template.ui.$oldPassword
+      newPassword     = template.ui.$newPassword
+      confirmPassword = template.ui.$confirmPassword
 
-      if oldPassword.length > 0 and newPassword.length > 0 and  newPassword is confirmPassword
-        Accounts.changePassword oldPassword, newPassword, (error) ->
-          if error then console.log error
+      if oldPassword.val().length > 0 and newPassword.val().length > 0 and  newPassword.val() is confirmPassword.val()
+        Accounts.changePassword oldPassword.val(), newPassword.val(), (error) ->
+          if error
+            console.log error
           else
+            oldPassword.val('')
+            newPassword.val('')
+            confirmPassword.val('')
+
             Session.set "merchantAccountOptionChangePasswordCommand"
             console.log 'Thay đổi mật khẩu thành công.'
 
