@@ -9,7 +9,9 @@ heavy-rounded = 5px
     padding 13px 0 0 20px
     &:last-child
       border-bottom none
-
+  &.multiple-selection-section
+    .collapsible-row
+      cursor pointer
   &.options-section
     border-radius heavy-rounded !important
 
@@ -45,10 +47,11 @@ heavy-rounded = 5px
         font-weight lighter; color #424242
       .input-field
         float left
-        width 60%
+        width 55%
         height 39px; line-height 39px
       .commands
         float right
+        color blue
         .switchery
           display block
           margin-top 7px

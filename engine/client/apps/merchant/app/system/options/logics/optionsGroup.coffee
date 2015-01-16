@@ -12,9 +12,9 @@ Apps.Merchant.merchantOptionsInit.push (scope) ->
     template: "merchantAccountOptions"
     data: Session.get("myProfile")
   ,
-    display: "doanh nghiệp"
+    display: "ngôn ngữ"
     icon: "icon-location-1"
-    template: "merchantBusinessOptions"
+    template: "merchantLanguageOptions"
     data: undefined
   ,
     display: "trò chuyện"

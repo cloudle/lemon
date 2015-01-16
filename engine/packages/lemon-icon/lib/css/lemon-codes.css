@@ -233,6 +233,11 @@
 .icon-vcard:before { content: '\e8e7'; } /* '' */
 .icon-trash-1:before { content: '\e8e8'; } /* '' */
 .icon-chart-pie-outline:before { content: '\e8e9'; } /* '' */
+.icon-barcode:before { content: '\e8ea'; } /* '' */
+.icon-search:before { content: '\e8eb'; } /* '' */
+.icon-pencil-1:before { content: '\e8ec'; } /* '' */
+.icon-pencil-neg:before { content: '\e8ed'; } /* '' */
+.icon-pencil-alt:before { content: '\e8ee'; } /* '' */
 .icon-emo-happy:before { content: '\f027'; } /* '' */
 .icon-emo-wink:before { content: '\f028'; } /* '' */
 .icon-emo-wink2:before { content: '\f029'; } /* '' */

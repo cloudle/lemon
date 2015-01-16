@@ -1,4 +1,46 @@
 template(name="merchantSystemOptions")
-  .section.top.panel.panel-default.printable-area
-    .panel-heading System options
-    .panel-body Yah!
+  .section.top.panel.panel-default.options-section
+    .panel-heading
+      span.icon-contacts Tùy chỉnh chức năng
+    .panel-body
+      .collapsible-row
+        .description Hiển thị ghi chú quy đổi
+        .input-field (trên phiếu bán hàng)
+        .commands
+          input(binding="switch" type="checkbox" name="showConversionNote")
+      .collapsible-row
+        .description Sản phẩm nhiều đơn vị
+        .commands
+          input(binding="switch" type="checkbox" name="multipleUnits")
+      .collapsible-row
+        .description Sản phẩm có thuộc tính
+        .commands
+          input(binding="switch" type="checkbox" name="enableSkull")
+
+  .section.top.panel.panel-default.options-section.multiple-selection-section
+    .panel-heading
+      span.icon-barcode Mã vạch
+    .panel-body
+      .collapsible-row
+        .description UPC
+        .input-field (mã vạch chuẩn cho ngành bán lẻ)
+        .commands
+          .icon-ok-6
+      .collapsible-row
+        .description UPCE
+        .input-field (mã vạch UPC thế hệ mới)
+      .collapsible-row
+        .description EAN
+        .input-field (mã vạch chuẩn cho ngành bán lẻ)
+      .collapsible-row
+        .description EAN8
+        .input-field (mã vạch chuẩn cho ngành bán lẻ)
+      .collapsible-row
+        .description EAN13
+        .input-field (mã vạch chuẩn cho ngành bán lẻ)
+      .collapsible-row
+        .description ISBN
+        .input-field (mã vạch chuẩn cho ngành bán lẻ)
+      .collapsible-row
+        .description CODE39
+        .input-field (mã vạch chuẩn cho ngành bán lẻ)
