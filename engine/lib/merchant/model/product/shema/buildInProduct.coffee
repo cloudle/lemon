@@ -29,26 +29,20 @@ simpleSchema.buildInProducts = new SimpleSchema
     type: String
     optional: true
 
-  price:
-    type: Number
-    defaultValue: 0
-
-  importPrice:
-    type: Number
-    defaultValue: 0
-
+#-----------------------------------------------
   status:
     type: String
-    defaultValue: 'New'
+    defaultValue: 'brandNew'
 
-  allowDelete:
-    type: Boolean
-    defaultValue: true
+  agencyProduct:
+    type: [String]
+    optional: true
 
   styles:
     type: String
     defaultValue: Helpers.RandomColor()
   version: { type: simpleSchema.Version }
 
+#-----------------------------------------------
 Schema.add "buildInProducts", "BuildInProducts", class BuildInProducts
   @name: "BuildIn Products"

@@ -103,12 +103,7 @@ Schema.productUnits.allow
   update: -> true
   remove: -> true
 
-Schema.branchProducts.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
-    
-Schema.merchantProducts.allow
+Schema.merchantProductSummaries.allow
   insert: -> true
   update: -> true
   remove: -> true

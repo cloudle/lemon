@@ -1,12 +1,13 @@
 simpleSchema.buildInProductUnits = new SimpleSchema
-  creator:
-    type: String
-
   buildInProduct:
     type: String
 
   productCode:
     type: String
+
+  image:
+    type: String
+    optional: true
 
   unit:
     type: String
@@ -16,22 +17,9 @@ simpleSchema.buildInProductUnits = new SimpleSchema
     type: Number
     min: 1
     defaultValue: 1
-
-  price:
-    type: Number
-    defaultValue: 0
-
-  importPrice:
-    type: Number
-    defaultValue: 0
-
-  status:
+#-----------------------------------------------
+  creator:
     type: String
-    defaultValue: 'New'
-
-  allowDelete:
-    type: Boolean
-    defaultValue: true
 
   styles:
     type: String
