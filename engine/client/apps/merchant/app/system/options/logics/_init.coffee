@@ -36,7 +36,7 @@ Apps.Merchant.merchantOptionsInit.push (scope) ->
       Session.set "merchantAccountOptionShowEditCommand",
         template.ui.$fullName.val() isnt (Session.get("myProfile").fullName ? '') or
         Session.get("merchantAccountOptionsGenderSelection") isnt (Session.get("myProfile").gender) or
-        template.datePicker.$dateOfBirth.datepicker().data().datepicker.dates[0]?.toDateString() isnt (Session.get("myProfile").dateOfBirth.toDateString() ? undefined) or
+        template.datePicker.$dateOfBirth.datepicker().data().datepicker.dates[0]?.toDateString() isnt (Session.get("myProfile").dateOfBirth?.toDateString() ? undefined) or
         template.ui.$address.val() isnt (Session.get("myProfile").address ? '') or
         template.ui.$emailAccount.val() isnt (Session.get("myProfile").email ? '') or
         template.ui.$im.val() isnt (Session.get("myProfile").im ? '')
@@ -54,7 +54,7 @@ Apps.Merchant.merchantOptionsInit.push (scope) ->
       accountProfileOption ={}
       accountProfileOption.fullName    = fullName if fullName isnt (profile.fullName ? '')
       accountProfileOption.gender      = gender if gender isnt profile.gender
-      accountProfileOption.dateOfBirth = dateOfBirth if dateOfBirth.toDateString() isnt (profile.dateOfBirth.toDateString() ? undefined)
+      accountProfileOption.dateOfBirth = dateOfBirth if dateOfBirth?.toDateString() isnt (profile.dateOfBirth?.toDateString() ? undefined)
       accountProfileOption.address     = address if address isnt (profile.address ? '')
       accountProfileOption.email       = email if email isnt (profile.email ? '')
       accountProfileOption.im          = im if im isnt (profile.im ? '')
@@ -83,7 +83,7 @@ Apps.Merchant.merchantOptionsInit.push (scope) ->
       if oldPassword.val().length > 0 and newPassword.val().length > 0 and  newPassword.val() is confirmPassword.val()
         Accounts.changePassword oldPassword.val(), newPassword.val(), (error) ->
           if error
-            console.log error
+             console.log error
           else
             oldPassword.val('')
             newPassword.val('')
