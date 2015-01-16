@@ -28,7 +28,7 @@ Apps.Merchant.merchantOptionsReactive.push (scope) ->
     scope.myProfile = Session.get("myProfile")
     scope.myMerchantProfile = Schema.merchantProfiles.findOne {merchant: Session.get("myProfile").parentMerchant}
     if !Session.get("merchantOptionsCurrentDynamics") and scope.settings?.common
-      Session.set "merchantOptionsCurrentDynamics", scope.settings.common[1]
+      Session.set "merchantOptionsCurrentDynamics", scope.settings.common[0]
 
 Apps.Merchant.merchantOptionsInit.push (scope) ->
   scope.checkUpdateAccountOption = (template) ->
