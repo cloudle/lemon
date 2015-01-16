@@ -32,13 +32,14 @@ Apps.Merchant.merchantOptionsReactive.push (scope) ->
 
 Apps.Merchant.merchantOptionsInit.push (scope) ->
   scope.checkUpdateAccountOption = (template) ->
-    Session.set "merchantAccountOptionShowEditCommand",
-      template.ui.$fullName.val() isnt (Session.get("myProfile").fullName ? '') or
-      Session.get("merchantAccountOptionsGenderSelection") isnt (Session.get("myProfile").gender) or
-      template.datePicker.$dateOfBirth.datepicker().data().datepicker.dates[0].toDateString() isnt (Session.get("myProfile").dateOfBirth.toDateString() ? undefined) or
-      template.ui.$address.val() isnt (Session.get("myProfile").address ? '') or
-      template.ui.$email.val() isnt (Session.get("myProfile").email ? '') or
-      template.ui.$im.val() isnt (Session.get("myProfile").im ? '')
+    if Session.get("myProfile")
+      Session.set "merchantAccountOptionShowEditCommand",
+        template.ui.$fullName.val() isnt (Session.get("myProfile").fullName ? '') or
+        Session.get("merchantAccountOptionsGenderSelection") isnt (Session.get("myProfile").gender) or
+        template.datePicker.$dateOfBirth.datepicker().data().datepicker.dates[0]?.toDateString() isnt (Session.get("myProfile").dateOfBirth.toDateString() ? undefined) or
+        template.ui.$address.val() isnt (Session.get("myProfile").address ? '') or
+        template.ui.$emailAccount.val() isnt (Session.get("myProfile").email ? '') or
+        template.ui.$im.val() isnt (Session.get("myProfile").im ? '')
 
   scope.updateAccountOption = (template)->
     if Session.get "merchantAccountOptionShowEditCommand"
@@ -47,7 +48,7 @@ Apps.Merchant.merchantOptionsInit.push (scope) ->
       gender      = Session.get("merchantAccountOptionsGenderSelection")
       dateOfBirth = template.datePicker.$dateOfBirth.datepicker().data().datepicker.dates[0]
       address     = template.ui.$address.val()
-      email       = template.ui.$email.val()
+      email       = template.ui.$emailAccount.val()
       im          = template.ui.$im.val()
 
       accountProfileOption ={}
@@ -60,5 +61,34 @@ Apps.Merchant.merchantOptionsInit.push (scope) ->
 
       Schema.userProfiles.update profile._id, $set: accountProfileOption
       Session.set "merchantAccountOptionShowEditCommand"
+
+  scope.checkAccountChangePassword = (template) ->
+    if Session.get("myProfile")
+      oldPassword     = template.ui.$oldPassword.val()
+      newPassword     = template.ui.$newPassword.val()
+      confirmPassword = template.ui.$confirmPassword.val()
+
+      if oldPassword.length > 0 and newPassword.length > 0 and  newPassword is confirmPassword
+        Session.set "merchantAccountOptionChangePasswordCommand", true
+      else
+        Session.set "merchantAccountOptionChangePasswordCommand"
+
+
+  scope.updateAccountOptionChangePassword = (template)->
+    if Session.get("merchantAccountOptionChangePasswordCommand")
+      oldPassword     = template.ui.$oldPassword.val()
+      newPassword     = template.ui.$newPassword.val()
+      confirmPassword = template.ui.$confirmPassword.val()
+
+      if oldPassword.length > 0 and newPassword.length > 0 and  newPassword is confirmPassword
+        Accounts.changePassword oldPassword, newPassword, (result) ->
+          if result then console.log result
+          else
+            Session.set "merchantAccountOptionChangePasswordCommand"
+            console.log 'Thay đổi mật khẩu thành công.'
+
+
+
+
 
 

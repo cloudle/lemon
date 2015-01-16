@@ -6,6 +6,7 @@ lemon.defineHyper Template.merchantAccountOptions,
   profile: -> Session.get("myProfile")
   gender: -> Session.get("merchantAccountOptionsGenderSelection") ? @gender
   showEditCommand: -> Session.get("merchantAccountOptionShowEditCommand")
+  showChangePasswordCommand: -> Session.get("merchantAccountOptionChangePasswordCommand")
 
   rendered: ->
     scope.accountOptionsTemplate = @
@@ -21,5 +22,10 @@ lemon.defineHyper Template.merchantAccountOptions,
     "input .accountProfileOption": (event, template) -> scope.checkUpdateAccountOption(template)
     "keyup .accountProfileOption": (event, template) -> scope.updateAccountOption(template) if event.which is 13
     "click .syncAccountProfileEdit": (event, template) -> scope.updateAccountOption(template)
+
+
+    "input .accountChangePassword": (event, template) -> scope.checkAccountChangePassword(template)
+    "keyup .accountChangePassword": (event, template) -> scope.updateAccountOptionChangePassword(template) if event.which is 13
+    "click .changeAccountProfilePassword": (event, template) -> scope.updateAccountOptionChangePassword(template)
 
 

@@ -22,7 +22,7 @@ template(name="merchantAccountOptions")
         input.input-field.accountProfileOption(name="address" value="{{profile.address}}" placeholder="chưa cập nhật")
       .collapsible-row
         .description Địa chỉ Email
-        input.input-field.accountProfileOption(name="email" value="{{profile.email}}" placeholder="chưa cập nhật")
+        input.input-field.accountProfileOption(name="emailAccount" value="{{profile.email}}" placeholder="chưa cập nhật")
       .collapsible-row
         .description Địa chỉ Skype
         input.input-field.accountProfileOption(name="im" value="{{profile.im}}" placeholder="chưa cập nhật")
@@ -31,13 +31,16 @@ template(name="merchantAccountOptions")
   .section.top.panel.panel-default.options-section
     .panel-heading
       span.icon-key-outline Đổi mật khẩu
+      .commands
+        if showChangePasswordCommand
+          .lemon.btn.rounded.lime.icon-ok-6.changeAccountProfilePassword
     .panel-body
       .collapsible-row
         .description Mật khẩu hiện tại
-        input.input-field(type="password" maxlength="40" placeholder="nhập mật khẩu hiện tại")
+        input.input-field.accountChangePassword(name="oldPassword" type="password" maxlength="40" placeholder="nhập mật khẩu hiện tại")
       .collapsible-row
         .description Mật khẩu mới
-        input.input-field(type="password" maxlength="40" placeholder="nhập mật khẩu mới")
+        input.input-field.accountChangePassword(name="newPassword" type="password" maxlength="40" placeholder="nhập mật khẩu mới")
       .collapsible-row
         .description Xác nhận mật khẩu
-        input.input-field(type="password" maxlength="40" placeholder="nhập lại mật khẩu mới")
+        input.input-field.accountChangePassword(name="confirmPassword" type="password" maxlength="40" placeholder="nhập lại mật khẩu mới")
