@@ -16,21 +16,21 @@ changedActionSelectProductGroup = (currentProductGroup)->
   UserSession.set 'currentGeraProductManagementSelectionProductGroup', currentProductGroup._id
 
 Apps.Gera.productManagementInit.push (scope) ->
-  scope.productGroupSelectOptions =
-    query: (query) -> query.callback
-      results: _.filter Schema.productGroups.find({buildIn: true}).fetch(), (item) ->
-        unsignedTerm = Helpers.RemoveVnSigns query.term
-        unsignedName = Helpers.RemoveVnSigns item.name
-
-        unsignedName.indexOf(unsignedTerm) > -1
-      text: 'name'
-    initSelection: (element, callback) -> callback(Session.get("mySession").currentGeraProductManagementSelectionProductGroup)
-    formatSelection: formatProductGroupSearch
-    formatResult: formatProductGroupSearch
-    id: '_id'
-    placeholder: 'CHỌN NHÓM SẢN PHẨM'
-    changeAction: (e) -> changedActionSelectProductGroup(e.added)
-    reactiveValueGetter: -> Session.get("mySession")?.currentGeraProductManagementSelectionProductGroup
+#  scope.productGroupSelectOptions =
+#    query: (query) -> query.callback
+#      results: _.filter Schema.productGroups.find({buildIn: true}).fetch(), (item) ->
+#        unsignedTerm = Helpers.RemoveVnSigns query.term
+#        unsignedName = Helpers.RemoveVnSigns item.name
+#
+#        unsignedName.indexOf(unsignedTerm) > -1
+#      text: 'name'
+#    initSelection: (element, callback) -> callback(Session.get("mySession").currentGeraProductManagementSelectionProductGroup)
+#    formatSelection: formatProductGroupSearch
+#    formatResult: formatProductGroupSearch
+#    id: '_id'
+#    placeholder: 'CHỌN NHÓM SẢN PHẨM'
+#    changeAction: (e) -> changedActionSelectProductGroup(e.added)
+#    reactiveValueGetter: -> Session.get("mySession")?.currentGeraProductManagementSelectionProductGroup
 
   scope.createGeraProduct = (template)->
     fullText    = Session.get("geraProductManagementSearchFilter")

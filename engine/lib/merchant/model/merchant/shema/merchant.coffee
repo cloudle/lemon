@@ -27,6 +27,10 @@ simpleSchema.merchants = new SimpleSchema
     type: [String]
     optional: true
 
+  merchantType:
+    type: String
+    defaultValue: 'merchant'
+
   styles:
     type: String
     defaultValue: Helpers.RandomColor()

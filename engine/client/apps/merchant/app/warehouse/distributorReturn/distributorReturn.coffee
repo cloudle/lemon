@@ -21,7 +21,7 @@ lemon.defineApp Template.distributorReturn,
 
 
     "click .addReturnDetail": (event, template) ->
-      if Session.get('currentDistributorReturn')?.customer
+      if Session.get('currentDistributorReturn')?.distributor
         option =
           return            : Session.get('currentDistributorReturn')._id
           product           : @product._id

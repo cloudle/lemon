@@ -1,14 +1,4 @@
 Meteor.methods
-  updateDistributorDebitAndSale: ->
-    for distributor in Schema.distributors.find({}).fetch()
-      setOption = {totalSales: 0,  totalDebit: 0}
-      Schema.distributors.update distributor._id, $set: setOption
-
-    for transaction in Schema.transactions.find({group: {$in:['import', 'distributor']} , receivable: false}).fetch()
-      setOption = {allowDelete: false}
-      incOption = {totalSales: transaction.totalCash,  totalDebit: transaction.debitCash}
-      Schema.distributors.update transaction.owner, $set: setOption, $inc: incOption
-
   calculateDistributor: (id)->
     if distributor = Schema.distributors.findOne(id)
       distributorOption =
@@ -55,36 +45,41 @@ Meteor.methods
         (currentImport) ->
           distributorOption.importDebt      += currentImport.debtBalanceChange
           distributorOption.importTotalCash += currentImport.debtBalanceChange
-
+          Schema.imports.update currentImport._id, $set:{
+            beforeDebtBalance: tempBeforeDebtBalance
+            latestDebtBalance: tempBeforeDebtBalance + currentImport.debtBalanceChange
+          }
           tempBeforeDebtBalance += currentImport.debtBalanceChange
 
-          Schema.transactions.find({latestImport: currentImport._id}).forEach(
-            (transaction)->
-              if transaction.debtBalanceChange > 0
-                distributorOption.importPaid += transaction.debtBalanceChange
-                distributorOption.importDebt -= transaction.debtBalanceChange
+          transactions = Schema.transactions.find({latestImport: currentImport._id}).fetch()
+          returns = Schema.returns.find({timeLineImport: currentImport._id, status: 2}).fetch()
+          dependsData = _.sortBy transactions.concat(returns), (item) -> item.version.createdAt
+          for data in dependsData
+            if data.latestImport
+              if data.debtBalanceChange > 0
+                distributorOption.importPaid += data.debtBalanceChange
+                distributorOption.importDebt -= data.debtBalanceChange
               else
-                distributorOption.importDebt      += transaction.debtBalanceChange
-                distributorOption.importTotalCash += transaction.debtBalanceChange
+                distributorOption.importDebt      += data.debtBalanceChange
+                distributorOption.importTotalCash += data.debtBalanceChange
 
-              Schema.transactions.update transaction._id, $set:{
+              #cập nhật phiếu công nợ
+              Schema.transactions.update data._id, $set:{
                 beforeDebtBalance: tempBeforeDebtBalance
-                latestDebtBalance: tempBeforeDebtBalance - transaction.debtBalanceChange
+                latestDebtBalance: tempBeforeDebtBalance - data.debtBalanceChange
               }
-              tempBeforeDebtBalance -= transaction.debtBalanceChange
-          )
+              tempBeforeDebtBalance -= data.debtBalanceChange
 
-          Schema.returns.find({timeLineImport: currentImport._id, status: 2}).forEach(
-            (currentReturn) ->
-              distributorOption.importDebt      -= currentReturn.debtBalanceChange
-              distributorOption.importTotalCash -= currentReturn.debtBalanceChange
+            else
+              distributorOption.importDebt      -= data.debtBalanceChange
+              distributorOption.importTotalCash -= data.debtBalanceChange
 
-              Schema.returns.update currentReturn._id, $set:{
+              #cập nhật phiếu trả hàng
+              Schema.returns.update data._id, $set:{
                 beforeDebtBalance: tempBeforeDebtBalance
-                latestDebtBalance: tempBeforeDebtBalance - currentReturn.debtBalanceChange
+                latestDebtBalance: tempBeforeDebtBalance - data.debtBalanceChange
               }
-              tempBeforeDebtBalance -= currentReturn.debtBalanceChange
-          )
+              tempBeforeDebtBalance -= data.debtBalanceChange
       )
 
       Schema.distributors.update distributor._id, $set: distributorOption
@@ -144,15 +139,25 @@ Meteor.methods
         if productDetail.importQuality != productDetail.availableQuality or productDetail.importQuality !=  productDetail.inStockQuality
           throw 'Đã bán hàng khong thể xóa'
 
-      distributorIncOption =
-        importPaid: 0
-        importDebt: -currentImport.debtBalanceChange
-        importTotalCash: -currentImport.debtBalanceChange
+      if productDetails.length > 0
+        debtBalanceChange = currentImport.debtBalanceChange
+        distributorIncOption = {importPaid: 0, importDebt: -debtBalanceChange, importTotalCash: -debtBalanceChange}
+      else
+        distributorIncOption = {importPaid: 0, importDebt: 0, importTotalCash: 0}
 
-      for transaction in Schema.transactions.find({latestImport: currentImport._id}).fetch()
-        distributorIncOption.importPaid += -transaction.debtBalanceChange
-        distributorIncOption.importDebt += -(currentImport.debtBalanceChange - transaction.debtBalanceChange)
-        Schema.transactions.remove transaction._id
+
+
+      Schema.transactions.find({latestImport: currentImport._id}).forEach(
+        (transaction) ->
+          if transaction.debtBalanceChange > 0
+            distributorIncOption.importPaid += -transaction.debtBalanceChange
+            distributorIncOption.importDebt += transaction.debtBalanceChange
+          else
+            distributorIncOption.importDebt += transaction.debtBalanceChange
+            distributorIncOption.importTotalCash += transaction.debtBalanceChange
+
+          Schema.transactions.remove transaction._id
+      )
 
       for productDetail in productDetails
         Schema.productDetails.remove productDetail._id
@@ -161,6 +166,7 @@ Meteor.methods
           availableQuality  : -productDetail.importQuality
           inStockQuality    : -productDetail.importQuality
         }
+
       MetroSummary.updateMyMetroSummaryBy(['deleteImport'],  currentImport._id)
       Schema.imports.remove currentImport._id
       Schema.importDetails.find({import: currentImport._id}).forEach((detail)-> Schema.importDetails.remove detail._id)

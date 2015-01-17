@@ -26,6 +26,23 @@ simpleSchema.products = new SimpleSchema
   description:
     type: String
     optional: true
+#-----------------------------------------------
+# name, image, groups, importPrice
+  hasOverride:
+    type: [String]
+    optional: true
+
+  buildInProduct:
+    type: String
+    optional: true
+
+  agency:
+    type: String
+    optional: true
+
+  agencyProduct:
+    type: String
+    optional: true
 
   price:
     type: Number
@@ -37,13 +54,18 @@ simpleSchema.products = new SimpleSchema
     optional: true
     defaultValue: 0
 
-  styles:
+  alertQuality:
+    type: Number
+    defaultValue: 0
+
+  upperGapQuality:
+    type: Number
+    optional: true
+#-----------------------------------------------
+  creator:
     type: String
-    defaultValue: Helpers.RandomColor()
     optional: true
 
-  version: { type: simpleSchema.Version }
-#-----------------------------------------------
   parentMerchant:
     type: String
     optional: true
@@ -54,60 +76,29 @@ simpleSchema.products = new SimpleSchema
   warehouse:
     type: String
 
-  creator:
-    type: String
-
-  buildIn:
-    type: Boolean
-    defaultValue: true
-
-  buildInProduct:
-    type: String
-    optional: true
-
   basicDetailModeEnabled:
     type: Boolean
     defaultValue: true
 
-  provider:
-    type: String
-    optional: true
-
-  alertQuality:
-    type: Number
-    defaultValue: 0
-
-  upperGapQuality:
-    type: Number
-    optional: true
-
-  expireDate:
-    type: Date
-    optional: true
-
   allowDelete:
     type: Boolean
     defaultValue: true
-#-----------------------------------------------
 
-  childProduct:
-    type: Schema.ChildProduct
-    optional: true
+  status:
+    type: String
+    defaultValue: 'brandNew'
 
   salesQuality:
     type: Number
     defaultValue: 0
-    optional: true
 
   returnQualityByCustomer:
     type: Number
     defaultValue: 0
-    optional: true
 
   returnQualityByDistributor:
     type: Number
     defaultValue: 0
-    optional: true
 
   totalQuality:
     type: Number
@@ -121,6 +112,20 @@ simpleSchema.products = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
+  version: { type: simpleSchema.Version }
+
+#-----------------------------------------------
+  provider:
+    type: String
+    optional: true
+
   avatar:
     type: String
+    optional: true
+
+  childProduct:
+    type: Schema.ChildProduct
     optional: true

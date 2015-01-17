@@ -7,7 +7,7 @@ Apps.Merchant.distributorReturnReactiveRun.push (scope) ->
   Session.set('currentDistributorReturn', Schema.returns.findOne(returnId)) if returnId = Session.get('mySession')?.currentDistributorReturn
 
   if Session.get('currentDistributorReturn')
-    Session.set('distributorReturnCurrentCustomer', Schema.customers.findOne(Session.get('currentDistributorReturn')?.customer))
+    Session.set('distributorReturnCurrentDistributor', Schema.distributors.findOne(Session.get('currentDistributorReturn')?.distributor))
 
   if Session.get("distributorReturnEditingRowId")
     Session.set("distributorReturnEditingRow", Schema.returnDetails.findOne(Session.get("distributorReturnEditingRowId")))
