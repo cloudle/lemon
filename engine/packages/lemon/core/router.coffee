@@ -1,7 +1,10 @@
 @lemon.addRoute = (routes, baseRoute = {}) ->
   routes = [routes] unless Array.isArray(routes)
   for route in routes
+    routeLayoutTemplate = route.layoutTemplate
     _.extend(route, baseRoute)
+    route.layoutTemplate = routeLayoutTemplate if routeLayoutTemplate
+
     if route.waitOnDependency
       route.waitOn = ->
         results = lemon.dependencies.resolve(route.waitOnDependency)

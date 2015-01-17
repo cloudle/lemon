@@ -111,6 +111,9 @@ tile-background(color)
   pointer-events none
   background-color #DBDBDB !important
 
+[class^="tile-group-"], [class*="tile-group-"]
+  margin-right tile-group-space
+
 for size in (1..6)
   .tile-group-{size}
     float left
