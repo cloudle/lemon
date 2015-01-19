@@ -9,7 +9,7 @@ lemon.defineHyper Template.saleDetailSection,
   buyerName: -> Schema.customers.findOne(Session.get("currentOrder")?.buyer)?.name
   buyer: -> Schema.customers.findOne(Session.get("currentOrder")?.buyer)
   sellerName: -> Schema.userProfiles.findOne({user: Session.get("currentOrder")?.seller})?.fullName
-  billNo: -> Helpers.orderCodeCreate(Schema.customers.findOne(Session.get("currentOrder")?.buyer)?.billNo) ? '0001'
+  billNo: -> Helpers.orderCodeCreate(Schema.customers.findOne(Session.get("currentOrder")?.buyer)?.billNo ? '0000')
 
   orderDescription: -> Session.get("currentOrderDescription") ? @order?.description
   customerOldDebt: ->

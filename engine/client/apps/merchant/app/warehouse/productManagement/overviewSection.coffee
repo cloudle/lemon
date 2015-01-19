@@ -50,6 +50,7 @@ lemon.defineHyper Template.productManagementOverviewSection,
     "click .createUnit": ->
       if @basicUnit
         newId = Schema.productUnits.insert {
+          creator          : Meteor.userId()
           product          : @_id
           productCode      : Helpers.randomBarcode()
           conversionQuality: 1

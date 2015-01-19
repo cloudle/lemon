@@ -78,8 +78,12 @@ removeOrderAndOrderDetail = (order, userProfile)->
   else
     buyer = Customer.findOne(order.buyer).data
     UserSession.set('currentOrder', Order.createdNewBy(buyer, userProfile)._id)
-  Order.remove(order._id)
-  OrderDetail.remove({order: order._id})
+
+  Schema.orders.update({_id: order._id}, {$set: {status: 2}})
+#  Schema.orderDetails.update({order: order._id}, {$set: {status: 2}})
+
+#  Order.remove(order._id)
+#  OrderDetail.remove({order: order._id})
 
 updateCustomerByNewSales = (sale, orderDetails)->
   incCustomerOption = {

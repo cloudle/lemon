@@ -34,6 +34,7 @@ Inventory:
 Merchant:
 MerchantProfile:
 MetroSummary:
+    calculateMetroSummaryRevenueDay: -> tính doanh thu trong ngày
 Notification:
 Order:
 Product:

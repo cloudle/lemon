@@ -120,3 +120,19 @@ Meteor.methods
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if parentMerchantProfile = Schema.branchProfiles.findOne({merchant: profile.parentMerchant})
         Apps.Merchant.checkExpireDateCreateTransaction(profile, transactionId, parentMerchantProfile.notifyReceivableExpireRange ? 90)
+
+
+  createGeraMerchant: (merchantId)->
+    findMerchant = Schema.merchants.findOne({_id: merchantId, merchantType: 'merchant'})
+    findGeraMerchant = Schema.merchants.findOne({merchantType: 'gera'})
+    Schema.merchants.update findMerchant._id, $set:{merchantType: 'gera'} if !findGeraMerchant and findMerchant
+
+  upMerchantToAgency: (merchantId)->
+    findMerchant = Schema.merchants.findOne({_id: merchantId, merchantType: 'merchant'})
+    Schema.merchants.update findMerchant._id, $set:{merchantType: 'agency'} if findMerchant
+
+  addMerchantTypeDefault: ->
+    Schema.merchants.find({merchantType: {$nin:['merchant', 'agency', 'gera']} }).forEach(
+      (merchant) -> Schema.merchants.update merchant._id, $set:{merchantType: 'merchant'}
+    )
+

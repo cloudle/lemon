@@ -124,9 +124,8 @@ lemon.defineApp Template.customerReturn,
           debtBalanceChange: totalReturnPrice
           latestDebtBalance: customer.saleDebt - totalReturnPrice
         }
-        MetroSummary.updateMyMetroSummaryBy('createReturn', currentCustomerReturn._id)
+        MetroSummary.updateMyMetroSummaryBy(['createReturn'], currentCustomerReturn._id)
         Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
-
         if customer = Schema.customers.findOne(currentCustomerReturn.customer)
           Meteor.call 'customerToReturns', customer, Session.get('myProfile')
       catch error

@@ -16,6 +16,7 @@ Meteor.publish 'myOrderHistory', ->
       creator   : myProfile.user
       merchant  : myProfile.currentMerchant
       warehouse : myProfile.currentWarehouse
+      status    : 0
     })
 
   historyOrders
