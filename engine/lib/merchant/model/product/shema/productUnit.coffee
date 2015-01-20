@@ -61,6 +61,7 @@ simpleSchema.productUnits = new SimpleSchema
 
   creator:
     type: String
+    optional: true
 
   allowDelete:
     type: Boolean

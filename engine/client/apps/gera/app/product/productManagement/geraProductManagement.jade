@@ -19,7 +19,7 @@ template(name="geraProductManagement")
         .nano: .nano-content
           if showFilterSearch
             .group-wrapper
-              each managedProductList
+              each managedBuildInProductList
                 .caption.inner(class="{{activeClass}}")
                   +avatarImageComponent(avatar=imageUrl alias=name instance=this)
                   span.text
@@ -27,7 +27,7 @@ template(name="geraProductManagement")
                     if basicUnit
                       |({{basicUnit}})
           else
-            each managedProductList
+            each managedBuildInProductList
               .group-wrapper
                 .caption.group {{key}}
                 each childs

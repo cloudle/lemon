@@ -17,23 +17,29 @@ lemon.defineHyper Template.geraProductManagementOverviewSection,
       scope.overviewTemplateInstance.ui.$productName.change()
     , 50 if scope.overviewTemplateInstance
     @name
-  price: ->
+  description: ->
     Meteor.setTimeout ->
-      scope.overviewTemplateInstance.ui.$productPrice.inputmask "numeric",
-        {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false}
+      scope.overviewTemplateInstance.ui.$description.change()
     , 50 if scope.overviewTemplateInstance
-    @price
-  importPrice: ->
-    Meteor.setTimeout ->
-      scope.overviewTemplateInstance.ui.$productImportPrice.inputmask "numeric",
-        {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false}
-    , 50 if scope.overviewTemplateInstance
-    @importPrice
+    @description
+#  price: ->
+#    Meteor.setTimeout ->
+#      scope.overviewTemplateInstance.ui.$productPrice.inputmask "numeric",
+#        {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false}
+#    , 50 if scope.overviewTemplateInstance
+#    @price
+#  importPrice: ->
+#    Meteor.setTimeout ->
+#      scope.overviewTemplateInstance.ui.$productImportPrice.inputmask "numeric",
+#        {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false}
+#    , 50 if scope.overviewTemplateInstance
+#    @importPrice
 
   rendered: ->
     scope.overviewTemplateInstance = @
     @ui.$productName.autosizeInput({space: 10})
-    @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false})
+    @ui.$description.autosizeInput({space: 10})
+#    @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false})
 
   events:
     "click .avatar": (event, template) -> template.find('.avatarFile').click()

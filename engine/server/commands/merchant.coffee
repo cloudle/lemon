@@ -123,16 +123,78 @@ Meteor.methods
 
 
   createGeraMerchant: (merchantId)->
-    findMerchant = Schema.merchants.findOne({_id: merchantId, merchantType: 'merchant'})
-    findGeraMerchant = Schema.merchants.findOne({merchantType: 'gera'})
-    Schema.merchants.update findMerchant._id, $set:{merchantType: 'gera'} if !findGeraMerchant and findMerchant
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      merchantId = profile.parentMerchant if !merchantId
+      findMerchant = Schema.merchants.findOne({_id: merchantId, merchantType: 'merchant', parent: {$exists: false} })
+      findGeraMerchant = Schema.merchants.findOne({merchantType: 'gera'})
+      Schema.merchants.update findMerchant._id, $set:{merchantType: 'gera'} if !findGeraMerchant and findMerchant
 
   upMerchantToAgency: (merchantId)->
-    findMerchant = Schema.merchants.findOne({_id: merchantId, merchantType: 'merchant'})
-    Schema.merchants.update findMerchant._id, $set:{merchantType: 'agency'} if findMerchant
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      merchantId = profile.parentMerchant if !merchantId
+      findMerchant = Schema.merchants.findOne({_id: merchantId, merchantType: 'merchant', parent: {$exists: false}})
+      if findMerchant
+        Schema.merchants.find({$or: [{_id: findMerchant._id}, {parent: findMerchant._id}] }).forEach(
+          (branch) -> Schema.merchants.update findMerchant._id, $set:{merchantType: 'agency'}
+        )
 
-  addMerchantTypeDefault: ->
-    Schema.merchants.find({merchantType: {$nin:['merchant', 'agency', 'gera']} }).forEach(
-      (merchant) -> Schema.merchants.update merchant._id, $set:{merchantType: 'merchant'}
-    )
 
+  updateMerchantDataBase: ->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      #thêm merchantType cho merchant
+      Schema.merchants.find({merchantType: {$nin:['merchant', 'agency', 'gera']} }).forEach(
+        (merchant) ->
+          Schema.merchants.update merchant._id, $set:{merchantType: 'merchant'}
+          Schema.userProfiles.update {currentMerchant: merchant._id}, $set:{userType: 'merchant'}
+      )
+
+      #set merchant của vtnamphuong@gera.vn lên làm gera
+
+      #set merchant của vtnamphuong@gera.vn lên làm agency
+      merchantId_VTNamPhuong = "fd3n2DxNZKbbs5gkE"
+      Schema.merchants.update merchantId_VTNamPhuong, $set:{merchantType: 'agency'}
+      Schema.userProfiles.update {merchant: merchantId_VTNamPhuong}, $set:{userType: 'agency'}
+
+
+      #lấy dữ liệu sản phẩm của vtnamphuong@gera.vn làm buildInProduct
+      Schema.products.find({merchant: "fd3n2DxNZKbbs5gkE", buildInProduct:{$exists: false} }).forEach(
+        (product) ->
+          if product.name and product.productCode
+            hasOverride = ['name', 'importPrice']
+            buildInProduct = {
+              creator    : profile.user
+              name       : product.name
+              productCode: product.productCode
+              status     : 'onSold'
+            }
+            buildInProduct.basicUnit = product.basicUnit if product.basicUnit
+
+            if product.image
+              buildInProduct.image = product.image
+              hasOverride.push('image')
+            if product.description
+              buildInProduct.description = product.description
+              hasOverride.push('description')
+
+            if buildInProduct._id = Schema.buildInProducts.insert buildInProduct
+              Schema.products.update product._id, $set:{buildInProduct: buildInProduct._id}, $push: {hasOverride:{$each: hasOverride}}
+              Schema.productUnits.find({product: product._id}).forEach(
+                (productUnit)->
+                  if productUnit.unit and productUnit.productCode and productUnit.conversionQuality
+                    hasOverride = ['price', 'importPrice']
+                    buildInProductUnit = {
+                      buildInProduct   : buildInProduct._id
+                      creator          : profile.user
+                      productCode      : productUnit.productCode
+                      unit             : productUnit.unit
+                      conversionQuality: productUnit.conversionQuality
+                    }
+
+                    if productUnit.image
+                      buildInProductUnit.image = productUnit.image
+                      hasOverride.push('image')
+
+                    if buildInProductUnit._id = Schema.buildInProductUnits.insert buildInProductUnit
+                      Schema.productUnits.update productUnit._id, $set:{buildInProductUnit: buildInProductUnit._id}, $push: {hasOverride:{$each: hasOverride}}
+              )
+        )

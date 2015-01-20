@@ -29,5 +29,5 @@ lemon.defineApp Template.geraProductManagement,
 
     "click .inner.caption": (event, template) ->
       if Session.get("mySession")
-        Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentProductManagementSelection: @_id}})
+        Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentGeraProductManagementSelection: @_id}})
 #        Meteor.subscribe('productManagementData', @_id)
