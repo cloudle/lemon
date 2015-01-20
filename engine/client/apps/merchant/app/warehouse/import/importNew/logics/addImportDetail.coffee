@@ -47,15 +47,15 @@ Apps.Merchant.importInit.push (scope) ->
         unitPrice     : currentProduct.product.importPrice ? 0
         unitQuality   : 1
         importQuality : 1
-        importPrice   : currentProduct.product.importPrice
-        totalPrice    : currentProduct.product.importPrice
+        importPrice   : currentProduct.product.importPrice ? 0
+        totalPrice    : currentProduct.product.importPrice ? 0
         conversionQuality: 1
 
       if currentProduct.unit
         importDetail.unit = currentProduct.unit._id
         importDetail.conversionQuality = currentProduct.unit.conversionQuality
         importDetail.importQuality = importDetail.unitQuality * importDetail.conversionQuality
-        if currentProduct.unit.importPrice
+        if currentProduct.unit.importPrice > 0
           importDetail.unitPrice     = currentProduct.unit.importPrice
           importDetail.importPrice   = currentProduct.unit.importPrice/importDetail.conversionQuality
           importDetail.totalPrice    = currentProduct.unit.importPrice

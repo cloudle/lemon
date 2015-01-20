@@ -2,6 +2,7 @@ Meteor.publish 'myOrderHistory', ->
   myProfile = Schema.userProfiles.findOne({user: @userId})
   return [] if !myProfile
   historyOrders = Schema.orders.find({
+    status    : 0
     creator   : myProfile.user
     merchant  : myProfile.currentMerchant
     warehouse : myProfile.currentWarehouse
