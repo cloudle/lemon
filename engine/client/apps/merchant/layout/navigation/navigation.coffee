@@ -5,7 +5,7 @@ lemon.defineApp Template.navigation,
   subMenus: -> Session.get('subMenus')
   tourVisible: -> true #Session.get('currentTourName') is ''
   navigationPartial: -> Session.get("currentAppInfo")?.navigationPartial
-  isntMerchantHome: -> Router.current().url isnt '/merchant'
+  isntMerchantHome: -> Router.current().route.path() isnt '/merchant'
   appInfo: ->
     return {
       navigationPartial : Session.get("currentAppInfo")?.navigationPartial

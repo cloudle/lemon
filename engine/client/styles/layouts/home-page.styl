@@ -1,0 +1,39 @@
+@require '../lib.import.styl'
+
+.home-page
+  nav.main
+    border-bottom-color transparent
+    /*.app-name*/
+      /*border-right solid 14px #FFFFFF*/
+
+  #content, .dual-content
+    background-color #FF2E2E !important
+
+  .merchant-metro-wrapper
+    clearfix();
+    margin-top 22px
+
+  .dual-addon
+    position relative
+    border-right-color transparent !important
+    overflow inherit !important
+    .home-separator-line
+      absolute top 0 right 0
+      height 300px; margin-top 22px
+      border-right solid 1px #FFFFFF
+      color #FFFFFF
+      &:before
+        absolute top -20px left -12px
+        font-size 18px
+    .home-separator-logo
+      absolute bottom 22px right -29px
+      background center no-repeat url("/images/gera-white-small.png")
+      width 60px; height @width
+      background-color #ff2e2e
+    .home-eds-text
+      absolute bottom 1px right -58px
+      font-size 20px
+      color #FFFFFF
+      padding 0 7px
+      background-color #ff2e2e
+

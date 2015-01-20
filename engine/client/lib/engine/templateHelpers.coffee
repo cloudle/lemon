@@ -1,4 +1,5 @@
 Template.registerHelper 'systemVersion', -> Schema.systems.findOne()?.version ? '?'
+Template.registerHelper 'homeClass', -> if Router.current().route.path() is '/merchantHomeRemake' then 'home-page' else ''
 Template.registerHelper 'merchantInfo', -> Schema.merchantProfiles.findOne({merchant: Session.get("myProfile").currentMerchant})
 Template.registerHelper 'currentAppInfo', -> Session.get("currentAppInfo")
 Template.registerHelper 'appCollapseClass', -> if Session.get('collapse') then 'icon-angle-double-left' else 'icon-angle-double-right'
@@ -26,7 +27,6 @@ Template.registerHelper 'skullsNameFromId', (id) -> Schema.products.findOne(id)?
 Template.registerHelper 'userNameFromId', (id) -> Schema.userProfiles.findOne({user: id})?.fullName ? Meteor.users.findOne(id)?.emails[0].address
 Template.registerHelper 'ownerNameFromId', (id) -> Schema.customers.findOne(id)?.name
 Template.registerHelper 'unitName', -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
-
 Template.registerHelper 'genderString', (gender) -> if gender then 'Nam' else 'Nữ'
 Template.registerHelper 'allowAction', (val) -> if val then '' else 'disabled'
 

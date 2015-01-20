@@ -7,7 +7,7 @@ lemon.addRoute
     if @ready()
       Apps.setup(scope, Apps.Merchant.homeInit, 'merchantHome')
       Session.set "currentAppInfo",
-        name: "trung tâm"
+        name: ""
       @next()
   data: -> {
     Summary: MetroSummary.findOne({})
