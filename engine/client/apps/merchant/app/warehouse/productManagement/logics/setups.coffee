@@ -8,33 +8,43 @@ splitName = (fullText) ->
 
 Apps.Merchant.productManagementInit.push (scope) ->
   scope.editProduct = (template) ->
-    if product = Session.get("productManagementCurrentProduct")
+    product = Session.get("productManagementCurrentProduct")
+    branchProductSummary = Session.get("productManagementBranchProductSummary")
+    if product and branchProductSummary
       newName  = template.ui.$productName.val()
       newPrice = template.ui.$productPrice.inputmask('unmaskedvalue')
+      newImportPrice = template.ui.$importPrice.inputmask('unmaskedvalue')
       newProductCode = template.ui.$productCode.val()
       return if newName.replace("(", "").replace(")", "").trim().length < 2
-      editOptions = splitName(newName)
-      editOptions.price = newPrice if newPrice.length > 0
-      editOptions.productCode = newProductCode if newProductCode.length > 0
+      editOptionSet   = splitName(newName)
+      editOptionUnSet = {}
+      editOptionSet.price       = newPrice if newPrice.length > 0
+      editOptionSet.importPrice = newImportPrice if newImportPrice.length > 0
 
-      productFound = Schema.products.findOne {name: editOptions.name, merchant: product.merchant} if editOptions.name.length > 0
-      barcodeFound = Schema.products.findOne {productCode: newProductCode, merchant: product.merchant} if newProductCode.length > 0
 
-      if editOptions.name.length is 0
+      buildInProduct = Session.get("productManagementBuildInProduct")
+      if product.buildInProduct is buildInProduct._id
+        editOptionUnSet.basicUnit   = ""
+        editOptionUnSet.productCode = ""
+        delete editOptionSet.basicUnit
+        (delete editOptionSet.name; editOptionUnSet.name = "") if buildInProduct.name is editOptionSet.name
+
+      else
+        delete editOptionSet.basicUnit if Schema.productUnits.findOne({product: product._id})
+        editOptionSet.productCode = newProductCode if newProductCode.length > 0
+        productFound = Schema.products.findOne {name: editOptionSet.name, merchant: product.merchant} if editOptionSet.name.length > 0
+        barcodeFound = Schema.products.findOne {productCode: newProductCode, merchant: product.merchant} if newProductCode.length > 0
+
+      if editOptionSet.name and editOptionSet.name.length is 0
         template.ui.$productName.notify("Tên sản phẩn không thể để trống.", {position: "right"})
       else if productFound and productFound._id isnt product._id
         template.ui.$productName.notify("Tên sản phẩm đã tồn tại.", {position: "right"})
       else if barcodeFound and barcodeFound._id isnt product._id
         template.ui.$productCode.notify("Mã sản phẩm đã tồn tại.", {position: "right"})
       else
-        if Schema.productUnits.findOne({product: product._id})
-          delete editOptions.basicUnit
-          console.log editOptions
-          Schema.products.update product._id, {$set: editOptions}, (error, result) -> if error then console.log error
-        else
-          Schema.products.update product._id, {$set: editOptions}, (error, result) -> if error then console.log error
-
-        template.ui.$productName.val editOptions.name
+        Schema.products.update product._id, $set:editOptionSet, $unset:editOptionUnSet, (error, result)-> if error then console.log error
+#        Schema.branchProductSummaries.update branchProductSummary._id, $set:editOptionSet, $unset:editOptionUnSet, (error, result)-> if error then console.log error
+        if editOptionSet.name then template.ui.$productName.val editOptionSet.name
         Session.set("productManagementShowEditCommand", false)
 
 

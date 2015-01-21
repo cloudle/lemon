@@ -6,18 +6,11 @@ lemon.defineHyper Template.productManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   showEditCommand: -> Session.get "productManagementShowEditCommand"
   showDeleteCommand: -> Session.get('productManagementCurrentProduct')?.allowDelete
-  showCreateUnitMode: -> if Session.get('productManagementCurrentProduct')?.basicUnit then true else false
+  showCreateUnitMode: ->
+    if Session.get('productManagementCurrentProduct')?.buildInProduct then false
+    else if Session.get('productManagementCurrentProduct')?.basicUnit then true else false
   basicDetailModeEnabled: -> Session.get('productManagementCurrentProduct')?.basicDetailModeEnabled
   hasUnit: -> Schema.productUnits.findOne({product: @_id})
-#  averagePrice: ->
-#    if product = Session.get('productManagementCurrentProduct')
-#      productDetails = Schema.productDetails.find({product: product._id}).fetch()
-#      totalQuality = 0
-#      totalPrice = 0
-#      for productDetail in productDetails
-#        totalQuality += productDetail.importQuality
-#        totalPrice += productDetail.importQuality * productDetail.importPrice
-#      totalPrice/totalQuality
   productUnits: -> Schema.productUnits.find({product: @_id})
 
   name: ->
@@ -25,6 +18,7 @@ lemon.defineHyper Template.productManagementOverviewSection,
       scope.overviewTemplateInstance.ui.$productName.change()
     , 50 if scope.overviewTemplateInstance
     @name
+
   price: ->
     Meteor.setTimeout ->
       scope.overviewTemplateInstance.ui.$productPrice.inputmask "numeric",
@@ -32,10 +26,18 @@ lemon.defineHyper Template.productManagementOverviewSection,
     , 50 if scope.overviewTemplateInstance
     @price
 
+  importPrice: ->
+    Meteor.setTimeout ->
+      scope.overviewTemplateInstance.ui.$importPrice.inputmask "numeric",
+        {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false}
+    , 50 if scope.overviewTemplateInstance
+    @importPrice
+
   rendered: ->
     scope.overviewTemplateInstance = @
     @ui.$productName.autosizeInput({space: 10})
     @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false})
+    @ui.$importPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false})
 
   events:
     "click .avatar": (event, template) -> template.find('.avatarFile').click()
@@ -48,7 +50,7 @@ lemon.defineHyper Template.productManagementOverviewSection,
 
   #TODO: Chinh lai truong hop bi trung randomBarcode()
     "click .createUnit": ->
-      if @basicUnit
+      if !@buildInProduct and @basicUnit
         newId = Schema.productUnits.insert {
           creator          : Meteor.userId()
           product          : @_id
@@ -112,6 +114,7 @@ lemon.defineHyper Template.productManagementOverviewSection,
       Session.set "productManagementShowEditCommand",
         template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
         template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '') or
+        template.ui.$importPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").importPrice ? '') or
         template.ui.$productCode.val() isnt Session.get("productManagementCurrentProduct").productCode
 
     "keyup input.editable": (event, template) ->
@@ -121,6 +124,8 @@ lemon.defineHyper Template.productManagementOverviewSection,
           $(event.currentTarget).change()
         else if $(event.currentTarget).attr('name') is 'productPrice'
           $(event.currentTarget).val(Session.get("productManagementCurrentProduct").price)
+        else if $(event.currentTarget).attr('name') is 'importPrice'
+          $(event.currentTarget).val(Session.get("productManagementCurrentProduct").importPrice)
         else if $(event.currentTarget).attr('name') is 'productCode'
           $(event.currentTarget).val(Session.get("productManagementCurrentProduct").productCode)
       else if event.which is 13

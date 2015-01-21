@@ -28,7 +28,14 @@ Meteor.publishComposite 'availableProducts', ->
       return EmptyQueryResult if !profile
       Schema.products.find({merchant: profile.currentMerchant})
     children: [
+      find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}
+    ,
+      find: (product) -> Schema.branchProductSummaries.find {product: product._id}
+    ,
       find: (product) -> Schema.productUnits.find {product: product._id}
+      children: [
+        find: (productUnit, product) -> Schema.buildInProductUnits.find {buildInProduct: productUnit.buildInProductUnit}
+      ]
     ]
   }
 
@@ -88,6 +95,16 @@ Schema.products.allow
     productInUse = Schema.importDetails.findOne {product: product._id}
     return product.totalQuality == 0 and !productInUse
 
+Schema.productUnits.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
+Schema.branchProductSummaries.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
 Schema.productDetails.allow
   insert: -> true
   update: -> true
@@ -99,16 +116,6 @@ Schema.productLosts.allow
   remove: -> true
 
 Schema.expiringProducts.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
-
-Schema.productUnits.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
-
-Schema.merchantProductSummaries.allow
   insert: -> true
   update: -> true
   remove: -> true

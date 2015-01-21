@@ -12,8 +12,8 @@ formatProductGroupSearch = (item) ->
 #    desc = if item.description then "(#{item.description})" else ""
 #    name + desc
 
-changedActionSelectProductGroup = (currentProductGroup)->
-  UserSession.set 'currentGeraProductManagementSelectionProductGroup', currentProductGroup._id
+#changedActionSelectProductGroup = (currentProductGroup)->
+#  UserSession.set 'currentGeraProductManagementSelectionProductGroup', currentProductGroup._id
 
 Apps.Gera.productManagementInit.push (scope) ->
 #  scope.productGroupSelectOptions =
@@ -59,27 +59,31 @@ Apps.Gera.productManagementInit.push (scope) ->
           Session.set("geraProductManagementSearchFilter", "")
           break
 
-  scope.checkAndUpdateGeraProduct = (event, template)->
+  scope.checkAndUpdateGeraProduct = (event, template, geraProduct)->
     if event.which is 27
       if $(event.currentTarget).attr('name') is 'productName'
         $(event.currentTarget).val(Session.get("geraProductManagementCurrentProduct").name)
         $(event.currentTarget).change()
-      else if $(event.currentTarget).attr('name') is 'productPrice'
-        $(event.currentTarget).val(Session.get("geraProductManagementCurrentProduct").price)
+      else if $(event.currentTarget).attr('name') is 'description'
+        $(event.currentTarget).val(Session.get("geraProductManagementCurrentProduct").description)
       else if $(event.currentTarget).attr('name') is 'productCode'
         $(event.currentTarget).val(Session.get("geraProductManagementCurrentProduct").productCode)
     else if event.which is 13
-      scope.updateGeraProduct(template)
+      scope.updateGeraProduct(template, geraProduct)
 
-  scope.updateGeraProduct = (template) ->
-    if geraProduct = Session.get("geraProductManagementCurrentProduct")
+    Session.set "geraProductManagementShowEditCommand",
+      template.ui.$productName.val() isnt Session.get("geraProductManagementCurrentProduct").name or
+      template.ui.$description.val() isnt Session.get("geraProductManagementCurrentProduct").description or
+      template.ui.$productCode.val() isnt Session.get("geraProductManagementCurrentProduct").productCode
+
+  scope.updateGeraProduct = (template, geraProduct) ->
       newName  = template.ui.$productName.val()
-      newPrice = template.ui.$productPrice.inputmask('unmaskedvalue')
       newProductCode = template.ui.$productCode.val()
+      newDescription = template.ui.$description.val()
       return if newName.replace("(", "").replace(")", "").trim().length < 2
       editOptions = splitName(newName)
-      editOptions.price = newPrice if newPrice.length > 0
       editOptions.productCode = newProductCode if newProductCode.length > 0
+      editOptions.description = newDescription if newDescription.length > 0
 
       productFound = Schema.buildInProducts.findOne {name: editOptions.name} if editOptions.name.length > 0
       barcodeFound = Schema.buildInProducts.findOne {productCode: newProductCode} if newProductCode.length > 0
@@ -93,7 +97,6 @@ Apps.Gera.productManagementInit.push (scope) ->
       else
         if Schema.productUnits.findOne({product: geraProduct._id})
           delete editOptions.basicUnit
-          console.log editOptions
           Schema.buildInProducts.update geraProduct._id, {$set: editOptions}, (error, result) -> if error then console.log error
         else
           Schema.buildInProducts.update geraProduct._id, {$set: editOptions}, (error, result) -> if error then console.log error
@@ -101,8 +104,9 @@ Apps.Gera.productManagementInit.push (scope) ->
         template.ui.$productName.val editOptions.name
         Session.set("geraProductManagementShowEditCommand", false)
 
+
   scope.deleteGeraProduct = (geraProduct) ->
-    if geraProduct.allowDelete
+    if geraProduct.status is 'brandNew'
       Schema.buildInProducts.remove geraProduct._id
       currentGeraProduct = Schema.buildInProducts.findOne()?._id ? ''
       UserSession.set 'currentGeraProductManagementSelection', currentGeraProduct
@@ -123,22 +127,20 @@ Apps.Gera.productManagementInit.push (scope) ->
     #TODO: Chinh lai truong hop bi trung randomBarcode()
     unit                  = template.ui.$unit.val()
     barcode               = template.ui.$barcode.val()
-    priceText             = template.ui.$price.inputmask('unmaskedvalue')
-    importPriceText       = template.ui.$importPrice.inputmask('unmaskedvalue')
     conversionQualityText = template.ui.$conversionQuality.inputmask('unmaskedvalue')
+    #    priceText             = template.ui.$price.inputmask('unmaskedvalue')
+    #    importPriceText       = template.ui.$importPrice.inputmask('unmaskedvalue')
+#    price       = Math.abs(Helpers.Number(priceText))
+#    importPrice = Math.abs(Helpers.Number(importPriceText))
 
-    price       = Math.abs(Helpers.Number(priceText))
-    importPrice = Math.abs(Helpers.Number(importPriceText))
-
-    if buildInProductUnit.status
-      conversionQuality = Math.abs(Helpers.Number(conversionQualityText))
-      conversionQuality = 1 if conversionQuality < 1
+    conversionQuality = Math.abs(Helpers.Number(conversionQualityText))
+    conversionQuality = 1 if conversionQuality < 1
 
     unitOption =
       unit        : unit
       productCode : barcode
-      price       : price
-      importPrice : importPrice
+#      price       : price
+#      importPrice : importPrice
     unitOption.conversionQuality = conversionQuality if conversionQuality
     Schema.buildInProductUnits.update buildInProductUnit._id, $set: unitOption
 

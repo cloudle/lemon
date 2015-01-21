@@ -138,6 +138,42 @@ Meteor.methods
           (branch) -> Schema.merchants.update findMerchant._id, $set:{merchantType: 'agency'}
         )
 
+  updateParentMerchant: ->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      Schema.merchants.find({_id: "fd3n2DxNZKbbs5gkE"}).forEach(
+        (merchant) ->
+          parentMerchant = if merchant.parent then merchant.parent else merchant._id
+          Schema.products.find({merchant: merchant._id}).forEach(
+            (product) ->
+              Schema.products.update product._id, $set:{parentMerchant: parentMerchant}
+              branchProductSummaries =
+                parentMerchant            : parentMerchant
+                merchant                  : merchant._id
+                product                   : product._id
+                warehouse                 : product.warehouse
+                alertQuality              : 0
+                salesQuality              : 0
+                returnQualityByCustomer   : 0
+                returnQualityByDistributor: 0
+                totalQuality              : 0
+                availableQuality          : 0
+                inStockQuality            : 0
+
+              Schema.productDetails.find({product: product._id, merchant: product.merchant}).forEach(
+                (productDetail)->
+                  Schema.productDetails.update productDetail._id, $set:{parentMerchant: parentMerchant}
+                  branchProductSummaries.availableQuality           += productDetail.inStockQuality
+                  branchProductSummaries.inStockQuality             += productDetail.availableQuality
+                  branchProductSummaries.totalQuality               += productDetail.importQuality
+              )
+              Schema.saleDetails.find({product: product._id}).forEach(
+                (saleDetail)-> branchProductSummaries.salesQuality += saleDetail.quality
+              )
+              Schema.branchProductSummaries.insert branchProductSummaries
+          )
+
+      )
+
 
   updateMerchantDataBase: ->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
@@ -146,6 +182,36 @@ Meteor.methods
         (merchant) ->
           Schema.merchants.update merchant._id, $set:{merchantType: 'merchant'}
           Schema.userProfiles.update {currentMerchant: merchant._id}, $set:{userType: 'merchant'}
+
+          parentMerchant = if merchant.parent then merchant.parent else merchant._id
+          Schema.products.find({merchant: merchant._id}).forEach(
+            (product) ->
+              Schema.products.update product._id, $set:{parentMerchant: parentMerchant}
+              branchProductSummaries =
+                parentMerchant            : parentMerchant
+                merchant                  : merchant._id
+                product                   : product._id
+                warehouse                 : product.warehouse
+                alertQuality              : 0
+                salesQuality              : 0
+                returnQualityByCustomer   : 0
+                returnQualityByDistributor: 0
+                totalQuality              : 0
+                availableQuality          : 0
+                inStockQuality            : 0
+
+              Schema.productDetails.find({product: product._id, merchant: product.merchant}).forEach(
+                (productDetail)->
+                  Schema.productDetails.update productDetail._id, $set:{parentMerchant: parentMerchant}
+                  branchProductSummaries.availableQuality           += productDetail.inStockQuality
+                  branchProductSummaries.inStockQuality             += productDetail.availableQuality
+                  branchProductSummaries.totalQuality               += productDetail.importQuality
+              )
+              Schema.saleDetails.find({product: product._id}).forEach(
+                (saleDetail)-> branchProductSummaries.salesQuality += saleDetail.quality
+              )
+              Schema.branchProductSummaries.insert branchProductSummaries
+          )
       )
 
       #set merchant của vtnamphuong@gera.vn lên làm gera
@@ -157,10 +223,10 @@ Meteor.methods
 
 
       #lấy dữ liệu sản phẩm của vtnamphuong@gera.vn làm buildInProduct
-      Schema.products.find({merchant: "fd3n2DxNZKbbs5gkE", buildInProduct:{$exists: false} }).forEach(
+#      Schema.products.find({merchant: "fd3n2DxNZKbbs5gkE", buildInProduct:{$exists: false} }).forEach(
+      Schema.products.find({merchant: "fd3n2DxNZKbbs5gkE"}).forEach(
         (product) ->
           if product.name and product.productCode
-            hasOverride = ['name', 'importPrice']
             buildInProduct = {
               creator    : profile.user
               name       : product.name
@@ -168,20 +234,17 @@ Meteor.methods
               status     : 'onSold'
             }
             buildInProduct.basicUnit = product.basicUnit if product.basicUnit
-
-            if product.image
-              buildInProduct.image = product.image
-              hasOverride.push('image')
-            if product.description
-              buildInProduct.description = product.description
-              hasOverride.push('description')
+            buildInProduct.image = product.image if product.image
+            buildInProduct.description = product.description if product.description
 
             if buildInProduct._id = Schema.buildInProducts.insert buildInProduct
-              Schema.products.update product._id, $set:{buildInProduct: buildInProduct._id}, $push: {hasOverride:{$each: hasOverride}}
+              productSet = {buildInProduct: buildInProduct._id}
+              productUnSet = {name: "", image: "", productCode: "", basicUnit: "", description: ""}
+              Schema.products.update product._id, $set:productSet, $unset:productUnSet
+
               Schema.productUnits.find({product: product._id}).forEach(
                 (productUnit)->
                   if productUnit.unit and productUnit.productCode and productUnit.conversionQuality
-                    hasOverride = ['price', 'importPrice']
                     buildInProductUnit = {
                       buildInProduct   : buildInProduct._id
                       creator          : profile.user
@@ -189,12 +252,11 @@ Meteor.methods
                       unit             : productUnit.unit
                       conversionQuality: productUnit.conversionQuality
                     }
-
-                    if productUnit.image
-                      buildInProductUnit.image = productUnit.image
-                      hasOverride.push('image')
+                    buildInProductUnit.image = productUnit.image if productUnit.image
 
                     if buildInProductUnit._id = Schema.buildInProductUnits.insert buildInProductUnit
-                      Schema.productUnits.update productUnit._id, $set:{buildInProductUnit: buildInProductUnit._id}, $push: {hasOverride:{$each: hasOverride}}
+                      productUnitSet = {buildInProductUnit: buildInProductUnit._id}
+                      productUnitUnSet = {buildInProduct: "", productCode: "", image: "", unit: "", conversionQuality: ""}
+                      Schema.productUnits.update productUnit._id, $set: productUnitSet, $unset: productUnitUnSet
               )
         )
