@@ -10,7 +10,7 @@ lemon.defineHyper Template.geraProductManagementOverviewSection,
 
   avatarUrl   : -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   hasUnit     : -> Schema.buildInProductUnits.findOne({buildInProduct: @_id})
-  productUnits: -> Schema.buildInProductUnits.find({buildInProduct: @_id})
+  buildInProductUnitList: -> Schema.buildInProductUnits.find({buildInProduct: @_id})
 
   name: ->
     Meteor.setTimeout ->

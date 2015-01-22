@@ -24,6 +24,10 @@ simpleSchema.productDetails = new SimpleSchema
   product:
     type: String
 
+  branchProduct:
+    type: String
+    optional: true
+
   unit:
     type: String
     optional: true

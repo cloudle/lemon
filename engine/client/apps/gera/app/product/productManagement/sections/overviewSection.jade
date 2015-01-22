@@ -41,7 +41,7 @@ template(name="geraProductManagementOverviewSection")
             th(style="width:80px") QUI ĐỔI
             //th.number(style="width:150px") GIÁ NHẬP
             //th.number(style="width:150px") GIÁ BÁN
-          each productUnits
+          each buildInProductUnitList
             if unitEditingMode
               +geraProductManagementUnitEditor unitEditingData
             else

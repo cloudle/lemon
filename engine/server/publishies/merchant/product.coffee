@@ -29,13 +29,13 @@ Meteor.publishComposite 'availableProducts', ->
       Schema.products.find({merchant: profile.currentMerchant})
     children: [
       find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}
+      children: [
+        find: (buildInProduct, product) -> Schema.buildInProductUnits.find {buildInProduct: buildInProduct._id}
+      ]
     ,
       find: (product) -> Schema.branchProductSummaries.find {product: product._id}
     ,
-      find: (product) -> Schema.productUnits.find {product: product._id}
-      children: [
-        find: (productUnit, product) -> Schema.buildInProductUnits.find {buildInProduct: productUnit.buildInProductUnit}
-      ]
+      find: (product) -> Schema.productUnits.find  {product: product._id, merchant: product.merchant}
     ]
   }
 

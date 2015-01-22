@@ -32,7 +32,13 @@ Apps.Merchant.productManagementReactive.push (scope) ->
       Session.set("productManagementCurrentProduct", product)
 
   if Session.get("productManagementUnitEditingRowId")
-    Session.set("productManagementUnitEditingRow", Schema.productUnits.findOne(Session.get("productManagementUnitEditingRowId")))
+    if productUnit = Schema.productUnits.findOne Session.get("productManagementUnitEditingRowId")
+      buildInProductUnit = Schema.buildInProductUnits.findOne(productUnit.buildInProductUnit) if productUnit.buildInProductUnit
+      if buildInProductUnit
+        productUnit.unit = buildInProductUnit.unit if !productUnit.unit
+        productUnit.productCode = buildInProductUnit.productCode if !productUnit.productCode
+        productUnit.conversionQuality = buildInProduct.conversionQuality if !productUnit.conversionQuality
+      Session.set("productManagementUnitEditingRow", productUnit)
 
   if Session.get("productManagementDetailEditingRowId")
     Session.set("productManagementDetailEditingRow", Schema.productDetails.findOne(Session.get("productManagementDetailEditingRowId")))

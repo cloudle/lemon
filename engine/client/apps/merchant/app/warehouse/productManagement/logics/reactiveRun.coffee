@@ -9,12 +9,11 @@ Apps.Merchant.productManagementReactive.push (scope) ->
           product.productCode = buildInProduct.productCode
           product.basicUnit = buildInProduct.basicUnit
 
-          product.name = buildInProduct.name if !product.name
+          product.name  = buildInProduct.name if !product.name
           product.image = buildInProduct.image if !product.image
           product.description = buildInProduct.description if !product.description
         scope.productList.push product
     )
-
 
     if Session.get("productManagementSearchFilter")?.length > 0
       unsignedSearch = Helpers.RemoveVnSigns Session.get("productManagementSearchFilter")

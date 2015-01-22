@@ -34,10 +34,10 @@ template(name="productManagementOverviewSection")
           tr.table-header
             th(style="width:auto") ĐƠN VỊ TÍNH
             th(style="width:150px") MÃ VẠCH
-            th(style="width:80px") QUI ĐỔI
+            th.number(style="width:80px") QUI ĐỔI
             th.number(style="width:150px") GIÁ NHẬP
             th.number(style="width:150px") GIÁ BÁN
-          each productUnits
+          each productUnitList
             if unitEditingMode
               +productManagementUnitEditor unitEditingData
             else
@@ -45,12 +45,12 @@ template(name="productManagementOverviewSection")
                 td.has-commands
                   span {{unit}}
                   .commands
-                    if allowDelete
+                    if showDeleteUnit
                       .lemon.rounded.tiny.btn.blue.delete-unit: span.icon-minus-4
                     if basicDetailModeEnabled
                       .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
                 td {{productCode}}
-                td {{conversionQuality}}
+                td.number {{conversionQuality}}
                 td.number {{formatNumber importPrice}} VNĐ
                 td.number {{formatNumber price}} VNĐ
 

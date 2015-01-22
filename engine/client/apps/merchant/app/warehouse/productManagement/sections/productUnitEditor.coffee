@@ -13,11 +13,12 @@ lemon.defineHyper Template.productManagementUnitEditor,
       {autoGroup: true, groupSeparator:",", suffix: " VNĐ", radixPoint: ".", integerDigits:11}
     @ui.$importPrice.val Session.get("productManagementUnitEditingRow").importPrice
 
-    @ui.$conversionQuality.inputmask "numeric",
-      {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}
-    @ui.$conversionQuality.val Session.get("productManagementUnitEditingRow").conversionQuality
+    @ui.$conversionQuality?.inputmask "numeric",
+      {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
+    @ui.$conversionQuality?.val Session.get("productManagementUnitEditingRow").conversionQuality
 
-    @ui.$unit.select()
+
+    @ui.$price.select()
 
   events:
     "keyup input[name]": (event, template) ->

@@ -47,6 +47,10 @@ simpleSchema.productUnits = new SimpleSchema
     type: String
     optional: true
 
+  createMerchant:
+    type: String
+    optional: true
+
   product:
     type: String
 

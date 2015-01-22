@@ -310,3 +310,29 @@ Meteor.methods
       Schema.productDetails.find({merchant: profile.currentMerchant}).forEach(
         (detail) -> Schema.productDetails.update detail._id, $set:{importPrice: detail.unitPrice/detail.conversionQuality}
       )
+
+  createBranchProductSummaryBy: (productId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if product = Schema.products.findOne({_id: productId, parentMerchant: profile.parentMerchant})
+        Schema.merchants.find({$or: [{_id: product.parentMerchant}, {parent: product.parentMerchant}] }).forEach(
+          (branch)->
+            branchProductSummaryOption =
+              parentMerchant : product.parentMerchant
+              merchant       : branch._id
+              product        : product._id
+
+            if !Schema.branchProductSummaries.findOne(branchProductSummaryOption)
+              Schema.branchProductSummaries.insert branchProductSummaryOption
+        )
+
+  deleteBranchProductSummaryBy: (productId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      product = Schema.products.findOne({_id: productId, parentMerchant: profile.parentMerchant, buildInProduct:{$exists: false}})
+      console.log product
+      if product?.allowDelete
+        Schema.merchants.find({$or: [{_id: product.parentMerchant}, {parent: product.parentMerchant}] }).forEach(
+          (branch)->
+            if branchProductSummary = Schema.branchProductSummaries.findOne({merchant: branch._id, product: product._id})
+              Schema.branchProductSummaries.remove branchProductSummary._id
+        )
+        Schema.products.remove product._id

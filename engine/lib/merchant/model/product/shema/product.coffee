@@ -58,6 +58,10 @@ simpleSchema.products = new SimpleSchema
     type: String
     optional: true
 
+  createMerchant:
+    type: String
+    optional: true
+
   parentMerchant:
     type: String
     optional: true

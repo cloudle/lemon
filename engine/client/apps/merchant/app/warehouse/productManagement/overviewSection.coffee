@@ -1,17 +1,24 @@
 scope = logics.productManagement
 
 lemon.defineHyper Template.productManagementOverviewSection,
+  avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   unitEditingMode: -> Session.get("productManagementUnitEditingRow")?._id is @_id
   unitEditingData: -> Session.get("productManagementUnitEditingRow")
-  avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
+
+  productCode: -> @productCode ? Schema.buildInProductUnits.findOne(@buildInProductUnit)?.productCode
+  unit: -> @unit ? Schema.buildInProductUnits.findOne(@buildInProductUnit)?.unit
+
+  basicDetailModeEnabled: -> Session.get('productManagementCurrentProduct')?.basicDetailModeEnabled
+  hasUnit: -> Schema.productUnits.findOne({product: @_id})
+  productUnitList: -> Schema.productUnits.find({product: @_id})
+
   showEditCommand: -> Session.get "productManagementShowEditCommand"
   showDeleteCommand: -> Session.get('productManagementCurrentProduct')?.allowDelete
   showCreateUnitMode: ->
     if Session.get('productManagementCurrentProduct')?.buildInProduct then false
     else if Session.get('productManagementCurrentProduct')?.basicUnit then true else false
-  basicDetailModeEnabled: -> Session.get('productManagementCurrentProduct')?.basicDetailModeEnabled
-  hasUnit: -> Schema.productUnits.findOne({product: @_id})
-  productUnits: -> Schema.productUnits.find({product: @_id})
+  showDeleteUnit: -> !@buildInProductUnit and @allowDelete
+
 
   name: ->
     Meteor.setTimeout ->
@@ -65,7 +72,9 @@ lemon.defineHyper Template.productManagementOverviewSection,
     "click .edit-unit": -> Session.set("productManagementUnitEditingRowId", @_id)
 
     "click .add-basicDetail": ->
-      if product = Session.get('productManagementCurrentProduct')
+      product = Session.get('productManagementCurrentProduct')
+      branchProductSummary = Session.get('productManagementBranchProductSummary')
+      if product and branchProductSummary
         if @_id is product._id
           detailOption =
             merchant          : product.merchant
@@ -96,12 +105,18 @@ lemon.defineHyper Template.productManagementOverviewSection,
         if detailOption
           productDetailId = Schema.productDetails.insert detailOption
           if Schema.productDetails.findOne(productDetailId)
-            Schema.productUnits.update detailOption.unit, $set:{allowDelete: false} if detailOption.unit
             Schema.products.update product._id, $set:{allowDelete: false}, $inc:{
               totalQuality    : detailOption.importQuality
               availableQuality: detailOption.importQuality
               inStockQuality  : detailOption.importQuality
             }
+            Schema.branchProductSummaries.update branchProductSummary._id, $inc:{
+              totalQuality    : detailOption.importQuality
+              availableQuality: detailOption.importQuality
+              inStockQuality  : detailOption.importQuality
+            }
+
+            Schema.productUnits.update detailOption.unit, $set:{allowDelete: false} if detailOption.unit
             metroSummary = Schema.metroSummaries.findOne({merchant: Session.get('myProfile').currentMerchant})
             Schema.metroSummaries.update metroSummary._id, $inc:{
               stockProductCount: detailOption.importQuality
@@ -128,17 +143,15 @@ lemon.defineHyper Template.productManagementOverviewSection,
           $(event.currentTarget).val(Session.get("productManagementCurrentProduct").importPrice)
         else if $(event.currentTarget).attr('name') is 'productCode'
           $(event.currentTarget).val(Session.get("productManagementCurrentProduct").productCode)
-      else if event.which is 13
+      else if event.which is 13 and Session.get "productManagementShowEditCommand"
         scope.editProduct(template)
-#      else
-#        Session.set "productManagementShowEditCommand",
-#          template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
-#          Number(template.ui.$productPrice.inputmask('unmaskedvalue')) isnt (Session.get("productManagementCurrentProduct").price ? '') or
-#          template.ui.$productCode.val() isnt Session.get("productManagementCurrentProduct").productCode
 
     "click .syncProductEdit": (event, template) -> scope.editProduct(template)
     "click .productDelete": (event, template) ->
-      if @allowDelete
-        Schema.products.remove @_id
-        UserSession.set('currentProductManagementSelection', Schema.products.findOne()?._id ? '')
-        MetroSummary.updateMetroSummaryBy(['product'])
+      console.log @
+      if @allowDelete and !@buildInProduct
+        Meteor.call 'deleteBranchProductSummaryBy', @_id, (error, result) ->
+          if error then console.log error.error
+          else
+            UserSession.set('currentProductManagementSelection', Schema.products.findOne()?._id ? '')
+            MetroSummary.updateMetroSummaryBy(['product'])
