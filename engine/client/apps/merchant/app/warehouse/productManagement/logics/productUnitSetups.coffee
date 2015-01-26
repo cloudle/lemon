@@ -35,7 +35,7 @@ Apps.Merchant.productManagementInit.push (scope) ->
 
       if productUnit.merchant is productUnit.createMerchant or productUnit.merchant is productUnit.parentMerchant
         Schema.productUnits.update productUnit._id, $set: unitOption
-        Schema.branchProductUnits.update branchProductUnit._id, $unset: {price: "", importPrice: ""s}
+        Schema.branchProductUnits.update branchProductUnit._id, $unset: {price: "", importPrice: ""}
       else
         Schema.branchProductUnits.update branchProductUnit._id, $set: {price: price, importPrice: importPrice}
 
