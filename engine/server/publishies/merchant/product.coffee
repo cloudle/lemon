@@ -36,6 +36,9 @@ Meteor.publishComposite 'availableProducts', ->
       find: (product) -> Schema.branchProductSummaries.find {product: product._id}
     ,
       find: (product) -> Schema.productUnits.find  {product: product._id, merchant: product.merchant}
+      children: [
+        find: (productUnit, product) -> Schema.branchProductUnits.find {productUnit: productUnit._id}
+      ]
     ]
   }
 
@@ -95,15 +98,23 @@ Schema.products.allow
     productInUse = Schema.importDetails.findOne {product: product._id}
     return product.totalQuality == 0 and !productInUse
 
+Schema.branchProductSummaries.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
+
 Schema.productUnits.allow
   insert: -> true
   update: -> true
   remove: -> true
 
-Schema.branchProductSummaries.allow
+Schema.branchProductUnits.allow
   insert: -> true
   update: -> true
   remove: -> true
+
+
 
 Schema.productDetails.allow
   insert: -> true

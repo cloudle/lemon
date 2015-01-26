@@ -1,137 +1,4 @@
-splitName = (fullText) ->
-  if fullText.indexOf("(") > 0
-    namePart    = fullText.substr(0, fullText.indexOf("(")).trim()
-    basicUnitPart    = fullText.substr(fullText.indexOf("(")).replace("(", "").replace(")", "").trim()
-    return { name: namePart, basicUnit: basicUnitPart }
-  else
-    return { name: fullText }
-
 Apps.Merchant.productManagementInit.push (scope) ->
-  scope.editProduct = (template) ->
-    product = Session.get("productManagementCurrentProduct")
-    branchProduct = Session.get("productManagementBranchProductSummary")
-    if product and branchProduct
-      newName  = template.ui.$productName.val()
-      newPrice = template.ui.$productPrice.inputmask('unmaskedvalue')
-      newImportPrice = template.ui.$importPrice.inputmask('unmaskedvalue')
-      newProductCode = template.ui.$productCode.val()
-      return if newName.replace("(", "").replace(")", "").trim().length < 2
-
-      productEdit = {$set: {}, $unset: {}}; productEdit.$set = splitName(newName)
-      branchProductEdit = {$set: {}, $unset: {}}
-
-      if newPrice.length > 0
-        if branchProduct.parentMerchant is branchProduct.merchant and branchProduct.price isnt Number(newPrice)
-          productEdit.$set.price = newPrice
-        if branchProduct.price is Number(newPrice) then branchProductEdit.$unset.price = ""
-        else branchProductEdit.$set.price = newPrice
-      if newImportPrice.length > 0
-        if branchProduct.parentMerchant is branchProduct.merchant and branchProduct.importPrice isnt Number(newImportPrice)
-          productEdit.$set.importPrice = newImportPrice
-        if branchProduct.importPrice is Number(newImportPrice) then branchProductEdit.$unset.importPrice = ""
-        else branchProductEdit.$set.importPrice = newImportPrice
-
-      buildInProduct = Session.get("productManagementBuildInProduct")
-      if product.buildInProduct
-        buildInProduct = if product.buildInProduct is buildInProduct._id then buildInProduct else Schema.buildInProducts.findOne(product.buildInProduct)
-        delete productEdit.$set.basicUnit; productEdit.$unset.basicUnit = ""; productEdit.$unset.productCode = ""
-        (delete productEdit.$set.name; productEdit.$unset.name = "") if buildInProduct.name is productEdit.$set.name
-      else
-        delete productEdit.$set.basicUnit if Schema.productUnits.findOne({product: product._id})
-        if newProductCode.length > 0 and newProductCode isnt product.productCode
-          productEdit.$set.productCode = newProductCode
-          barcodeFound = Schema.products.findOne {productCode: newProductCode, merchant: product.merchant}
-        if productEdit.$set.name.length > 0
-          if productEdit.$set.name is product.name then delete productEdit.$set.name
-          else productFound = Schema.products.findOne {name: productEdit.$set.name, merchant: product.merchant}
-
-
-      if productEdit.$set.name and productEdit.$set.name.length is 0
-        template.ui.$productName.notify("Tên sản phẩn không thể để trống.", {position: "right"})
-      else if productFound and productFound._id isnt product._id
-        template.ui.$productName.notify("Tên sản phẩm đã tồn tại.", {position: "right"})
-      else if barcodeFound and barcodeFound._id isnt product._id
-        template.ui.$productCode.notify("Mã sản phẩm đã tồn tại.", {position: "right"})
-      else
-        delete productEdit.$set if _.keys(productEdit.$set).length is 0
-        delete productEdit.$unset if _.keys(productEdit.$unset).length is 0
-        if _.keys(productEdit).length > 0
-          Schema.products.update product._id, productEdit, (error, result)->
-            if error then console.log error
-
-        delete branchProductEdit.$set if _.keys(branchProductEdit.$set).length is 0
-        delete branchProductEdit.$unset if _.keys(branchProductEdit.$unset).length is 0
-        if _.keys(branchProductEdit).length > 0
-          Schema.branchProductSummaries.update branchProduct._id, branchProductEdit, (error, result)->
-            if error then console.log error
-
-        console.log productEdit
-        console.log branchProductEdit
-
-
-        productName = (
-          if product.buildInProduct
-            if productEdit.$set?.name then productEdit.$set.name else product.name ? buildInProduct.name
-          else
-            productEdit.$set?.name ? product.name
-        )
-        template.ui.$productName.val productName
-        Session.set("productManagementShowEditCommand", false)
-
-
-  scope.createProduct = (template)->
-    fullText    = Session.get("productManagementSearchFilter")
-    nameOptions = splitName(fullText)
-
-    product =
-      parentMerchant: Session.get('myProfile').parentMerchant
-      merchant      : Session.get('myProfile').currentMerchant
-      warehouse     : Session.get('myProfile').currentWarehouse
-      creator       : Session.get('myProfile').user
-      name          : nameOptions.name
-      styles        : Helpers.RandomColor()
-    product.basicUnit = nameOptions.basicUnit if nameOptions.basicUnit
-
-    existedQuery = {name: product.name, merchant: Session.get('myProfile').currentMerchant}
-#    existedQuery.basicUnit = product.basicUnit if product.basicUnit
-
-    if Schema.products.findOne(existedQuery)
-      template.ui.$searchFilter.notify("Sản phẩm đã tồn tại.", {position: "bottom"})
-    else
-      while true
-        randomBarcode = Helpers.randomBarcode()
-        existedQuery.productCode = randomBarcode
-        if !Schema.products.findOne(existedQuery)
-          product.productCode = randomBarcode
-          productId = Schema.products.insert  product, (error, result) -> console.log error if error
-          UserSession.set('currentProductManagementSelection', productId)
-          Meteor.subscribe('productManagementData', productId)
-          template.ui.$searchFilter.val(''); Session.set("productManagementSearchFilter", "")
-          break
-      Meteor.call('createBranchProductSummaryBy', productId)
-      MetroSummary.updateMetroSummaryBy(['product'])
-
-  scope.updateProductUnit = (productUnit, template)->
-    if productUnit.buildInProductUnit
-      unit    = template.ui.$unit.val()
-      barcode = template.ui.$barcode.val()
-
-      if productUnit.allowDelete
-        conversionQuality = Math.abs(Helpers.Number(template.ui.$conversionQuality.inputmask('unmaskedvalue')))
-        conversionQuality = 1 if conversionQuality < 1
-
-    price       = Math.abs(Helpers.Number(template.ui.$price.inputmask('unmaskedvalue')))
-    importPrice = Math.abs(Helpers.Number(template.ui.$importPrice.inputmask('unmaskedvalue')))
-
-
-    unitOption =
-      unit        : unit
-      productCode : barcode
-      price       : price
-      importPrice : importPrice
-    unitOption.conversionQuality = conversionQuality if conversionQuality
-    Schema.productUnits.update productUnit._id, $set: unitOption
-
   scope.updateBasicProductDetail = (productDetailId, template)->
     if productDetail = Schema.productDetails.findOne(productDetailId)
       $paidDate = $("[name='expireDate']").inputmask('unmaskedvalue')
@@ -159,7 +26,7 @@ Apps.Merchant.productManagementInit.push (scope) ->
         availableQuality: detailOption.availableQuality - productDetail.availableQuality
         inStockQuality  : detailOption.inStockQuality - productDetail.inStockQuality
       Schema.branchProductSummaries.update productDetail.branchProduct, $inc:productUpdate
-      Schema.products.update productDetail.product, $inc: productUpdate
+      Schema.products.update productDetail.product, $inc:productUpdate
 
   #    productOption = {totalQuality: 0, availableQuality: 0, inStockQuality: 0}
   #    Schema.productDetails.find({product: productDetail.product}).forEach(
@@ -176,4 +43,118 @@ Apps.Merchant.productManagementInit.push (scope) ->
   #      availableProductCount: unitQuality * productDetail.conversionQuality - productDetail.importQuality
   #    }
 
+  scope.addBasicProductDetail = (currentProduct, product, branchProductSummary, profile) ->
+    if profile and product and branchProductSummary
+      detailOption =
+        parentMerchant    : product.parentMerchant
+        merchant          : product.merchant
+        warehouse         : product.warehouse
+        product           : product._id
+        branchProduct     : branchProductSummary._id
 
+      if currentProduct._id is product._id
+        detailOption.unitPrice         = product.importPrice ? 0
+        detailOption.importPrice       = product.importPrice ? 0
+        detailOption.unitQuality       = 1
+        detailOption.conversionQuality = 1
+        detailOption.importQuality     = 1
+        detailOption.availableQuality  = 1
+        detailOption.inStockQuality    = 1
+      else
+        if productUnit = Schema.productUnits.findOne({_id: currentProduct._id, product: product._id})
+          branchProductUnit = Schema.branchProductUnits.findOne({productUnit: productUnit._id, merchant: profile.currentMerchant})
+          buildInProductUnit = Schema.buildInProductUnits.findOne(productUnit.buildInProductUnit) if productUnit.buildInProductUnit
+          
+          productImportPrice =  branchProductUnit.importPrice ? productUnit.importPrice ? buildInProductUnit.importPrice
+          conversionQuality  =  branchProductUnit.conversionQuality ? productUnit.conversionQuality ? buildInProductUnit.conversionQuality
+
+          detailOption.unitPrice         = productImportPrice
+          detailOption.importPrice       = productImportPrice
+          detailOption.unitQuality       = 1
+          detailOption.unit              = productUnit._id
+          detailOption.conversionQuality = conversionQuality
+          detailOption.importQuality     = conversionQuality
+          detailOption.availableQuality  = conversionQuality
+          detailOption.inStockQuality    = conversionQuality
+
+      if detailOption
+        productDetailId = Schema.productDetails.insert detailOption
+        if Schema.productDetails.findOne(productDetailId)
+          Schema.products.update product._id, $set:{allowDelete: false}, $inc:{
+            totalQuality    : detailOption.importQuality
+            availableQuality: detailOption.importQuality
+            inStockQuality  : detailOption.importQuality
+          }
+          Schema.branchProductSummaries.update branchProductSummary._id, $inc:{
+            totalQuality    : detailOption.importQuality
+            availableQuality: detailOption.importQuality
+            inStockQuality  : detailOption.importQuality
+          }
+
+          Schema.productUnits.update detailOption.unit, $set:{allowDelete: false} if detailOption.unit
+          metroSummary = Schema.metroSummaries.findOne({merchant: profile.currentMerchant})
+          Schema.metroSummaries.update metroSummary._id, $inc:{
+            stockProductCount: detailOption.importQuality
+            availableProductCount: detailOption.importQuality
+          }
+
+  scope.checkValidEditProduct = (template) ->
+    Session.set "productManagementShowEditCommand",
+      template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
+      template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '') or
+      template.ui.$importPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").importPrice ? '') or
+      template.ui.$productCode.val() isnt Session.get("productManagementCurrentProduct").productCode
+
+  scope.checkValidAndUpdateProduct = (event, template) ->
+    if event.which is 27
+      if $(event.currentTarget).attr('name') is 'productName'
+        $(event.currentTarget).val(Session.get("productManagementCurrentProduct").name)
+        $(event.currentTarget).change()
+      else if $(event.currentTarget).attr('name') is 'productPrice'
+        $(event.currentTarget).val(Session.get("productManagementCurrentProduct").price)
+      else if $(event.currentTarget).attr('name') is 'importPrice'
+        $(event.currentTarget).val(Session.get("productManagementCurrentProduct").importPrice)
+      else if $(event.currentTarget).attr('name') is 'productCode'
+        $(event.currentTarget).val(Session.get("productManagementCurrentProduct").productCode)
+    else if event.which is 13 and Session.get "productManagementShowEditCommand"
+      scope.editProduct(template)
+
+  scope.deleteBasicProductDetail = (product, productDetail, branchProductSummary, profile) ->
+    if product and productDetail and profile
+      if productDetail.allowDelete and product.basicDetailModeEnabled
+        Schema.productDetails.remove(productDetail._id)
+        if !Schema.productDetails.findOne({unit: productDetail.unit}) then Schema.productUnits.update productDetail.unit, $set:{allowDelete: true}
+
+        Schema.products.update product._id, $set:{allowDelete: false}, $inc:{
+          totalQuality    : -productDetail.importQuality
+          availableQuality: -productDetail.importQuality
+          inStockQuality  : -productDetail.importQuality
+        }
+        Schema.branchProductSummaries.update branchProductSummary._id, $inc:{
+          totalQuality    : -productDetail.importQuality
+          availableQuality: -productDetail.importQuality
+          inStockQuality  : -productDetail.importQuality
+        }
+
+#        totalQuality     = 0
+#        availableQuality = 0
+#        inStockQuality   = 0
+#        Schema.productDetails.find({product: productDetail.product}).forEach(
+#          (productDetail) ->
+#            totalQuality += productDetail.importQuality
+#            availableQuality += productDetail.availableQuality
+#            inStockQuality += productDetail.inStockQuality
+#        )
+#
+#        productOption =
+#          totalQuality    : totalQuality
+#          availableQuality: availableQuality
+#          inStockQuality  : inStockQuality
+#        if totalQuality is 0 then productOption.allowDelete = true
+#        Schema.products.update productDetail.product, $set: productOption
+
+        metroSummary = Schema.metroSummaries.findOne({merchant: profile.currentMerchant})
+        Schema.metroSummaries.update metroSummary._id, $inc:{
+          stockProductCount: -productDetail.importQuality
+          availableProductCount: -productDetail.importQuality
+        }

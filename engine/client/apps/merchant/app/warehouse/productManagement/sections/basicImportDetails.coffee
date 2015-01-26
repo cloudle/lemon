@@ -1,3 +1,5 @@
+scope = logics.productManagement
+
 lemon.defineWidget Template.productManagementBasicImportDetails,
   isShowDisableMode: -> Session.get("productManagementCurrentProduct")?.basicDetailModeEnabled
   saleDetails: -> Schema.saleDetails.find {productDetail: @_id}
@@ -19,30 +21,7 @@ lemon.defineWidget Template.productManagementBasicImportDetails,
         Session.set("productManagementDetailEditingRowId")
 
     "click .delete-basicDetail": ->
-      if Session.get("productManagementCurrentProduct")?.basicDetailModeEnabled
-        if @allowDelete
-          Schema.productDetails.remove(@_id)
-          if !Schema.productDetails.findOne({unit: @unit}) then Schema.productUnits.update @unit, $set:{allowDelete: true}
-
-          totalQuality = 0
-          availableQuality = 0
-          inStockQuality = 0
-          Schema.productDetails.find({product: @product}).forEach(
-            (productDetail) ->
-              totalQuality += productDetail.importQuality
-              availableQuality += productDetail.availableQuality
-              inStockQuality += productDetail.inStockQuality
-          )
-
-          productOption =
-            totalQuality    : totalQuality
-            availableQuality: availableQuality
-            inStockQuality  : inStockQuality
-          if totalQuality is 0 then productOption.allowDelete = true
-          Schema.products.update @product, $set: productOption
-
-          metroSummary = Schema.metroSummaries.findOne({merchant: Session.get('myProfile').currentMerchant})
-          Schema.metroSummaries.update metroSummary._id, $inc:{
-            stockProductCount: -@importQuality
-            availableProductCount: -@importQuality
-          }
+      product = Session.get("productManagementCurrentProduct")
+      branchProductSummary = Session.get('productManagementBranchProductSummary')
+      productDetail = @
+      scope.deleteBasicProductDetail(product, productDetail, branchProductSummary, Session.get('myProfile'))

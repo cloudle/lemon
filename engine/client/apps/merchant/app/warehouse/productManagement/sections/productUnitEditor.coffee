@@ -3,6 +3,9 @@ lemon.defineHyper Template.productManagementUnitEditor,
   basicDetailModeEnabled: -> Session.get('productManagementCurrentProduct')?.basicDetailModeEnabled
   showChangeSmallerUnit: ->
     if @unit?.length > 0 and @conversionQuality > 1 and @productCode?.length is 11 and @allowDelete is true then true else false
+  showEditUnit: ->
+    if @buildInProductUnit or @merchant isnt @createMerchant or @merchant isnt @parentMerchant then true else false
+
 
   rendered: ->
     @ui.$price.inputmask "numeric",
@@ -17,20 +20,20 @@ lemon.defineHyper Template.productManagementUnitEditor,
       {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
     @ui.$conversionQuality?.val Session.get("productManagementUnitEditingRow").conversionQuality
 
-
     @ui.$price.select()
 
   events:
     "keyup input[name]": (event, template) ->
       #TODO: Kiem tra trung ten & unit!
       productUnit = @
+      branchProductUnit = Schema.branchProductUnits.findOne({productUnit: @_id, merchant: Session.get('myProfile').currentMerchant})
       if event.which is 13
-        scope.updateProductUnit(productUnit, template)
+        scope.updateProductUnit(template, productUnit, branchProductUnit)
         Session.set("productManagementUnitEditingRow")
         Session.set("productManagementUnitEditingRowId")
       else
         Helpers.deferredAction ->
-          scope.updateProductUnit(productUnit, template)
+          scope.updateProductUnit(template, productUnit, branchProductUnit)
         , "productManagementUpdateProductUnit"
 
     "click .changeSmallerUnit": (event, template) ->

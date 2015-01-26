@@ -1,6 +1,6 @@
 scope = logics.productManagement
 lemon.defineHyper Template.productManagementDetailEditor,
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
+#  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   totalPrice: -> @unitPrice*@unitQuality
 
   rendered: ->

@@ -1,15 +1,13 @@
 Sửa lại các chức năng liên qua sản phẩn của Branch cho phù hợp với hệ thống Database mới:
     - Product
-        + Fix search Product (hiện sản phẩm). ----> Xong
+        + Fix hiện sản phẩm search Product. ----> Xong
+        + Fix hiện thông tin nhập tồn đầu kỳ giữa sản phẩm có buildIn và local. ----> Xong
         + Fix cập nhật thông tin(name, image, description) của Product khi có BuildInProduct. ----> Xong(phần: name)
         + Fix cập nhật giá nhập, giá bán của Product giữa các Branch. ----> Xong
-        + Fix cập nhật số lượng tồn kho, khi edit nhập kho đầu kì vào BranchProductSummary. ----> Chưa
+        + Fix cập nhật giá nhập, giá bán của ProductUnit giữa các Branch. ----> Xong
+        + Fix cập nhật số lượng tồn kho, khi thêm, xóa, sửa nhập kho đầu kì vào BranchProductSummary. ----> Xong
         + Fix tạo mới, xóa sản phẩm (local). ----> Xong
         + Fix thêm mới, xóa ProductUnit (local). ----> Xong
-        + Fix cập nhật giá nhập, giá bán của ProductUnit giữa các Branch. ----> Chưa
-        + Fix hiện thông tin nhập tồn đầu kỳ.
-        + Ưu tiên load dữ liệu sản phẩm đang chọn.
-
 
     - Customer
         + Fix hiện thông tin sản phẩm, thêm dữ liệu mới trong hàm phân trang.

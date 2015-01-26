@@ -162,7 +162,8 @@ Meteor.methods
   updateMerchantDataBase: ->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       #thêm merchantType cho merchant
-      Schema.merchants.find({merchantType: {$nin:['merchant', 'agency', 'gera']} }).forEach(
+#      Schema.merchants.find({merchantType: {$nin:['merchant', 'agency', 'gera']} }).forEach(
+      Schema.merchants.find().forEach(
         (merchant) ->
           Schema.merchants.update merchant._id, $set:{merchantType: 'merchant'}
           Schema.userProfiles.update {currentMerchant: merchant._id}, $set:{userType: 'merchant'}
@@ -187,14 +188,32 @@ Meteor.methods
                 Schema.productDetails.find({product: product._id, merchant: product.merchant}).forEach(
                   (productDetail)->
                     Schema.productDetails.update productDetail._id, $set:{parentMerchant: parentMerchant, branchProduct: branchProductId}
-                    branchProduct.availableQuality += productDetail.inStockQuality
-                    branchProduct.inStockQuality   += productDetail.availableQuality
-                    branchProduct.totalQuality     += productDetail.importQuality
+                    branchProduct.availableQuality += productDetail.availableQuality if productDetail.availableQuality
+                    branchProduct.inStockQuality   += productDetail.inStockQuality if productDetail.inStockQuality
+                    branchProduct.totalQuality     += productDetail.importQuality if productDetail.importQuality
                 )
                 Schema.saleDetails.find({product: product._id}).forEach((saleDetail)-> branchProduct.salesQuality += saleDetail.quality)
                 Schema.branchProductSummaries.update branchProductId, $set:branchProduct
+
+                Schema.productUnits.find({product: product._id}).forEach(
+                  (productUnit)->
+                    productUnitUpdate =
+                      parentMerchant: parentMerchant
+                      merchant      : merchant._id
+                      createMerchant: parentMerchant
+                    Schema.productUnits.update productUnit._id, $set: productUnitUpdate
+
+                    branchProductUnit =
+                      parentMerchant: parentMerchant
+                      merchant      : merchant._id
+                      product       : productUnit.product
+                      productUnit   : productUnit._id
+                    Schema.branchProductUnits.insert branchProductUnit
+                )
+
           )
       )
+
 
       #set merchant của vtnamphuong@gera.vn lên làm agency
       merchantId_VTNamPhuong = "fd3n2DxNZKbbs5gkE"
@@ -239,22 +258,4 @@ Meteor.methods
                       productUnitUnSet = {buildInProduct: "", productCode: "", image: "", unit: "", conversionQuality: ""}
                       Schema.productUnits.update productUnit._id, $set: productUnitSet, $unset: productUnitUnSet
               )
-      )
-
-      Schema.productUnits.find().forEach(
-        (productUnit)->
-        Schema.branchProductSummaries.find({product: productUnit.product}).forEach(
-          (branchProduct)->
-            productUnitUpdate =
-              parentMerchant: branchProduct.parentMerchant
-              merchant      : branchProduct.merchant
-              createMerchant: branchProduct.parentMerchant
-
-            if branchProduct.parentMerchant is branchProduct.merchant
-              Schema.productUnits.update productUnit._id, $set: productUnitUpdate
-            else
-              productUnitUpdate.merchant = branchProduct.merchant
-              productUnitUpdate.product = branchProduct.product
-              Schema.productUnits.insert productUnitUpdate
-        )
       )

@@ -7,6 +7,7 @@ lemon.defineHyper Template.productManagementOverviewSection,
 
   productCode: -> @productCode ? Schema.buildInProductUnits.findOne(@buildInProductUnit)?.productCode
   unit: -> @unit ? Schema.buildInProductUnits.findOne(@buildInProductUnit)?.unit
+  conversionQuality: -> @conversionQuality ? Schema.buildInProductUnits.findOne(@buildInProductUnit)?.conversionQuality
 
   basicDetailModeEnabled: -> Session.get('productManagementCurrentProduct')?.basicDetailModeEnabled
   hasUnit: -> Schema.productUnits.findOne({product: @_id})
@@ -55,103 +56,18 @@ lemon.defineHyper Template.productManagementOverviewSection,
           Schema.products.update(Session.get('productManagementCurrentProduct')._id, {$set: {avatar: fileObj._id}})
           AvatarImages.findOne(Session.get('productManagementCurrentProduct').avatar)?.remove()
 
-  #TODO: Chinh lai truong hop bi trung randomBarcode()
-    "click .createUnit": ->
-      if !@buildInProduct and @basicUnit
-        newId = Schema.productUnits.insert {
-          creator          : Meteor.userId()
-          product          : @_id
-          productCode      : Helpers.randomBarcode()
-          conversionQuality: 1
-          price            : 0
-          importPrice      : 0
-          allowDelete      : true
-        }
-        Session.set("productManagementUnitEditingRowId", newId)
-
     "click .edit-unit": -> Session.set("productManagementUnitEditingRowId", @_id)
+    "click .createUnit": -> scope.createProductUnit(@, Session.get('myProfile'))
+    "click .delete-unit": -> scope.deleteProductUnit(@)
 
+
+    "click .syncProductEdit": (event, template) -> scope.editProduct(template)
+    "click .productDelete": -> scope.deleteProduct(@)
     "click .add-basicDetail": ->
       product = Session.get('productManagementCurrentProduct')
       branchProductSummary = Session.get('productManagementBranchProductSummary')
-      if product and branchProductSummary
-        if @_id is product._id
-          detailOption =
-            merchant          : product.merchant
-            warehouse         : product.warehouse
-            product           : product._id
-            unitPrice         : product.importPrice ? 0
-            importPrice       : product.importPrice ? 0
-            unitQuality       : 1
-            conversionQuality : 1
-            importQuality     : 1
-            availableQuality  : 1
-            inStockQuality    : 1
-        else
-          if productUnit = Schema.productUnits.findOne({_id: @_id, product: product._id})
-            detailOption =
-              merchant          : product.merchant
-              warehouse         : product.warehouse
-              product           : product._id
-              unitPrice         : productUnit.importPrice
-              importPrice       : productUnit.importPrice
-              unitQuality       : 1
-              unit              : productUnit._id
-              conversionQuality : productUnit.conversionQuality
-              importQuality     : productUnit.conversionQuality
-              availableQuality  : productUnit.conversionQuality
-              inStockQuality    : productUnit.conversionQuality
+      scope.addBasicProductDetail(@, product, branchProductSummary, Session.get('myProfile'))
 
-        if detailOption
-          productDetailId = Schema.productDetails.insert detailOption
-          if Schema.productDetails.findOne(productDetailId)
-            Schema.products.update product._id, $set:{allowDelete: false}, $inc:{
-              totalQuality    : detailOption.importQuality
-              availableQuality: detailOption.importQuality
-              inStockQuality  : detailOption.importQuality
-            }
-            Schema.branchProductSummaries.update branchProductSummary._id, $inc:{
-              totalQuality    : detailOption.importQuality
-              availableQuality: detailOption.importQuality
-              inStockQuality  : detailOption.importQuality
-            }
+    "input .editable": (event, template) -> scope.checkValidEditProduct(template)
+    "keyup input.editable": (event, template) -> scope.checkValidAndUpdateProduct(event, template)
 
-            Schema.productUnits.update detailOption.unit, $set:{allowDelete: false} if detailOption.unit
-            metroSummary = Schema.metroSummaries.findOne({merchant: Session.get('myProfile').currentMerchant})
-            Schema.metroSummaries.update metroSummary._id, $inc:{
-              stockProductCount: detailOption.importQuality
-              availableProductCount: detailOption.importQuality
-            }
-
-    "click .delete-unit": -> Schema.productUnits.remove(@_id) if @allowDelete
-
-    "input .editable": (event, template) ->
-      Session.set "productManagementShowEditCommand",
-        template.ui.$productName.val() isnt Session.get("productManagementCurrentProduct").name or
-        template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").price ? '') or
-        template.ui.$importPrice.inputmask('unmaskedvalue') isnt (Session.get("productManagementCurrentProduct").importPrice ? '') or
-        template.ui.$productCode.val() isnt Session.get("productManagementCurrentProduct").productCode
-
-    "keyup input.editable": (event, template) ->
-      if event.which is 27
-        if $(event.currentTarget).attr('name') is 'productName'
-          $(event.currentTarget).val(Session.get("productManagementCurrentProduct").name)
-          $(event.currentTarget).change()
-        else if $(event.currentTarget).attr('name') is 'productPrice'
-          $(event.currentTarget).val(Session.get("productManagementCurrentProduct").price)
-        else if $(event.currentTarget).attr('name') is 'importPrice'
-          $(event.currentTarget).val(Session.get("productManagementCurrentProduct").importPrice)
-        else if $(event.currentTarget).attr('name') is 'productCode'
-          $(event.currentTarget).val(Session.get("productManagementCurrentProduct").productCode)
-      else if event.which is 13 and Session.get "productManagementShowEditCommand"
-        scope.editProduct(template)
-
-    "click .syncProductEdit": (event, template) -> scope.editProduct(template)
-    "click .productDelete": (event, template) ->
-      console.log @
-      if @allowDelete and !@buildInProduct
-        Meteor.call 'deleteBranchProductSummaryBy', @_id, (error, result) ->
-          if error then console.log error.error
-          else
-            UserSession.set('currentProductManagementSelection', Schema.products.findOne()?._id ? '')
-            MetroSummary.updateMetroSummaryBy(['product'])

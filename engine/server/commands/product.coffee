@@ -328,7 +328,6 @@ Meteor.methods
   deleteBranchProductSummaryBy: (productId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       product = Schema.products.findOne({_id: productId, parentMerchant: profile.parentMerchant, buildInProduct:{$exists: false}})
-      console.log product
       if product?.allowDelete
         Schema.merchants.find({$or: [{_id: product.parentMerchant}, {parent: product.parentMerchant}] }).forEach(
           (branch)->
@@ -336,3 +335,19 @@ Meteor.methods
               Schema.branchProductSummaries.remove branchProductSummary._id
         )
         Schema.products.remove product._id
+
+  createProductUnitBy: (productUnitOption)->
+    if productUnitId = Schema.productUnits.insert productUnitOption
+      Schema.branchProductSummaries.find({product: productUnitOption.product}).forEach(
+        (branchProduct)->
+          productUnitOption.merchant    = branchProduct.merchant
+          productUnitOption.productUnit = productUnitId
+          Schema.branchProductUnits.insert productUnitOption
+      )
+      return productUnitId
+
+  deleteProductUnit: (productUnit)->
+    if !productUnit.buildInProductUnit and productUnit.allowDelete
+      Schema.branchProductUnits.find({productUnit: productUnit._id}).forEach(
+        (branchProduct) -> Schema.branchProductUnits.remove(branchProduct._id) )
+      Schema.productUnits.remove(productUnit._id)
