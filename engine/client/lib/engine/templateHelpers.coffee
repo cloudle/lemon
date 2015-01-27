@@ -25,13 +25,19 @@ Template.registerHelper 'productCodeFromId', (id) -> Schema.products.findOne(id)
 Template.registerHelper 'skullsNameFromId', (id) -> Schema.products.findOne(id)?.skulls
 Template.registerHelper 'userNameFromId', (id) -> Schema.userProfiles.findOne({user: id})?.fullName ? Meteor.users.findOne(id)?.emails[0].address
 Template.registerHelper 'ownerNameFromId', (id) -> Schema.customers.findOne(id)?.name
+
+Template.registerHelper 'productName', (productId)->
+  if product = Schema.products.findOne(productId)
+    buildInProduct = Schema.buildInProducts.findOne(product.buildInProduct) if product.buildInProduct
+    product.name ? buildInProduct?.name
+
 Template.registerHelper 'unitName', ->
   if @unit
-    productUnit = Schema.productUnits.findOne(@unit)
-    productUnit?.unit ? Schema.buildInProductUnits.findOne(productUnit.buildInProductUnit)?.unit
+    if productUnit = Schema.productUnits.findOne(@unit)
+      productUnit.unit ? Schema.buildInProductUnits.findOne(productUnit.buildInProductUnit)?.unit
   else
-    product = Schema.products.findOne(@product)
-    product?.basicUnit ? Schema.buildInProducts.findOne(product.buildInProduct)?.basicUnit
+    if product = Schema.products.findOne(@product)
+      product.basicUnit ? Schema.buildInProducts.findOne(product.buildInProduct)?.basicUnit
 
 Template.registerHelper 'genderString', (gender) -> if gender then 'Nam' else 'Nữ'
 Template.registerHelper 'allowAction', (val) -> if val then '' else 'disabled'

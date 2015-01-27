@@ -1,23 +1,26 @@
 lemon.defineWidget Template.distributorManagementImportDetails,
+  skulls: -> Schema.products.findOne(@product)?.skulls?[0]
+  quality: -> if @conversionQuality then @unitQuality else @importQuality
+  totalPrice: -> if @conversionQuality then @unitQuality*@unitPrice else @importQuality*@importPrice
+  importPrice: -> if @conversionQuality then @unitPrice else @importPrice
+  totalDebtBalance: -> @latestDebtBalance + Session.get("distributorManagementCurrentDistributor")?.customImportDebt
+
   receivableClass: -> if @debtBalanceChange >= 0 then 'paid' else 'receive'
   finalReceivableClass: ->
     latestDebtBalance = @latestDebtBalance + Session.get("distributorManagementCurrentDistributor")?.customImportDebt
     if latestDebtBalance >= 0 then 'receive' else 'paid'
-  productName: -> @name ? Schema.products.findOne(@product)?.name
-  totalDebtBalance: -> @latestDebtBalance + Session.get("distributorManagementCurrentDistributor")?.customImportDebt
-  skulls: -> Schema.products.findOne(@product)?.skulls?[0]
 
-  quality: -> if @conversionQuality then @unitQuality else @importQuality
-  totalPrice: -> if @conversionQuality then @unitQuality*@unitPrice else @importQuality*@importPrice
-  importPrice: -> if @conversionQuality then @unitPrice else @importPrice
 
   showDeleteImport: ->
     if @creator is Session.get('myProfile').user
-      createDate = new Date(@version.createdAt.getFullYear(), @version.createdAt.getMonth(), @version.createdAt.getDate() + 1, @version.createdAt.getHours(), @version.createdAt.getMinutes(), @version.createdAt.getSeconds())
-      createDate > new Date() and !Schema.returns.findOne({timeLineImport: @_id})
+      year = @version.createdAt.getFullYear(); mount = @version.createdAt.getMonth(); date = @version.createdAt.getDate()
+      hour = @version.createdAt.getHours(); minute = @version.createdAt.getMinutes(); second = @version.createdAt.getSeconds()
+      new Date(year, mount, date + 1, hour, minute, second) > new Date() and !Schema.returns.findOne({timeLineImport: @_id})
 
-  showDeleteTransaction: -> new Date(@debtDate.getFullYear(), @debtDate.getMonth(), @debtDate.getDate() + 1, @debtDate.getHours(), @debtDate.getMinutes(), @debtDate.getSeconds()) > new Date()
-
+  showDeleteTransaction: ->
+    year = @debtDate.getFullYear(); mount = @debtDate.getMonth(); date = @debtDate.getDate()
+    hour = @debtDate.getHours(); minute = @debtDate.getMinutes(); second = @debtDate.getSeconds()
+    new Date(year, mount, date + 1, hour, minute, second) > new Date()
 
   importDetailCount: ->
     importId = UI._templateInstance().data._id

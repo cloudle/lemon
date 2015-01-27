@@ -36,14 +36,14 @@ template(name="saleDetailSection")
                   +saleDetailEditor editingData
                else
                   tr.detail-row.large-name: td(colspan="3")
-                     span {{product.name}}
+                     span {{productName product}}
                      //if product.basicUnit
                      //   span ({{product.basicUnit}})
                      if discountPercent
                         span.super.s7.color-lime GIẢM GIÁ {{round discountPercent}}%
                   tr.detail-row.click-enable(class="{{crossBillAvailableQuality.errorClass}}")
                      td.bill-name.has-commands
-                      |{{product.name}}
+                      |{{productName product}}
                       .commands
                         .lemon.rounded.tiny.btn.blue.deleteOrderDetail: span.icon-minus-4
                      td.number.price.editable-field {{formatNumber unitPrice}}

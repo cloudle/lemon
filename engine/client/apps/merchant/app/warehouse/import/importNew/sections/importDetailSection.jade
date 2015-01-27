@@ -26,7 +26,7 @@ template(name="importDetailSection")
                else
                   tr.detail-row.click-enable
                      td.has-commands
-                        |{{product.name}}
+                        |{{productName product}}
                         if showDelete
                            .commands
                               .lemon.rounded.tiny.btn.blue.deleteImportDetail: span.icon-minus-4

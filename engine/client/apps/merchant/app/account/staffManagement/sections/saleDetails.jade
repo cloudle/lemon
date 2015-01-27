@@ -5,7 +5,7 @@ template(name="staffManagementSaleDetails")
       .bill-header <b>{{momentCalendar version.createdAt}}</b>
   each saleDetails
     tr.detail-row
-      td.first-column {{productName}}
+      td.first-column {{productName product}}
       td {{formatNumber quality}}
       td {{skulls}}
       td.number {{formatNumber price}}

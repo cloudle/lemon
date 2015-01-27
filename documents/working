@@ -10,27 +10,27 @@ Sửa lại các chức năng liên qua sản phẩn của Branch cho phù hợp
         + Fix thêm mới, xóa ProductUnit (local). ----> Xong
 
     - Customer
-        + Fix hiện thông tin sản phẩm, thêm dữ liệu mới trong hàm phân trang.
+        + Fix hiện thông tin sản phẩm, thêm dữ liệu mới trong hàm phân trang. ----> Xong
 
     - Distributor
-        + Fix hiện thông tin sản phẩm, thêm dữ liệu mới trong hàm phân trang.
+        + Fix hiện thông tin sản phẩm, thêm dữ liệu mới trong hàm phân trang. ----> Xong
 
     - Sale
-        + Fix chức năng search Product
-        + Hiện thông tin sản phẩm trong bảng orderDetail
+        + Fix chức năng search Product. ----> Xong
+        + Hiện thông tin sản phẩm trong bảng orderDetail. ----> Xong
         + Fix hàm tính toán khi áp dụng giá bán mới của BranchProductSummary
 
     - Import
-        + Fix chức năng search Product
-        + Hiện thông tin sản phẩm trong bảng importDetail
+        + Fix chức năng search Product. ----> Xong
+        + Hiện thông tin sản phẩm trong bảng importDetail. ----> Xong
         + Fix hàm tính toán khi áp dụng giá bán nhập của BranchProductSummary
 
     - Return KH
-        + Fix chức năng search Product
-        + Hiện thông tin sản phẩm trong bảng importDetail
+        + Fix chức năng search Product. ----> Xong
+        + Hiện thông tin sản phẩm trong bảng importDetail. ----> Xong
         + Fix hàm tính toán khi áp dụng giá bán mới của BranchProductSummary
 
     - Return NCC
-        + Fix chức năng search Product
-        + Hiện thông tin sản phẩm trong bảng importDetail
+        + Fix chức năng search Product. ----> Xong
+        + Hiện thông tin sản phẩm trong bảng importDetail. ----> Xong
         + Fix hàm tính toán khi áp dụng giá bán mới của BranchProductSummary

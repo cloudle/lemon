@@ -5,7 +5,6 @@ lemon.defineHyper Template.distributorReturnDetailSection,
   merchant: -> Schema.merchants.findOne(Session.get('myProfile')?.currentMerchant)
   editingMode: -> Session.get("distributorReturnEditingRow")?._id is @_id
   editingData: -> Session.get("distributorReturnEditingRow")
-  productName: -> Schema.products.findOne(@product)?.name
   returnComment: -> Session.get("currentDistributorReturnComment") ? Session.get("currentDistributorReturn")?.comment
 
   crossReturnAvailableQuality: ->

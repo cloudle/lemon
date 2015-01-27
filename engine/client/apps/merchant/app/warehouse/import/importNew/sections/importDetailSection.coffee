@@ -5,8 +5,6 @@ lemon.defineHyper Template.importDetailSection,
   merchant: -> Schema.merchants.findOne(Session.get('myProfile')?.currentMerchant)
   editingMode: -> Session.get("importEditingRow")?._id is @_id
   editingData: -> Session.get("importEditingRow")
-  product: -> Schema.products.findOne(@product)
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   showProductionDate: -> if @productionDate then true else false
   showExpireDate: -> if @expire then true else false
   showDelete: -> !Session.get("currentImport")?.submitted

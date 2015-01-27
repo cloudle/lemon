@@ -1,28 +1,28 @@
 Apps.Merchant.importReactive.push (scope) ->
   if Session.get("myProfile")
-    products = Schema.products.find({merchant: Session.get("myProfile").currentMerchant}).fetch()
     scope.managedImportProductList = []
+    products = []; cursorProduct = Schema.products.find({merchant: Session.get("myProfile").currentMerchant})
+    Helpers.searchProduct(cursorProduct, products)
+
     if Session.get("importManagementSearchFilter")?.length > 0
       importProductList = []
       importProductList = _.filter products, (item) ->
         unsignedTerm = Helpers.RemoveVnSigns Session.get("importManagementSearchFilter")
-        unsignedName = Helpers.RemoveVnSigns item.name
+        unsignedName = Helpers.RemoveVnSigns item?.name
         unsignedName.indexOf(unsignedTerm) > -1
-
-      for product in importProductList
-        scope.managedImportProductList.push {product: product}
-        Schema.productUnits.find({product: product._id}).forEach((unit)-> scope.managedImportProductList.push {product: product, unit: unit})
+      Helpers.searchProductUnit(product, scope.managedImportProductList) for product in importProductList
 
     else
       if Session.get('currentImportDistributor')?.builtIn?.length > 0
-        products = Schema.products.find({_id: $in: Session.get('currentImportDistributor').builtIn}).fetch()
-      groupedProducts = _.groupBy products, (product) -> product.name.substr(0, 1).toLowerCase()
+        products = []; cursorProduct = Schema.products.find({_id: $in: Session.get('currentImportDistributor').builtIn})
+        Helpers.searchProduct(cursorProduct, products)
+
+      groupedProducts = _.groupBy products, (product) -> product.name.substr(0, 1).toLowerCase() if product.name
       for key, childs of groupedProducts
         productList = []
-        for product in childs
-          productList.push {product: product}
-          Schema.productUnits.find({product: product._id}).forEach((unit)-> productList.push {product: product, unit: unit})
+        Helpers.searchProductUnit(product, productList) for product in childs
         scope.managedImportProductList.push {key: key, childs: productList}
+
       scope.managedImportProductList = _.sortBy(scope.managedImportProductList, (num)-> num.key)
 
     if Session.get("importManagementSearchFilter")?.trim().length > 1
