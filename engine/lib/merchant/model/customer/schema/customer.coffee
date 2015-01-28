@@ -26,8 +26,9 @@ simpleSchema.customers = new SimpleSchema
     optional: true
 
   saleProductList:
-    type: [String]
+    type: [Object]
     optional: true
+    blackbox: true
 
   name:
     type: String

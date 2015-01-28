@@ -74,16 +74,6 @@ lemon.defineApp Template.sales,
         scope.updateDeliveryComment(template.find(".comment"))
       , "salesCurrentProductSearchProduct"
 
-
-    'click .addOrderDetail': () ->
-      if currentOrder = Session.get('currentOrder')
-        scope.addOrderDetail(
-          currentOrder.currentProduct,
-          currentOrder.currentQuality,
-          currentOrder.currentPrice,
-          currentOrder.currentDiscountCash
-        )
-
     "dblclick": ->
       Session.set("salesEditingRowId", scope.addOrderDetail @product._id, @unit?._id)
 

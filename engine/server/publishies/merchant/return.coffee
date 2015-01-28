@@ -46,6 +46,8 @@ Meteor.publishComposite 'customerReturnData', (returnId)->
       children: [
         find: (sale ,currentReturn) -> Schema.saleDetails.find {sale: sale._id}
         children: [
+          find: (productDetail, currentReturn) -> Schema.branchProductSummaries.find {product: productDetail.product, merchant: currentReturn .merchant}
+        ,
           find: (productDetail, currentReturn) -> Schema.products.find {_id: productDetail.product}
           children: [
             find: (product, currentReturn) -> Schema.productUnits.find {product: product._id}
@@ -79,6 +81,8 @@ Meteor.publishComposite 'distributorReturnData', (returnId)->
       children: [
         find: (distributor, currentReturn) -> Schema.productDetails.find {distributor: distributor._id}
         children: [
+          find: (productDetail, currentReturn) -> Schema.branchProductSummaries.find {product: productDetail.product, merchant: productDetail.merchant}
+        ,
           find: (productDetail, currentReturn) -> Schema.products.find {_id: productDetail.product}
           children: [
             find: (product, currentReturn) -> Schema.productUnits.find {product: product._id}
@@ -91,6 +95,7 @@ Meteor.publishComposite 'distributorReturnData', (returnId)->
               find: (buildInProduct, currentReturn) -> Schema.buildInProductUnits.find {buildInProduct: buildInProduct._id}
             ]
           ]
+
         ]
       ]
     ]

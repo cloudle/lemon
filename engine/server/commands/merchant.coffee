@@ -162,8 +162,8 @@ Meteor.methods
   updateMerchantDataBase: ->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       #thêm merchantType cho merchant
-#      Schema.merchants.find({merchantType: {$nin:['merchant', 'agency', 'gera']} }).forEach(
-      Schema.merchants.find().forEach(
+      Schema.merchants.find({merchantType: {$nin:['merchant', 'agency', 'gera']} }).forEach(
+#      Schema.merchants.find().forEach(
         (merchant) ->
           Schema.merchants.update merchant._id, $set:{merchantType: 'merchant'}
           Schema.userProfiles.update {currentMerchant: merchant._id}, $set:{userType: 'merchant'}
