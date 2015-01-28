@@ -21,30 +21,47 @@ lemon.defineApp Template.customerReturn,
 
 
     "click .addReturnDetail": (event, template) ->
-      if Session.get('currentCustomerReturn')
+      productId     = @product._id
+      productUnitId = @unit._id if @unit
+      currentReturn = Session.get('currentCustomerReturn')
+
+      if currentReturn?.customer and productId
+        product       = Schema.products.findOne(productId)
+        branchProduct = Schema.branchProductSummaries.findOne({product: product._id, merchant: currentReturn.merchant})
+        product.price = branchProduct.price if branchProduct.price
+
+        if productUnitId
+          productUnit       = Schema.productUnits.findOne(productUnitId)
+          branchProductUnit = Schema.branchProductUnits.findOne({productUnit: productUnit._id, merchant: currentReturn.merchant})
+          productUnit.price = branchProductUnit.price if branchProductUnit.price
+
+          if productUnit.buildInProductUnit
+            buildInProductUnit = Schema.buildInProductUnits.findOne(productUnit.buildInProductUnit)
+            productUnit.conversionQuality = buildInProductUnit.conversionQuality
+
         option =
-          return            : Session.get('currentCustomerReturn')._id
-          product           : @product._id
+          return            : currentReturn._id
+          product           : productId
           conversionQuality : 1
           unitReturnQuality : 1
-          unitReturnsPrice  : @product.price
-          price             : @product.price
+          unitReturnsPrice  : product.price
+          price             : product.price
           discountCash      : 0
           discountPercent   : 0
 
-        if @unit
-          option.unit = @unit._id
-          option.conversionQuality = @unit.conversionQuality
-          option.unitReturnsPrice  = @unit.price
+        if productUnitId
+          option.unit = productUnitId
+          option.conversionQuality = productUnit.conversionQuality
+          option.unitReturnsPrice  = productUnit.price
 
         option.returnQuality = option.conversionQuality
         option.finalPrice    = (option.unitReturnQuality * option.unitReturnsPrice) - option.discountCash
 
         Schema.returnDetails.insert option
-        Schema.returns.update Session.get('currentCustomerReturn')._id, $inc:{
+        Schema.returns.update currentReturn._id, $inc:{
           debtBalanceChange: option.finalPrice
-          totalPrice  : option.finalPrice + option.discountCash
-          finallyPrice: option.finalPrice
+          totalPrice       : option.finalPrice + option.discountCash
+          finallyPrice     : option.finalPrice
         }
 
     "click .submitReturn": (event, template) ->
@@ -124,9 +141,8 @@ lemon.defineApp Template.customerReturn,
           debtBalanceChange: totalReturnPrice
           latestDebtBalance: customer.saleDebt - totalReturnPrice
         }
-        MetroSummary.updateMyMetroSummaryBy('createReturn', currentCustomerReturn._id)
+        MetroSummary.updateMyMetroSummaryBy(['createReturn'], currentCustomerReturn._id)
         Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
-
         if customer = Schema.customers.findOne(currentCustomerReturn.customer)
           Meteor.call 'customerToReturns', customer, Session.get('myProfile')
       catch error

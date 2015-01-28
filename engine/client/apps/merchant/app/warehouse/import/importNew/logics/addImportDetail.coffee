@@ -39,26 +39,39 @@ Apps.Merchant.importInit.push (scope) ->
     #        option.productionDate  = new Date(productionDate.getFullYear(), productionDate.getMonth(), productionDate.getDate() - option.timeUse)
 
     if currentImport = Session.get('currentImport')
+      product       = Schema.products.findOne(currentProduct.product._id)
+      branchProduct = Schema.branchProductSummaries.findOne({product: product._id, merchant: currentImport.merchant})
+      product.importPrice = branchProduct.importPrice if branchProduct.importPrice
+
+      if currentProduct.unit
+        productUnit       = Schema.productUnits.findOne(currentProduct.unit._id)
+        branchProductUnit = Schema.branchProductUnits.findOne({productUnit: productUnit._id, merchant: currentImport.merchant})
+        productUnit.importPrice = branchProductUnit.importPrice if branchProductUnit.importPrice
+
+        if productUnit.buildInProductUnit
+          buildInProductUnit = Schema.buildInProductUnits.findOne(productUnit.buildInProductUnit)
+          productUnit.conversionQuality = buildInProductUnit.conversionQuality
+
       importDetail =
         merchant      : currentImport.merchant
         warehouse     : currentImport.warehouse
         import        : currentImport._id
-        product       : currentProduct.product._id
-        unitPrice     : currentProduct.product.importPrice ? 0
+        product       : product._id
+        unitPrice     : product.importPrice ? 0
         unitQuality   : 1
         importQuality : 1
-        importPrice   : currentProduct.product.importPrice
-        totalPrice    : currentProduct.product.importPrice
+        importPrice   : product.importPrice ? 0
+        totalPrice    : product.importPrice ? 0
         conversionQuality: 1
 
       if currentProduct.unit
-        importDetail.unit = currentProduct.unit._id
-        importDetail.conversionQuality = currentProduct.unit.conversionQuality
-        importDetail.importQuality = importDetail.unitQuality * importDetail.conversionQuality
-        if currentProduct.unit.importPrice
-          importDetail.unitPrice     = currentProduct.unit.importPrice
-          importDetail.importPrice   = currentProduct.unit.importPrice/importDetail.conversionQuality
-          importDetail.totalPrice    = currentProduct.unit.importPrice
+        importDetail.unit              = productUnit._id
+        importDetail.conversionQuality = productUnit.conversionQuality
+        importDetail.importQuality     = importDetail.unitQuality * importDetail.conversionQuality
+        if productUnit.importPrice > 0
+          importDetail.unitPrice     = productUnit.importPrice
+          importDetail.importPrice   = productUnit.importPrice/importDetail.conversionQuality
+          importDetail.totalPrice    = productUnit.importPrice
         else
           importDetail.unitPrice     = 0
           importDetail.importPrice   = 0

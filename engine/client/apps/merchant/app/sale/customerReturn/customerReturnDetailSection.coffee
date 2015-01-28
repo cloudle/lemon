@@ -2,14 +2,10 @@ scope = logics.customerReturn
 setTime = -> Session.set('realtime-now', new Date())
 
 lemon.defineHyper Template.customerReturnDetailSection,
-  returnDetails: -> Schema.returnDetails.find({return: @_id}).fetch()
-
-  merchant: -> Schema.merchants.findOne(Session.get('myProfile')?.currentMerchant)
   editingMode: -> Session.get("customerReturnEditingRow")?._id is @_id
   editingData: -> Session.get("customerReturnEditingRow")
-  productName: -> Schema.products.findOne(@product)?.name
   returnComment: -> Session.get("currentCustomerReturnComment") ? Session.get("currentCustomerReturn")?.comment
-
+  returnDetails: -> Schema.returnDetails.find({return: @_id}).fetch()
   crossReturnAvailableQuality: ->
     returnDetail = @
     if currentCustomerReturn = Session.get('currentCustomerReturn')

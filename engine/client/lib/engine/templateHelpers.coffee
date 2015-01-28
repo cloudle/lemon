@@ -1,5 +1,4 @@
 Template.registerHelper 'systemVersion', -> Schema.systems.findOne()?.version ? '?'
-Template.registerHelper 'homeClass', -> if Router.current().route.path() is '/merchantHomeRemake' then 'home-page' else ''
 Template.registerHelper 'merchantInfo', -> Schema.merchantProfiles.findOne({merchant: Session.get("myProfile").currentMerchant})
 Template.registerHelper 'currentAppInfo', -> Session.get("currentAppInfo")
 Template.registerHelper 'appCollapseClass', -> if Session.get('collapse') then 'icon-angle-double-left' else 'icon-angle-double-right'
@@ -26,7 +25,20 @@ Template.registerHelper 'productCodeFromId', (id) -> Schema.products.findOne(id)
 Template.registerHelper 'skullsNameFromId', (id) -> Schema.products.findOne(id)?.skulls
 Template.registerHelper 'userNameFromId', (id) -> Schema.userProfiles.findOne({user: id})?.fullName ? Meteor.users.findOne(id)?.emails[0].address
 Template.registerHelper 'ownerNameFromId', (id) -> Schema.customers.findOne(id)?.name
-Template.registerHelper 'unitName', -> if @unit then Schema.productUnits.findOne(@unit)?.unit else Schema.products.findOne(@product)?.basicUnit
+
+Template.registerHelper 'productName', (productId)->
+  if product = Schema.products.findOne(productId)
+    buildInProduct = Schema.buildInProducts.findOne(product.buildInProduct) if product.buildInProduct
+    product.name ? buildInProduct?.name
+
+Template.registerHelper 'unitName', ->
+  if @unit
+    if productUnit = Schema.productUnits.findOne(@unit)
+      productUnit.unit ? Schema.buildInProductUnits.findOne(productUnit.buildInProductUnit)?.unit
+  else
+    if product = Schema.products.findOne(@product)
+      product.basicUnit ? Schema.buildInProducts.findOne(product.buildInProduct)?.basicUnit
+
 Template.registerHelper 'genderString', (gender) -> if gender then 'Nam' else 'Nữ'
 Template.registerHelper 'allowAction', (val) -> if val then '' else 'disabled'
 

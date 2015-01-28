@@ -11,14 +11,21 @@ template(name="productManagementOverviewSection")
             .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
       .sub1: input.editable.dashed(name="productPrice" value="{{price}}" maxlength="20" style="width: 125px" placeholder="giá bán"
       data-toggle="tooltip" data-container="body" data-placement="right" title="giá bán")
-      //.sub2: span.blured-color Giá nhập cuối: {{formatNumber importPrice}} vnđ - Giá trung bình: {{formatNumber averagePrice}} vnđ
-      .sub2: input.editable(name="productCode" value="{{productCode}}" maxlength="20" size="20" placeholder="mã sản phẩm"
-      data-toggle="tooltip" data-container="body" data-placement="right" title="mã sản phẩm")
+
+      .sub2: input.editable.dashed(name="importPrice" value="{{importPrice}}" maxlength="20" style="width: 125px" placeholder="giá nhập"
+      data-toggle="tooltip" data-container="body" data-placement="right" title="giá nhập")
+
+      if buildInProduct
+        .sub3: span(style="position:absolute; left: 80px; top: 80px") {{productCode}}
+      else
+        .sub3: input.editable(style="position:absolute; left: 75px; top: 80px" name="productCode" value="{{productCode}}" maxlength="20" size="20"
+        placeholder="mã sản phẩm" data-toggle="tooltip" data-container="body" data-placement="right" title="mã sản phẩm")
+
       .commands
         if showCreateUnitMode
           .lemon.btn.rounded.lime.icon-flow-merge.createUnit
         if showEditCommand
-          .lemon.btn.rounded.lime.icon-ok-6.syncProductEdit
+          .lemon.btn.rounded.lime.icon-ok-6.syncProductEdits
         if showDeleteCommand
           .lemon.btn.rounded.red.icon-minus-4.productDelete
     if hasUnit
@@ -27,10 +34,10 @@ template(name="productManagementOverviewSection")
           tr.table-header
             th(style="width:auto") ĐƠN VỊ TÍNH
             th(style="width:150px") MÃ VẠCH
-            th(style="width:80px") QUI ĐỔI
+            th.number(style="width:80px") QUI ĐỔI
             th.number(style="width:150px") GIÁ NHẬP
             th.number(style="width:150px") GIÁ BÁN
-          each productUnits
+          each productUnitList
             if unitEditingMode
               +productManagementUnitEditor unitEditingData
             else
@@ -38,12 +45,12 @@ template(name="productManagementOverviewSection")
                 td.has-commands
                   span {{unit}}
                   .commands
-                    if allowDelete
+                    if showDeleteUnit
                       .lemon.rounded.tiny.btn.blue.delete-unit: span.icon-minus-4
                     if basicDetailModeEnabled
                       .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
                 td {{productCode}}
-                td {{conversionQuality}}
+                td.number {{conversionQuality}}
                 td.number {{formatNumber importPrice}} VNĐ
                 td.number {{formatNumber price}} VNĐ
 

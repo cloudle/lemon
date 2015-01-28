@@ -1,3 +1,5 @@
+scope = logics.productManagement
+
 lemon.defineWidget Template.productManagementImportDetails,
   productName: -> @name ? Schema.products.findOne(@product)?.name
   totalDebtBalance: -> @latestDebtBalance + Session.get("productManagementCurrentProduct").customSaleDebt

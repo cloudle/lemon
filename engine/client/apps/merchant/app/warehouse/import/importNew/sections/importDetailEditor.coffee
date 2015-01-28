@@ -1,7 +1,5 @@
 scope = logics.import
 lemon.defineHyper Template.importDetailEditor,
-  product: -> Schema.products.findOne(@product)
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   showDelete: -> !Session.get("currentImport")?.submitted
 
   rendered: ->

@@ -1,4 +1,4 @@
-Apps.Merchant.productManagementInit.push (scope) ->
+#Apps.Merchant.productManagementInit.push (scope) ->
 #  scope.createCustomSale = (template) ->
 #    currentTime = new Date()
 #

@@ -5,35 +5,41 @@ lemon.defineHyper Template.geraProductManagementOverviewSection,
   unitEditingData: -> Session.get("geraProductManagementUnitEditingRow")
 
   showEditCommand   : -> Session.get "geraProductManagementShowEditCommand"
-  showDeleteCommand : -> Session.get('geraProductManagementCurrentProduct')?.allowDelete
+  showDeleteCommand : -> Session.get('geraProductManagementCurrentProduct')?.status is "brandNew"
   showCreateUnitMode: -> if Session.get('geraProductManagementCurrentProduct')?.basicUnit then true else false
 
   avatarUrl   : -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   hasUnit     : -> Schema.buildInProductUnits.findOne({buildInProduct: @_id})
-  productUnits: -> Schema.buildInProductUnits.find({buildInProduct: @_id})
+  buildInProductUnitList: -> Schema.buildInProductUnits.find({buildInProduct: @_id})
 
   name: ->
     Meteor.setTimeout ->
       scope.overviewTemplateInstance.ui.$productName.change()
     , 50 if scope.overviewTemplateInstance
     @name
-  price: ->
+  description: ->
     Meteor.setTimeout ->
-      scope.overviewTemplateInstance.ui.$productPrice.inputmask "numeric",
-        {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false}
+      scope.overviewTemplateInstance.ui.$description.change()
     , 50 if scope.overviewTemplateInstance
-    @price
-  importPrice: ->
-    Meteor.setTimeout ->
-      scope.overviewTemplateInstance.ui.$productImportPrice.inputmask "numeric",
-        {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false}
-    , 50 if scope.overviewTemplateInstance
-    @importPrice
+    @description
+#  price: ->
+#    Meteor.setTimeout ->
+#      scope.overviewTemplateInstance.ui.$productPrice.inputmask "numeric",
+#        {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false}
+#    , 50 if scope.overviewTemplateInstance
+#    @price
+#  importPrice: ->
+#    Meteor.setTimeout ->
+#      scope.overviewTemplateInstance.ui.$productImportPrice.inputmask "numeric",
+#        {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false}
+#    , 50 if scope.overviewTemplateInstance
+#    @importPrice
 
   rendered: ->
     scope.overviewTemplateInstance = @
     @ui.$productName.autosizeInput({space: 10})
-    @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false})
+    @ui.$description.autosizeInput({space: 10})
+#    @ui.$productPrice.inputmask("numeric",   {autoGroup: true, groupSeparator:",", radixPoint: ".", suffix: " VNĐ", integerDigits:11, rightAlign:false})
 
   events:
     "click .avatar": (event, template) -> template.find('.avatarFile').click()
@@ -44,17 +50,17 @@ lemon.defineHyper Template.geraProductManagementOverviewSection,
           Schema.buildInProducts.update(Session.get('geraProductManagementCurrentProduct')._id, {$set: {image: fileObj._id}})
           AvatarImages.findOne(Session.get('geraProductManagementCurrentProduct').image)?.remove()
 
-    "click .syncProductEdit": (event, template)-> scope.updateGeraProduct(template)
+    "click .syncProductEdit": (event, template)-> scope.updateGeraProduct(template, @)
     "click .productDelete": (event, template) -> scope.deleteGeraProduct(@)
-    "keyup input.editable": (event, template) -> scope.checkAndUpdateGeraProduct(event, template)
+    "keyup input.editable": (event, template) -> scope.checkAndUpdateGeraProduct(event, template, @)
 
     "click .createUnit": (event, template)-> scope.createGeraProductUnit(@)
     "click .edit-unit": (event, template)->  Session.set("geraProductManagementUnitEditingRowId", @_id)
     "click .delete-unit": (event, template)-> Schema.buildInProductUnits.remove(@_id) if @status is 'New'
 
-    "input .editable": (event, template) ->
-      Session.set "geraProductManagementShowEditCommand",
-        template.ui.$productName.val() isnt Session.get("geraProductManagementCurrentProduct").name or
-        template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("geraProductManagementCurrentProduct").price ? '') or
-        template.ui.$productCode.val() isnt Session.get("geraProductManagementCurrentProduct").productCode
+#    "input .editable": (event, template) ->
+#      Session.set "geraProductManagementShowEditCommand",
+#        template.ui.$productName.val() isnt Session.get("geraProductManagementCurrentProduct").name or
+#        template.ui.$description.val() isnt Session.get("geraProductManagementCurrentProduct").description or
+#        template.ui.$productCode.val() isnt Session.get("geraProductManagementCurrentProduct").productCode
 

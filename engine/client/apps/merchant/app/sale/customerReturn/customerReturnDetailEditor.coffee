@@ -1,7 +1,6 @@
 scope = logics.customerReturn
 
 lemon.defineHyper Template.customerReturnDetailEditor,
-  productName: -> Schema.products.findOne(@product)?.name
   crossReturnAvailableQuality: ->
     returnDetail = @
     if currentReturn = Session.get('currentCustomerReturn')

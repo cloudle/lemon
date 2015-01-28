@@ -24,13 +24,13 @@ Meteor.publish 'myBranchProfiles', ->
     Apps.Merchant.checkSummaryDate(myProfile)
 
   if !parentMerchantProfile?.latestCheckExpire || parentMerchantProfile?.latestCheckExpire.toDateString() != (new Date()).toDateString()
-    Apps.Merchant.checkProductExpireDate(myProfile, parentMerchantProfile.notifyProductExpireRange ? 90)
+    Apps.Merchant.checkProductExpireDate(myProfile, parentMerchantProfile?.notifyProductExpireRange ? 90)
 
   if !parentMerchantProfile?.latestCheckReceivable || parentMerchantProfile?.latestCheckReceivable.toDateString() != (new Date()).toDateString()
-    Apps.Merchant.checkReceivableExpireDate(myProfile, parentMerchantProfile.notifyReceivableExpireRange ? 90)
+    Apps.Merchant.checkReceivableExpireDate(myProfile, parentMerchantProfile?.notifyReceivableExpireRange ? 90)
 
   if !parentMerchantProfile?.latestCheckPayable || parentMerchantProfile?.latestCheckPayable.toDateString() != (new Date()).toDateString()
-    Apps.Merchant.checkPayableExpireDate(myProfile, parentMerchantProfile.notifyPayableExpireRange ? 90)
+    Apps.Merchant.checkPayableExpireDate(myProfile, parentMerchantProfile?.notifyPayableExpireRange ? 90)
 
   myMerchantProfileQuery = {merchant: myProfile.currentMerchant}
   parentMerchantProfileQuery = {merchant: myProfile.parentMerchant}

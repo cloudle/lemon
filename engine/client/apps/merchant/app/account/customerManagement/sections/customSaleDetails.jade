@@ -9,7 +9,7 @@ template(name="customerManagementCustomSaleDetails")
   each customSaleDetails
     tr.detail-row
       td.has-commands
-        |{{productName}}
+        |{{productName product}}
         .commands
           if isCustomSaleModeEnabled
             .lemon.rounded.tiny.btn.red.deleteCustomSaleDetail: span.icon-minus-4

@@ -311,33 +311,43 @@ Meteor.methods
         (detail) -> Schema.productDetails.update detail._id, $set:{importPrice: detail.unitPrice/detail.conversionQuality}
       )
 
+  createBranchProductSummaryBy: (productId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if product = Schema.products.findOne({_id: productId, parentMerchant: profile.parentMerchant})
+        Schema.merchants.find({$or: [{_id: product.parentMerchant}, {parent: product.parentMerchant}] }).forEach(
+          (branch)->
+            branchProductSummaryOption =
+              parentMerchant : product.parentMerchant
+              merchant       : branch._id
+              product        : product._id
 
-  calculateABC: ->
-    profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-    if profile
-      toDate = new Date((new Date()).getFullYear(), (new Date()).getMonth(), (new Date()).getDate())
-      option =
-        salesMoneyDay : 0
-        importMoneyDay: 0
-        returnMoneyOfDistributorDay: 0
-        returnMoneyOfCustomerDay   : 0
+            if !Schema.branchProductSummaries.findOne(branchProductSummaryOption)
+              Schema.branchProductSummaries.insert branchProductSummaryOption
+        )
 
-      Schema.sales.find({ merchant: profile.currentMerchant, 'version.createdAt': {$gte: toDate} }).forEach(
-        (sale) -> option.salesMoneyDay += sale.debtBalanceChange
+  deleteBranchProductSummaryBy: (productId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      product = Schema.products.findOne({_id: productId, parentMerchant: profile.parentMerchant, buildInProduct:{$exists: false}})
+      if product?.allowDelete
+        Schema.merchants.find({$or: [{_id: product.parentMerchant}, {parent: product.parentMerchant}] }).forEach(
+          (branch)->
+            if branchProductSummary = Schema.branchProductSummaries.findOne({merchant: branch._id, product: product._id})
+              Schema.branchProductSummaries.remove branchProductSummary._id
+        )
+        Schema.products.remove product._id
+
+  createProductUnitBy: (productUnitOption)->
+    if productUnitId = Schema.productUnits.insert productUnitOption
+      Schema.branchProductSummaries.find({product: productUnitOption.product}).forEach(
+        (branchProduct)->
+          productUnitOption.merchant    = branchProduct.merchant
+          productUnitOption.productUnit = productUnitId
+          Schema.branchProductUnits.insert productUnitOption
       )
+      return productUnitId
 
-      Schema.imports.find({ merchant: profile.currentMerchant, 'version.createdAt': {$gte: toDate}, finish: true, submitted: true}).forEach(
-        (currentImport) -> option.importMoneyDay += currentImport.debtBalanceChange
-      )
-
-      Schema.returns.find({ merchant: profile.currentMerchant, 'version.createdAt': {$gte: toDate}, status: 2 }).forEach(
-        (currentReturn) ->
-          if currentReturn.returnMethods is 0
-            option.returnMoneyOfCustomerDay += currentReturn.debtBalanceChange
-          else
-            option.returnMoneyOfDistributorDay += currentReturn.debtBalanceChange
-      )
-
-      Schema.metroSummaries.update({merchant: profile.currentMerchant},{$set: option})
-
-
+  deleteProductUnit: (productUnit)->
+    if !productUnit.buildInProductUnit and productUnit.allowDelete
+      Schema.branchProductUnits.find({productUnit: productUnit._id}).forEach(
+        (branchProduct) -> Schema.branchProductUnits.remove(branchProduct._id) )
+      Schema.productUnits.remove(productUnit._id)

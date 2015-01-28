@@ -46,9 +46,19 @@ Meteor.publishComposite 'customerReturnData', (returnId)->
       children: [
         find: (sale ,currentReturn) -> Schema.saleDetails.find {sale: sale._id}
         children: [
-          find: (saleDetail, currentReturn) -> Schema.products.find {_id: saleDetail.product}
+          find: (productDetail, currentReturn) -> Schema.branchProductSummaries.find {product: productDetail.product, merchant: currentReturn .merchant}
+        ,
+          find: (productDetail, currentReturn) -> Schema.products.find {_id: productDetail.product}
           children: [
             find: (product, currentReturn) -> Schema.productUnits.find {product: product._id}
+            children: [
+              find: (productUnit, currentReturn) -> Schema.branchProductUnits.find {productUnit: productUnit._id}
+            ]
+          ,
+            find: (product, currentReturn) -> if product.buildInProduct then Schema.buildInProducts.find {_id: product.buildInProduct} else EmptyQueryResult
+            children: [
+              find: (buildInProduct, currentReturn) -> Schema.buildInProductUnits.find {buildInProduct: buildInProduct._id}
+            ]
           ]
         ]
       ]
@@ -71,10 +81,21 @@ Meteor.publishComposite 'distributorReturnData', (returnId)->
       children: [
         find: (distributor, currentReturn) -> Schema.productDetails.find {distributor: distributor._id}
         children: [
+          find: (productDetail, currentReturn) -> Schema.branchProductSummaries.find {product: productDetail.product, merchant: productDetail.merchant}
+        ,
           find: (productDetail, currentReturn) -> Schema.products.find {_id: productDetail.product}
           children: [
             find: (product, currentReturn) -> Schema.productUnits.find {product: product._id}
+            children: [
+              find: (productUnit, currentReturn) -> Schema.branchProductUnits.find {productUnit: productUnit._id}
+            ]
+          ,
+            find: (product, currentReturn) -> if product.buildInProduct then Schema.buildInProducts.find {_id: product.buildInProduct} else EmptyQueryResult
+            children: [
+              find: (buildInProduct, currentReturn) -> Schema.buildInProductUnits.find {buildInProduct: buildInProduct._id}
+            ]
           ]
+
         ]
       ]
     ]

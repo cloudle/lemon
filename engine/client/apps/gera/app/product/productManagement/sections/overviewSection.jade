@@ -9,14 +9,20 @@ template(name="geraProductManagementOverviewSection")
         if basicUnit
           span.blured-color ({{basicUnit}})
 
-      .sub1: input.editable.dashed(name="productPrice" value="{{price}}" maxlength="20" style="width: 125px" placeholder="giá bán"
-      data-toggle="tooltip" data-container="body" data-placement="right" title="giá bán")
-
-      .sub2: input.editable(name="productImportPrice" value="{{importPrice}}" maxlength="20" size="20" placeholder="giá nhập"
-      data-toggle="tooltip" data-container="body" data-placement="right" title="giá nhập")
-
-      .sub3: input.editable(name="productCode" value="{{productCode}}" maxlength="20" size="20" placeholder="mã sản phẩm"
+      .sub1: input.editable(name="productCode" value="{{productCode}}" maxlength="20" size="20" placeholder="mã sản phẩm"
       data-toggle="tooltip" data-container="body" data-placement="right" title="mã sản phẩm")
+
+      .sub2: input.editable(name="description" value="{{description}}" maxlength="50" size="20" placeholder="giới thiệu sản phẩm"
+      data-toggle="tooltip" data-container="body" data-placement="right" title="giới thiệu sản phẩm")
+
+      //.sub1: input.editable.dashed(name="productPrice" value="{{price}}" maxlength="20" style="width: 125px" placeholder="giá bán"
+      //data-toggle="tooltip" data-container="body" data-placement="right" title="giá bán")
+      //
+      //.sub2: input.editable(name="productImportPrice" value="{{importPrice}}" maxlength="20" size="20" placeholder="giá nhập"
+      //data-toggle="tooltip" data-container="body" data-placement="right" title="giá nhập")
+      //
+      //.sub3: input.editable(name="productCode" value="{{productCode}}" maxlength="20" size="20" placeholder="mã sản phẩm"
+      //data-toggle="tooltip" data-container="body" data-placement="right" title="mã sản phẩm")
 
       .commands
         if showCreateUnitMode
@@ -33,9 +39,9 @@ template(name="geraProductManagementOverviewSection")
             th(style="width:auto") ĐƠN VỊ TÍNH
             th(style="width:150px") MÃ VẠCH
             th(style="width:80px") QUI ĐỔI
-            th.number(style="width:150px") GIÁ NHẬP
-            th.number(style="width:150px") GIÁ BÁN
-          each productUnits
+            //th.number(style="width:150px") GIÁ NHẬP
+            //th.number(style="width:150px") GIÁ BÁN
+          each buildInProductUnitList
             if unitEditingMode
               +geraProductManagementUnitEditor unitEditingData
             else
@@ -47,8 +53,8 @@ template(name="geraProductManagementOverviewSection")
                       .lemon.rounded.tiny.btn.blue.delete-unit: span.icon-minus-4
                 td {{productCode}}
                 td {{conversionQuality}}
-                td.number {{formatNumber importPrice}} VNĐ
-                td.number {{formatNumber price}} VNĐ
+                //td.number {{formatNumber importPrice}} VNĐ
+                //td.number {{formatNumber price}} VNĐ
 
     .panel-footer
       span.icon-angle-right

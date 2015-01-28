@@ -1,4 +1,4 @@
-simpleSchema.merchantProductSummaries = new SimpleSchema
+simpleSchema.branchProductSummaries = new SimpleSchema
   price:
     type: Number
     optional: true
@@ -24,6 +24,7 @@ simpleSchema.merchantProductSummaries = new SimpleSchema
 
   warehouse:
     type: String
+    optional: true
 
   product:
     type: String
@@ -58,5 +59,5 @@ simpleSchema.merchantProductSummaries = new SimpleSchema
   version: { type: simpleSchema.Version }
 #-----------------------------------------------
 
-Schema.add "merchantProductSummaries", "MerchantProductSummary", class MerchantProductSummary
+Schema.add "branchProductSummaries", "BranchProductSummary", class BranchProductSummary
   @name: "Merchant Product Summaries"

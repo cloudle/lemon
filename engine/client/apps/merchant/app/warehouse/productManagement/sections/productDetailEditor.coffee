@@ -1,6 +1,6 @@
 scope = logics.productManagement
 lemon.defineHyper Template.productManagementDetailEditor,
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
+#  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   totalPrice: -> @unitPrice*@unitQuality
 
   rendered: ->
@@ -25,10 +25,10 @@ lemon.defineHyper Template.productManagementDetailEditor,
       if Session.get("productManagementCurrentProduct")?.basicDetailModeEnabled
         productDetail = @
         if event.which is 13
-          scope.updateBasicProductDetail(productDetail, template)
+          scope.updateBasicProductDetail(productDetail._id, template)
           Session.set("productManagementDetailEditingRow")
           Session.set("productManagementDetailEditingRowId")
         else
           Helpers.deferredAction ->
-            scope.updateBasicProductDetail(productDetail, template)
+            scope.updateBasicProductDetail(productDetail._id, template)
           , "productManagementUpdateBasicProductDetail"

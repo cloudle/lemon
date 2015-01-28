@@ -1,8 +1,14 @@
 Update bill-no:
-    + Get code mới về
     + Chay hàm Meteor.call('reUpdateOrderCode') sẽ cập nhật dữ liệu cũ, thêm bill-no vào phiếu cũ.
 
 Đổi merchantProfile thành branchProfile, merchantPurchase thành merchantProfile
-    + Get code mới về
     + Vào Robomongo đổi tên merchantProfiles thành branchProfiles, merchantPurchases thành merchantProfiles
 
+Chuyển dữ liệu cũ của Merchant qua hệ thống mới có BuitIn product :
+    - Meteor.call('updateMerchantDataBase')
+        + Thêm merchantType, userType cho toàn bộ merchant cũ
+        + Tạo Merchant mặc định (merchantType = 'Gera'): Meteor.call('createGeraMerchant', merchantId) ko thực hiện nếu đã có GeraMerchant
+        + lấy dữ liệu sản phẩm của vtnamphuong@gera.vn làm BuitIn product.
+        + chuyển toàn bộ dữ liệu sản phẩm vtnamphuong@gera.vn phụ thuộc vào BuitIn product của Gera
+
+    - Set Merchant lên Agency (chưa có giao diện tạo agency):  Meteor.call('upMerchantToAgency', merchantId)

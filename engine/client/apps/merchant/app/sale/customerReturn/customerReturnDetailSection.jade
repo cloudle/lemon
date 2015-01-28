@@ -21,14 +21,14 @@ template(name="customerReturnDetailSection")
                   +customerReturnDetailEditor editingData
                else
                   tr.detail-row.large-name: td(colspan="3")
-                     span {{productName}}
+                     span {{productName product}}
                      //if product.basicUnit
                      //   span ({{product.basicUnit}})
                      if discountPercent
                         span.super.s7.color-lime GIẢM GIÁ {{round discountPercent}}%
                   tr.detail-row.click-enable(class="{{crossReturnAvailableQuality.errorClass}}")
                      td.bill-name.has-commands
-                      |{{productName}}
+                      |{{productName product}}
                       .commands
                         .lemon.rounded.tiny.btn.blue.deleteReturnDetail: span.icon-minus-4
                      td.price.editable-field {{formatNumber unitReturnsPrice}}

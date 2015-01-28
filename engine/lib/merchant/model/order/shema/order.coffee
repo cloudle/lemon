@@ -7,6 +7,7 @@ simpleSchema.orders = new SimpleSchema
 
   creator:
     type: String
+    optional: true
 
   seller:
     type: String

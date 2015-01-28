@@ -25,48 +25,73 @@ subtractQualityOnSales = (stockingItems, sellingItem , currentSale) ->
     else
       takenQuality = productDetail.availableQuality
 
-    SaleDetail.createSaleDetailByOrder(currentSale, sellingItem, productDetail, takenQuality)
-    Schema.productDetails.update productDetail._id, $inc:{availableQuality: -takenQuality}
-    Schema.products.update productDetail.product  , $inc:{availableQuality: -takenQuality}
+    saleDetail = SaleDetail.createSaleDetailByOrder(currentSale, sellingItem, productDetail, takenQuality)
+    if saleDetail._id
+      Schema.productDetails.update productDetail._id, $inc:{availableQuality: -takenQuality}
+      Schema.products.update productDetail.product  , $inc:{availableQuality: -takenQuality}
 
-    transactionQuality += takenQuality
-    if transactionQuality == sellingItem.quality then break
+      transactionQuality += takenQuality
+      if transactionQuality == sellingItem.quality then break
+
+    else
+      throw {error: 'Create saleDetail fail.', sale: currentSale}
+
   return transactionQuality == sellingItem.quality
 
 
 createSaleAndSaleOrder = (order, orderDetails)->
-  currentSaleId = Schema.sales.insert Sale.newByOrder(order)
-  if !currentSaleId then throw new Meteor.Error("Create sale fail.")
-  currentSale = Schema.sales.findOne(currentSaleId)
+  try
+    currentSaleId = Schema.sales.insert Sale.newByOrder(order)
+    if !currentSaleId then throw {error: 'Create sale fail.'}
 
-  for currentOrderDetail in orderDetails
-    product = Schema.products.findOne(currentOrderDetail.product)
-    if !product then throw new Meteor.Error("Not Find product.")
-    if product.basicDetailModeEnabled is true
-      SaleDetail.createSaleDetailByProduct(currentSale, currentOrderDetail)
-    else
-      importBasic = Schema.productDetails.find(
-        {import: { $exists: false}, product: product._id, availableQuality: {$gt: 0}}, {sort: {'version.createdAt': 1}}
-      ).fetch()
-      importProductDetails = Schema.productDetails.find(
-        {import: { $exists: true}, product: product._id, availableQuality: {$gt: 0}}, {sort: {'version.createdAt': 1}}
-      ).fetch()
-      combinedProductDetails = importBasic.concat(importProductDetails)
-      subtractQualityOnSales(combinedProductDetails, currentOrderDetail, currentSale)
-    Schema.products.update product._id, $set:{allowDelete : false}, $inc:{salesQuality: currentOrderDetail.quality}
+    currentSale = Schema.sales.findOne(currentSaleId)
+    productSalesQuality = 0
 
-  option = {status: true}
-  if currentSale.paymentsDelivery == 1
-    deliveryOption = Delivery.newBySale(order, currentSale)
-    option.delivery = Schema.deliveries.insert deliveryOption
+    for currentOrderDetail in orderDetails
+      product = Schema.products.findOne(currentOrderDetail.product)
+      if !product then throw {error: 'Not Find product.'}; console.log 'Not Find product'
+      if product.basicDetailModeEnabled is true
+        saleDetail = SaleDetail.createSaleDetailByProduct(currentSale, currentOrderDetail)
+        if !saleDetail._id then throw {error: 'Create saleDetail fail.', sale: currentSale}
 
-  Schema.userProfiles.update option.creator, $set:{allowDelete: false}
-  Schema.userProfiles.update option.seller, $set:{allowDelete: false} if option.creator isnt option.seller
-  Schema.sales.update currentSale._id, $set: option, (error, result) -> if error then console.log error
-  return currentSale
+      else
+        importBasic = Schema.productDetails.find(
+          {import: { $exists: false}, product: product._id, availableQuality: {$gt: 0}}, {sort: {'version.createdAt': 1}}
+        ).fetch()
+        importProductDetails = Schema.productDetails.find(
+          {import: { $exists: true}, product: product._id, availableQuality: {$gt: 0}}, {sort: {'version.createdAt': 1}}
+        ).fetch()
+        combinedProductDetails = importBasic.concat(importProductDetails)
+        subtractQualityOnSales(combinedProductDetails, currentOrderDetail, currentSale)
+      productSalesQuality = currentOrderDetail.quality
+    Schema.products.update product._id, $set:{allowDelete : false}, $inc:{salesQuality: productSalesQuality}
+
+    option = {status: true}
+    if currentSale.paymentsDelivery == 1
+      deliveryOption = Delivery.newBySale(order, currentSale)
+      option.delivery = Schema.deliveries.insert deliveryOption
+
+    Schema.userProfiles.update option.creator, $set:{allowDelete: false}
+    Schema.userProfiles.update option.seller, $set:{allowDelete: false} if option.creator isnt option.seller
+    Schema.sales.update currentSale._id, $set: option, (error, result) -> if error then console.log error
+    return {sale: currentSale}
+
+  catch error
+    if error.error is 'Create saleDetail fail.'
+      Schema.saleDetails.find({sale: error.sale._id}).forEach(
+        (saleDetail)->
+          Schema.productDetails.update saleDetail.productDetail, $inc:{availableQuality: saleDetail.quality} if saleDetail.productDetail
+          Schema.products.update saleDetail.product, $inc:{availableQuality: saleDetail.quality} if saleDetail.product
+
+          Schema.saleDetails.remove saleDetail._id
+      )
+      Schema.sales.remove error.sale._id
+    return error
 
 
-removeOrderAndOrderDetail = (order, userProfile)->
+
+
+removeOrderAndOrderDetail = (order, userProfile, status)->
   allTabs = Order.myHistory(userProfile.user, userProfile.currentWarehouse, userProfile.currentMerchant).fetch()
   currentSource = _.findWhere(allTabs, {_id: userProfile.currentOrder})
   currentIndex = allTabs.indexOf(currentSource)
@@ -78,8 +103,11 @@ removeOrderAndOrderDetail = (order, userProfile)->
   else
     buyer = Customer.findOne(order.buyer).data
     UserSession.set('currentOrder', Order.createdNewBy(buyer, userProfile)._id)
-  Order.remove(order._id)
-  OrderDetail.remove({order: order._id})
+
+  Schema.orders.update({_id: order._id}, {$set: {status: status}})
+
+#  Order.remove(order._id)
+#  OrderDetail.remove({order: order._id})
 
 updateCustomerByNewSales = (sale, orderDetails)->
   incCustomerOption = {
@@ -115,16 +143,22 @@ Meteor.methods
 
     Schema.orders.update currentOrder._id, $set:{status: 1}
     if currentOrder = Schema.orders.findOne({_id: orderId, status: 1})
-      if sale = createSaleAndSaleOrder(currentOrder, orderDetails)
-  #      productIds = _.uniq(_.pluck(orderDetails, 'product'))
-  #      Schema.customers.update(sale.buyer, $push: {builtIn:{ $each: productIds, $slice: -50 }})
+      result = createSaleAndSaleOrder(currentOrder, orderDetails)
+      if result.error
+        removeOrderAndOrderDetail(currentOrder, userProfile, 3)
+        throw new Meteor.Error('createSaleAndDetail', result.error, result.sale)
+      else
+        #      productIds = _.uniq(_.pluck(orderDetails, 'product'))
+        #      Schema.customers.update(sale.buyer, $push: {builtIn:{ $each: productIds, $slice: -50 }})
 
-        removeOrderAndOrderDetail(currentOrder, userProfile)
-        updateCustomerByNewSales(sale, orderDetails)
+        removeOrderAndOrderDetail(currentOrder, userProfile, 2)
+        updateCustomerByNewSales(result.sale, orderDetails)
+
+        MetroSummary.updateMyMetroSummaryBy(['createSale'], result.sale._id)
+        MetroSummary.updateMyMetroSummaryByProfitability()
+
+        Meteor.call 'newSaleDefault', userProfile, result.sale._id
+        return result.sale._id
 
 
-      MetroSummary.updateMyMetroSummaryBy(['createSale'], sale._id)
-      MetroSummary.updateMyMetroSummaryByProfitability()
 
-      Meteor.call 'newSaleDefault', userProfile, sale._id
-      return sale._id

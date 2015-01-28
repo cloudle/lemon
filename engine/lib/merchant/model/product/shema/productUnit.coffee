@@ -20,6 +20,15 @@ simpleSchema.productUnits = new SimpleSchema
     min: 1
     optional: true
 #-----------------------------------------------
+# image, price, importPrice
+  hasOverride:
+    type: [String]
+    optional: true
+
+  buildInProductUnit:
+    type: String
+    optional: true
+
   price:
     type: Number
     min: 0
@@ -29,24 +38,6 @@ simpleSchema.productUnits = new SimpleSchema
     type: Number
     min: 0
     optional: true
-
-  # image, price, importPrice
-  hasOverride:
-    type: [String]
-    optional: true
-
-  buildInProductUnit:
-    type: String
-    optional: true
-
-  agency:
-    type: String
-    optional: true
-
-  agencyProductUnit:
-    type: String
-    optional: true
-
 #-----------------------------------------------
   parentMerchant:
     type: String
@@ -56,11 +47,16 @@ simpleSchema.productUnits = new SimpleSchema
     type: String
     optional: true
 
+  createMerchant:
+    type: String
+    optional: true
+
   product:
     type: String
 
   creator:
     type: String
+    optional: true
 
   allowDelete:
     type: Boolean

@@ -36,14 +36,6 @@ simpleSchema.products = new SimpleSchema
     type: String
     optional: true
 
-  agency:
-    type: String
-    optional: true
-
-  agencyProduct:
-    type: String
-    optional: true
-
   price:
     type: Number
     optional: true
@@ -63,6 +55,10 @@ simpleSchema.products = new SimpleSchema
     optional: true
 #-----------------------------------------------
   creator:
+    type: String
+    optional: true
+
+  createMerchant:
     type: String
     optional: true
 

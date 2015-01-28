@@ -4,12 +4,12 @@ lemon.defineHyper Template.saleDetailSection,
   merchant: -> Schema.merchants.findOne(Session.get('myProfile')?.currentMerchant)
   editingMode: -> Session.get("salesEditingRow")?._id is @_id
   editingData: -> Session.get("salesEditingRow")
-  product: -> Schema.products.findOne(@product)
-  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
+#  product: -> Schema.products.findOne(@product)
+#  unitName: -> if @unit then Schema.productUnits.findOne(@unit).unit else Schema.products.findOne(@product).basicUnit
   buyerName: -> Schema.customers.findOne(Session.get("currentOrder")?.buyer)?.name
   buyer: -> Schema.customers.findOne(Session.get("currentOrder")?.buyer)
   sellerName: -> Schema.userProfiles.findOne({user: Session.get("currentOrder")?.seller})?.fullName
-  billNo: -> Helpers.orderCodeCreate(Schema.customers.findOne(Session.get("currentOrder")?.buyer)?.billNo) ? '0001'
+  billNo: -> Helpers.orderCodeCreate(Schema.customers.findOne(Session.get("currentOrder")?.buyer)?.billNo ? '0000')
 
   orderDescription: -> Session.get("currentOrderDescription") ? @order?.description
   customerOldDebt: ->

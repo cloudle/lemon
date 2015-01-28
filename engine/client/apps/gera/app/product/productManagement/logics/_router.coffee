@@ -16,6 +16,6 @@ lemon.addRoute
 
     return {
 #      productGroupOptions : scope.productGroupSelectOptions
-      managedProductList  : scope.managedProductList
+      managedBuildInProductList : scope.managedBuildInProductList
     }
 , Apps.Merchant.RouterBase

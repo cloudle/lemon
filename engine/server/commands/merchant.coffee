@@ -120,3 +120,142 @@ Meteor.methods
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if parentMerchantProfile = Schema.branchProfiles.findOne({merchant: profile.parentMerchant})
         Apps.Merchant.checkExpireDateCreateTransaction(profile, transactionId, parentMerchantProfile.notifyReceivableExpireRange ? 90)
+
+
+  createGeraMerchant: (merchantId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      merchantId = profile.parentMerchant if !merchantId
+      findMerchant = Schema.merchants.findOne({_id: merchantId, merchantType: 'merchant', parent: {$exists: false} })
+      findGeraMerchant = Schema.merchants.findOne({merchantType: 'gera'})
+      Schema.merchants.update findMerchant._id, $set:{merchantType: 'gera'} if !findGeraMerchant and findMerchant
+
+  upMerchantToAgency: (merchantId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      merchantId = profile.parentMerchant if !merchantId
+      findMerchant = Schema.merchants.findOne({_id: merchantId, merchantType: 'merchant', parent: {$exists: false}})
+      if findMerchant
+        Schema.merchants.find({$or: [{_id: findMerchant._id}, {parent: findMerchant._id}] }).forEach(
+          (branch) -> Schema.merchants.update findMerchant._id, $set:{merchantType: 'agency'}
+        )
+
+  updateParentMerchant: ->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      Schema.productUnits.find().forEach(
+        (productUnit)->
+          Schema.branchProductSummaries.find({product: productUnit.product}).forEach(
+            (branchProduct)->
+              productUnitUpdate =
+                parentMerchant: branchProduct.parentMerchant
+                merchant      : branchProduct.merchant
+                createMerchant: branchProduct.parentMerchant
+
+              if branchProduct.parentMerchant is branchProduct.merchant
+                Schema.productUnits.update productUnit._id, $set: productUnitUpdate
+              else
+                productUnitUpdate.merchant = branchProduct.merchant
+                productUnitUpdate.product = branchProduct.product
+                Schema.productUnits.insert productUnitUpdate
+          )
+      )
+
+
+  updateMerchantDataBase: ->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      #thêm merchantType cho merchant
+      Schema.merchants.find({merchantType: {$nin:['merchant', 'agency', 'gera']} }).forEach(
+#      Schema.merchants.find().forEach(
+        (merchant) ->
+          Schema.merchants.update merchant._id, $set:{merchantType: 'merchant'}
+          Schema.userProfiles.update {currentMerchant: merchant._id}, $set:{userType: 'merchant'}
+
+          parentMerchant = if merchant.parent then merchant.parent else merchant._id
+          Schema.products.find({merchant: merchant._id}).forEach(
+            (product) ->
+              Schema.products.update product._id, $set:{parentMerchant: parentMerchant, createMerchant: parentMerchant}
+              branchProductSummaries =
+                parentMerchant            : parentMerchant
+                merchant                  : merchant._id
+                product                   : product._id
+                warehouse                 : product.warehouse
+              branchProductId = Schema.branchProductSummaries.insert branchProductSummaries
+              if Schema.branchProductSummaries.findOne(branchProductId)
+                branchProduct =
+                  availableQuality: 0
+                  inStockQuality  : 0
+                  totalQuality    : 0
+                  salesQuality    : 0
+
+                Schema.productDetails.find({product: product._id, merchant: product.merchant}).forEach(
+                  (productDetail)->
+                    Schema.productDetails.update productDetail._id, $set:{parentMerchant: parentMerchant, branchProduct: branchProductId}
+                    branchProduct.availableQuality += productDetail.availableQuality if productDetail.availableQuality
+                    branchProduct.inStockQuality   += productDetail.inStockQuality if productDetail.inStockQuality
+                    branchProduct.totalQuality     += productDetail.importQuality if productDetail.importQuality
+                )
+                Schema.saleDetails.find({product: product._id}).forEach((saleDetail)-> branchProduct.salesQuality += saleDetail.quality)
+                Schema.branchProductSummaries.update branchProductId, $set:branchProduct
+
+                Schema.productUnits.find({product: product._id}).forEach(
+                  (productUnit)->
+                    productUnitUpdate =
+                      parentMerchant: parentMerchant
+                      merchant      : merchant._id
+                      createMerchant: parentMerchant
+                    Schema.productUnits.update productUnit._id, $set: productUnitUpdate
+
+                    branchProductUnit =
+                      parentMerchant: parentMerchant
+                      merchant      : merchant._id
+                      product       : productUnit.product
+                      productUnit   : productUnit._id
+                    Schema.branchProductUnits.insert branchProductUnit
+                )
+
+          )
+      )
+
+
+      #set merchant của vtnamphuong@gera.vn lên làm agency
+      merchantId_VTNamPhuong = "fd3n2DxNZKbbs5gkE"
+      Schema.merchants.update merchantId_VTNamPhuong, $set:{merchantType: 'agency'}
+      Schema.userProfiles.update {merchant: merchantId_VTNamPhuong}, $set:{userType: 'agency'}
+
+
+      #lấy dữ liệu sản phẩm của vtnamphuong@gera.vn làm buildInProduct
+#      Schema.products.find({merchant: "fd3n2DxNZKbbs5gkE", buildInProduct:{$exists: false} }).forEach(
+      Schema.products.find({merchant: "fd3n2DxNZKbbs5gkE"}).forEach(
+        (product) ->
+          if product.name and product.productCode
+            buildInProduct = {
+              creator    : profile.user
+              name       : product.name
+              productCode: product.productCode
+              status     : 'onSold'
+            }
+            buildInProduct.basicUnit = product.basicUnit if product.basicUnit
+            buildInProduct.image = product.image if product.image
+            buildInProduct.description = product.description if product.description
+
+            if buildInProduct._id = Schema.buildInProducts.insert buildInProduct
+              productSet = {buildInProduct: buildInProduct._id}
+              productUnSet = {name: "", image: "", productCode: "", basicUnit: "", description: ""}
+              Schema.products.update product._id, $set:productSet, $unset:productUnSet
+
+              Schema.productUnits.find({product: product._id}).forEach(
+                (productUnit)->
+                  if productUnit.unit and productUnit.productCode and productUnit.conversionQuality
+                    buildInProductUnit = {
+                      buildInProduct   : buildInProduct._id
+                      creator          : profile.user
+                      productCode      : productUnit.productCode
+                      unit             : productUnit.unit
+                      conversionQuality: productUnit.conversionQuality
+                    }
+                    buildInProductUnit.image = productUnit.image if productUnit.image
+
+                    if buildInProductUnit._id = Schema.buildInProductUnits.insert buildInProductUnit
+                      productUnitSet = {buildInProductUnit: buildInProductUnit._id}
+                      productUnitUnSet = {buildInProduct: "", productCode: "", image: "", unit: "", conversionQuality: ""}
+                      Schema.productUnits.update productUnit._id, $set: productUnitSet, $unset: productUnitUnSet
+              )
+      )

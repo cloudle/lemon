@@ -6,6 +6,7 @@ Schema.add 'orders', "Order", class Order
         creator  : myProfile.user
         merchant : merchantId ? myProfile.currentMerchant
         warehouse: warehouseId ? myProfile.currentWarehouse
+        status   : 0
       })
 
   @myHistory: (creatorId, warehouseId = null, merchantId = null)->
@@ -14,6 +15,7 @@ Schema.add 'orders', "Order", class Order
         creator   : creatorId ? myProfile.user
         warehouse : warehouseId ? myProfile.currentWarehouse
         merchant  : merchantId ? myProfile.currentMerchant
+        status    : 0
       })
 
   @createdNewBy: (buyer, myProfile = null)->

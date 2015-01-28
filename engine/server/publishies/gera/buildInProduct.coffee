@@ -9,6 +9,7 @@ Meteor.publishComposite 'availableBuildInProducts', ->
       find: (buildInProduct) -> Schema.buildInProductUnits.find {buildInProduct: buildInProduct._id}
     ]
   }
+
 Meteor.publishComposite 'availableGeraProductGroups', ->
   self = @
   return {

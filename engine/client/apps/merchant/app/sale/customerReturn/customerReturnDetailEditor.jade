@@ -1,13 +1,13 @@
 template(name="customerReturnDetailEditor")
   tr.detail-row.large-name: td(colspan="3")
-    span {{productName}}
+    span {{productName product}}
     //if product.basicUnit
     //  span ({{product.basicUnit}})
     if discountPercent
       span.super.s7.color-lime GIẢM GIÁ {{round discountPercent}}%
   tr.editors.dual-border(class="{{crossReturnAvailableQuality.errorClass}}")
     td.bill-name.has-commands
-     |{{productName}}
+     |{{productName product}}
      .commands
         .lemon.rounded.tiny.btn.blue.animated.bounceIn.deleteReturnDetail: span.icon-minus-4
     td.price: input(name="editPrice" min="0")

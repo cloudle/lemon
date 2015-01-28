@@ -1,13 +1,13 @@
 scope = logics.geraProductManagement
 lemon.defineHyper Template.geraProductManagementUnitEditor,
   rendered: ->
-    @ui.$price.inputmask "numeric",
-      {autoGroup: true, groupSeparator:",", suffix: " VNĐ", radixPoint: ".", integerDigits:11}
-    @ui.$price.val Session.get("geraProductManagementUnitEditingRow").price
-
-    @ui.$importPrice.inputmask "numeric",
-      {autoGroup: true, groupSeparator:",", suffix: " VNĐ", radixPoint: ".", integerDigits:11}
-    @ui.$importPrice.val Session.get("geraProductManagementUnitEditingRow").importPrice
+#    @ui.$price.inputmask "numeric",
+#      {autoGroup: true, groupSeparator:",", suffix: " VNĐ", radixPoint: ".", integerDigits:11}
+#    @ui.$price.val Session.get("geraProductManagementUnitEditingRow").price
+#
+#    @ui.$importPrice.inputmask "numeric",
+#      {autoGroup: true, groupSeparator:",", suffix: " VNĐ", radixPoint: ".", integerDigits:11}
+#    @ui.$importPrice.val Session.get("geraProductManagementUnitEditingRow").importPrice
 
     @ui.$conversionQuality.inputmask "numeric",
       {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11, rightAlign: false}

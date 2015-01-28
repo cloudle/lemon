@@ -21,30 +21,47 @@ lemon.defineApp Template.distributorReturn,
 
 
     "click .addReturnDetail": (event, template) ->
-      if Session.get('currentDistributorReturn')?.distributor
+      productId     = @product._id
+      productUnitId = @unit._id if @unit
+      currentReturn = Session.get('currentDistributorReturn')
+
+      if currentReturn?.distributor and productId
+        product       = Schema.products.findOne(productId)
+        branchProduct = Schema.branchProductSummaries.findOne({product: product._id, merchant: currentReturn.merchant})
+        product.importPrice = branchProduct.importPrice if branchProduct.importPrice
+
+        if productUnitId
+          productUnit       = Schema.productUnits.findOne(productUnitId)
+          branchProductUnit = Schema.branchProductUnits.findOne({productUnit: productUnit._id, merchant: currentReturn.merchant})
+          productUnit.importPrice = branchProductUnit.importPrice if branchProductUnit.importPrice
+
+          if productUnit.buildInProductUnit
+            buildInProductUnit = Schema.buildInProductUnits.findOne(productUnit.buildInProductUnit)
+            productUnit.conversionQuality = buildInProductUnit.conversionQuality
+
         option =
-          return            : Session.get('currentDistributorReturn')._id
-          product           : @product._id
+          return            : currentReturn._id
+          product           : productId
           conversionQuality : 1
           unitReturnQuality : 1
-          unitReturnsPrice  : @product.importPrice
-          price             : @product.price
+          unitReturnsPrice  : product.importPrice
+          price             : product.importPrice
           discountCash      : 0
           discountPercent   : 0
 
-        if @unit
-          option.unit = @unit._id
-          option.conversionQuality = @unit.conversionQuality
-          option.unitReturnsPrice  = @unit.importPrice
+        if productUnit
+          option.unit = productUnit._id
+          option.conversionQuality = productUnit.conversionQuality
+          option.unitReturnsPrice  = productUnit.importPrice
 
         option.returnQuality = option.conversionQuality
         option.finalPrice    = (option.unitReturnQuality * option.unitReturnsPrice) - option.discountCash
 
         Schema.returnDetails.insert option
-        Schema.returns.update Session.get('currentDistributorReturn')._id, $inc:{
+        Schema.returns.update currentReturn._id, $inc:{
           debtBalanceChange: option.finalPrice
-          totalPrice  : option.finalPrice + option.discountCash
-          finallyPrice: option.finalPrice
+          totalPrice       : option.finalPrice + option.discountCash
+          finallyPrice     : option.finalPrice
         }
 
     "click .submitReturn": (event, template) ->
