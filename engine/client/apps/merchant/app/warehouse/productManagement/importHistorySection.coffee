@@ -1,10 +1,13 @@
 scope = logics.productManagement
 
 lemon.defineHyper Template.productManagementSalesHistorySection,
-  isShowDisableMode: -> if @basicDetailModeEnabled is true and @totalQuality >= @salesQuality then true else false
+  basicDetailModeEnabled: -> Session.get("productManagementBranchProductSummary")?.basicDetailModeEnabled
+  isShowDisableMode: ->
+    branchProduct = Session.get("productManagementBranchProductSummary")
+    if branchProduct.totalQuality >= branchProduct.salesQuality then true else false
   buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
   unitSaleQuality: -> Math.round(@quality/@conversionQuality*100)/100
-
+  productSaleQuality: -> @salesQuality - @returnQualityByCustomer
 
   basicDetail: ->
     if product = Session.get("productManagementCurrentProduct")
@@ -27,10 +30,10 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
 
   events:
     "click .basicDetailModeDisable": ->
-      if product = Session.get("productManagementCurrentProduct")
-        if product.basicDetailModeEnabled is true
-          Meteor.call 'updateProductBasicDetailMode', product._id, (error, result) ->
-            Meteor.subscribe('productManagementData', product._id)
+      if branchProduct = Session.get("productManagementBranchProductSummary")
+        if branchProduct.basicDetailModeEnabled is true
+          Meteor.call 'updateProductBasicDetailMode', branchProduct._id, (error, result) ->
+            Meteor.subscribe('productManagementData', branchProduct.product)
           Session.set("productManagementDetailEditingRowId")
           Session.set("productManagementDetailEditingRow")
           Session.set("productManagementUnitEditingRowId")

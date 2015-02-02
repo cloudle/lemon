@@ -17,6 +17,9 @@ simpleSchema.returnDetails  = new SimpleSchema
   product:
     type: String
 
+  branchProduct:
+    type: String
+
   productDetail:
     type: [Object]
     blackbox: true

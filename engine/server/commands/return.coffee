@@ -64,17 +64,15 @@ Meteor.methods
             if productDetail.availableQuality > requiredQuality then takenQuality = requiredQuality
             else takenQuality = productDetail.availableQuality
 
-            Schema.productDetails.update productDetail._id, $inc:{
+            productOption =
               availableQuality: -takenQuality
-              inStockQuality: -takenQuality
+              inStockQuality  : -takenQuality
               returnQualityByDistributor: takenQuality
-            }
-            Schema.products.update productDetail.product  , $inc:{
-              availableQuality: -takenQuality
-              inStockQuality: -takenQuality
-              totalQuality: -takenQuality
-              returnQualityByDistributor: takenQuality
-            }
+            Schema.productDetails.update productDetail._id, $inc: productOption
+
+            productOption.totalQuality = -takenQuality
+            Schema.products.update productDetail.product, $inc: productOption
+            Schema.branchProductSummaries.update productDetail.branchProduct, $inc: productOption
 
             transactionQuality += takenQuality
             Schema.returnDetails.update returnDetail._id, $push: {productDetail: {productDetail: productDetail._id, returnQuality: takenQuality}}
@@ -105,7 +103,7 @@ Meteor.methods
 
   submitCustomerReturn: (currentCustomerReturn)->
     try
-      throw 'currentCustomerReturn sai' if !currentDistributorReturn
+      throw 'currentCustomerReturn sai' if !currentCustomerReturn
       returnDetails = Schema.returnDetails.find({return: currentCustomerReturn._id}).fetch()
       (if detail.returnQuality is 0 then throw 'So luong lon hon 0.') for detail in returnDetails
 
@@ -150,42 +148,37 @@ Meteor.methods
           if availableReturnQuality > requiredQuality then takenQuality = requiredQuality
           else takenQuality = availableReturnQuality
 
-          product = Schema.products.findOne(saleDetail.product)
-          if product.basicDetailModeEnabled is false
-            Schema.products.update saleDetail.product, $inc:{
-              availableQuality: takenQuality
-              inStockQuality: takenQuality
-              salesQuality: -takenQuality
-            }
-            Schema.productDetails.update saleDetail.productDetail, $inc:{
-              availableQuality: takenQuality
-              inStockQuality: takenQuality
-            }
+          branchProduct = Schema.branchProductSummaries.findOne(saleDetail.branchProduct)
+          if branchProduct.basicDetailModeEnabled is false
+            updateOption = {availableQuality: takenQuality, inStockQuality: takenQuality}
+            Schema.productDetails.update saleDetail.productDetail, $inc: updateOption
+
+            updateOption.returnQualityByCustomer = takenQuality
+            Schema.products.update branchProduct.product, $inc: updateOption
+            Schema.branchProductSummaries.update branchProduct._id, $inc: updateOption
+
           Schema.saleDetails.update saleDetail._id, $inc:{returnQuality: takenQuality}
           Schema.sales.update saleDetail.sale, $set:{allowDelete: false}
 
           transactionQuality += takenQuality
           if transactionQuality == returnDetail.quality then break
 
-      totalReturnPrice = Math.round(totalReturnPrice)
-      customer = Schema.customers.findOne(currentCustomerReturn.customer)
-      Schema.customers.update customer._id, $inc:{saleTotalCash: -totalReturnPrice, saleDebt: -totalReturnPrice}
-
-      timeLineSale = Schema.sales.findOne({buyer: currentCustomerReturn.customer}, {sort: {'version.createdAt': -1}})
-      Schema.returns.update currentCustomerReturn._id, $set: {
-        timeLineSales: timeLineSale._id
-        status: 2
-        'version.createdAt': new Date()
-        allowDelete: false
-        beforeDebtBalance: customer.saleDebt
-        debtBalanceChange: totalReturnPrice
-        latestDebtBalance: customer.saleDebt - totalReturnPrice
-      }
-      MetroSummary.updateMyMetroSummaryBy('createReturn', currentCustomerReturn._id)
-      Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
-
       if customer = Schema.customers.findOne(currentCustomerReturn.customer)
-        Meteor.call 'customerToReturns', customer, Session.get('myProfile')
+        Schema.customers.update customer._id, $inc:{saleTotalCash: -totalReturnPrice, saleDebt: -totalReturnPrice}
+
+        timeLineSale = Schema.sales.findOne({buyer: currentCustomerReturn.customer}, {sort: {'version.createdAt': -1}})
+        Schema.returns.update currentCustomerReturn._id, $set: {
+          timeLineSales: timeLineSale._id
+          status: 2
+          'version.createdAt': new Date()
+          allowDelete: false
+          beforeDebtBalance: customer.saleDebt
+          debtBalanceChange: totalReturnPrice
+          latestDebtBalance: customer.saleDebt - totalReturnPrice
+        }
+        MetroSummary.updateMyMetroSummaryBy(['createReturn'], currentCustomerReturn._id)
+        Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
+        Meteor.call 'customerToReturns', customer
 
     catch error
       throw new Meteor.Error('submitCustomerReturn', error)

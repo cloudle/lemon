@@ -11,6 +11,9 @@ simpleSchema.importDetails = new SimpleSchema
   product:
     type: String
 
+  branchProduct:
+    type: String
+
   provider:
     type: String
     optional: true

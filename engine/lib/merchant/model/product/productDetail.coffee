@@ -2,9 +2,11 @@ Schema.add 'productDetails', "ProductDetail", class ProductDetail
   @newProductDetail: (imports, importDetail)->
     option =
       import           : imports._id
+      parentMerchant   : imports.parentMerchant
       merchant         : imports.merchant
       warehouse        : imports.warehouse
       product          : importDetail.product
+      branchProduct    : importDetail.branchProduct
       importQuality    : importDetail.importQuality
       availableQuality : importDetail.importQuality
       inStockQuality   : importDetail.importQuality

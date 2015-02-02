@@ -1,0 +1,41 @@
+template(name="productManagementImportDetails")
+  tr.header-row
+    td(colspan="7")
+      | &nbsp;
+      .bill-header <b>{{momentCalendar version.createdAt}}</b> {{description}}
+  each importDetails
+    tr.detail-row
+      td.first-column {{distributorName}}
+      td(align="center") {{expireDate}}
+      td.number {{formatNumber unitQuality}}
+      td(align="center") {{unitName}}
+      td.number {{conversionQuality}}
+      td.number {{formatNumber unitPrice}}
+      td.number {{formatNumber totalPrice}}
+
+    +productManagementReturnDetails returnDetails
+
+    if isShowDisableMode
+      each saleDetails
+        tr.detail-row
+          td.first-column
+           span.icon-forward-3 {{buyerName}}
+          td(align="center") {{momentFormat version.createdAt "DD/MM/YYYY"}}
+          td.number {{unitSaleQuality}}
+          td(align="center") {{unitName}}
+          td.number {{conversionQuality}}
+          td.number {{formatNumber unitPrice}}
+          td.number {{formatNumber finalPrice}}
+
+
+template(name="productManagementReturnDetails")
+  each returnDetails
+    tr.detail-row
+      td.first-column
+        span.icon-reply-3 Trả hàng NCC
+      td(align="center") {{momentFormat version.createdAt "DD/MM/YYYY"}}
+      td.number {{returnQuality}}
+      td(align="center") {{unitName}}
+      td.number {{conversionQuality}}
+      td.number {{formatNumber unitReturnsPrice}}
+      td.number {{formatNumber returnFinalPrice}}

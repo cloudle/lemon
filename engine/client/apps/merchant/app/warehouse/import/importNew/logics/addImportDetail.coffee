@@ -57,6 +57,7 @@ Apps.Merchant.importInit.push (scope) ->
         warehouse     : currentImport.warehouse
         import        : currentImport._id
         product       : product._id
+        branchProduct : branchProduct._id
         unitPrice     : product.importPrice ? 0
         unitQuality   : 1
         importQuality : 1

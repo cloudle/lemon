@@ -19,6 +19,7 @@ Apps.Merchant.productManagementReactive.push (scope) ->
       product.inStockQuality   = branchProduct.inStockQuality
       product.returnQualityByCustomer    = branchProduct.returnQualityByCustomer
       product.returnQualityByDistributor = branchProduct.returnQualityByDistributor
+      product.basicDetailModeEnabled     = branchProduct.basicDetailModeEnabled
 
       buildInProduct = Schema.buildInProducts.findOne(product.buildInProduct) if product.buildInProduct
       if buildInProduct

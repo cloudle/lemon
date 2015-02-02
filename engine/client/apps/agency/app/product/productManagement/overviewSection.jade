@@ -1,0 +1,58 @@
+template(name="agencyProductManagementOverviewSection")
+  .section.top.panel.panel-default
+    input.hidden.avatarFile(type="file")
+    .panel-heading
+      +avatarImageComponent(avatar=avatarUrl alias=name)
+      .caption
+        input.editable.dashed(name="productName" value="{{name}}" maxlength="50")
+        if basicUnit
+          span.blured-color ({{basicUnit}})
+          if basicDetailModeEnabled
+            .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
+      .sub1: input.editable.dashed(name="productPrice" value="{{price}}" maxlength="20" style="width: 125px" placeholder="giá bán"
+      data-toggle="tooltip" data-container="body" data-placement="right" title="giá bán")
+
+      .sub2: input.editable.dashed(name="importPrice" value="{{importPrice}}" maxlength="20" style="width: 125px" placeholder="giá nhập"
+      data-toggle="tooltip" data-container="body" data-placement="right" title="giá nhập")
+
+      if buildInProduct
+        .sub3: span(style="position:absolute; left: 80px; top: 80px") {{productCode}}
+      else
+        .sub3: input.editable(style="position:absolute; left: 75px; top: 80px" name="productCode" value="{{productCode}}" maxlength="20" size="20"
+        placeholder="mã sản phẩm" data-toggle="tooltip" data-container="body" data-placement="right" title="mã sản phẩm")
+
+      .commands
+        if showCreateUnitMode
+          .lemon.btn.rounded.lime.icon-flow-merge.createUnit
+        if showEditCommand
+          .lemon.btn.rounded.lime.icon-ok-6.syncProductEdits
+        if showDeleteCommand
+          .lemon.btn.rounded.red.icon-minus-4.productDelete
+    if hasUnit
+      .panel-body
+        table.lemon-grid
+          tr.table-header
+            th(style="width:auto") ĐƠN VỊ TÍNH
+            th(style="width:150px") MÃ VẠCH
+            th.number(style="width:80px") QUI ĐỔI
+            th.number(style="width:150px") GIÁ NHẬP
+            th.number(style="width:150px") GIÁ BÁN
+          each productUnitList
+            if unitEditingMode
+              +productManagementUnitEditor unitEditingData
+            else
+              tr.detail-row.edit-unit.click-enable
+                td.has-commands
+                  span {{unit}}
+                  .commands
+                    if showDeleteUnit
+                      .lemon.rounded.tiny.btn.blue.delete-unit: span.icon-minus-4
+                    if basicDetailModeEnabled
+                      .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
+                td {{productCode}}
+                td.number {{conversionQuality}}
+                td.number {{formatNumber importPrice}} VNĐ
+                td.number {{formatNumber price}} VNĐ
+
+    .panel-footer
+      span.icon-angle-right

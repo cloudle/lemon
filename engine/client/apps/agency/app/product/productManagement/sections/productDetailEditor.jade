@@ -1,0 +1,14 @@
+template(name="productManagementDetailEditor")
+  tr.editors.dual-border
+    td.has-commands
+      .commands
+        if allowDelete
+          .lemon.rounded.tiny.btn.blue.animated.bounceIn.delete-basicDetail: span.icon-minus-4
+    td: input(name='expireDate' type="text" size="10" placeholder="hạn sử dụng")
+    td.number: input(name="unitQuality" placeholder="số lượng")
+    td(align="center") {{unitName}}
+    td.number {{conversionQuality}}
+    td: input(name="importPrice" placeholder="giá nhập")
+    td.number {{formatNumber totalPrice}}
+
+    //td.number {{formatNumber importPrice}}

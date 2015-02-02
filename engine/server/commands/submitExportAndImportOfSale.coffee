@@ -15,10 +15,11 @@ Meteor.methods
 
         for saleDetail in Schema.saleDetails.find({sale: currentSale._id}).fetch()
 
-          if !product = Schema.products.findOne(saleDetail.product) then throw new Meteor.Error('saleExportError', 'Sai thong tin san pham.')
-          if product.basicDetailModeEnabled is false
+          if !branchProduct = Schema.branchProductSummaries.findOne(saleDetail.branchProduct) then throw new Meteor.Error('saleExportError', 'Sai thong tin san pham.')
+          if branchProduct.basicDetailModeEnabled is false
             productOption = $inc:{inStockQuality: -saleDetail.quality}
             Schema.products.update saleDetail.product, productOption
+            Schema.branchProductSummaries.update saleDetail.branchProduct, productOption
             Schema.productDetails.update saleDetail.productDetail, productOption
 
           Schema.saleDetails.update saleDetail._id, $set:{export: true, exportDate: new Date, status: true}
@@ -55,6 +56,7 @@ Meteor.methods
           option = {availableQuality: saleDetail.quality, inStockQuality  : saleDetail.quality}
           Schema.productDetails.update saleDetail.productDetail, $inc: option
           Schema.products.update saleDetail.product, $inc: option
+          Schema.branchProductSummaries.update saleDetail.branchProduct, $inc: option
 
   #      Schema.saleExports.insert SaleExport.new(currentSale, saleDetail), (error, result) -> console.log error if error
         Meteor.call 'saleConfirmImporter', profile, currentSale._id

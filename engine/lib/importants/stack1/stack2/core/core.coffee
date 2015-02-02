@@ -26,15 +26,18 @@ Helpers.shortName2 = (fullName, word = 2) ->
 Helpers.searchProduct = (cursorProduct, products)->
   cursorProduct.forEach(
     (product) ->
-      buildInProduct = Schema.buildInProducts.findOne(product.buildInProduct) if product.buildInProduct
-      if buildInProduct
-        product.productCode = buildInProduct.productCode
-        product.basicUnit = buildInProduct.basicUnit
+      if product.buildInProduct
+        if buildInProduct = Schema.buildInProducts.findOne(product.buildInProduct)
+          product.productCode = buildInProduct.productCode
+          product.basicUnit = buildInProduct.basicUnit
 
-        product.name  = buildInProduct.name if !product.name
-        product.image = buildInProduct.image if !product.image
-        product.description = buildInProduct.description if !product.description
-      products.push product
+          product.name  = buildInProduct.name if !product.name
+          product.image = buildInProduct.image if !product.image
+          product.description = buildInProduct.description if !product.description
+
+          products.push product
+      else
+        products.push product
   )
 
 Helpers.searchProductUnit = (product, productUnits)->

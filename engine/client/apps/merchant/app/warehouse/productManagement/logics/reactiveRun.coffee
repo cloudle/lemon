@@ -4,15 +4,17 @@ Apps.Merchant.productManagementReactive.push (scope) ->
     scope.productList = []
     Schema.products.find({merchant: Session.get("myProfile").currentMerchant}).forEach(
       (product) ->
-        buildInProduct = Schema.buildInProducts.findOne(product.buildInProduct) if product.buildInProduct
-        if buildInProduct
-          product.productCode = buildInProduct.productCode
-          product.basicUnit = buildInProduct.basicUnit
+        if product.buildInProduct
+          if buildInProduct = Schema.buildInProducts.findOne(product.buildInProduct)
+            product.productCode = buildInProduct.productCode
+            product.basicUnit = buildInProduct.basicUnit
 
-          product.name  = buildInProduct.name if !product.name
-          product.image = buildInProduct.image if !product.image
-          product.description = buildInProduct.description if !product.description
-        scope.productList.push product
+            product.name  = buildInProduct.name if !product.name
+            product.image = buildInProduct.image if !product.image
+            product.description = buildInProduct.description if !product.description
+            scope.productList.push product
+        else
+          scope.productList.push product
     )
 
     if Session.get("productManagementSearchFilter")?.length > 0

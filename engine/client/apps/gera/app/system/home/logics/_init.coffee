@@ -1,2 +1,2 @@
-logics.metroHome = { name: 'merchant-home-logics' }
+logics.metroHome = { name: 'gera-home-logics' }
 Apps.Gera.homeInit = []

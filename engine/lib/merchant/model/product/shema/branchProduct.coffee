@@ -29,6 +29,10 @@ simpleSchema.branchProductSummaries = new SimpleSchema
   product:
     type: String
 
+  basicDetailModeEnabled:
+    type: Boolean
+    defaultValue: true
+
   salesQuality:
     type: Number
     defaultValue: 0

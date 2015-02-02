@@ -34,11 +34,11 @@ lemon.defineWidget Template.customerManagementSaleDetails,
 
   events:
     "click .deleteSales": (event, template) ->
-      Meteor.call 'customerManagementDeleteSale', @_id
-      Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
-      Meteor.call 'reCalculateMetroSummary'
+      Meteor.call 'customerManagementDeleteSale', @_id, (error, result) -> if error then console.log error
+      Meteor.call 'reCalculateMetroSummaryTotalReceivableCash', (error, result) -> if error then console.log error
+      Meteor.call 'reCalculateMetroSummary', (error, result) -> if error then console.log error
 
     "click .deleteTransaction": (event, template) ->
-      Meteor.call 'customerManagementDeleteTransaction', @_id
-      Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
-      Meteor.call 'reCalculateMetroSummary'
+      Meteor.call 'customerManagementDeleteTransaction', @_id, (error, result) -> if error then console.log error
+      Meteor.call 'reCalculateMetroSummaryTotalReceivableCash', (error, result) -> if error then console.log error
+      Meteor.call 'reCalculateMetroSummary', (error, result) -> if error then console.log error

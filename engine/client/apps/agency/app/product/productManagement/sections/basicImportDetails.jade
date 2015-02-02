@@ -1,0 +1,28 @@
+template(name="productManagementBasicImportDetails")
+  if detailEditingMode
+    +productManagementDetailEditor detailEditingData
+  else
+    tr.detail-row.edit-detail.click-enable
+      td.has-commands
+        span
+        .commands
+          if allowDelete
+            .lemon.rounded.tiny.btn.blue.delete-basicDetail: span.icon-minus-4
+      td(align="center") {{expireDate}}
+      td.number {{formatNumber unitQuality}}
+      td(align="center") {{unitName}}
+      td.number {{formatNumber conversionQuality}}
+      td.number {{formatNumber unitPrice}}
+      td.number {{formatNumber totalPrice}}
+
+  if isShowDisableMode
+    each saleDetails
+      tr.detail-row
+        td.first-column
+         span.icon-forward-3 {{buyerName}}
+        td(align="center") {{momentFormat version.createdAt "DD/MM/YYYY"}}
+        td.number {{unitSaleQuality}}
+        td(align="center") {{unitName}}
+        td.number {{conversionQuality}}
+        td.number {{formatNumber unitPrice}}
+        td.number {{formatNumber finalPrice}}

@@ -3,6 +3,7 @@ Schema.add 'saleDetails', "SaleDetail", class SaleDetail
     option =
       sale          : currentSale._id
       product       : product.product
+      branchProduct : productDetail.branchProduct
       productDetail : productDetail._id
       quality       : quality
       price         : product.price
@@ -35,6 +36,7 @@ Schema.add 'saleDetails', "SaleDetail", class SaleDetail
     option =
       sale             : currentSale._id
       product          : orderDetail.product
+      branchProduct    : orderDetail.branchProduct
       quality          : orderDetail.quality
       price            : orderDetail.price
       totalPrice       : orderDetail.totalPrice
