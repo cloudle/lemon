@@ -2,27 +2,21 @@ scope = logics.agencyProductManagement
 
 lemon.defineWidget Template.agencyProductManagementImportDetails,
   productName: -> @name ? Schema.products.findOne(@product)?.name
-  totalDebtBalance: -> @latestDebtBalance + Session.get("agencyProductManagementCurrentProduct").customSaleDebt
+  totalDebtBalance: -> @latestDebtBalance + Session.get(scope.agencyProductManagementCurrentProduct).customSaleDebt
   providerName: -> Schema.providers.findOne(@provider)?.name
   unitSaleQuality: -> Math.round(@quality/@conversionQuality*100)/100
-  isShowDisableMode: -> !Session.get("agencyProductManagementCurrentProduct")?.basicDetailModeEnabled
+  isShowDisableMode: -> !Session.get(scope.agencyProductManagementCurrentProduct)?.basicDetailModeEnabled
 
-  distributorName: ->
-    if distributorId = Schema.imports.findOne(@import).distributor
-      Schema.distributors.findOne(distributorId)?.name
-
-  buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
-
-  totalPrice: -> @unitPrice * @unitQuality
-  expireDate: -> if @expire then moment(@expire).format('DD/MM/YYYY') else 'KHÔNG'
+  distributorName: -> Schema.distributors.findOne(Schema.imports.findOne(@import)?.distributor)?.name
+  buyerName:   -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
+  totalPrice:  -> @unitPrice * @unitQuality
+  expireDate:  -> if @expire then moment(@expire).format('DD/MM/YYYY') else 'KHÔNG'
   saleQuality: -> @quality - @returnQuality
-
-  distributorReturnQuality: (temp)->
-    console.log @
+  distributorReturnQuality: (temp)-> console.log @
 
   importDetails: ->
     importId = UI._templateInstance().data._id
-    Schema.productDetails.find {import: importId, product: Session.get("agencyProductManagementCurrentProduct")._id}
+    Schema.productDetails.find {import: importId, product: Session.get(scope.agencyProductManagementCurrentProduct)._id}
 
   saleDetails: -> Schema.saleDetails.find {productDetail: @_id}
   returnDetails: ->

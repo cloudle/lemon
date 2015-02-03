@@ -23,6 +23,33 @@ Helpers.shortName2 = (fullName, word = 2) ->
   else
     fullName
 
+Helpers.searchProduct = (cursorProduct, products)->
+  cursorProduct.forEach(
+    (product) ->
+      if product.buildInProduct
+        if buildInProduct = Schema.buildInProducts.findOne(product.buildInProduct)
+          product.productCode = buildInProduct.productCode
+          product.basicUnit = buildInProduct.basicUnit
+
+          product.name  = buildInProduct.name if !product.name
+          product.image = buildInProduct.image if !product.image
+          product.description = buildInProduct.description if !product.description
+
+          products.push product
+      else
+        products.push product
+  )
+
+Helpers.searchProductUnit = (product, productUnits)->
+  productUnits.push {product: product}
+  Schema.productUnits.find({product: product._id}).forEach(
+    (unit)->
+      if unit.buildInProductUnit
+        buildInProductUnit = Schema.buildInProductUnits.findOne(unit.buildInProductUnit)
+        unit.unit = buildInProductUnit.unit if !unit.unit
+      productUnits.push {product: product, unit: unit}
+  )
+
 Helpers.respectName = (fullName, gender) -> "#{if gender then 'Anh' else 'Chị'} #{fullName.split(' ').pop()}"
 Helpers.firstName = (fullName) -> fullName?.split(' ').pop()
 

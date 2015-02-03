@@ -90,24 +90,24 @@ Apps.Agency.agencyProductManagementInit.push (scope) ->
           }
 
   scope.checkValidEditProduct = (template) ->
-    Session.set "agencyProductManagementShowEditCommand",
-      template.ui.$productName.val() isnt Session.get("agencyProductManagementCurrentProduct").name or
-      template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get("agencyProductManagementCurrentProduct").price ? '') or
-      template.ui.$importPrice.inputmask('unmaskedvalue') isnt (Session.get("agencyProductManagementCurrentProduct").importPrice ? '') or
-      template.ui.$productCode.val() isnt Session.get("agencyProductManagementCurrentProduct").productCode
+    Session.set scope.agencyProductManagementProductEditCommand,
+      template.ui.$productName.val() isnt Session.get(scope.agencyProductManagementCurrentProduct).name or
+      template.ui.$productPrice.inputmask('unmaskedvalue') isnt (Session.get(scope.agencyProductManagementCurrentProduct).price ? '') or
+      template.ui.$importPrice.inputmask('unmaskedvalue') isnt (Session.get(scope.agencyProductManagementCurrentProduct).importPrice ? '') or
+      template.ui.$productCode.val() isnt Session.get(scope.agencyProductManagementCurrentProduct).productCode
 
   scope.checkValidAndUpdateProduct = (event, template) ->
     if event.which is 27
       if $(event.currentTarget).attr('name') is 'productName'
-        $(event.currentTarget).val(Session.get("agencyProductManagementCurrentProduct").name)
+        $(event.currentTarget).val(Session.get(scope.agencyProductManagementCurrentProduct).name)
         $(event.currentTarget).change()
       else if $(event.currentTarget).attr('name') is 'productPrice'
-        $(event.currentTarget).val(Session.get("agencyProductManagementCurrentProduct").price)
+        $(event.currentTarget).val(Session.get(scope.agencyProductManagementCurrentProduct).price)
       else if $(event.currentTarget).attr('name') is 'importPrice'
-        $(event.currentTarget).val(Session.get("agencyProductManagementCurrentProduct").importPrice)
+        $(event.currentTarget).val(Session.get(scope.agencyProductManagementCurrentProduct).importPrice)
       else if $(event.currentTarget).attr('name') is 'productCode'
-        $(event.currentTarget).val(Session.get("agencyProductManagementCurrentProduct").productCode)
-    else if event.which is 13 and Session.get "agencyProductManagementShowEditCommand"
+        $(event.currentTarget).val(Session.get(scope.agencyProductManagementCurrentProduct).productCode)
+    else if event.which is 13 and Session.get scope.agencyProductManagementProductEditCommand
       scope.editProduct(template)
 
   scope.deleteBasicProductDetail = (product, productDetail, branchProductSummary, profile) ->

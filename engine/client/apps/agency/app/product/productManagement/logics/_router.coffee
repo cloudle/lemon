@@ -14,4 +14,4 @@ lemon.addRoute
     return {
       managedProductList  : scope.managedAgencyProductList
     }
-, Apps.Agency.RouterBase
+, Apps.Merchant.RouterBase

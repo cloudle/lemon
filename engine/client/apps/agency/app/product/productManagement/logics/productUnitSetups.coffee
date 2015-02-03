@@ -14,7 +14,7 @@ Apps.Agency.agencyProductManagementInit.push (scope) ->
         conversionQuality: 1
       Meteor.call 'createProductUnitBy', productUnit, (error, result) ->
         if error then console.log error.error
-        else Session.set("agencyProductManagementUnitEditingRowId", result) if result
+        else Session.set(scope.agencyProductManagementUnitEditingRow, result) if result
 
   scope.updateProductUnit = (template, productUnit, branchProductUnit) ->
     if template and productUnit and branchProductUnit
@@ -43,5 +43,5 @@ Apps.Agency.agencyProductManagementInit.push (scope) ->
     if productUnit.merchant is productUnit.createMerchant
       Meteor.call 'deleteProductUnit', productUnit, (error, result) ->
         if error then console.log error.error
-        else Session.set("agencyProductManagementUnitEditingRowId", result) if result
+        else Session.set(scope.agencyProductManagementUnitEditingRowId, result) if result
 

@@ -2,22 +2,22 @@ scope = logics.agencyProductManagement
 
 lemon.defineHyper Template.agencyProductManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
-  unitEditingMode: -> Session.get("agencyProductManagementUnitEditingRow")?._id is @_id
-  unitEditingData: -> Session.get("agencyProductManagementUnitEditingRow")
+  unitEditingMode: -> Session.get(scope.agencyProductManagementDetailEditingRow)?._id is @_id
+  unitEditingData: -> Session.get(scope.agencyProductManagementDetailEditingRow)
 
   productCode: -> @productCode ? Schema.buildInProductUnits.findOne(@buildInProductUnit)?.productCode
   unit: -> @unit ? Schema.buildInProductUnits.findOne(@buildInProductUnit)?.unit
   conversionQuality: -> @conversionQuality ? Schema.buildInProductUnits.findOne(@buildInProductUnit)?.conversionQuality
 
-  basicDetailModeEnabled: -> Session.get('agencyProductManagementCurrentProduct')?.basicDetailModeEnabled
+  basicDetailModeEnabled: -> Session.get(scope.agencyProductManagementCurrentProduct)?.basicDetailModeEnabled
   hasUnit: -> Schema.productUnits.findOne({product: @_id})
   productUnitList: -> Schema.productUnits.find({product: @_id})
 
-  showEditCommand: -> Session.get "agencyProductManagementShowEditCommand"
-  showDeleteCommand: -> Session.get('agencyProductManagementCurrentProduct')?.allowDelete
+  showEditCommand: -> Session.get scope.agencyProductManagementProductEditCommand
+  showDeleteCommand: -> Session.get(scope.agencyProductManagementCurrentProduct)?.allowDelete
   showCreateUnitMode: ->
-    if Session.get('agencyProductManagementCurrentProduct')?.buildInProduct then false
-    else if Session.get('agencyProductManagementCurrentProduct')?.basicUnit then true else false
+    if Session.get(scope.agencyProductManagementCurrentProduct)?.buildInProduct then false
+    else if Session.get(scope.agencyProductManagementCurrentProduct)?.basicUnit then true else false
   showDeleteUnit: -> !@buildInProductUnit and @allowDelete
 
 
@@ -53,10 +53,10 @@ lemon.defineHyper Template.agencyProductManagementOverviewSection,
       files = event.target.files
       if files.length > 0
         AvatarImages.insert files[0], (error, fileObj) ->
-          Schema.products.update(Session.get('agencyProductManagementCurrentProduct')._id, {$set: {avatar: fileObj._id}})
-          AvatarImages.findOne(Session.get('agencyProductManagementCurrentProduct').avatar)?.remove()
+          Schema.products.update(Session.get(scope.agencyProductManagementCurrentProduct)._id, {$set: {avatar: fileObj._id}})
+          AvatarImages.findOne(Session.get(scope.agencyProductManagementCurrentProduct).avatar)?.remove()
 
-    "click .edit-unit": -> Session.set("agencyProductManagementUnitEditingRowId", @_id)
+    "click .edit-unit": -> Session.set(scope.agencyProductManagementUnitEditingRowId, @_id)
     "click .createUnit": -> scope.createProductUnit(@, Session.get('myProfile'))
     "click .delete-unit": -> scope.deleteProductUnit(@)
 
@@ -64,8 +64,8 @@ lemon.defineHyper Template.agencyProductManagementOverviewSection,
     "click .syncProductEdit": (event, template) -> scope.editProduct(template)
     "click .productDelete": -> scope.deleteProduct(@)
     "click .add-basicDetail": ->
-      product = Session.get('agencyProductManagementCurrentProduct')
-      branchProductSummary = Session.get('agencyProductManagementBranchProductSummary')
+      product = Session.get(scope.agencyProductManagementCurrentProduct)
+      branchProductSummary = Session.get(scope.agencyProductManagementBranchProduct)
       scope.addBasicProductDetail(@, product, branchProductSummary, Session.get('myProfile'))
 
     "input .editable": (event, template) -> scope.checkValidEditProduct(template)
