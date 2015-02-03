@@ -1,4 +1,4 @@
-template(name="productManagementImportDetails")
+template(name="agencyProductManagementImportDetails")
   tr.header-row
     td(colspan="7")
       | &nbsp;
@@ -13,7 +13,7 @@ template(name="productManagementImportDetails")
       td.number {{formatNumber unitPrice}}
       td.number {{formatNumber totalPrice}}
 
-    +productManagementReturnDetails returnDetails
+    +agencyProductManagementReturnDetails returnDetails
 
     if isShowDisableMode
       each saleDetails
@@ -28,7 +28,7 @@ template(name="productManagementImportDetails")
           td.number {{formatNumber finalPrice}}
 
 
-template(name="productManagementReturnDetails")
+template(name="agencyProductManagementReturnDetails")
   each returnDetails
     tr.detail-row
       td.first-column

@@ -9,9 +9,9 @@ lemon.addRoute
         name: "sản phẩm"
       @next()
   data: ->
-    Apps.setup(scope, Apps.Agency.productManagementReactive)
+    Apps.setup(scope, Apps.Agency.agencyProductManagementReactive)
 
     return {
-      managedProductList  : scope.managedProductList
+      managedProductList  : scope.managedAgencyProductList
     }
-, Apps.Merchant.RouterBase
+, Apps.Agency.RouterBase

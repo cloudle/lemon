@@ -8,7 +8,7 @@ Sửa lại các chức năng liên qua sản phẩn của Branch cho phù hợp
         + Fix cập nhật số lượng tồn kho, khi thêm, xóa, sửa nhập kho đầu kì vào BranchProductSummary. ----> Xong
         + Fix tạo mới, xóa sản phẩm (local). ----> Xong
         + Fix thêm mới, xóa ProductUnit (local). ----> Xong
-        + Cập nhật kết xổ.
+        + Cập nhật kết xổ.. ----> Xong
     - Customer
         + Fix hiện thông tin sản phẩm, thêm dữ liệu mới trong hàm phân trang. ----> Xong
     - Distributor
@@ -17,12 +17,12 @@ Sửa lại các chức năng liên qua sản phẩn của Branch cho phù hợp
         + Fix chức năng search Product. ----> Xong
         + Hiện thông tin sản phẩm trong bảng orderDetail. ----> Xong
         + Fix hàm tính toán khi áp dụng giá bán mới của BranchProductSummary. ----> Xong
-        + Cập nhật số lượng bán cho sản phẩm (product, productSummary)
+        + Cập nhật số lượng bán cho sản phẩm (product, productSummary). ----> Xong
     - Import
         + Fix chức năng search Product. ----> Xong
         + Hiện thông tin sản phẩm trong bảng importDetail. ----> Xong
         + Fix hàm tính toán khi áp dụng giá bán nhập của BranchProductSummary. ----> Xong
-        + Cập nhật số lượng bán cho sản phẩm (product, productSummary)
+        + Cập nhật số lượng bán cho sản phẩm (product, productSummary). ----> Xong
 
     - Return KH
         + Fix chức năng search Product. ----> Xong
@@ -32,4 +32,4 @@ Sửa lại các chức năng liên qua sản phẩn của Branch cho phù hợp
     - Return NCC
         + Fix chức năng search Product. ----> Xong
         + Hiện thông tin sản phẩm trong bảng importDetail. ----> Xong
-        + Fix hàm tính toán khi áp dụng giá bán mới của BranchProductSummary
+        + Fix hàm tính toán khi áp dụng giá bán mới của BranchProductSummary. ----> Xong

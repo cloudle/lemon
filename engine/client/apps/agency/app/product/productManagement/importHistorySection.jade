@@ -27,7 +27,7 @@ template(name="agencyProductManagementSalesHistorySection")
                   .lemon.rounded.tiny.btn.lime.basicDetailModeDisable.icon-ok-6
 
           each basicDetail.detail
-            +productManagementBasicImportDetails this
+            +agencyProductManagementBasicImportDetails this
 
           if basicDetailModeEnabled
             each allSaleDetails
@@ -43,7 +43,7 @@ template(name="agencyProductManagementSalesHistorySection")
 
         if newImport.isShowDetail
           each newImport.detail
-            +productManagementImportDetails this
+            +agencyProductManagementImportDetails this
 
     .panel-footer
       if basicDetailModeEnabled

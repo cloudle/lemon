@@ -8,7 +8,7 @@ splitName = (fullText) ->
 
 Apps.Agency.agencyProductManagementInit.push (scope) ->
   scope.createProduct = (template)->
-    fullText    = Session.get("productManagementSearchFilter")
+    fullText    = Session.get("agencyProductManagementSearchFilter")
     nameOptions = splitName(fullText)
 
     product =
@@ -32,16 +32,16 @@ Apps.Agency.agencyProductManagementInit.push (scope) ->
         if !Schema.products.findOne(existedQuery)
           product.productCode = randomBarcode
           productId = Schema.products.insert  product, (error, result) -> console.log error if error
-          UserSession.set('currentProductManagementSelection', productId)
-          Meteor.subscribe('productManagementData', productId)
-          template.ui.$searchFilter.val(''); Session.set("productManagementSearchFilter", "")
+          UserSession.set('currentAgencyProductManagementSelection', productId)
+          Meteor.subscribe('agencyProductManagementData', productId)
+          template.ui.$searchFilter.val(''); Session.set("agencyProductManagementSearchFilter", "")
           break
       Meteor.call('createBranchProductSummaryBy', productId)
       MetroSummary.updateMetroSummaryBy(['product'])
 
   scope.editProduct = (template) ->
-    product = Session.get("productManagementCurrentProduct")
-    branchProduct = Session.get("productManagementBranchProductSummary")
+    product = Session.get("agencyProductManagementCurrentProduct")
+    branchProduct = Session.get("agencyProductManagementBranchProductSummary")
     if product and branchProduct
       newName  = template.ui.$productName.val()
       newPrice = template.ui.$productPrice.inputmask('unmaskedvalue')
@@ -63,7 +63,7 @@ Apps.Agency.agencyProductManagementInit.push (scope) ->
         if branchProduct.importPrice is Number(newImportPrice) then branchProductEdit.$unset.importPrice = ""
         else branchProductEdit.$set.importPrice = newImportPrice
 
-      buildInProduct = Session.get("productManagementBuildInProduct")
+      buildInProduct = Session.get("agencyProductManagementBuildInProduct")
       if product.buildInProduct
         buildInProduct = if product.buildInProduct is buildInProduct._id then buildInProduct else Schema.buildInProducts.findOne(product.buildInProduct)
         delete productEdit.$set.basicUnit; productEdit.$unset.basicUnit = ""; productEdit.$unset.productCode = ""
@@ -104,12 +104,12 @@ Apps.Agency.agencyProductManagementInit.push (scope) ->
             productEdit.$set?.name ? product.name
         )
         template.ui.$productName.val productName
-        Session.set("productManagementShowEditCommand", false)
+        Session.set("agencyProductManagementShowEditCommand", false)
 
   scope.deleteProduct = (product)->
     if product.allowDelete and !product.buildInProduct
       Meteor.call 'deleteBranchProductSummaryBy', product._id, (error, result) ->
         if error then console.log error.error
         else
-          UserSession.set('currentProductManagementSelection', Schema.products.findOne()?._id ? '')
+          UserSession.set('currentAgencyProductManagementSelection', Schema.products.findOne()?._id ? '')
           MetroSummary.updateMetroSummaryBy(['product'])

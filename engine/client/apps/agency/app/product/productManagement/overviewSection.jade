@@ -39,7 +39,7 @@ template(name="agencyProductManagementOverviewSection")
             th.number(style="width:150px") GIÁ BÁN
           each productUnitList
             if unitEditingMode
-              +productManagementUnitEditor unitEditingData
+              +agencyProductManagementUnitEditor unitEditingData
             else
               tr.detail-row.edit-unit.click-enable
                 td.has-commands

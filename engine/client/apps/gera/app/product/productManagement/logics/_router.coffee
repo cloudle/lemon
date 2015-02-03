@@ -18,4 +18,4 @@ lemon.addRoute
 #      productGroupOptions : scope.productGroupSelectOptions
       managedBuildInProductList : scope.managedBuildInProductList
     }
-, Apps.Merchant.RouterBase
+, Apps.Gera.RouterBase

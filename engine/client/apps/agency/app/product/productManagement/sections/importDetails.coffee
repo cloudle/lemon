@@ -1,11 +1,11 @@
-scope = logics.productManagement
+scope = logics.agencyProductManagement
 
-lemon.defineWidget Template.productManagementImportDetails,
+lemon.defineWidget Template.agencyProductManagementImportDetails,
   productName: -> @name ? Schema.products.findOne(@product)?.name
-  totalDebtBalance: -> @latestDebtBalance + Session.get("productManagementCurrentProduct").customSaleDebt
+  totalDebtBalance: -> @latestDebtBalance + Session.get("agencyProductManagementCurrentProduct").customSaleDebt
   providerName: -> Schema.providers.findOne(@provider)?.name
   unitSaleQuality: -> Math.round(@quality/@conversionQuality*100)/100
-  isShowDisableMode: -> !Session.get("productManagementCurrentProduct")?.basicDetailModeEnabled
+  isShowDisableMode: -> !Session.get("agencyProductManagementCurrentProduct")?.basicDetailModeEnabled
 
   distributorName: ->
     if distributorId = Schema.imports.findOne(@import).distributor
@@ -22,7 +22,7 @@ lemon.defineWidget Template.productManagementImportDetails,
 
   importDetails: ->
     importId = UI._templateInstance().data._id
-    Schema.productDetails.find {import: importId, product: Session.get("productManagementCurrentProduct")._id}
+    Schema.productDetails.find {import: importId, product: Session.get("agencyProductManagementCurrentProduct")._id}
 
   saleDetails: -> Schema.saleDetails.find {productDetail: @_id}
   returnDetails: ->
@@ -31,7 +31,7 @@ lemon.defineWidget Template.productManagementImportDetails,
       returnDetails: Schema.returnDetails.find {productDetail: $elemMatch: {productDetail: @_id}}
     }
 
-lemon.defineWidget Template.productManagementReturnDetails,
+lemon.defineWidget Template.agencyProductManagementReturnDetails,
   returnQuality: ->
     for detail in @productDetail
       if detail.productDetail is UI._templateInstance().data.productDetail._id

@@ -13,4 +13,4 @@ lemon.addRoute
   data: -> {
     Summary: MetroSummary.findOne({})
   }
-, Apps.Merchant.RouterBase
+, Apps.Gera.RouterBase

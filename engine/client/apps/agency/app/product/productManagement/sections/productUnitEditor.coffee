@@ -1,6 +1,6 @@
-scope = logics.productManagement
-lemon.defineHyper Template.productManagementUnitEditor,
-  basicDetailModeEnabled: -> Session.get('productManagementCurrentProduct')?.basicDetailModeEnabled
+scope = logics.agencyProductManagement
+lemon.defineHyper Template.agencyProductManagementUnitEditor,
+  basicDetailModeEnabled: -> Session.get('agencyProductManagementCurrentProduct')?.basicDetailModeEnabled
   showChangeSmallerUnit: ->
     if @unit?.length > 0 and @conversionQuality > 1 and @productCode?.length is 11 and @allowDelete is true then true else false
   showEditUnit: ->
@@ -10,15 +10,15 @@ lemon.defineHyper Template.productManagementUnitEditor,
   rendered: ->
     @ui.$price.inputmask "numeric",
       {autoGroup: true, groupSeparator:",", suffix: " VNĐ", radixPoint: ".", integerDigits:11}
-    @ui.$price.val Session.get("productManagementUnitEditingRow").price
+    @ui.$price.val Session.get("agencyProductManagementUnitEditingRow").price
 
     @ui.$importPrice.inputmask "numeric",
       {autoGroup: true, groupSeparator:",", suffix: " VNĐ", radixPoint: ".", integerDigits:11}
-    @ui.$importPrice.val Session.get("productManagementUnitEditingRow").importPrice
+    @ui.$importPrice.val Session.get("agencyProductManagementUnitEditingRow").importPrice
 
     @ui.$conversionQuality?.inputmask "numeric",
       {autoGroup: true, groupSeparator:",", radixPoint: ".", integerDigits:11}
-    @ui.$conversionQuality?.val Session.get("productManagementUnitEditingRow").conversionQuality
+    @ui.$conversionQuality?.val Session.get("agencyProductManagementUnitEditingRow").conversionQuality
 
     @ui.$price.select()
 
@@ -29,16 +29,16 @@ lemon.defineHyper Template.productManagementUnitEditor,
       branchProductUnit = Schema.branchProductUnits.findOne({productUnit: @_id, merchant: Session.get('myProfile').currentMerchant})
       if event.which is 13
         scope.updateProductUnit(template, productUnit, branchProductUnit)
-        Session.set("productManagementUnitEditingRow")
-        Session.set("productManagementUnitEditingRowId")
+        Session.set("agencyProductManagementUnitEditingRow")
+        Session.set("agencyProductManagementUnitEditingRowId")
       else
         Helpers.deferredAction ->
           scope.updateProductUnit(template, productUnit, branchProductUnit)
-        , "productManagementUpdateProductUnit"
+        , "agencyProductManagementUpdateProductUnit"
 
     "click .changeSmallerUnit": (event, template) ->
-      if @allowDelete and Session.get('productManagementCurrentProduct')
-        Meteor.call 'changedSmallerUnit', Session.get('productManagementCurrentProduct')._id, @_id, (error, result) ->
+      if @allowDelete and Session.get('agencyProductManagementCurrentProduct')
+        Meteor.call 'changedSmallerUnit', Session.get('agencyProductManagementCurrentProduct')._id, @_id, (error, result) ->
           if error then console.log error
           else
             template.ui.$importPrice.val result.importPrice
