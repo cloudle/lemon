@@ -158,6 +158,43 @@ Meteor.methods
           )
       )
 
+  addBranchProduct: ->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+#      Schema.productDetails.find({branchProduct: {$exists: false}, merchant: profile.currentMerchant}).forEach(
+#        (productDetail)->
+#          if branchProduct = Schema.branchProductSummaries.findOne({product: productDetail.product, merchant: profile.currentMerchant})
+#            Schema.productDetails.update productDetail._id, $set:{parentMerchant: profile.parentMerchant, branchProduct: branchProduct._id}
+#
+#      )
+#
+#      Schema.orders.find({merchant: profile.currentMerchant}).forEach(
+#        (order) ->
+#          Schema.orderDetails.find({order: order._id}).forEach(
+#            (orderDetail) ->
+#              if branchProduct = Schema.branchProductSummaries.findOne({product: orderDetail.product, merchant: profile.currentMerchant})
+#                Schema.orderDetails.update orderDetail._id, $set:{branchProduct: branchProduct._id}
+#          )
+#      )
+
+      Schema.sales.find({merchant: profile.currentMerchant}).forEach(
+        (sale) ->
+          Schema.saleDetails.find({sale: sale._id}).forEach(
+            (saleDetail) ->
+              if branchProduct = Schema.branchProductSummaries.findOne({product: saleDetail.product, merchant: profile.currentMerchant})
+                Schema.saleDetails.update saleDetail._id, $set:{branchProduct: branchProduct._id}
+          )
+      )
+
+#      Schema.returns.find({merchant: profile.currentMerchant}).forEach(
+#        (currentReturn) ->
+#          Schema.returnDetails.find({return: currentReturn._id}).forEach(
+#            (returnDetail) ->
+#              if branchProduct = Schema.branchProductSummaries.findOne({product: returnDetail.product, merchant: profile.currentMerchant})
+#                Schema.returnDetails.update returnDetail._id, $set:{branchProduct: branchProduct._id}
+#          )
+#      )
+
+
 
   updateMerchantDataBase: ->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
@@ -173,27 +210,33 @@ Meteor.methods
             (product) ->
               Schema.products.update product._id, $set:{parentMerchant: parentMerchant, createMerchant: parentMerchant}
               branchProductSummaries =
-                parentMerchant            : parentMerchant
-                merchant                  : merchant._id
-                product                   : product._id
-                warehouse                 : product.warehouse
+                parentMerchant : parentMerchant
+                merchant       : merchant._id
+                product        : product._id
+                warehouse      : product.warehouse
               branchProductId = Schema.branchProductSummaries.insert branchProductSummaries
-              if Schema.branchProductSummaries.findOne(branchProductId)
-                branchProduct =
-                  availableQuality: 0
-                  inStockQuality  : 0
-                  totalQuality    : 0
-                  salesQuality    : 0
-
+              if branchProduct = Schema.branchProductSummaries.findOne(branchProductId)
+                branchProductOption = {availableQuality: 0, inStockQuality: 0, totalQuality: 0, salesQuality: 0}
                 Schema.productDetails.find({product: product._id, merchant: product.merchant}).forEach(
                   (productDetail)->
-                    Schema.productDetails.update productDetail._id, $set:{parentMerchant: parentMerchant, branchProduct: branchProductId}
-                    branchProduct.availableQuality += productDetail.availableQuality if productDetail.availableQuality
-                    branchProduct.inStockQuality   += productDetail.inStockQuality if productDetail.inStockQuality
-                    branchProduct.totalQuality     += productDetail.importQuality if productDetail.importQuality
+                    Schema.productDetails.update productDetail._id, $set:{parentMerchant: parentMerchant, branchProduct: branchProduct._id}
+                    branchProductOption.availableQuality += productDetail.availableQuality if productDetail.availableQuality
+                    branchProductOption.inStockQuality   += productDetail.inStockQuality if productDetail.inStockQuality
+                    branchProductOption.totalQuality     += productDetail.importQuality if productDetail.importQuality
                 )
-                Schema.saleDetails.find({product: product._id}).forEach((saleDetail)-> branchProduct.salesQuality += saleDetail.quality)
-                Schema.branchProductSummaries.update branchProductId, $set:branchProduct
+                Schema.saleDetails.find({product: product._id}).forEach(
+                  (saleDetail)->
+                    Schema.saleDetails.update saleDetail._id, $set:{branchProduct: branchProduct._id}
+                    branchProductOption.salesQuality += saleDetail.quality
+                )
+                Schema.orderDetails.find({product: product._id}).forEach(
+                  (orderDetail) -> Schema.orderDetails.update orderDetail._id, $set:{branchProduct: branchProduct._id}
+                )
+
+                Schema.returnDetails.find({product: product._id}).forEach(
+                  (returnDetail) -> Schema.returnDetails.update returnDetail._id, $set:{branchProduct: branchProduct._id}
+                )
+                Schema.branchProductSummaries.update branchProduct._id, $set:branchProductOption
 
                 Schema.productUnits.find({product: product._id}).forEach(
                   (productUnit)->
@@ -210,7 +253,6 @@ Meteor.methods
                       productUnit   : productUnit._id
                     Schema.branchProductUnits.insert branchProductUnit
                 )
-
           )
       )
 

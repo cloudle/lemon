@@ -81,24 +81,23 @@ Meteor.methods
     catch error
       throw new Meteor.Error('customerToSales', error)
 
-  customerToReturns: (customer, profile)->
+  customerToReturns: (customer)->
     try
       throw 'Chưa đăng nhập.' if !userId = Meteor.userId()
-      profile = Schema.userProfiles.findOne({user: userId}) if !profile || profile.user != userId
-      customer = Schema.customers.findOne({_id: customer._id ,parentMerchant: profile.parentMerchant}) if customer.parentMerchant != profile.parentMerchant
-
-      if customer
-        returnFound = Schema.returns.findOne({
-          merchant: profile.currentMerchant
-          creator : userId
-          customer: customer._id
-          status  : 0
-          returnMethods: 0
-        }, {sort: {'version.createdAt': -1}})
-        if !returnFound then returnFound = Return.createByCustomer(customer, profile)
-        Schema.userSessions.update {user: userId}, {$set:{currentCustomerReturn: returnFound._id}} if returnFound
-      else throw 'Không tìm thấy khách hàng'
-
+      if profile = Schema.userProfiles.findOne({user: userId})
+        if customer is undefined || customer.parentMerchant != profile.parentMerchant
+          customer = Schema.customers.findOne({_id: customer._id, parentMerchant: profile.parentMerchant})
+        if customer
+          returnFound = Schema.returns.findOne({
+            merchant: profile.currentMerchant
+            creator : userId
+            customer: customer._id
+            status  : 0
+            returnMethods: 0
+          }, {sort: {'version.createdAt': -1}})
+          if !returnFound then returnFound = Return.createByCustomer(customer, profile)
+          Schema.userSessions.update {user: userId}, {$set:{currentCustomerReturn: returnFound._id}} if returnFound
+        else throw 'Không tìm thấy khách hàng'
     catch error
       throw new Meteor.Error('customerToReturns', error)
 
@@ -106,7 +105,8 @@ Meteor.methods
     try
       throw 'Chưa đăng nhập.' if !userId = Meteor.userId()
       profile = Schema.userProfiles.findOne({user: userId}) if !profile || profile.user != userId
-      Schema.customers.find({parentMerchant: profile.parentMerchant}).forEach(
+      Schema.customers.find().forEach(
+#      Schema.customers.find({parentMerchant: profile.parentMerchant}).forEach(
         (customer)->
           orderCode = '0000'
           Schema.sales.find({buyer: customer._id},{sort: {'version.createdAt': 1}}).forEach(
@@ -116,6 +116,7 @@ Meteor.methods
           )
           Schema.customers.update customer._id, $set:{billNo: orderCode}
       )
+      console.log 'reUpdateOrderCode. -->Ok'
 
     catch error
       throw new Meteor.Error('reUpdateOrderCode', error)

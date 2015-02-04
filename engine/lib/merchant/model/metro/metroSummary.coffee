@@ -314,7 +314,6 @@ Schema.add 'metroSummaries', "MetroSummary", class MetroSummary
 
       if _.contains(context,'createReturn')
         returnFound = Schema.returns.findOne({_id: id, merchant: profile.currentMerchant, status: 2})
-        console.log returnFound
         if returnFound?.returnMethods is 0 then option.returnMoneyOfCustomerDay = returnFound.debtBalanceChange
         else option.returnMoneyOfDistributorDay = returnFound.debtBalanceChange
       if _.contains(context,'deleteReturn')

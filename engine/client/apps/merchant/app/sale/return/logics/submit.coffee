@@ -8,11 +8,14 @@ logics.returns. submitReturn = (returnId)->
       for returnDetail in Schema.returnDetails.find({return: currentReturn._id, submit: true}).fetch()
         returnQuality = returnDetail.returnQuality
         option =
-          availableQuality: returnDetail.returnQuality
-          inStockQuality  : returnDetail.returnQuality
+          availableQuality       : returnDetail.returnQuality
+          inStockQuality         : returnDetail.returnQuality
+          returnQualityByCustomer: returnDetail.returnQuality
 
         Schema.productDetails.update returnDetail.productDetail, $inc: option
+        Schema.branchProductSummaries.update returnDetail.branchProduct, $inc: option
         Schema.products.update returnDetail.product, $inc: option
+
         Schema.saleDetails.update returnDetail.saleDetail, $inc:{returnQuality: returnDetail.returnQuality}
         saleDetail = Schema.saleDetails.findOne(returnDetail.saleDetail)
         unless saleDetail.quality is saleDetail.returnQuality then unLockReturn = true

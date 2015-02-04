@@ -5,6 +5,9 @@ simpleSchema.saleDetails = new SimpleSchema
   product:
     type: String
 
+  branchProduct:
+    type: String
+
   productDetail:
     type: String
     optional: true

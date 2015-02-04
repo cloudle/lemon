@@ -3,10 +3,11 @@ Schema.add 'returnDetails', "ReturnDetail", class ReturnDetail
     sale = Schema.sales.findOne(saleId)
     saleDetail = Schema.saleDetails.findOne(sale.currentProductDetail)
     option =
-      return         : returnId
+      return          : returnId
       sale            : saleDetail.sale
       saleDetail      : saleDetail._id
       product         : saleDetail.product
+      branchProduct   : saleDetail.branchProduct
       productDetail   : saleDetail.productDetail
       name            : saleDetail.name
       skulls          : saleDetail.skulls

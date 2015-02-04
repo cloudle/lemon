@@ -1,0 +1,19 @@
+template(name="agencyHome")
+  .metro: .metro-wrapper
+    +metroDecoratorTiles
+
+    .tile-group-2
+      .tile.lime.double(data-app='agencyDistributorManagement')
+        span.center.left.caption: span.table: i.ico.huge.icon-contacts
+        span.bottom.right.caption QUẢN LÝ NHÀ CUNG CẤP
+      .tile.carrot.double(data-app='agencyCustomerManagement')
+        span.center.left.caption: span.table: i.ico.huge.icon-anchor-outline
+        span.bottom.right.caption QUẢN LÝ ĐẠI LÝ
+      .tile.belize-hole.double(data-app='agencyProductManagement')
+        span.center.left.caption: span.table: i.ico.huge.icon-puzzle-outline
+        span.bottom.right.caption QUẢN LÝ SẢN PHẨM
+      .tile.teal.double(data-app='agencyStaffManagement')
+        span.center.left.caption: span.table: i.ico.huge.icon-users-outline
+        span.bottom.right.caption QUẢN LÝ NHÂN VIÊN
+
+    +metroDecoratorTiles

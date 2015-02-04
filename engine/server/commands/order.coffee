@@ -1,16 +1,16 @@
-checkProductInStockQuality = (orderDetails, products)->
+checkProductInStockQuality = (orderDetails, branchProducts)->
   orderDetails = _.chain(orderDetails)
   .groupBy("product")
   .map (group, key) ->
     return {
-    product: key
+    product: group.product
     quality: _.reduce(group, ((res, current) -> res + current.quality), 0)
     }
   .value()
   try
-    if products.length > 0
+    if branchProducts.length > 0
       for currentDetail in orderDetails
-        currentProduct = _.findWhere(products, {_id: currentDetail.product})
+        currentProduct = _.findWhere(branchProducts, {product: currentDetail.product})
         throw {message: "lỗi", item: currentDetail} if currentProduct?.availableQuality < currentDetail.quality
     return {}
   catch e
@@ -29,6 +29,7 @@ subtractQualityOnSales = (stockingItems, sellingItem , currentSale) ->
     if saleDetail._id
       Schema.productDetails.update productDetail._id, $inc:{availableQuality: -takenQuality}
       Schema.products.update productDetail.product  , $inc:{availableQuality: -takenQuality}
+      Schema.branchProductSummaries.update productDetail.branchProduct, $inc:{availableQuality: -takenQuality}
 
       transactionQuality += takenQuality
       if transactionQuality == sellingItem.quality then break
@@ -45,26 +46,28 @@ createSaleAndSaleOrder = (order, orderDetails)->
     if !currentSaleId then throw {error: 'Create sale fail.'}
 
     currentSale = Schema.sales.findOne(currentSaleId)
-    productSalesQuality = 0
+    productUpdateInc = {salesQuality: 0}
 
     for currentOrderDetail in orderDetails
-      product = Schema.products.findOne(currentOrderDetail.product)
-      if !product then throw {error: 'Not Find product.'}; console.log 'Not Find product'
-      if product.basicDetailModeEnabled is true
+      branchProduct = Schema.branchProductSummaries.findOne(currentOrderDetail.branchProduct)
+      if !branchProduct then throw {error: 'Not Find product.'}; console.log 'Not Find product'
+      if branchProduct.basicDetailModeEnabled is true
         saleDetail = SaleDetail.createSaleDetailByProduct(currentSale, currentOrderDetail)
         if !saleDetail._id then throw {error: 'Create saleDetail fail.', sale: currentSale}
 
       else
         importBasic = Schema.productDetails.find(
-          {import: { $exists: false}, product: product._id, availableQuality: {$gt: 0}}, {sort: {'version.createdAt': 1}}
+          {import: { $exists: false}, product: branchProduct.product, availableQuality: {$gt: 0}}, {sort: {'version.createdAt': 1}}
         ).fetch()
         importProductDetails = Schema.productDetails.find(
-          {import: { $exists: true}, product: product._id, availableQuality: {$gt: 0}}, {sort: {'version.createdAt': 1}}
+          {import: { $exists: true}, product: branchProduct.product, availableQuality: {$gt: 0}}, {sort: {'version.createdAt': 1}}
         ).fetch()
         combinedProductDetails = importBasic.concat(importProductDetails)
         subtractQualityOnSales(combinedProductDetails, currentOrderDetail, currentSale)
-      productSalesQuality = currentOrderDetail.quality
-    Schema.products.update product._id, $set:{allowDelete : false}, $inc:{salesQuality: productSalesQuality}
+
+      productUpdateInc.salesQuality = currentOrderDetail.quality
+    Schema.branchProductSummaries.update branchProduct._id, $inc: productUpdateInc
+    Schema.products.update branchProduct.product, $set:{allowDelete : false}, $inc: productUpdateInc
 
     option = {status: true}
     if currentSale.paymentsDelivery == 1
@@ -81,6 +84,7 @@ createSaleAndSaleOrder = (order, orderDetails)->
       Schema.saleDetails.find({sale: error.sale._id}).forEach(
         (saleDetail)->
           Schema.productDetails.update saleDetail.productDetail, $inc:{availableQuality: saleDetail.quality} if saleDetail.productDetail
+          Schema.branchProductSummaries.update saleDetail.branchProduct, $inc:{availableQuality: saleDetail.quality} if saleDetail.branchProduct
           Schema.products.update saleDetail.product, $inc:{availableQuality: saleDetail.quality} if saleDetail.product
 
           Schema.saleDetails.remove saleDetail._id
@@ -135,15 +139,16 @@ Meteor.methods
     if orderDetails.length < 1 then throw new Meteor.Error("Order rỗng."); return
 
     product_ids = _.union(_.pluck(orderDetails, 'product'))
-    products = Schema.products.find({_id: {$in: product_ids}}).fetch()
-    products = _.where(products, {basicDetailModeEnabled: false})
+    branchProducts = Schema.branchProductSummaries.find({product: {$in: product_ids}}).fetch()
+    branchProducts = _.where(branchProducts, {basicDetailModeEnabled: false})
 
-    result = checkProductInStockQuality(orderDetails, products)
+    result = checkProductInStockQuality(orderDetails, branchProducts)
     if result.error then throw new Meteor.Error(result.error.item)
 
     Schema.orders.update currentOrder._id, $set:{status: 1}
     if currentOrder = Schema.orders.findOne({_id: orderId, status: 1})
       result = createSaleAndSaleOrder(currentOrder, orderDetails)
+      console.log result
       if result.error
         removeOrderAndOrderDetail(currentOrder, userProfile, 3)
         throw new Meteor.Error('createSaleAndDetail', result.error, result.sale)

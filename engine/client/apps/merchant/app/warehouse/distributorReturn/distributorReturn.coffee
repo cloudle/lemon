@@ -42,6 +42,7 @@ lemon.defineApp Template.distributorReturn,
         option =
           return            : currentReturn._id
           product           : productId
+          branchProduct     : branchProduct._id
           conversionQuality : 1
           unitReturnQuality : 1
           unitReturnsPrice  : product.importPrice

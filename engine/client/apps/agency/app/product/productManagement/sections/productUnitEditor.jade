@@ -1,0 +1,26 @@
+template(name="agencyProductManagementUnitEditor")
+  tr.editors.dual-border
+    if showEditUnit
+      td.has-commands
+        |{{unit}}
+        .commands
+          if basicDetailModeEnabled
+            .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
+      td {{productCode}}
+      td.number {{conversionQuality}}
+      td: input(name="importPrice" placeholder="giá nhập" min="0")
+      td: input(name="price" placeholder="giá bán" min="0")
+    else
+      td.has-commands
+        input(name="unit" placeholder="đơn vị tính" value="{{unit}}")
+        .commands
+          if showChangeSmallerUnit
+            .lemon.rounded.tiny.btn.wisteria.animated.bounceIn.changeSmallerUnit: span.icon-loop-outline
+          if allowDelete
+            .lemon.rounded.tiny.btn.blue.animated.bounceIn.delete-unit: span.icon-minus-4
+          if basicDetailModeEnabled
+            .lemon.rounded.tiny.btn.lime.add-basicDetail: span.icon-plus-6
+      td: input(name="barcode" placeholder="mã vạch" value="{{productCode}}")
+      td: input(name="conversionQuality" placeholder="qui đổi" min="0")
+      td: input(name="importPrice" placeholder="giá nhập" min="0")
+      td: input(name="price" placeholder="giá bán" min="0")

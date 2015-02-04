@@ -1,0 +1,59 @@
+template(name="agencyProductManagementSalesHistorySection")
+  .section.panel.panel-default.printable-area
+    .panel-heading
+      .show-on-print
+        +merchantPrintingHeader
+        .printing-info
+          .document-name {{name}}
+
+    .panel-body.debt-details
+      table.lemon-grid.safe
+        tr
+          th(style="width:auto") NHÀ CUNG CẤP/K.HÀNG
+          th(style="width:100px; text-align:center") HẠN/GD
+          th.number(style="width:50px") SL
+          th(style="width:80px; text-align:center") ĐƠN VỊ
+          th.number(style="width:60px") QUI ĐỔI
+          th.number(style="width:100px") GIÁ
+          th.number(style="width:120px") TỔNG TIỀN
+
+        if basicDetail.isShowDetail
+          tr.header-row
+            td.has-commands(colspan="7")
+              | &nbsp;
+              .bill-header <b>Tồn kho đầu kỳ</b>
+              .commands
+                if isShowDisableMode
+                  .lemon.rounded.tiny.btn.lime.basicDetailModeDisable.icon-ok-6
+
+          each basicDetail.detail
+            +agencyProductManagementBasicImportDetails this
+
+          if basicDetailModeEnabled
+            each allSaleDetails
+              tr.detail-row
+                td.first-column
+                  span.icon-forward-3 {{buyerName}}
+                td(align="center") {{momentFormat version.createdAt "DD/MM/YYYY"}}
+                td.number {{unitSaleQuality}}
+                td(align="center") {{unitName}}
+                td.number {{conversionQuality}}
+                td.number {{formatNumber unitPrice}}
+                td.number {{formatNumber finalPrice}}
+
+        if newImport.isShowDetail
+          each newImport.detail
+            +agencyProductManagementImportDetails this
+
+    .panel-footer
+      if basicDetailModeEnabled
+        .right-float
+          span.s5.note <b>TỔNG BÁN</b>/ TỔNG TỒN:
+          span.s3 <b>{{formatNumber salesQuality}}</b>
+          span.s5 /{{formatNumber totalQuality}} <b>{{basicUnit}}</b>
+
+      else
+        .right-float
+          span.s5.note <b>TỔNG TỒN</b>/ TỔNG NHẬP:
+          span.s3 <b>{{formatNumber inStockQuality}}</b>
+          span.s5 /{{formatNumber totalQuality}} <b>{{basicUnit}}</b>

@@ -2,19 +2,10 @@ Apps.Merchant.productManagementReactive.push (scope) ->
   if Session.get("myProfile")
     scope.managedProductList = []
     scope.productList = []
-    Schema.products.find({merchant: Session.get("myProfile").currentMerchant}).forEach(
-      (product) ->
-        buildInProduct = Schema.buildInProducts.findOne(product.buildInProduct) if product.buildInProduct
-        if buildInProduct
-          product.productCode = buildInProduct.productCode
-          product.basicUnit = buildInProduct.basicUnit
-
-          product.name  = buildInProduct.name if !product.name
-          product.image = buildInProduct.image if !product.image
-          product.description = buildInProduct.description if !product.description
-        scope.productList.push product
-    )
-
+#    sessionProductSearchFilterName = 'productManagementSearchFilter'
+#    sessionProductCreationModeName = 'productManagementCreationMode'
+    cursorProduct = Schema.products.find({merchant: Session.get("myProfile").currentMerchant})
+    Helpers.searchProduct(cursorProduct, scope.productList)
     if Session.get("productManagementSearchFilter")?.length > 0
       unsignedSearch = Helpers.RemoveVnSigns Session.get("productManagementSearchFilter")
 

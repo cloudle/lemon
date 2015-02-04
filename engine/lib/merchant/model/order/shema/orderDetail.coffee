@@ -5,6 +5,9 @@ simpleSchema.orderDetails = new SimpleSchema
   product:
     type: String
 
+  branchProduct:
+    type: String
+
   quality:
     type: Number
 

@@ -121,19 +121,17 @@ Meteor.methods
       Schema.sales.remove currentSales._id
       Schema.saleDetails.find({sale: currentSales._id}).forEach(
         (detail)->
-          if product = Schema.products.findOne(detail.product)
-            if product.basicDetailModeEnabled is false
-              Schema.productDetails.update detail.productDetail, $inc: {
-                availableQuality : detail.quality
-                inStockQuality   : detail.quality
-              }
+          if branchProduct = Schema.branchProductSummaries.findOne(detail.branchProduct)
+            if branchProduct.basicDetailModeEnabled is false
+              updateOption = {availableQuality: detail.quality, inStockQuality: detail.quality}
+              Schema.productDetails.update detail.productDetail, $inc: updateOption
 
-              Schema.products.update detail.product, $inc: {
-                salesQuality    : -detail.quality
-                availableQuality: detail.quality
-                inStockQuality  : detail.quality
-              }
-            else Schema.products.update detail.product, $inc: {salesQuality: -detail.quality}
+              updateOption.salesQuality = -detail.quality
+              Schema.products.update detail.product, $inc: updateOption
+              Schema.branchProductSummaries.update detail.branchProduct, $inc: updateOption
+            else
+              Schema.products.update detail.product, $inc: {salesQuality: -detail.quality}
+              Schema.branchProductSummaries.update detail.branchProduct, $inc: {salesQuality: -detail.quality}
 
           Schema.saleDetails.remove detail._id
       )
@@ -188,7 +186,9 @@ Meteor.methods
         customerIncOption.saleDebt = currentTransaction.debtBalanceChange
         customerIncOption.saleTotalCash = currentTransaction.debtBalanceChange
       Schema.transactions.remove currentTransaction._id
-      if currentSale.debtBalanceChange is 0 and Schema.transactions.find(latestSale: currentSale._id).count() is 0 then Schema.sales.remove currentSales._id
+
+      if currentSale.debtBalanceChange is 0 and Schema.transactions.find(latestSale: currentSale._id).count() is 0
+        Schema.sales.remove currentSale._id
 
       tempBeforeDebtBalance = currentSale.beforeDebtBalance
       Schema.sales.find({buyer: currentSale.buyer, 'version.createdAt': {$gte: currentSale.version.createdAt} }

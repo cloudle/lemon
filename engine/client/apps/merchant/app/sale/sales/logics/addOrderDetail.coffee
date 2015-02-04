@@ -1,4 +1,4 @@
-optionOrderDetail = (currentOrder, product, productUnit,  quality, price, discountCash)->
+optionOrderDetail = (currentOrder, product, branchProduct, productUnit,  quality, price, discountCash)->
   totalPrice      = quality * price
   if discountCash <= 0
     discountPercent = 0
@@ -7,6 +7,7 @@ optionOrderDetail = (currentOrder, product, productUnit,  quality, price, discou
   option =
     order            : currentOrder._id
     product          : product._id
+    branchProduct    : branchProduct._id
     unitQuality      : quality
     unitPrice        : price/quality
     discountCash     : discountCash
@@ -76,7 +77,7 @@ Apps.Merchant.salesInit.push ->
 
   #      if logics.sales.validation.orderDetail(productId, quality, price, discountCash, product)
 
-      newOrderDetail = optionOrderDetail(currentOrder, product, productUnit,  quality, price, discountCash)
+      newOrderDetail = optionOrderDetail(currentOrder, product, branchProduct, productUnit,  quality, price, discountCash)
       console.log newOrderDetail
       #kiem tra orderDetail co ton tai hay ko, neu co cong so luong, tinh gia tong , ko thi them moi
       orderDetails = Schema.orderDetails.find({order: currentOrder._id}).fetch()
