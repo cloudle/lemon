@@ -1,39 +1,61 @@
 @require '../lib.import.styl'
 
+metro-background-color = #efeff4
+
 .home-page
-  nav.main
-    border-bottom-color transparent
+  /*nav.main*/
+    /*border-bottom-color transparent*/
     /*.app-name*/
       /*border-right solid 14px #FFFFFF*/
+  /*.tile:not([data-app])*/
+    /*background-color #D2D2D2 !important*/
 
-  #content, .dual-content
-    background-color #FF2E2E !important
+  #content
+    background url("images/geo.png")
+  /*#content, .dual-content*/
+    /*background-color metro-background-color !important*/
+
+  #footer
+    position relative
+    z-index 2
+
+  /*.dual-detail, .merchant-metro-wrapper*/
+    /*overflow visible !important*/
 
   .merchant-metro-wrapper
-    clearfix();
+    clearfix()
     margin-top 22px
-
-  .dual-addon
     position relative
-    border-right-color transparent !important
-    overflow inherit !important
+    z-index 1
+    text-align center
+
+    .metro-inner-wrapper
+      clearfix()
+      display inline-block
+      absolute left 50%
+      width 2040px
+      margin-left -958px
+
     .home-separator-line
-      absolute top 0 right 0
-      height 300px; margin-top 22px
-      border-right solid 1px #FFFFFF
+      absolute bottom 162px left -11px
       color #FFFFFF
       &:before
         absolute top -20px left -12px
         font-size 18px
+        background-color metro-background-color
     .home-separator-logo
-      absolute bottom 22px right -29px
-      background center no-repeat url("/images/gera-white-small.png")
-      width 60px; height @width
-      background-color #ff2e2e
+      absolute bottom 112px left -26px
+      background center no-repeat url("/images/gera-white-small-2.png")
+      width 31px; height 56px
+      background-color metro-background-color
     .home-eds-text
-      absolute bottom 1px right -58px
+      absolute bottom 43px left -70px
       font-size 20px
       color #FFFFFF
       padding 0 7px
-      background-color #ff2e2e
+      background-color metro-background-color
+      transform rotate(-90deg)
 
+/*.home-page .dual-addon*/
+  /*position relative*/
+  /*border-right-color #FFFFFF !important*/

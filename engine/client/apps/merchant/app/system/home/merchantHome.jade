@@ -1,113 +1,98 @@
 template(name="merchantHome")
-  .metro: .metro-wrapper
-    +metroDecoratorTiles
+  #content.modern.merchant-home
+    .dual-content
+      .dual-detail-wrapper
+        .dual-detail.metro: .merchant-metro-wrapper
+          .home-separator-line.icon-down-open-2
+          .home-eds-text THIEN BAN
+          .home-separator-logo
 
-    .tile-group-1
-      .tile.wisteria(class="{{metroUnLocker Summary.data.staffCount}}"
-      data-app='roleManager')
-        span.center.middle.caption: span.table: i.ico.icon-key-outline
-        span.bottom.middle.caption PHÂN QUYỀN
-      .tile.pink(class="{{metroUnLocker Summary.data.staffCount}}" data-app='staffManagement')
-        span.s7.top.middle.caption TÀI KHOẢN
-        span.center.middle.caption: span.table: i.ico.icon-users-outline
-        span.bottom.middle.caption {{formatNumber Summary.data.staffCountAll}}<br />NHÂN SỰ
-      .tile.amethyst(class="{{metroUnLocker Summary.data.staffCount}}" data-app='transactionManager')
-        span.s7.top.middle.caption PHẢI THU <br/> {{formatNumber Summary.data.saleDebitCash}}
-        span.center.middle.caption: span.table: i.ico.icon-credit-card
-        span.bottom.middle.caption CÔNG NỢ
-      .tile.amethyst(class="{{metroUnLocker Summary.data.deliveryCount}}"
-      data-app='deliveryManager')
-        span.center.middle.caption: span.table: i.ico.icon-truck-1
-        span.bottom.middle.caption {{formatNumber Summary.data.deliveryCount}} GIAO HÀNG
-      //.tile.orange(class="{{metroUnLocker Summary.data.importCount}}" data-app='accountingManager')
-      //  span.center.middle.caption: span.table: i.ico.icon-money
-      //  span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> THU TIỀN
+          .metro-inner-wrapper
+            +metroDecoratorTiles
+            .tile-group-2
+              .tile.quatro.lime.overlay.customer-management(class="{{metroUnLocker Summary.data.staffCount}}" data-app='customerManagement')
+                .canvas-wrapper.double: .canvas
+                  .app-icon.icon-group
+                  span.caption.app-name.bottom.right khách hàng
+                  .app-count {{formatNumber Summary.data.customerCountAll}}
+                  .app-count-description khách hàng
+              .tile.double.pumpkin.overlay.distributor-management(data-app="distributorManagement")
+                .canvas-wrapper: .canvas
+                  .app-icon.icon-building
+                  .app-count {{formatNumber Summary.data.distributorCount}}
+                  .app-count-description công ty
+                  span.caption.app-name.bottom.right nhà cung cấp
+              .tile.double.belize-hole.overlay.product-management(data-app="productManagement")
+                .canvas-wrapper: .canvas
+                  .app-icon.icon-cubes
+                  .app-count {{formatNumber Summary.data.productCount}}
+                  .app-count-description loại sản phẩm
+                  span.caption.app-name.bottom.right sản phẩm
+            .tile-group-2
+              .tile.double.peter-river(data-app="distributorManagement")
+                .app-icon.icon-shareable
+                span.caption.app-name.bottom.right thu chi
+              .tile.amethyst(data-app="sales")
+                .app-icon.icon-basket
+                .app-count 0
+                .app-count-description phiếu trong ngày
+                span.caption.app-name.bottom.right bán hàng
 
-    .tile-group-3
-      .tile.double.orange#saleManager(class="{{metroUnLocker Summary.data.productCount}}{{metroUnLocker Summary.data.customerCountAll}}{{metroUnLocker Summary.data.staffCountAll}}" data-app='sales')
-        span.top.left.caption: h3 {{formatNumber Summary.data.saleProductCount}} <tiny5>SẢN PHẨM ĐÃ BÁN</tiny5>
-        span.center.left.caption: span.table: i.ico.icon-tags
-        span.bottom.left.caption BÁN HÀNG
-      .tile.teal(class="{{metroUnLocker Summary.data.saleCount}}"
-      data-app='billManager')
-        span.center.middle.caption: span.table: i.ico.icon-clipboard
-        span.bottom.middle.caption {{formatNumber Summary.data.saleCount}} ĐƠN HÀNG
-      .tile.quatro.lime(class="{{metroUnLocker Summary.data.staffCount}}" data-app='customerManagement')
-        span.top.middle.caption: h5 {{formatNumber Summary.data.customerCountAll}} KHÁCH HÀNG
-        span.center.middle.caption: span.table: i.ico.huge.icon-contacts
-        span.bottom.middle.caption: h3 <tiny5>PHẢI THU</tiny5><br/>{{formatNumber Summary.data.totalReceivableCash}}
-      .tile.alizarin(class="{{metroUnLocker Summary.data.saleCount}}"
-      data-app='customerReturn' )
-        span.top.middle.caption TRẢ HÀNG
-        span.center.middle.caption: span.table: i.ico.icon-reply-outline
-        //{{formatNumber Summary.data.returnCount}}
-        span.s4.bottom.middle.caption BÁN
-      .tile.amethyst(class="{{metroUnLocker Summary.data.availableProductCount}}"
-      data-app='distributorReturn')
-        span.top.middle.caption TRẢ HÀNG
-        span.center.middle.caption: span.table: i.ico.icon-forward-outline
-        span.s4.bottom.middle.caption NHẬP
-      .tile.peter-river.double(class="{{metroUnLocker merchantReportLock}}"  data-app='merchantReport')
-        span.center.left.caption: span.table
-          i.ico.icon-chart-pie-outline
-          | <tiny5>BÁO CÁO</tiny5>
-        span.bottom.left.caption: h4 {{formatNumber revenueDay}} <tiny5>DOANH THU NGÀY</tiny5>
-        //span.bottom.left.caption: h4 {{formatNumber Summary.data.profitabilityDay}} <tiny5>LỢI NHUẬN HÔM NAY</tiny5>
-      .tile.dark(class="{{metroUnLocker Summary.data.importCount}}"
-      data-app='inventoryHistory')
-        span.top.middle.caption {{formatNumber Summary.data.inventoryCount}}
-        span.center.middle.caption: span.table: i.ico.icon-edit
-        span.bottom.middle.caption KIỂM KHO
+              .tile.pink(data-app="customerReturn")
+                .app-icon.icon-reply-outline
+                .app-count 0
+                .app-count-description lần trong ngày
+                span.caption.app-name.bottom.right trả hàng
+              .tile.green-sea(data-app="import")
+                .app-icon.icon-download-outline
+                .app-count 0
+                .app-count-description phiếu trong ngày
+                span.caption.app-name.bottom.right nhập kho
+              .tile.pumpkin(data-app="distributorReturn")
+                .app-icon.icon-reply-outline
+                .app-count 0
+                .app-count-description lần trong ngày
+                span.caption.app-name.bottom.right trả hàng
+              .tile.carrot(data-app="inventoryHistory")
+                .app-icon.icon-edit
+                .app-count 90
+                .app-count-description ngày chưa cập nhật
+                span.caption.app-name.bottom.right kiểm kho
+              .tile.blue(data-app="distributorManagement")
+                .app-icon.icon-loop-outline
+                span.caption.app-name.bottom.right chuyển kho
+            .tile-group-2
+              .tile.double.gray
+                .app-icon.icon-award
+                span.caption.app-name.bottom.right &nbsp;
+              .tile.lime(data-app="distributorManagement")
+                .app-icon.icon-truck-1
+                .app-count 0
+                .app-count-description phiếu chờ giao
+                span.caption.app-name.bottom.right giao hàng
+              .tile.carrot(data-app="distributorManagement")
+                .app-icon.icon-flash-3
+                span.caption.app-name.bottom.right lãi suất
+              .tile.double.gray
+                .app-icon.icon-award
+                span.caption.app-name.bottom.right &nbsp;
+              .tile.double.amethyst(data-app="merchantReport")
+                .app-icon.icon-chart-pie-outline
+                span.caption.app-name.bottom.right báo cáo
+            +metroDecoratorTiles
 
-    .tile-group-3
-      .tile.green-sea.double(class="{{metroUnLocker Summary.data.warehouseCount}}"
-      data-app='import')
-        span.center.right.caption: span.table: i.ico.icon-download-outline
-        span.top.right.caption: h3 <tiny5>NHẬP KHO</tiny5> {{formatNumber Summary.data.importCount}}
-        span.bottom.right.caption: h3 <tiny5>TỔNG NHẬP</tiny5>
-      .tile.pomegranate(data-app='merchantOptions')
-        span.s7.top.middle.caption TÙY CHỈNH
-        span.center.middle.caption: span.table: i.ico.icon-wrench-outline
-        span.bottom.middle.caption HỆ THỐNG
-      //.tile.double.peter-river(class="{{metroUnLocker Summary.data.saleCount}}"
-      //data-app='salesReport')
-      //  span.top.right.caption: h3 {{formatNumber Summary.data.depositDay}} <tiny5>DOANH THU</tiny5>
-      //  span.center.left.caption: span.table
-      //    i.ico.large.icon-chart-bar-4
-      //  span.bottom.left.caption BÁO CÁO
-      .tile.carrot.quatro(data-app='distributorManagement')
-        span.top.middle.caption: h5 {{formatNumber Summary.data.distributorCount}} NHÀ CUNG CẤP
-        span.center.middle.caption: span.table: i.ico.huge.icon-anchor-outline
-        span.bottom.middle.caption: h3 <tiny5>PHẢI TRẢ</tiny5><br/>{{formatNumber Summary.data.totalPayableCash}}
-      .tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}")
-        span.center.middle.caption: span.table: i.ico.icon-book
-        span.bottom.middle.caption NHẬT KÝ
-      //.tile.belize-hole(class="{{metroUnLocker Summary.data.merchantCount}}"
-      //data-app='branchManager')
-      //  span.center.middle.caption: span.table
-      //    i.ico.icon-location-outline
-      //    i.ico.small.icon-location-outline
-      //  span.bottom.middle.caption {{formatNumber Summary.data.merchantCount}}<br />CHI NHÁNH
-      .tile.lime(class="{{metroUnLocker Summary.data.warehouseCount}}"
-      data-app='warehouseManager')
-        span.top.middle.caption {{formatNumber Summary.data.warehouseCount}}
-        span.center.middle.caption: span.table
-          i.ico.icon-home-outline
-        span.bottom.middle.caption KHO HÀNG
-      .tile.double.belize-hole(data-app='productManagement')
-        span.center.right.caption: span.table
-          //| <tiny5>SẢN PHẨM</tiny5>
-          i.ico.icon-puzzle-outline
-        span.bottom.right.caption: h3 <tiny5>SẢN PHẨM</tiny5> {{formatNumber Summary.data.productCount}}
-      .tile.alizarin(class="{{metroUnLocker Summary.data.saleCount}}"
-      data-app='export')
-        span.center.middle.caption: span.table
-          i.ico.icon-loop-outline
-        span.bottom.middle.caption CHUYỂN KHO
-      //.tile.sun-flower(class="{{metroUnLocker Summary.data.importCount}}"
-      //data-app='stockManager')
-      //  span.s7.top.middle.caption ĐIỀU CHỈNH GIÁ BÁN
-      //  span.center.middle.caption: span.table: i.ico.icon-database-1
-      //  span.bottom.middle.caption TỒN KHO
+      .dual-addon
+        .search-filter.icon-search-8
+          input(name='searchFilter' type="text" placeholder="tìm kiếm...")
+        .nano: .nano-content
+          .group-wrapper
+            .caption.group &nbsp;
+            each appMenus
+              .caption.inner
+                span.avatar.letter(class="{{icon}}")
+                span.text.uppercase.light-font {{display}}
 
-    +metroDecoratorTiles
+
+  //#footer.modern
+  //  .editor-row
+  //    .editor-wrapper.dual-spacer

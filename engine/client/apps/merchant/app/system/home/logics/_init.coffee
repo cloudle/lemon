@@ -1,2 +1,2 @@
-logics.merchantHome = { name: 'merchant-home-logics' }
+logics.merchantHome = {}
 Apps.Merchant.homeInit = []

@@ -1,1 +1,0 @@
-lemon.defineApp Template.merchantHomeRemake, {}

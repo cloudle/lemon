@@ -1,8 +1,8 @@
 scope = logics.merchantHome
 
 lemon.addRoute
-  template: 'merchantHome'
   path: 'merchant'
+  template: 'merchantHome'
   waitOnDependency: 'merchantHome'
   onBeforeAction: ->
     if @ready()
@@ -12,5 +12,6 @@ lemon.addRoute
       @next()
   data: -> {
     Summary: MetroSummary.findOne({})
+    appMenus: scope.appMenus
   }
 , Apps.Merchant.RouterBase

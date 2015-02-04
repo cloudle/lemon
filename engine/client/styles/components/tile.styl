@@ -3,7 +3,7 @@
 tile-size = 115px
 tile-space = 5px
 tile-group-space = 0
-tile-radius = 2px
+tile-radius = 0
 tile-radius-phone = 1px
 tile-caption-padding = 5px
 tile-double-size = tile-size * 2 + tile-space
@@ -19,29 +19,69 @@ tile-double-size = tile-size * 2 + tile-space
 //Flat!
 tile-background(color)
   background-color color
-  border solid 1px darken(color, 5)
+  /*border solid 1px darken(color, 5)*/
+  .canvas
+    background-color color
+  .app-icon:before
+    color lighten(color, 5)
+
+  &.overlay
+    &:before
+      content: ''
+      absolute top 0 left 0 right 0 bottom 0
+      background-color lighten(color, 10)
+      opacity .4
   &:hover
     background-color darken(color, 5)
+    .canvas
+      background-color darken(color, 5)
+
+
+.tile, .canvas
+  .app-icon
+    absolute top 10px right 0
+    background-color #FFFFFF
+    padding 2px
+    border-radius left 2px
+  .app-count
+    absolute top 38px right 3px
+    font-size 30px
+  .app-count-description
+    absolute top 72px right 5px
+    font-size 10px
 
 .tile
   cursor pointer
   position relative; float left
   height tile-size; width tile-size
   margin 0 tile-space (tile-space) 0
-  background-color #eeeeee
+  background-color #FFFFFF
   color #ffffff
   border-radius tile-radius
   /*$noise-material()*/
+
+  .canvas-wrapper
+    absolute right 0 bottom 0
+    width (tile-size * 1.5); height tile-size
+    &.square
+      width tile-size
+    &.double
+      width tile-double-size
+    .canvas
+      position relative
+      width 100%; height 100%
 
   for $color in colors
     &.{$color[0]}
       tile-background($color[1])
 
   &:hover
-    outline rgba(255, 255, 255, 0.1) solid 2px
+    outline rgba(0, 0, 0, 0.08) solid 2px
 
   &.double
     width tile-double-size
+  &.double-height
+    height tile-double-size
   &.quatro
     width tile-double-size
     height tile-double-size
@@ -77,6 +117,7 @@ tile-background(color)
   .left
     text-align left
     margin-left tile-caption-padding
+    left 0
   .middle
     left 0; right 0
     text-align center
@@ -87,17 +128,21 @@ tile-background(color)
   h1, h2, h3, h4, h5, h6
     color #fff
     margin 0
-    tiny { font-size: 30%; }
+    tiny  { font-size: 30%; }
     tiny4 { font-size: 40%; }
     tiny5 { font-size: 50%; }
     tiny6 { font-size: 60%; }
     tiny7 { font-size: 70%; }
 
+  .app-name
+    text-transform uppercase; font-weight 100
+    font-size 14px; color #FFFFFF
+
 .tile.locked, .tile:not([data-app])
-  background-color #808080 !important
+  background-color #696969 !important
   border none
   &:hover
-    background-color darken(#808080, 15) !important
+    background-color darken(#696969, 15) !important
     * { opacity: 0.2; }
     &:before
       font-family 'lemon'
