@@ -33,5 +33,5 @@ simpleSchema.branchProductUnits = new SimpleSchema
   version: { type: simpleSchema.Version }
 #-----------------------------------------------
 
-Schema.add "branchProductUnits", "BranchProductUnits", class BranchProductUnits
+Schema.add "branchProductUnits", "BranchProductUnit", class BranchProductUnit
   @name: "Branch Product Unit"

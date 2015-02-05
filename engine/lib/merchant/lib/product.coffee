@@ -1,3 +1,20 @@
+Apps.Merchant.checkValidSyncProductToGera = (product) ->
+  isValid = false
+  if product
+    isValid = true
+    Schema.productUnits.find({product: product._id}).forEach(
+      (productUnit) ->
+        if productUnit.buildInProduct or !productUnit.unit or !productUnit.productCode or !productUnit.conversionQuality
+          isValid = false
+        else if productUnit.productCode.length < 11 or productUnit.conversionQuality <= 1
+          isValid = false
+    )
+    if product.buildInProduct or !product.name or !product.productCode or !product.basicUnit
+      isValid = false
+    else if product.name.length < 1 or product.productCode.length < 11 or product.basicUnit.length < 1
+      isValid = false
+  isValid
+
 Apps.Agency.currentProductData = (merchantId, productId, sessionBranchProduct, sessionBuildInProduct, sessionCurrentProduct)->
   if productId and merchantId
     product = Schema.products.findOne(productId)

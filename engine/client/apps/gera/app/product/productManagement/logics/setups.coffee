@@ -106,10 +106,17 @@ Apps.Gera.productManagementInit.push (scope) ->
 
 
   scope.deleteGeraProduct = (geraProduct) ->
-    if geraProduct.status is 'brandNew'
-      Schema.buildInProducts.remove geraProduct._id
-      currentGeraProduct = Schema.buildInProducts.findOne()?._id ? ''
-      UserSession.set 'currentGeraProductManagementSelection', currentGeraProduct
+    if geraProduct.status is 'brandNew' || geraProduct.status is 'copy'
+      Meteor.call 'deleteBuildInProduct', geraProduct._id, (error, result) ->
+        if error then console.log error
+        else
+          currentGeraProduct = Schema.buildInProducts.findOne()?._id ? ''
+          UserSession.set 'currentGeraProductManagementSelection', currentGeraProduct
+
+  scope.submitGeraProduct = (geraProduct) ->
+    if geraProduct.status is 'copy'
+      Meteor.call 'submitBuildInProduct', geraProduct._id, (error, result) -> if error then console.log error
+
 
 
   scope.createGeraProductUnit = (geraProduct)->
@@ -130,8 +137,8 @@ Apps.Gera.productManagementInit.push (scope) ->
     conversionQualityText = template.ui.$conversionQuality.inputmask('unmaskedvalue')
     #    priceText             = template.ui.$price.inputmask('unmaskedvalue')
     #    importPriceText       = template.ui.$importPrice.inputmask('unmaskedvalue')
-#    price       = Math.abs(Helpers.Number(priceText))
-#    importPrice = Math.abs(Helpers.Number(importPriceText))
+    #    price       = Math.abs(Helpers.Number(priceText))
+    #    importPrice = Math.abs(Helpers.Number(importPriceText))
 
     conversionQuality = Math.abs(Helpers.Number(conversionQualityText))
     conversionQuality = 1 if conversionQuality < 1

@@ -132,3 +132,6 @@ Apps.Agency.agencyProductManagementInit.push (scope) ->
           stockProductCount: -productDetail.importQuality
           availableProductCount: -productDetail.importQuality
         }
+
+
+  scope.addGeraProduct = (product)->

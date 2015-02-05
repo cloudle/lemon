@@ -5,8 +5,9 @@ lemon.defineHyper Template.geraProductManagementOverviewSection,
   unitEditingData: -> Session.get("geraProductManagementUnitEditingRow")
 
   showEditCommand   : -> Session.get "geraProductManagementShowEditCommand"
-  showDeleteCommand : -> Session.get('geraProductManagementCurrentProduct')?.status is "brandNew"
-  showCreateUnitMode: -> if Session.get('geraProductManagementCurrentProduct')?.basicUnit then true else false
+  showSubmitCommand : -> if !Session.get("geraProductManagementShowEditCommand") and @status is "copy" then true else false
+  showDeleteCommand : -> if @status is "brandNew" || @status is "copy" then true else false
+  showCreateUnitMode: -> if @basicUnit then true else false
 
   avatarUrl   : -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   hasUnit     : -> Schema.buildInProductUnits.findOne({buildInProduct: @_id})
@@ -51,6 +52,7 @@ lemon.defineHyper Template.geraProductManagementOverviewSection,
           AvatarImages.findOne(Session.get('geraProductManagementCurrentProduct').image)?.remove()
 
     "click .syncProductEdit": (event, template)-> scope.updateGeraProduct(template, @)
+    "click .submitProduct": (event, template)-> scope.submitGeraProduct(@)
     "click .productDelete": (event, template) -> scope.deleteGeraProduct(@)
     "keyup input.editable": (event, template) -> scope.checkAndUpdateGeraProduct(event, template, @)
 

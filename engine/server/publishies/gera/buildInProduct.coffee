@@ -10,6 +10,23 @@ Meteor.publishComposite 'availableBuildInProducts', ->
     ]
   }
 
+Meteor.publishComposite 'currentBuildInProductData', ->
+  self = @
+  return {
+    find: ->
+      session = Schema.userSessions.findOne({user: self.userId})
+      return EmptyQueryResult if !session
+      Schema.buildInProducts.find({_id: session.currentGeraProductManagementSelection})
+    children: [
+      find: (buildInProduct) ->
+        if buildInProduct.merchantRegister and buildInProduct.merchantRegister?.length > 0
+          Schema.merchants.find {_id: {$in:buildInProduct.merchantRegister} }
+        else EmptyQueryResult
+    ]
+  }
+
+
+
 Meteor.publishComposite 'availableGeraProductGroups', ->
   self = @
   return {

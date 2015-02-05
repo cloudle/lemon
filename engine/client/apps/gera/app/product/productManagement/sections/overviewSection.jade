@@ -25,6 +25,8 @@ template(name="geraProductManagementOverviewSection")
       //data-toggle="tooltip" data-container="body" data-placement="right" title="mã sản phẩm")
 
       .commands
+        if showSubmitCommand
+          .lemon.btn.rounded.blue.icon-ok-6.submitProduct
         if showCreateUnitMode
           .lemon.btn.rounded.lime.icon-flow-merge.createUnit
         if showEditCommand

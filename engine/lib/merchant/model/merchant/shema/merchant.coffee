@@ -19,6 +19,10 @@ simpleSchema.merchants = new SimpleSchema
     type: String
     optional: true
 
+  merchantType:
+    type: String
+    defaultValue: 'merchant'
+
   location:
     type: [String]
     optional: true
@@ -26,10 +30,6 @@ simpleSchema.merchants = new SimpleSchema
   area:
     type: [String]
     optional: true
-
-  merchantType:
-    type: String
-    defaultValue: 'merchant'
 
   styles:
     type: String

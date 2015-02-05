@@ -396,3 +396,60 @@ Meteor.methods
       Schema.branchProductUnits.find({productUnit: productUnit._id}).forEach(
         (branchProduct) -> Schema.branchProductUnits.remove(branchProduct._id) )
       Schema.productUnits.remove(productUnit._id)
+
+  uploadProductToGera: (productId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      product = Schema.products.findOne({_id: productId, parentMerchant: profile.parentMerchant, status: 'brandNew'})
+      if Apps.Merchant.checkValidSyncProductToGera(product)
+        buildInProductId = Schema.buildInProducts.insert BuildInProduct.optionByProduct(product)
+        Schema.productUnits.find({product: product._id}).forEach(
+          (productUnit) ->
+            buildInProductUnitId = Schema.buildInProductUnits.insert BuildInProductUnit.optionByProductUnit(buildInProductId, productUnit)
+            Schema.productUnits.update productUnit._id, $set:{buildInProductUnit: buildInProductUnitId}
+        )
+        Schema.products.update product._id, $set: {buildInProduct: buildInProductId, allowDelete: false, status: 'frozen'}
+        #thông báo cho gera
+
+
+  deleteBuildInProduct: (buildInProductId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if buildInProduct = Schema.buildInProducts.findOne({_id: buildInProductId})
+        if buildInProduct.status is 'brandNew' || buildInProduct.status is 'copy'
+          Schema.buildInProducts.remove buildInProduct._id
+          Schema.buildInProductUnits.find({buildInProduct: buildInProduct._id}).forEach(
+            (buildInProductUnit) -> Schema.buildInProductUnits.remove buildInProductUnit._id
+          )
+          if buildInProduct.status is 'copy'
+            Schema.products.update buildInProduct.product, $set:{status: 'brandNew'}, $unset:{buildInProduct: true}
+            Schema.merchants.update profile.parentMerchant, $pull:{ geraProduct: buildInProduct._id }
+
+  submitBuildInProduct: (buildInProductId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if buildInProduct = Schema.buildInProducts.findOne({_id: buildInProductId})
+        if buildInProduct.status is 'copy'
+          if product = Schema.products.findOne({_id: buildInProduct.product})
+            optionUnset = {basicUnit: true, productCode: true, name: true, image: true}
+            Schema.products.update product._id, $set:{status: "onSold"}, $unset: optionUnset
+            Schema.buildInProducts.update buildInProduct._id, $set:{status: "onSold"}, $push:{ merchantRegister: profile.parentMerchant }
+            console.log '3'
+            console.log buildInProduct._id
+            Schema.merchantProfiles.update {merchant: profile.parentMerchant}, $push:{ geraProduct: buildInProduct._id }
+            console.log '4'
+            Schema.buildInProductUnits.find({buildInProduct: buildInProduct._id}).forEach(
+              (buildInProductUnit) ->
+                console.log '5'
+                productUnit = Schema.productUnits.findOne({product: buildInProduct.product, buildInProductUnit: buildInProductUnit._id})
+                if productUnit
+                  optionUnset = {productCode: true, image: true, unit: true, conversionQuality: true}
+                  Schema.productUnits.update productUnit._id, $unset: optionUnset
+                else
+                  optionProductUnit =
+                    buildInProductUnit: buildInProductUnit._id
+                    parentMerchant    : product.parentMerchant
+                    merchant          : product.merchant
+                    createMerchant    : product.parentMerchant
+                    product           : product._id
+                    allowDelete       : false
+                  Schema.productUnits.insert optionProductUnit
+            )
+            console.log '6'

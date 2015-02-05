@@ -11,6 +11,7 @@ template(name="geraProductManagement")
         .dual-detail
           .nano: .nano-content
             +geraProductManagementOverviewSection currentProduct
+            +geraProductManagementMerchantSection currentProduct
       .dual-addon
         .search-filter.icon-search-8
           input(name='searchFilter' type="text")

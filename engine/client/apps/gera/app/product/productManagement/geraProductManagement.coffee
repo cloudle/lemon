@@ -11,6 +11,7 @@ lemon.defineApp Template.geraProductManagement,
 #    lemon.dependencies.resolve('availableBuildInProducts')
     Meteor.subscribe('availableBuildInProducts')
     Meteor.subscribe('availableGeraProductGroups')
+    Meteor.subscribe('currentBuildInProductData')
     Session.set("geraProductManagementSearchFilter", "")
 
   events:

@@ -1,0 +1,26 @@
+template(name="geraProductManagementMerchantSection")
+  .section.panel.panel-default.printable-area
+    .panel-heading
+      .show-on-print
+        +merchantPrintingHeader
+        .printing-info
+          .document-name {{name}}
+
+    .panel-body.debt-details
+      table.lemon-grid.safe
+        tr
+          th(style="width:auto") CÔNG TY / ĐẠI LÝ
+          th(style="width:200px") NGÀY ĐĂNG KÝ
+
+        each merchantRegisterLists
+          tr.detail-row
+            td.first-column {{name}}
+
+
+
+    .panel-footer
+      .right-float
+        span.s5.note <b>TỔNG BÁN</b>/ TỔNG TỒN:
+        span.s3 <b>{{formatNumber salesQuality}}</b>
+        span.s5 /{{formatNumber totalQuality}} <b>{{basicUnit}}</b>
+

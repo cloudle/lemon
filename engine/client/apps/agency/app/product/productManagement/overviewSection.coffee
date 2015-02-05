@@ -2,8 +2,8 @@ scope = logics.agencyProductManagement
 
 lemon.defineHyper Template.agencyProductManagementOverviewSection,
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
-  unitEditingMode: -> Session.get(scope.agencyProductManagementDetailEditingRow)?._id is @_id
-  unitEditingData: -> Session.get(scope.agencyProductManagementDetailEditingRow)
+  unitEditingMode: -> Session.get(scope.agencyProductManagementUnitEditingRow)?._id is @_id
+  unitEditingData: -> Session.get(scope.agencyProductManagementUnitEditingRow)
 
   productCode: -> @productCode ? Schema.buildInProductUnits.findOne(@buildInProductUnit)?.productCode
   unit: -> @unit ? Schema.buildInProductUnits.findOne(@buildInProductUnit)?.unit
@@ -13,13 +13,14 @@ lemon.defineHyper Template.agencyProductManagementOverviewSection,
   hasUnit: -> Schema.productUnits.findOne({product: @_id})
   productUnitList: -> Schema.productUnits.find({product: @_id})
 
-  showEditCommand: -> Session.get scope.agencyProductManagementProductEditCommand
+  showEditCommand: -> Session.get(scope.agencyProductManagementProductEditCommand)
   showDeleteCommand: -> Session.get(scope.agencyProductManagementCurrentProduct)?.allowDelete
   showCreateUnitMode: ->
     if Session.get(scope.agencyProductManagementCurrentProduct)?.buildInProduct then false
     else if Session.get(scope.agencyProductManagementCurrentProduct)?.basicUnit then true else false
   showDeleteUnit: -> !@buildInProductUnit and @allowDelete
 
+  showSubmitProduct: -> Apps.Merchant.checkValidSyncProductToGera(@) and @status is 'brandNew'
 
   name: ->
     Meteor.setTimeout ->
@@ -60,6 +61,7 @@ lemon.defineHyper Template.agencyProductManagementOverviewSection,
     "click .createUnit": -> scope.createProductUnit(@, Session.get('myProfile'))
     "click .delete-unit": -> scope.deleteProductUnit(@)
 
+    "click .syncGeraProduct": -> Meteor.call('uploadProductToGera', @_id)
 
     "click .syncProductEdit": (event, template) -> scope.editProduct(template)
     "click .productDelete": -> scope.deleteProduct(@)

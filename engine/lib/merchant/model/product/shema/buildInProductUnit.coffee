@@ -17,7 +17,7 @@ simpleSchema.buildInProductUnits = new SimpleSchema
     type: Number
     min: 1
     defaultValue: 1
-#-----------------------------------------------
+
   creator:
     type: String
 
@@ -26,5 +26,3 @@ simpleSchema.buildInProductUnits = new SimpleSchema
     defaultValue: Helpers.RandomColor()
   version: { type: simpleSchema.Version }
 
-Schema.add "buildInProductUnits", "BuildInProductUnits", class BuildInProductUnits
-  @name: "BuildIn Product Unit"

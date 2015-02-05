@@ -9,6 +9,10 @@ simpleSchema.merchantProfiles = new SimpleSchema
   user:
     type: String
 
+  geraProduct:
+    type: [String]
+    defaultValue: []
+
   companyName:
     type: String
     optional: true
