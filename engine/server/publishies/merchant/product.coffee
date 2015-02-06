@@ -25,24 +25,11 @@ Meteor.publishComposite 'availableBranchProducts', ->
   return {
     find: ->
       profile = Schema.userProfiles.findOne({user: self.userId})
-      session = Schema.userSessions.findOne({user: self.userId})
       branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant}) if profile
-      return EmptyQueryResult if !profile or !session or !branchProfile
-      productIdList = branchProfile.productList ? []
-      productIdList = _.without(productIdList, session.currentProductManagementSelection) if session.currentProductManagementSelection
-      Schema.products.find({_id:{$in:productIdList} ,merchant: profile.currentMerchant})
+      return EmptyQueryResult if !branchProfile
+      Schema.products.find({_id:{$in:branchProfile.productList ? []}, merchant: profile.currentMerchant})
     children: [
       find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}
-      children: [
-        find: (buildInProduct, product) -> Schema.buildInProductUnits.find {buildInProduct: buildInProduct._id}
-      ]
-    ,
-      find: (product) -> Schema.branchProductSummaries.find {product: product._id}
-    ,
-      find: (product) -> Schema.productUnits.find  {product: product._id, merchant: product.merchant}
-      children: [
-        find: (productUnit, product) -> Schema.branchProductUnits.find {productUnit: productUnit._id}
-      ]
     ]
   }
 
@@ -51,25 +38,11 @@ Meteor.publishComposite 'availableUnBranchProducts', ->
   return {
     find: ->
       profile = Schema.userProfiles.findOne({user: self.userId})
-      session = Schema.userSessions.findOne({user: self.userId})
       branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant}) if profile
-      return EmptyQueryResult if !profile or !session or !branchProfile
-      productIdList = branchProfile.productList ? []
-      if session.currentProductManagementSelection and _.contains(productIdList, session.currentProductManagementSelection) is false
-        productIdList.push(session.currentProductManagementSelection)
-      Schema.products.find({_id:{$nin:productIdList}, merchant: profile.currentMerchant})
+      return EmptyQueryResult if !branchProfile
+      Schema.products.find({_id:{$nin:branchProfile.productList ? []}, merchant: profile.currentMerchant})
     children: [
       find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}
-      children: [
-        find: (buildInProduct, product) -> Schema.buildInProductUnits.find {buildInProduct: buildInProduct._id}
-      ]
-    ,
-      find: (product) -> Schema.branchProductSummaries.find {product: product._id}
-    ,
-      find: (product) -> Schema.productUnits.find  {product: product._id, merchant: product.merchant}
-      children: [
-        find: (productUnit, product) -> Schema.branchProductUnits.find {productUnit: productUnit._id}
-      ]
     ]
   }
 
@@ -95,16 +68,14 @@ Meteor.publishComposite 'availableProducts', ->
     ]
   }
 
-Meteor.publishComposite 'productManagementData', (productId, currentRecords = 0)->
+Meteor.publishComposite 'productManagementData', (productId = null, currentRecords = 0)->
   self = @
   return {
     find: ->
       myProfile = Schema.userProfiles.findOne({user: self.userId})
-      return EmptyQueryResult if !myProfile
-      if !productId
-        session = Schema.userSessions.findOne({user: self.userId})
-        productId = session.currentProductManagementSelection if session
-
+#      session = Schema.userSessions.findOne({user: self.userId})
+      return EmptyQueryResult if !myProfile #or !session
+#      productId = session.currentProductManagementSelection if !productId
       Schema.products.find {_id: productId, merchant: myProfile.currentMerchant}
     children: [
       find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}

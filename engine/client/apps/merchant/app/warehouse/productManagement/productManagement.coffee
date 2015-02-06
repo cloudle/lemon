@@ -12,9 +12,13 @@ lemon.defineApp Template.productManagement,
   showGeraProductList     :-> @managedGeraProductList.length > 0
 
   created: ->
-#    if currentProduct = Session.get("mySession")?.currentProductManagementSelection
-#      Meteor.subscribe('productManagementData', currentProduct)
-#      Session.set("productManagementCurrentProduct", Schema.products.findOne(currentProduct))
+    if currentProduct = Session.get("mySession")?.currentProductManagementSelection
+      Meteor.subscribe('productManagementData', currentProduct)
+      Session.set("productManagementCurrentProduct", Schema.products.findOne(currentProduct))
+
+    lemon.dependencies.resolve('productManagements')
+    Session.set("productManagementSearchFilter", "")
+
 
 
   events:
