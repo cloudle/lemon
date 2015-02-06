@@ -1,0 +1,59 @@
+template(name="roleManagement")
+  #content.modern.role-manager
+    .dual-content
+      .dual-detail-wrapper
+        .dual-detail
+          .nano: .nano-content
+            each permissionGroups
+              .section.panel.panel-default.options-section
+                .panel-heading
+                  span(class="{{icon}}") {{description}}
+                .panel-body
+                  each children
+                    .collapsible-row
+                      .long-description {{description}}
+                      .commands
+                        input(binding="switch" type="checkbox" name="{{key}}")
+
+      .dual-addon
+        .search-filter.icon-search-8
+          input(name='searchFilter' type="text" placeholder="tìm phân quyền...")
+        .nano: .nano-content
+          if hasCustomPermission
+            .group-wrapper
+              .caption.group CỬA HÀNG
+              each scope.customRoles
+                .caption.inner(class="{{roleActiveClass}}")
+                  span.avatar.letter ?
+                  span.text {{name}}
+          .group-wrapper
+            .caption.group
+              if hasCustomPermission
+                span DỰNG SẴN
+              else
+                span &nbsp;
+            each scope.buitInRoles
+              .caption.inner(class="{{roleActiveClass}}")
+                span.avatar.letter ?
+                span.text {{name}}
+  #footer.modern
+    .editor-row
+      .editor-wrapper.dual-spacer
+      .editor-wrapper.right
+        button.flat.btn.lime.savePermission ÁP DỤNG
+    //ul.permission-group
+    //  each permissionGroups
+    //    li
+    //      span.group-caption(class="{{icon}}" data-toggle='tooltip' data-placement="right" title="{{description}}")
+    //      ul.permission-details
+    //        each children
+    //          li.permission-item(data-toggle="tooltip" title="{{description}}")
+    //            input(binding="switch" type="checkbox" name="{{key}}")
+    //            .role-label {{description}}
+
+
+    //  ul
+    //    each
+    //    li.permission-item
+    //      input(binding="switch" type="checkbox" name="{{key}}")
+    //      .role-label {{description}}
