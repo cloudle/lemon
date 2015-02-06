@@ -13,7 +13,7 @@ template(name="staffManagementOverviewSection")
           .lemon.btn.rounded.lime.icon-ok-6.syncStaffEdit
         if showDeleteCommand
           .lemon.btn.rounded.red.icon-minus-4.staffDelete
-    .panel-footer
+    .panel-footer.has-details
       //.editor-row
       //  .editor-wrapper(style="width: 180px")
       //    span.ilabel họ tên
@@ -29,7 +29,7 @@ template(name="staffManagementOverviewSection")
       //    input(name="startWorkingDate" binding="datePicker" data-toggle="tooltip" data-container="body" data-placement="left" title="ngày tính lương")
 
       .editor-row
-        .editor-wrapper(style="width: 250px")
+        .editor-wrapper(style="width: 300px")
           span.ilabel.optional phân quyền
           +iSelect(options=roleSelectOptions class="field")
         .editor-wrapper(style="width: 90px")
