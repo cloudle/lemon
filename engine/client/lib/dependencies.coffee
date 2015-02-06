@@ -22,7 +22,7 @@ lemon.dependencies.add 'merchantReport', ['merchantReportData', 'availableBranch
 lemon.dependencies.add 'staffManagement', ['merchantEssential', 'myMerchantUserProfiles', 'currentMerchantRoles', 'allBranchAndWarehouses']
 
 lemon.dependencies.add 'providerManagement', ['merchantEssential', 'providers']
-lemon.dependencies.add 'roleManager', ['merchantEssential']
+lemon.dependencies.add 'roleManagement', ['merchantEssential']
 lemon.dependencies.add 'staffManager', ['merchantEssential', 'myMerchantUserProfiles', 'currentMerchantRoles', 'availableBranch', 'allWarehouse']
 lemon.dependencies.add 'customerManager', ['merchantEssential', 'availableCustomers', 'availableCustomerAreas']
 lemon.dependencies.add 'transactionManager', ['merchantEssential', 'availableReceivable' ,'availableCustomers']

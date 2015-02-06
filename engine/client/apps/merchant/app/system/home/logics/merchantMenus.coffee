@@ -18,5 +18,5 @@ Apps.Merchant.homeInit.push (scope) ->
   ,
     display: "phân quyền"
     icon: "wisteria icon-key-outline"
-    app: "roleManager"
+    app: "roleManagement"
   ]
