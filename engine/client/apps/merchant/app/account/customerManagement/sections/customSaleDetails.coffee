@@ -7,6 +7,7 @@ lemon.defineWidget Template.customerManagementCustomSaleDetails,
   latestPaids: -> Schema.transactions.find {latestSale: @_id}, {sort: {'version.createdAt': 1}}
   receivableClass: -> if @debtBalanceChange >= 0 then 'receive' else 'paid'
   finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
+  name: -> @productName
 
   customSaleDetailCount: ->
     customSaleId = UI._templateInstance().data._id

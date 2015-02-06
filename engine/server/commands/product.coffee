@@ -304,6 +304,7 @@ Meteor.methods
             smallerUnit      : false
 
           Schema.products.update product._id, $set: productOption
+          Schema.branchProductSummaries.update {product: product._id}, $set: productOption
           Schema.productUnits.update smallerUnit._id, $set: smallerUnitOption
 
           #Cap nhat productUnit co lai

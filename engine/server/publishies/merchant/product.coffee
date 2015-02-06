@@ -29,9 +29,7 @@ Meteor.publishComposite 'availableBranchProducts', ->
       branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant}) if profile
       return EmptyQueryResult if !profile or !session or !branchProfile
       productIdList = branchProfile.productList ? []
-      console.log productIdList
       productIdList = _.without(productIdList, session.currentProductManagementSelection) if session.currentProductManagementSelection
-      console.log productIdList
       Schema.products.find({_id:{$in:productIdList} ,merchant: profile.currentMerchant})
     children: [
       find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}
