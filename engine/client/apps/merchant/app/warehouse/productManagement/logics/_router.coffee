@@ -5,13 +5,17 @@ lemon.addRoute
   onBeforeAction: ->
     if @ready()
       Apps.setup(scope, Apps.Merchant.productManagementInit, 'productManagement')
+      Apps.setup(scope, Apps.Merchant.productManagementInitSubscriber)
       Session.set "currentAppInfo",
         name: "sản phẩm"
       @next()
   data: ->
     Apps.setup(scope, Apps.Merchant.productManagementReactive)
 
+
     return {
-      managedProductList  : scope.managedProductList
+      managedBranchProductList  : scope.managedBranchProductList
+      managedMerchantProductList: scope.managedMerchantProductList
+      managedGeraProductList    : scope.managedGeraProductList
     }
 , Apps.Merchant.RouterBase

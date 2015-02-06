@@ -20,6 +20,61 @@ Meteor.publish 'productDetails', (productId) ->
   return [] if !profile or !currentProduct
   Schema.productDetails.find {product: currentProduct._id}
 
+Meteor.publishComposite 'availableBranchProducts', ->
+  self = @
+  return {
+    find: ->
+      profile = Schema.userProfiles.findOne({user: self.userId})
+      session = Schema.userSessions.findOne({user: self.userId})
+      branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant}) if profile
+      return EmptyQueryResult if !profile or !session or !branchProfile
+      productIdList = branchProfile.productList ? []
+      console.log productIdList
+      productIdList = _.without(productIdList, session.currentProductManagementSelection) if session.currentProductManagementSelection
+      console.log productIdList
+      Schema.products.find({_id:{$in:productIdList} ,merchant: profile.currentMerchant})
+    children: [
+      find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}
+      children: [
+        find: (buildInProduct, product) -> Schema.buildInProductUnits.find {buildInProduct: buildInProduct._id}
+      ]
+    ,
+      find: (product) -> Schema.branchProductSummaries.find {product: product._id}
+    ,
+      find: (product) -> Schema.productUnits.find  {product: product._id, merchant: product.merchant}
+      children: [
+        find: (productUnit, product) -> Schema.branchProductUnits.find {productUnit: productUnit._id}
+      ]
+    ]
+  }
+
+Meteor.publishComposite 'availableUnBranchProducts', ->
+  self = @
+  return {
+    find: ->
+      profile = Schema.userProfiles.findOne({user: self.userId})
+      session = Schema.userSessions.findOne({user: self.userId})
+      branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant}) if profile
+      return EmptyQueryResult if !profile or !session or !branchProfile
+      productIdList = branchProfile.productList ? []
+      if session.currentProductManagementSelection and _.contains(productIdList, session.currentProductManagementSelection) is false
+        productIdList.push(session.currentProductManagementSelection)
+      Schema.products.find({_id:{$nin:productIdList}, merchant: profile.currentMerchant})
+    children: [
+      find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}
+      children: [
+        find: (buildInProduct, product) -> Schema.buildInProductUnits.find {buildInProduct: buildInProduct._id}
+      ]
+    ,
+      find: (product) -> Schema.branchProductSummaries.find {product: product._id}
+    ,
+      find: (product) -> Schema.productUnits.find  {product: product._id, merchant: product.merchant}
+      children: [
+        find: (productUnit, product) -> Schema.branchProductUnits.find {productUnit: productUnit._id}
+      ]
+    ]
+  }
+
 Meteor.publishComposite 'availableProducts', ->
   self = @
   return {
@@ -48,8 +103,24 @@ Meteor.publishComposite 'productManagementData', (productId, currentRecords = 0)
     find: ->
       myProfile = Schema.userProfiles.findOne({user: self.userId})
       return EmptyQueryResult if !myProfile
+      if !productId
+        session = Schema.userSessions.findOne({user: self.userId})
+        productId = session.currentProductManagementSelection if session
+
       Schema.products.find {_id: productId, merchant: myProfile.currentMerchant}
     children: [
+      find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}
+      children: [
+        find: (buildInProduct, product) -> Schema.buildInProductUnits.find {buildInProduct: buildInProduct._id}
+      ]
+    ,
+      find: (product) -> Schema.branchProductSummaries.find {product: product._id}
+    ,
+      find: (product) -> Schema.productUnits.find  {product: product._id, merchant: product.merchant}
+      children: [
+        find: (productUnit, product) -> Schema.branchProductUnits.find {productUnit: productUnit._id}
+      ]
+    ,
       find: (product) -> Schema.productDetails.find {product: product._id}
       children: [
         find: (productDetail, product) -> Schema.imports.find {_id: productDetail.import}

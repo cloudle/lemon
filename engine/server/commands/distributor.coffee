@@ -160,12 +160,13 @@ Meteor.methods
       )
 
       for productDetail in productDetails
-        Schema.productDetails.remove productDetail._id
-        Schema.products.update productDetail.product, $inc: {
+        optionInc =
           totalQuality      : -productDetail.importQuality
           availableQuality  : -productDetail.importQuality
           inStockQuality    : -productDetail.importQuality
-        }
+        Schema.productDetails.remove productDetail._id
+        Schema.products.update productDetail.product, $inc: optionInc
+        Schema.branchProductSummaries.update productDetail.branchProduct, $inc: optionInc
 
       MetroSummary.updateMyMetroSummaryBy(['deleteImport'],  currentImport._id)
       Schema.imports.remove currentImport._id

@@ -68,13 +68,10 @@ Meteor.methods
             throw new Meteor.Error('importError', 'Không tìm thấy sản phẩm id:'+ importDetail.product); return
 
         for importDetail in importDetails
-          productDetail= ProductDetail.newProductDetail(currentImport, importDetail)
+          productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
           Schema.productDetails.insert productDetail, (error, result) ->
             if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
 
-          Schema.providers.update(productDetail.provider, $set:{allowDelete: false})
-
-          product = Schema.products.findOne importDetail.product
           incOption=
             totalQuality    : importDetail.importQuality
             availableQuality: importDetail.importQuality
@@ -86,8 +83,12 @@ Meteor.methods
             allowDelete : false
           setOption.price = importDetail.salePrice if importDetail.salePrice
 
-          Schema.products.update product._id, $inc: incOption, $set: setOption, (error, result) ->
+          Schema.providers.update(productDetail.provider, $set:{allowDelete: false})
+          Schema.products.update productDetail.product, $inc: incOption, $set: setOption, (error, result) ->
             if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+          Schema.branchProductSummaries.update productDetail.branchProduct, $inc: incOption, $set: setOption, (error, result) ->
+            if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+
         navigateNewTab(currentImport._id, profile)
         if distributor = Schema.distributors.findOne(currentImport.distributor)
           updateBuiltInOfDistributor(distributor._id, importDetails)

@@ -1,8 +1,9 @@
 Apps.Merchant.distributorReturnReactiveRun.push (scope) ->
-  if Session.get("currentDistributorReturn")
+  if currentDistributor = Session.get("distributorReturnCurrentDistributor")
     scope.managedReturnProductList = []
     products = []; salesProductList = []
-    Helpers.searchProduct(Schema.products.find(), products)
+    productListId = currentDistributor.builtIn ? []
+    Helpers.searchProduct(Schema.products.find({_id:{$in:productListId}}), products)
 
     if Session.get("distributorReturnSearchFilter")?.length > 0
       salesProductList = _.filter products, (item) ->

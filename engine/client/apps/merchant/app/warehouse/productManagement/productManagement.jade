@@ -18,15 +18,37 @@ template(name="productManagement")
         .nano: .nano-content
           if showFilterSearch
             .group-wrapper
-              each managedProductList
+              if showBranchProductList
+                .caption.group chi nhánh
+              each managedBranchProductList
                 .caption.inner(class="{{activeClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                   span.text
                     |{{name}}
                     if basicUnit
                       |({{basicUnit}})
+
+              if showMerchantProductList
+                .caption.group công ty
+              each managedMerchantProductList
+                .caption.inner(class="{{activeClass}}")
+                  +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                  span.text
+                    |{{name}}
+                    if basicUnit
+                      |({{basicUnit}})
+
+              if showGeraProductList
+                .caption.group gera
+              each managedGeraProductList
+                .caption.inner(class="{{activeClass}}")
+                  +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                  span.text
+                    |{{name}}
+                    if basicUnit
+                        |({{basicUnit}})
           else
-            each managedProductList
+            each managedBranchProductList
               .group-wrapper
                 .caption.group {{key}}
                 each childs

@@ -1,9 +1,9 @@
 Apps.Merchant.customerReturnReactiveRun.push (scope) ->
-  if Session.get("currentCustomerReturn")
+  if currentCustomer = Session.get("customerReturnCurrentCustomer")
     scope.managedReturnProductList = []
     products = []; salesProductList = []
-    Helpers.searchProduct(Schema.products.find(), products)
-
+    productListId = currentCustomer.builtIn ? []
+    Helpers.searchProduct(Schema.products.find({_id:{$in:productListId}}), products)
     if Session.get("customerReturnSearchFilter")?.length > 0
       salesProductList = _.filter products, (item) ->
         unsignedTerm = Helpers.RemoveVnSigns Session.get("customerReturnSearchFilter")

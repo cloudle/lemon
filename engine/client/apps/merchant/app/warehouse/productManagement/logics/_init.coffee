@@ -1,10 +1,21 @@
 logics.productManagement = {}
 Apps.Merchant.productManagementInit = []
+Apps.Merchant.productManagementInitSubscriber = []
 Apps.Merchant.productManagementReactive = []
+
+
+Apps.Merchant.productManagementInitSubscriber.push (scope) ->
+  lemon.dependencies.resolve('productManagements')
+  Session.set("productManagementSearchFilter", "")
 
 Apps.Merchant.productManagementReactive.push (scope) ->
   merchantId = Session.get("myProfile")?.currentMerchant
   productId  = Session.get("mySession")?.currentProductManagementSelection
+
+  if productId and !Session.get("productManagementCurrentProduct")
+    Meteor.subscribe('productManagementData', productId)
+    Session.set("productManagementCurrentProduct", Schema.products.findOne(productId))
+
   if productId and merchantId
     product = Schema.products.findOne(productId)
     branchProduct = Schema.branchProductSummaries.findOne({merchant: merchantId, product: productId})
