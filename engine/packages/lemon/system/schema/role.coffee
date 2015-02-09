@@ -25,4 +25,8 @@ simpleSchema.roles = new SimpleSchema
     type: [String]
     optional: true
 
+  allowDelete:
+    type: Boolean
+    defaultValue: true
+
   version: { type: simpleSchema.Version }

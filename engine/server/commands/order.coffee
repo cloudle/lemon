@@ -127,6 +127,8 @@ Meteor.methods
   finishOrder: (orderId) ->
     userProfile = Schema.userProfiles.findOne({user: @userId})
     if !userProfile then throw new Meteor.Error("User chưa đăng nhập."); return
+    saleStaff = Role.hasPermission(userProfile._id, Apps.Merchant.TempPermissions.saleStaff.key)
+    if !saleStaff then throw new Meteor.Error("Bạn không có phân quyền."); return
     currentOrder = Schema.orders.findOne({
       _id       : orderId
       status    : 0

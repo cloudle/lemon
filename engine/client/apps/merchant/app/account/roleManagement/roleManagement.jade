@@ -13,34 +13,41 @@ template(name="roleManagement")
                     .collapsible-row
                       .long-description {{description}}
                       .commands
-                        input(binding="switch" type="checkbox" name="{{key}}")
+                        input(binding="switch" type="checkbox" name="{{key}}" )
 
       .dual-addon
         .search-filter.icon-search-8
           input(name='searchFilter' type="text" placeholder="tìm phân quyền...")
+          if creationMode
+            .lemon.btn.rounded.tiny.lime.icon-plus-6.create-command.createRoleBtn
         .nano: .nano-content
+
           if hasCustomPermission
             .group-wrapper
               .caption.group CỬA HÀNG
-              each scope.customRoles
+              each scope.managedCustomRoles
                 .caption.inner(class="{{roleActiveClass}}")
                   span.avatar.letter ?
                   span.text {{name}}
-          .group-wrapper
-            .caption.group
-              if hasCustomPermission
-                span DỰNG SẴN
-              else
-                span &nbsp;
-            each scope.buitInRoles
-              .caption.inner(class="{{roleActiveClass}}")
-                span.avatar.letter ?
-                span.text {{name}}
+                    if allowDelete
+                      .commands
+                        span.icon-cancel-circled-4.deleteNewRole
+
+          if hasBuitInPermission
+            .group-wrapper
+              .caption.group DỰNG SẴN
+              each scope.managedBuitInRoles
+                .caption.inner(class="{{roleActiveClass}}")
+                  span.avatar.letter ?
+                  span.text {{name}}
+
   #footer.modern
     .editor-row
       .editor-wrapper.dual-spacer
       .editor-wrapper.right
-        button.flat.btn.lime.savePermission ÁP DỤNG
+        if showChangePermission
+          button.flat.btn.lime.savePermission ÁP DỤNG
+
     //ul.permission-group
     //  each permissionGroups
     //    li

@@ -1,20 +1,33 @@
-Apps.Merchant.roleMamangementInit.push (scope) ->
+Apps.Merchant.roleManangementInit.push (scope) ->
   scope.createNewRole = (event, template) ->
-    newRole = Schema.roles.insert
-      group: 'merchant'
-      name: template.ui.$newGroupName.val()
-      parent: Session.get("myProfile").parentMerchant
-      permissions: []
+    if event.which is 13 and Session.get("roleManagementCreationMode") and Session.get("roleManagementSearchFilter")?.trim()?.length > 1
+      newRole =
+        group : 'merchant'
+        name  : Session.get("roleManagementSearchFilter")
+        parent: Session.get("myProfile").parentMerchant
+        permissions: []
 
-    template.ui.$newGroupName.val('')
-    logics.roleManager.checkAllowCreate(template)
-    Session.set('currentRoleSelection', Schema.roles.findOne(newRole))
+      existedRole = _.findWhere(scope.managedBuitInRoles, {name: newRole.name})
+      existedRole = _.findWhere(scope.managedCustomRoles, {name: newRole.name}) if existedRole is undefined
+      if existedRole is undefined
+        if roleId = Schema.roles.insert newRole
+          template.ui.$searchFilter.val('')
+          Session.set("roleManagementCreationMode", false)
+          Session.set("roleManagementSearchFilter")
+          Session.set('currentRoleSelection', Schema.roles.findOne(roleId))
+
+  scope.deleteNewRole = (roleId) ->
+    if role = Schema.roles.findOne({_id: roleId, parent: Session.get("myProfile")?.parentMerchant})
+      Schema.roles.remove role._id if role.allowDelete is true
 
   scope.saveRoleOptions = (event, template) ->
-    return if !Session.get('currentRoleSelection')
+    currentRole = Session.get('currentRoleSelection')
+    myProfile = Session.get('myProfile')
+    return if !currentRole or !currentRole.parent or !myProfile
     newPermissions = []
     for permission, switchery of template.switch
       newPermissions.push permission if switchery.isChecked()
 
-    Schema.roles.update(Session.get('currentRoleSelection')._id, {$set: {permissions: newPermissions}})
-    Meteor.call('permissionChanged', Session.get('myProfile'), Session.get('currentRoleSelection'))
+    Schema.roles.update(currentRole._id, {$set: {permissions: newPermissions}})
+    Session.set('currentRoleSelection', Schema.roles.findOne currentRole._id)
+    Meteor.call('permissionChanged', myProfile, currentRole)

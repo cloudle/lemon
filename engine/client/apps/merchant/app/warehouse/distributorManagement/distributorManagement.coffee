@@ -10,6 +10,10 @@ lemon.defineApp Template.distributorManagement,
 
 #  rendered: -> $(".nano").nanoScroller()
   created: ->
+    permission = Role.hasPermission(Session.get("myProfile"), Apps.Merchant.TempPermissions.distributorStaff.key)
+    if !permission then Router.go('/merchant')
+
+
     lemon.dependencies.resolve('distributorManagement')
     Session.set("distributorManagementSearchFilter", "")
 

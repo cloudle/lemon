@@ -2,6 +2,8 @@ Meteor.methods
   createSaleExport: (saleId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       # kiểm tra quyền
+      warehouseManager = Role.hasPermission(profile._id, Apps.Merchant.TempPermissions.warehouseManager.key)
+      if warehouseManager is false then throw "Bạn không có phân quyền."
 
       if currentSale = Schema.sales.findOne({
           _id       : saleId
@@ -41,6 +43,8 @@ Meteor.methods
   createSaleImport: (saleId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       # kiểm tra quyền
+      warehouseManager = Role.hasPermission(profile._id, Apps.Merchant.TempPermissions.warehouseManager.key)
+      if warehouseManager is false then throw "Bạn không có phân quyền."
 
       if currentSale = Schema.sales.findOne({
         _id       : saleId

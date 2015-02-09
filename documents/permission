@@ -1,0 +1,175 @@
+Options:
+    Cho phép nhân viên bán hàng dùm nhau
+
+SẢN PHẨM
+    Chỉ được xem!
+
+KHÁCH HÀNG
+    Tạo mới và chỉnh sửa khách hàng của chính mình (không được xóa nếu phát sinh)
+
+NHÀ CUNG CẤP
+    Chỉ được xem!
+    Được phép tạo mới và chỉnh sửa NCC của chính mình (lính)
+    Được phép quản lý toàn quyền NCC (sếp)
+
+BÁN HÀNG
+    Được tạo mới phiếu bán hàng trực tiếp
+    Cho phép tạo phiếu giao hàng (xuất kho trong ngày)
+    Cho phép đặt hàng (chưa xuất kho và nhiều khi không xuất kho luôn)
+    Cho phép bán nợ
+
+GIAO HÀNG
+    Chỉ xem!
+    Được phép giao hàng (nhận, hủy nhận, chuyển trạng thái)
+
+TRẢ HÀNG BÁN
+    Được tạo mới phiếu trả hàng
+    Được quyền duyệt phiếu trả hàng
+
+
+TRẢ HÀNG NCC
+    Được toàn quyền, trả hàng cho NCC (không cần duyệt gì hết)
+
+NHẬP KHO, ĐẶT HÀNG
+    Được tạo phiếu nhập kho tạm thời (chờ duyệt), được xóa phiếu nhập kho chưa duyệt của mình
+    Được phép chỉnh sửa, duyệt phiếu nhập kho, xóa những phiếu không phù hợp của bất kỳ ai (bị lưu nhật ký)
+
+THU CHI
+    Được tao thu chi tạm thời - đề nghị chi/thu (chờ duyệt)
+    Chỉ được phép duyệt thu chi liên quan đến mình (không được duyệt yêu cầu của chính mình)
+    Được phép chỉnh sửa, duyệt thu chi, xóa những phiếu không phù hợp của bất kỳ ai (bị lưu nhật ký)
+
+
+
+
+Áp dụng:
+    - Khách hàng:
+        + Xem thông tin ----> Xong
+        + Tạo mới chỉnh sửa thông tin
+        + Full quyền
+
+    - Nhà cung cấp:
+        + Xem thông tin ----> Xong
+        + Tạo mới chỉnh sửa thông tin
+        + Full quyền
+
+    - Sản Phẩm:
+        + Xem thông tin
+        + Tạo mới chỉnh sửa thông tin
+        + Full quyền
+
+    - Bán hàng:
+        + Tạo phiếu bán hàng.
+        + Chuyển từ bán trực tiếp sang giao hàng.
+        + Bán cho nợ tiền (ghi sổ)
+        + Tạo đơn đặt hàng
+
+    - Giao hàng:
+        + Xem
+        + Nhận, giao, hủy nhận, chuyển trạng thái
+
+    - Trả hàng bán:
+        + Tạo phiếu
+        + Xác nhận
+
+    - Trả hàng nhập:
+        + Toàn quyền
+
+    - Thu chi:
+        + Được tao thu chi tạm thời - đề nghị chi/thu (chờ duyệt)
+        + Chỉ được phép duyệt thu chi liên quan đến mình (không được duyệt yêu cầu của chính mình)
+        + Được phép chỉnh sửa, duyệt thu chi, xóa những phiếu không phù hợp của bất kỳ ai (bị lưu nhật ký)
+
+    - Kho hàng:
+        + Tạo phiếu nhập/xuất kho (chờ duyệt), xóa phiếu của mình tạo
+        + Tạo phiếu kiểm kho
+        + Tạo phiếu chuyển kho
+        + Được phép chỉnh sửa, duyệt phiếu nhập/xuất kho, xóa những phiếu không phù hợp của bất kỳ ai (bị lưu nhật ký)
+        + Được phép chỉnh sửa, duyệt phiếu kiểm kho, xóa những phiếu không phù hợp của bất kỳ ai (bị lưu nhật ký)
+        + Được phép chỉnh sửa, duyệt phiếu chuyển kho, xóa những phiếu không phù hợp của bất kỳ ai (bị lưu nhật ký)
+        + Toàn quyền
+
+    - Phân quyền:
+        + Quản lý
+        + Full quyền
+
+    - Option:
+        + chỉnh sửa
+
+
+
+
+
+
+
+
+
+Sản Phẩm:
+    + Chỉ được xem (nhân viên bán hàng)
+
+    + Toàn quyền, của mình và người khác
+    + Chỉ được tạo & chỉnh sửa sp của mình (chờ duyệt)
+    + Quản lý thông tin sản phẩm
+    + Quản lý giá (bảng giá)
+    + Thêm và xóa
+    + Thêm tồn kho, kết sổ
+    + Quản lý (toàn bô, ko chọn thì ai tạo dc quyền)
+
+Khách Hàng:
+    + Xem
+    + Chỉnh (chỉnh sửa thông tin)
+    + Tạo (tạo mới, dc chỉnh sửa thông tin)
+    + Xóa
+    + Thêm tồn kho, kết sổ
+    + Quản lý (toàn bô, ko chọn thì ai tạo dc quyền)
+
+Nhà Cung Cấp:
+    + Xem
+    + Chỉnh (chỉnh sửa thông tin)
+    + Tạo (tạo mới, dc chỉnh sửa thông tin)
+    + Xóa
+    + Thêm tồn kho, kết sổ
+    + Quản lý (toàn bô, ko chọn thì ai tạo dc quyền)
+
+
+Bán Hàng:
+    + Xem đơn hàng
+    + Tạo phiếu bán hàng (tiền mặt)
+    + Tạo phiếu đặt hàng
+    + Tạo phiếu giao hàng
+    + Tạo phiếu bán nợ
+    + Bán dùm người khác
+
+Giao Hàng:
+    + Xem đơn hàng
+    + Nhận giao hàng
+
+Trả Hàng:
+    + Tạo phiếu trả KH
+    + Tạo phiếu trả NCC
+    + Xác nhận phiếu trả KH
+    + Xác nhận phiếu trả NCC
+
+Kho Hàng:
+    + Xem
+    + Tạo phiếu kiểm kho
+    + Tạo phiếu chuyển kho
+    + Tạo phiếu nhập kho
+    + Xác nhận kiểm kho
+    + Xác nhận chuyển kho
+    + Xác nhận nhập kho
+    + Xác nhận xuất/nhập Bán hàng
+    + Xác nhận xuất/nhập Nhập hàng
+
+Thu Chi:
+    + Tạo thu chi khách hàng
+    + Tạo thu chi nhà cung cấp
+    + Xác nhận thu chi bán hàng
+    + Xác nhận thu chi nhập hàng
+    + Xác nhận thu chi trả hàng bán
+    + Xác nhận thu chi trả hàng nhập
+
+Báo Cáo:
+    + Xem
+    + Nâng Cao
+    + Nhiều chi nhánh

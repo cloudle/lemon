@@ -13,14 +13,16 @@ destroySaleAndDetail = (scope, orderId)->
   else
     -1
 
+saleStaff = Role.hasPermission(Session.get('myProfile')?._id, Apps.Merchant.TempPermissions.saleStaff.key)
+
 Apps.Merchant.salesInit.push (scope) ->
   scope.tabOptions =
     source: scope.currentOrderHistory
     currentSource: 'currentOrder'
     caption: 'tabDisplay'
     key: '_id'
-    createAction: -> scope.createNewOrderAndSelected()
-    destroyAction: (instance) -> destroySaleAndDetail(scope, instance._id)
+    createAction: -> scope.createNewOrderAndSelected() if saleStaff
+    destroyAction: (instance) -> destroySaleAndDetail(scope, instance._id) if saleStaff
     navigateAction: (instance) ->
       UserSession.set('currentOrder', instance._id)
       Session.set('currentOrder', instance)

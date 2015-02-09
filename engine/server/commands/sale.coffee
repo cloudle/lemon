@@ -12,8 +12,8 @@ Meteor.methods
       profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if !profile then throw 'Không tìm thấy profile'
 
-      #      permission = Role.hasPermission(profile._id, Apps.Merchant.Permissions.transactionManagement.key)
-      #      if permission is false then throw 'Bạn không có quyền thực hiên.'
+      transactionManager = Role.hasPermission(profile._id, Apps.Merchant.TempPermissions.transactionManager.key)
+      if transactionManager is false then throw "Bạn không có phân quyền."
 
       currentSale = Schema.sales.findOne({_id: id, merchant: profile.currentMerchant})
       if !currentSale then throw 'Không tìm thấy phiếu bán hàng'

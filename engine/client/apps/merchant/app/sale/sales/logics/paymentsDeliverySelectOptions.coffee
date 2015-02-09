@@ -11,7 +11,7 @@ changedActionSelectPaymentsDelivery = (paymentsDelivery, currentOrder)->
       option.deliveryDate    = new Date
 
       $("[name=deliveryDate]").datepicker('setDate', option.deliveryDate)
-    else console.log 'Sai customer'; return
+    else console.log 'Không tìm thấy khách hàng.'; return
   Schema.orders.update(currentOrder._id, {$set: option})
 
 Apps.Merchant.salesInit.push ->

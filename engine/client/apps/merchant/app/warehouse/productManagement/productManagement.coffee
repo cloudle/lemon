@@ -12,7 +12,8 @@ lemon.defineApp Template.productManagement,
   showGeraProductList     :-> @managedGeraProductList.length > 0
 
   created: ->
-    if currentProduct = Session.get("mySession")?.currentProductManagementSelection
+#    Apps.Merchant.checkHasPermission("productStaff", "product")
+    if currentProduct = Session.get("mySession").currentProductManagementSelection
       Meteor.subscribe('productManagementData', currentProduct)
       Session.set("productManagementCurrentProduct", Schema.products.findOne(currentProduct))
 
