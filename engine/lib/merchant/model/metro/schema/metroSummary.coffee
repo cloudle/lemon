@@ -121,6 +121,10 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 
+  partnerCount:
+    type: Number
+    defaultValue: 0
+
   version: { type: simpleSchema.Version }
 #------------------------------------------
   notifyExpire:

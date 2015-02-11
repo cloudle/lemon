@@ -25,35 +25,16 @@ Apps.Merchant.importReactive.push (scope) ->
     scope.showSubmit = currentImport.distributor and scope.currentImportDetails.count() > 0 and !currentImport.submitted and !permission
     scope.showFinish = currentImport.distributor and scope.currentImportDetails.count() > 0 and !scope.showSubmit
 
-  if Session.get('currentImport')
-    if !Session.get('currentImportDistributor') || Session.get('currentImportDistributor')._id != Session.get('currentImport').distributor
-      Session.set('currentImportDistributor', Schema.distributors.findOne(Session.get('currentImport').distributor))
+  if distributorId = Session.get('currentImport')?.distributor
+    if !Session.get('currentImportDistributor') || Session.get('currentImportDistributor')._id != distributorId
+      Session.set 'currentImportDistributor', Schema.distributors.findOne(distributorId)
 
-
-#  if currentImport = scope.currentImport
-#    $("[name=depositCash]").val(currentImport.deposit)
+  if partnerId = Session.get('currentImport')?.partner
+    if !Session.get('currentImportPartner') || Session.get('currentImportPartner')._id != partnerId
+      Session.set 'currentImportPartner', Schema.partners.findOne(partnerId)
 
   if Session.get("currentImport")?.submitted is true
-    Session.set("importEditingRowId")
-    Session.set("importEditingRow")
+    Session.set("importEditingRowId"); Session.set("importEditingRow")
 
   if Session.get("importEditingRowId")
     Session.set("importEditingRow", Schema.importDetails.findOne(Session.get("importEditingRowId")))
-
-#  if Session.get("importEditingRow")?.importQuality
-#    $("[name=editImportQuality]").val(Session.get("importEditingRow").importQuality)
-
-
-#    if Session.get('currentImport')
-#      $("[name=currentProductQuality]").val(Session.get('currentImport').currentQuality)
-#      $("[name=currentProductPrice]").val(Session.get('currentImport').currentImportPrice)
-#    else
-#      $("[name=currentProductQuality]").val('')
-#      $("[name=currentProductPrice]").val('')
-#
-#    if Session.get('importCurrentProduct')
-#      $("[name=currentProductName]").val(Session.get('importCurrentProduct').name)
-#      $("[name=currentProductSkulls]").val(Session.get('importCurrentProduct').skulls)
-#    else
-#      $("[name=currentProductName]").val('')
-#      $("[name=currentProductSkulls]").val('')

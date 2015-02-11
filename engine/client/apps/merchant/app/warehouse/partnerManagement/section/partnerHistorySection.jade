@@ -1,0 +1,47 @@
+template(name="partnerManagementPartnerHistorySection")
+  .section.panel.panel-default.printable-area
+    .panel-heading
+      .show-on-print
+        +merchantPrintingHeader
+        .printing-info
+          .document-name {{name}}
+
+      table.lemon-grid: tr
+        th(style="width:auto") SẢN PHẨM
+        th.number(style="width:80px") SL
+        th(style="width:100px; text-align:center") ĐƠN VỊ
+        th.number(style="width:120px") ĐƠN GIÁ
+        th.number(style="width:175px") THÀNH TIỀN
+
+    .panel-body.debt-details
+      table.lemon-grid.safe
+        +partnerManagementImportHistoryHeader
+        each oldHistoryPartner
+          +partnerManagementOldHistoryDetails this
+
+      table.lemon-grid
+        +partnerManagementImportHistoryHeader
+        each newHistoryPartner
+          +partnerManagementNewHistoryDetails this
+        tr.group-summary-row
+          td
+            .lemon.btn.lime.customImportModeDisable.icon-money THU
+            .lemon.btn.carrot.customImportModeDisable.icon-money TRẢ
+          td(colspan="3")
+            input.new-transaction-partner-field(name='payImportDescription' type="text" size="10" placeholder="ghi chú trả tiền")
+          td
+            input.new-transaction-partner-field.number(name='payImportAmount' type="text" size="10" placeholder="số tiền")
+
+    .panel-footer
+      .right-float
+        span.s5 TỔNG NỢ:
+        span.s3 <b>{{formatNumber finalDebtBalance}}</b> VNĐ
+
+
+template(name="partnerManagementImportHistoryHeader")
+  tr
+    th(style="width:auto")
+    th(style="width:80px")
+    th(style="width:100px")
+    th(style="width:120px")
+    th(style="width:182px")

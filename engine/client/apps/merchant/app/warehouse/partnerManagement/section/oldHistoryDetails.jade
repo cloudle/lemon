@@ -1,0 +1,20 @@
+template(name="partnerManagementOldHistoryDetails")
+  tr.header-row: td(colspan="5")
+    | &nbsp;
+    .bill-header <b>{{momentFormat debtDate 'DD/MM/YYYY'}}</b>
+    .commands
+      if isCustomImportModeEnabled
+        .lemon.rounded.red.btn.animated.bounceIn.deleteCustomImport: span.icon-minus-4
+
+  each oldHistoryDetails
+    tr.detail-row
+      td.first-column {{productName product}}
+      td.number {{quality}}
+      td(align="center") {{unitName}}
+      td.number {{formatNumber importPrice}}
+      td.last-column.number {{formatNumber totalPrice}}
+
+  tr.detail-row.summary-row
+    td
+    td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber latestDebtBalance}}</b>
+    td.summary-total(align="right"): span.s5 <b>{{formatNumber debtBalanceChange}}</b>

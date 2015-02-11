@@ -12,13 +12,14 @@ lemon.dependencies.add 'merchantEssentialOnce', ['merchantEssential', 'merchantN
 
 lemon.dependencies.add 'merchantHome', ['merchantEssential']
 lemon.dependencies.add 'customerManagement', ['availableCustomers', 'availableCustomerAreas']
-lemon.dependencies.add 'importManagement', ['myImportHistory', 'availableProducts', 'skulls', 'providers', 'availableDistributors']
+lemon.dependencies.add 'importManagement', ['availableDistributors', 'availablePartners', 'myImportHistory', 'availableProducts', 'skulls', 'providers']
 #lemon.dependencies.add 'productManagements', ['availableProducts']
 lemon.dependencies.add 'productManagements', ['availableBranchProducts', 'availableUnBranchProducts']
 #lemon.dependencies.add 'productManagements', ['availableAllProducts']
 lemon.dependencies.add 'saleManagement', ['myOrderHistory', 'mySaleAndDetail', 'availableProducts', 'skulls', 'providers', 'availableCustomers']
 lemon.dependencies.add 'distributorManagement', ['availableDistributors']
 lemon.dependencies.add 'merchantReport', ['merchantReportData', 'availableBranch']
+lemon.dependencies.add 'partnerManagement', ['availablePartners']
 
 lemon.dependencies.add 'staffManagement', ['merchantEssential', 'myMerchantUserProfiles', 'currentMerchantRoles', 'allBranchAndWarehouses']
 

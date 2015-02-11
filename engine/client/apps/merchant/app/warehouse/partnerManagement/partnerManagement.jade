@@ -1,0 +1,35 @@
+template(name="partnerManagement")
+  #content.modern.partner-management
+    .dual-content
+      .dual-detail-wrapper
+        .dual-detail
+          .nano: .nano-content
+            +partnerManagementOverviewSection currentPartner
+            +partnerManagementPartnerHistorySection currentPartner
+      .dual-addon
+        .search-filter.icon-search-8
+          input(name='searchFilter' type="text")
+          if creationMode
+            .lemon.btn.rounded.tiny.lime.icon-plus-6.create-command.createStockBtn
+        .nano: .nano-content
+          if showFilterSearch
+            .group-wrapper
+              if showMyPartnerList
+                .caption.group công ty
+              each managedMyPartnerList
+                .caption.inner(class="{{activeClass}}")
+                  +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                  span.text {{name}}
+
+          else
+            each managedMyPartnerList
+              .group-wrapper
+                .caption.group {{key}}
+                each childs
+                  .caption.inner(class="{{activeClass}}")
+                    +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                    span.text {{name}}
+                      //.commands: span.icon-ok-6
+                    //span.right-info
+                    //  |10
+                    //  |sản phẩm

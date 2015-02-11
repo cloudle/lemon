@@ -58,23 +58,27 @@ simpleSchema.returns = new SimpleSchema
     type: String
     optional: true
 
-  timeLineSales:
+  import:
     type: String
     optional: true
 
-  customer:
-    type: String
-    optional: true
-#------------------------
-  import:
+  timeLineSales:
     type: String
     optional: true
 
   timeLineImport:
     type: String
     optional: true
+#------------------------
+  customer:
+    type: String
+    optional: true
 
   distributor:
+    type: String
+    optional: true
+
+  partner:
     type: String
     optional: true
 #------------------------

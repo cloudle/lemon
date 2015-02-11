@@ -8,8 +8,9 @@ lemon.defineWidget Template.productManagementImportDetails,
   isShowDisableMode: -> !Session.get("productManagementCurrentProduct")?.basicDetailModeEnabled
 
   distributorName: ->
-    if distributorId = Schema.imports.findOne(@import).distributor
-      Schema.distributors.findOne(distributorId)?.name
+    distributorName = Schema.distributors.findOne(@distributor)?.name
+    partnerName = Schema.partners.findOne(@partner)?.name
+    distributorName ? partnerName ? ''
 
   buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
 

@@ -43,10 +43,6 @@ simpleSchema.distributors = new SimpleSchema
     type: String
     optional: true
 
-  styles:
-    type: String
-    defaultValue: Helpers.RandomColor()
-
   totalDebit:
     type: Number
     defaultValue: 0
@@ -54,6 +50,10 @@ simpleSchema.distributors = new SimpleSchema
   totalSales:
     type: Number
     defaultValue: 0
+
+  styles:
+    type: String
+    defaultValue: Helpers.RandomColor()
 
   location: { type: simpleSchema.Location, optional: true }
   version: { type: simpleSchema.Version }

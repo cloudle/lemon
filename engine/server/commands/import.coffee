@@ -30,6 +30,54 @@ updateImportAndDistributor = (currentImport, distributor)->
   }
   Schema.imports.update currentImport._id, $set: importOption
 
+updateImportAndPartner = (currentImport, partner, profile, listData)->
+  importOption = {
+    beforeDebtBalance   : partner.importDebt
+    debtBalanceChange   : currentImport.totalPrice
+    latestDebtBalance   : partner.importDebt + currentImport.totalPrice
+    finish              : true
+    submitted           : true
+    'version.createdAt' : new Date()
+  }
+  Schema.imports.update currentImport._id, $set: importOption
+
+  partnerIncOption =
+    importDebt      : currentImport.totalPrice
+    importTotalCash : currentImport.totalPrice
+  partnerAddToSet =
+    importList        : currentImport._id
+    productDetailList : { $each: _.uniq(listData.productDetailList) }
+    productList       : { $each: _.uniq(listData.productList) }
+    branchProductList : { $each: _.uniq(listData.branchProductList) }
+
+  if listData.productUnitList.length > 0
+    partnerAddToSet.productUnitList = { $each: _.uniq(listData.productUnitList) }
+
+  if listData.branchProductUnitList.length > 0
+    partnerAddToSet.branchProductUnitList = { $each: _.uniq(listData.branchProductUnitList) }
+
+  if currentImport.deposit > 0
+    partnerOption.importDebt = -currentImport.deposit
+    partnerOption.importPaid = currentImport.deposit
+
+    transactionOption =
+      parentMerchant    : profile.parentMerchant
+      merchant          : profile.currentMerchant
+      warehouse         : profile.currentWarehouse
+      creator           : profile.user
+      owner             : partner._id
+      group             : 'import'
+      description       : 'Trả Tiền'
+      receivable        : false
+      totalCash         : currentImport.deposit
+      debtDate          : new Date()
+      debtBalanceChange : currentImport.deposit
+      beforeDebtBalance : partner.importDebt
+      latestDebtBalance : partner.importDebt - currentImport.deposit
+    Schema.transactions.insert transactionOption
+
+  Schema.partners.update partner._id, $addToSet: partnerAddToSet , $inc: partnerIncOption, $set: {allowDelete: false}
+
 
 updateBuiltInOfDistributor = (distributorId, importDetails)->
   productIds = _.uniq(_.pluck(importDetails, 'product'))
@@ -48,7 +96,7 @@ Meteor.methods
 
   importSubmit: (importId)->
     currentImport = Schema.imports.findOne({_id: importId, finish: false, submitted: false})
-    if currentImport and currentImport.distributor
+    if currentImport and (currentImport.distributor or currentImport.partner)
       importDetails = Schema.importDetails.find({import: importId}).fetch()
       if importDetails.length > 0
         for importDetail in importDetails
@@ -59,48 +107,97 @@ Meteor.methods
   importFinish: (importId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
 # kiem tra phan quyen
-#      Role.hasPermission(profile.user, Apps.Merchant.Permissions.su.key)
+# Role.hasPermission(profile.user, Apps.Merchant.Permissions.su.key)
       currentImport = Schema.imports.findOne({_id: importId, submitted: true, finish: false, merchant: profile.currentMerchant})
-      if currentImport and currentImport.distributor
+      if currentImport and (currentImport.distributor or currentImport.partner)
         importDetails = Schema.importDetails.find({import: importId}).fetch()
         for importDetail in importDetails
           if !Schema.products.findOne importDetail.product
             throw new Meteor.Error('importError', 'Không tìm thấy sản phẩm id:'+ importDetail.product); return
 
-        for importDetail in importDetails
-          productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
-          Schema.productDetails.insert productDetail, (error, result) ->
-            if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+        if currentImport.distributor
+          for importDetail in importDetails
+            productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
+            productDetail.status = 'finish'
+            Schema.productDetails.insert productDetail, (error, result) ->
+              if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
 
-          incOption=
-            totalQuality    : importDetail.importQuality
-            availableQuality: importDetail.importQuality
-            inStockQuality  : importDetail.importQuality
+            incOption =
+              totalQuality    : importDetail.importQuality
+              availableQuality: importDetail.importQuality
+              inStockQuality  : importDetail.importQuality
 
-          setOption=
-            provider    : importDetail.provider
-            importPrice : Math.ceil(importDetail.importPrice)
-            allowDelete : false
-          setOption.price = importDetail.salePrice if importDetail.salePrice
+            setOption =
+              provider    : importDetail.provider
+              importPrice : Math.ceil(importDetail.importPrice)
+              allowDelete : false
+            setOption.price = importDetail.salePrice if importDetail.salePrice
 
-          Schema.providers.update(productDetail.provider, $set:{allowDelete: false})
-          Schema.products.update productDetail.product, $inc: incOption, $set: setOption, (error, result) ->
-            if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
-          Schema.branchProductSummaries.update productDetail.branchProduct, $inc: incOption, $set: setOption, (error, result) ->
-            if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+            Schema.providers.update(productDetail.provider, $set:{allowDelete: false})
+            Schema.products.update productDetail.product, $inc: incOption, $set: setOption, (error, result) ->
+              if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+            Schema.branchProductSummaries.update productDetail.branchProduct, $inc: incOption, $set: setOption, (error, result) ->
+              if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
 
-        navigateNewTab(currentImport._id, profile)
-        if distributor = Schema.distributors.findOne(currentImport.distributor)
-          updateBuiltInOfDistributor(distributor._id, importDetails)
-          updateImportAndDistributor(currentImport, distributor)
-          if currentImport.deposit > 0
-            Meteor.call('createNewReceiptCashOfImport', distributor._id, currentImport.deposit)
+          navigateNewTab(currentImport._id, profile)
+          if distributor = Schema.distributors.findOne(currentImport.distributor)
+            updateBuiltInOfDistributor(distributor._id, importDetails)
+            updateImportAndDistributor(currentImport, distributor)
+            if currentImport.deposit > 0
+              Meteor.call('createNewReceiptCashOfImport', distributor._id, currentImport.deposit)
 
-        warehouseImport = Schema.imports.findOne(importId)
-        transaction = Transaction.newByImport(warehouseImport)
-        transactionDetail = TransactionDetail.newByTransaction(transaction)
-        MetroSummary.updateMetroSummaryByImport(importId)
-        MetroSummary.updateMyMetroSummaryBy(['createdImport'],  importId)
-      return ('Phiếu nhập kho đã được duyệt')
+#          warehouseImport = Schema.imports.findOne(importId)
+#          transaction = Transaction.newByImport(warehouseImport)
+#          transactionDetail = TransactionDetail.newByTransaction(transaction)
+          MetroSummary.updateMetroSummaryByImport(importId)
+          MetroSummary.updateMyMetroSummaryBy(['createdImport'],  importId)
+
+
+        listDataOfPartner =
+          productDetailList: []
+          productList      : []
+          productUnitList  : []
+          branchProductList      : []
+          branchProductUnitList  : []
+        if currentImport.partner
+          partner = Schema.partners.findOne(currentImport.partner)
+          if partner.buildIn
+          else
+            for importDetail in importDetails
+              productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
+              productDetail.status = 'finish'
+              Schema.productDetails.insert productDetail, (error, result) ->
+                if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+                else
+                  listDataOfPartner.productDetailList.push result
+                  listDataOfPartner.productList.push productDetail.product
+                  listDataOfPartner.branchProductList.push productDetail.branchProduct
+                  listDataOfPartner.productUnitList.push productDetail.unit if productDetail.unit
+                  listDataOfPartner.branchProductUnitList.push productDetail.branchUnit if productDetail.branchUnit
+
+              incOption =
+                totalQuality    : importDetail.importQuality
+                availableQuality: importDetail.importQuality
+                inStockQuality  : importDetail.importQuality
+
+              setOption =
+                provider    : importDetail.provider
+                importPrice : Math.ceil(importDetail.importPrice)
+                allowDelete : false
+              setOption.price = importDetail.salePrice if importDetail.salePrice
+
+              Schema.providers.update(productDetail.provider, $set:{allowDelete: false})
+              Schema.products.update productDetail.product, $inc: incOption, $set: setOption, (error, result) ->
+                if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+              Schema.branchProductSummaries.update productDetail.branchProduct, $inc: incOption, $set: setOption, (error, result) ->
+                if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+
+
+            navigateNewTab(currentImport._id, profile)
+            updateImportAndPartner(currentImport, partner, profile, listDataOfPartner)
+            MetroSummary.updateMetroSummaryByImport(currentImport._id)
+            MetroSummary.updateMyMetroSummaryBy(['createdImport'],  currentImport._id)
+
+        return ('Phiếu nhập kho đã được duyệt')
     else
       throw new Meteor.Error('importError', 'Đã có lỗi trong quá trình xác nhận')

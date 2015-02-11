@@ -21,6 +21,10 @@ simpleSchema.productDetails = new SimpleSchema
     type: String
     optional: true
 
+  partner:
+    type: String
+    optional: true
+
   product:
     type: String
 
@@ -29,6 +33,10 @@ simpleSchema.productDetails = new SimpleSchema
     optional: true
 
   unit:
+    type: String
+    optional: true
+
+  branchUnit:
     type: String
     optional: true
 
@@ -89,5 +97,9 @@ simpleSchema.productDetails = new SimpleSchema
   allowDelete:
     type: Boolean
     defaultValue: true
+
+  status:
+    type: String
+    defaultValue: 'new'
 
   version: { type: simpleSchema.Version }

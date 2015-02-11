@@ -2,21 +2,30 @@ setTime = -> Session.set('realtime-now', new Date())
 scope = logics.import
 
 lemon.defineHyper Template.importDetailSection,
-  merchant: -> Schema.merchants.findOne(Session.get('myProfile')?.currentMerchant)
-  editingMode: -> Session.get("importEditingRow")?._id is @_id
-  editingData: -> Session.get("importEditingRow")
   showProductionDate: -> if @productionDate then true else false
   showExpireDate: -> if @expire then true else false
   showDelete: -> !Session.get("currentImport")?.submitted
   importDescription: -> Session.get("currentImportDescription") ? @import?.description
-  distributorOldDebt: ->
-    distributor = Schema.distributors.findOne(Session.get("currentImport")?.distributor)
-    if distributor then distributor.importDebt + distributor.customImportDebt else 0
 
-  distributorFinalDebt: ->
-    distributor = Schema.distributors.findOne(Session.get("currentImport")?.distributor)
-    if distributor and @import
+  editingMode: -> Session.get("importEditingRow")?._id is @_id
+  editingData: -> Session.get("importEditingRow")
+
+  oldDebt: ->
+    distributor = Session.get('currentImportDistributor')
+    partner = Session.get('currentImportPartner')
+
+    if @import?.distributor and distributor then distributor.importDebt + distributor.customImportDebt
+    else if @import?.distributor and partner then partner.saleDebt + partner.importDebt
+    else 0
+
+  finalDebt: ->
+    distributor = Session.get('currentImportDistributor')
+    partner = Session.get('currentImportPartner')
+
+    if @import?.distributor and distributor
       distributor.importDebt + distributor.customImportDebt + @import.totalPrice - @import.deposit
+    else if @import?.partner and partner
+      partner.saleDebt + partner.importDebt + @import.totalPrice - @import.deposit
     else 0
 
   created: -> @timeInterval = Meteor.setInterval(setTime, 1000)
@@ -32,7 +41,6 @@ lemon.defineHyper Template.importDetailSection,
     "click .deleteImportDetail": (event, template) ->
       Schema.importDetails.remove @_id
       scope.reCalculateImport(@import)
-#      Schema.imports.update @import, $inc:{totalPrice: -@totalPrice, deposit: -@totalPrice, debit: 0}
 
     "keyup [name='importDescription']": (event, template)->
       Helpers.deferredAction ->

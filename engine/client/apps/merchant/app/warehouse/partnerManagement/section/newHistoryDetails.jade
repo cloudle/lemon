@@ -1,0 +1,53 @@
+template(name="partnerManagementNewHistoryDetails")
+  tr.header-row
+    td.has-commands(colspan="5")
+      | &nbsp;
+      .bill-header <b>{{momentCalendar version.createdAt}}</b> {{description}}
+      .commands
+        if showDeleteImport
+          .lemon.rounded.tiny.btn.red.deleteImport: span.icon-minus-4
+
+  each importDetails
+    tr.detail-row
+      td.first-column {{productName product}}
+      td.number {{quality}}
+      td(align="center") {{unitName}}
+      td.number {{formatNumber importPrice}}
+      td.last-column.number {{formatNumber totalPrice}}
+
+  if importDetailCount
+    tr.detail-row.summary-row
+      td
+      td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
+      td.summary-total(align="right"): span.s5 <b>{{formatNumber debtBalanceChange}}</b>
+
+  each dependsData
+    if latestImport
+      tr.paid-row.top(class="{{receivableClass}}")
+        td.has-commands
+          span.note {{description}}, {{momentCalendar debtDate}}
+          .commands
+            if showDeleteTransaction
+              .lemon.rounded.tiny.btn.red.deleteTransaction: span.icon-minus-4
+
+        td.number(colspan="3")
+          span.icon-feather-1
+          span.s4(class="{{finalReceivableClass}}") <b>{{formatNumberAbs totalDebtBalance}}</b>
+        td.number: span(class="{{receivableClass}}") <b>{{formatNumberAbs debtBalanceChange}}</b>
+    else
+      tr.header-row
+        td.has-commands(colspan="5")
+          | &nbsp;
+          .bill-header <b>Trả Hàng: {{momentCalendar version.createdAt}}</b> {{comment}}
+      each returnDetails
+        tr.detail-row.edit-detail
+          td {{productName product}}
+          td.number {{formatNumber unitReturnQuality}}
+          td(align="center") {{unitName}}
+          td.number {{formatNumber unitReturnsPrice}}
+          td.last-column.number {{formatNumber finalPrice}}
+
+      tr.detail-row.summary-row
+        td
+        td.number(colspan="3"): span.blured-color.icon-feather-1 <b>{{formatNumber totalDebtBalance}}</b>
+        td.summary-total(align="right"): span.s5 <b>{{formatNumber debtBalanceChange}}</b>

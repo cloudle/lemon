@@ -1,0 +1,23 @@
+template(name="partnerManagementOverviewSection")
+  .section.top.panel.panel-default
+    input.hidden.avatarFile(type="file")
+    .panel-heading
+      +avatarImageComponent(avatar=avatarUrl alias=name)
+      .caption: input.editable.dashed(name="partnerName" value="{{name}}" maxlength="50" style="width: 125px" placeholder="tên đối tác"
+      data-toggle="tooltip" data-container="body" data-placement="right" title="tên đối tác")
+
+      .sub1: input.editable.dashed(name="partnerPhone" value="{{phone}}" maxlength="15" style="margin-top: 1px" placeholder="số điện thoại"
+      data-toggle="tooltip" data-container="body" data-placement="right" title="số điện thoại")
+
+      .sub2: input.editable.dashed(name="partnerAddress" value="{{address}}" maxlength="100" style="width: 125px" placeholder="đia chỉ liên lạc"
+      data-toggle="tooltip" data-container="body" data-placement="right" title="đia chỉ liên lạc")
+
+      .commands
+        if showEditCommand
+          .lemon.btn.rounded.lime.icon-ok-6.syncPartnerEdit
+        if showDeleteCommand
+          .lemon.btn.rounded.red.icon-minus-4.partnerDelete
+
+    //.panel-body
+    //.panel-footer
+    //  span.icon-angle-right

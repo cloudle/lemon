@@ -55,7 +55,7 @@ template(name="importDetailSection")
                td(align="center"): span.s6.note (<i>Chữ ký và Họ Tên</i>)
                td
                td.number(colspan="2"): span.s5 TIỀN CŨ:
-               td.number(colspan="2"): span.s4 <b>{{formatNumber distributorOldDebt}}</b> VNĐ
+               td.number(colspan="2"): span.s4 <b>{{formatNumber oldDebt}}</b> VNĐ
             tr
                td
                td
@@ -66,13 +66,8 @@ template(name="importDetailSection")
                td
                td
                td.number(colspan="2" style="border-top: solid 1px #d7d7d7")
-                  span.s4 <b>{{formatNumber distributorFinalDebt}}</b> VNĐ
+                  span.s4 <b>{{formatNumber finalDebt}}</b> VNĐ
 
-
-
-
-
-      .panel-footer
-
-         .right-float
-            span.s3
+      //.panel-footer
+      //   .right-float
+      //      span.s3

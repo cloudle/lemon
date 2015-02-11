@@ -28,6 +28,7 @@ template(name="merchantHome")
                   .app-count {{formatNumber Summary.data.productCount}}
                   .app-count-description loại sản phẩm
                   span.caption.app-name.bottom.right sản phẩm
+
             .tile-group-2
               .tile.double.peter-river(data-app="distributorManagement")
                 .app-icon.icon-shareable
@@ -37,7 +38,6 @@ template(name="merchantHome")
                 .app-count 0
                 .app-count-description phiếu trong ngày
                 span.caption.app-name.bottom.right bán hàng
-
               .tile.pink(data-app="customerReturn")
                 .app-icon.icon-reply-outline
                 .app-count 0
@@ -61,6 +61,7 @@ template(name="merchantHome")
               .tile.blue(data-app="distributorManagement")
                 .app-icon.icon-loop-outline
                 span.caption.app-name.bottom.right chuyển kho
+
             .tile-group-2
               .tile.double.gray
                 .app-icon.icon-award
@@ -73,9 +74,11 @@ template(name="merchantHome")
               .tile.carrot(data-app="distributorManagement")
                 .app-icon.icon-flash-3
                 span.caption.app-name.bottom.right lãi suất
-              .tile.double.gray
+              .tile.double.blue(data-app="partnerManagement")
                 .app-icon.icon-award
-                span.caption.app-name.bottom.right &nbsp;
+                .app-count 0
+                .app-count-description đã liên kết
+                span.caption.app-name.bottom.right đối tác
               .tile.double.amethyst(data-app="merchantReport")
                 .app-icon.icon-chart-pie-outline
                 span.caption.app-name.bottom.right báo cáo
