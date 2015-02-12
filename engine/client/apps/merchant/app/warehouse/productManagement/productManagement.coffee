@@ -6,6 +6,8 @@ lemon.defineApp Template.productManagement,
   currentProduct: -> Session.get("productManagementCurrentProduct")
   activeClass:-> if Session.get("productManagementCurrentProduct")?._id is @._id then 'active' else ''
   creationMode: -> Session.get("productManagementCreationMode")
+  showDeleteBranchProduct: -> @inStockQuality == @availableQuality == @totalQuality == 0
+  showDeleteMerchantProduct: -> if @buildInProduct and @branchList?.length is 0 then true else false
 
   showBranchProductList   :-> @managedBranchProductList.length > 0
   showMerchantProductList :-> @managedMerchantProductList.length > 0
@@ -19,8 +21,6 @@ lemon.defineApp Template.productManagement,
 
     lemon.dependencies.resolve('productManagements')
     Session.set("productManagementSearchFilter", "")
-
-
 
   events:
     "input .search-filter": (event, template) ->
@@ -37,3 +37,12 @@ lemon.defineApp Template.productManagement,
       if Session.get("mySession")
         Schema.userSessions.update(Session.get("mySession")._id, {$set: {currentProductManagementSelection: @_id}})
         Meteor.subscribe('productManagementData', @_id)
+
+    "click .deleteBranchProduct":  (event, template) ->
+      Meteor.call('deleteBranchProduct', @_id); event.stopPropagation()
+    "click .deleteMerchantProduct":  (event, template) ->
+      Meteor.call('deleteMerchantProduct', @_id); event.stopPropagation()
+    "click .addBranchProduct":  (event, template) ->
+      Meteor.call('addBranchProduct', @_id); event.stopPropagation()
+    "click .addMerchantAndBranchProduct":  (event, template) ->
+      Meteor.call('getBuildInProduct', @_id); event.stopPropagation()

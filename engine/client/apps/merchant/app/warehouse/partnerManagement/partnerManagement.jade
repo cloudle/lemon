@@ -12,24 +12,18 @@ template(name="partnerManagement")
           if creationMode
             .lemon.btn.rounded.tiny.lime.icon-plus-6.create-command.createStockBtn
         .nano: .nano-content
-          if showFilterSearch
-            .group-wrapper
-              if showMyPartnerList
-                .caption.group công ty
-              each managedMyPartnerList
+          .group-wrapper
+            if showMyPartnerList
+              .caption.group đã liên kết
+            each managedMyPartnerList
+              .caption.inner(class="{{activeClass}}")
+                +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                span.text {{name}}
+
+            if showFilterSearch
+              if showMerchantPartnerList
+                .caption.group chưa liên kêt
+              each managedMerchantPartnerList
                 .caption.inner(class="{{activeClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
-                  span.text {{name}}
-
-          else
-            each managedMyPartnerList
-              .group-wrapper
-                .caption.group {{key}}
-                each childs
-                  .caption.inner(class="{{activeClass}}")
-                    +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
-                    span.text {{name}}
-                      //.commands: span.icon-ok-6
-                    //span.right-info
-                    //  |10
-                    //  |sản phẩm
+                  span.text {{companyName}}

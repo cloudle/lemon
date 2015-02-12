@@ -68,6 +68,15 @@ Meteor.publishComposite 'availableProducts', ->
     ]
   }
 
+Meteor.publishComposite 'availableGeraProducts', ->
+  self = @
+  return {
+    find: ->
+      profile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !profile
+      Schema.buildInProducts.find()
+  }
+
 Meteor.publishComposite 'productManagementData', (productId = null, currentRecords = 0)->
   self = @
   return {

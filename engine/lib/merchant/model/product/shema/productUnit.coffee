@@ -70,3 +70,15 @@ simpleSchema.productUnits = new SimpleSchema
 #-----------------------------------------------
 Schema.add "productUnits", "ProductUnit", class ProductUnit
   @name: "Product Unit"
+  @optionByProfile: (productId, buildInProductUnit, profile)->
+    productUnitOption =
+      parentMerchant    : profile.parentMerchant
+      createMerchant    : profile.currentMerchant
+      merchant          : profile.currentMerchant
+      warehouse         : profile.currentWarehouse
+      creator           : profile.user
+      product           : productId
+      buildInProduct    : buildInProductUnit.buildInProduct
+      buildInProductUnit: buildInProductUnit._id
+    return productUnitOption
+

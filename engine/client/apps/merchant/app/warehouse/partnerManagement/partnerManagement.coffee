@@ -7,6 +7,7 @@ lemon.defineApp Template.partnerManagement,
   activeClass:-> if Session.get("partnerManagementCurrentPartner")?._id is @._id then 'active' else ''
   creationMode: -> Session.get("partnerManagementCreationMode")
   showMyPartnerList: -> @managedMyPartnerList.length > 0
+  showMerchantPartnerList: -> @managedMerchantPartnerList.length > 0
 
 #  showBranchPartnerList   :-> @managedBranchPartnerList.length > 0
 #  showMerchantPartnerList :-> @managedMerchantPartnerList.length > 0

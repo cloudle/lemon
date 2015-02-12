@@ -35,3 +35,11 @@ simpleSchema.branchProductUnits = new SimpleSchema
 
 Schema.add "branchProductUnits", "BranchProductUnit", class BranchProductUnit
   @name: "Branch Product Unit"
+  @optionByProfile: (productId, productUnitId, profile)->
+    branchProductUnitOption =
+      parentMerchant : profile.parentMerchant
+      merchant       : profile.currentMerchant
+      product        : productId
+      productUnit    : productUnitId
+      creator        : profile.user
+    return branchProductUnitOption

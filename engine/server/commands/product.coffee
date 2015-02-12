@@ -432,13 +432,10 @@ Meteor.methods
             optionUnset = {basicUnit: true, productCode: true, name: true, image: true}
             Schema.products.update product._id, $set:{status: "onSold"}, $unset: optionUnset
             Schema.buildInProducts.update buildInProduct._id, $set:{status: "onSold"}, $push:{ merchantRegister: profile.parentMerchant }
-            console.log '3'
             console.log buildInProduct._id
             Schema.merchantProfiles.update {merchant: profile.parentMerchant}, $push:{ geraProduct: buildInProduct._id }
-            console.log '4'
             Schema.buildInProductUnits.find({buildInProduct: buildInProduct._id}).forEach(
               (buildInProductUnit) ->
-                console.log '5'
                 productUnit = Schema.productUnits.findOne({product: buildInProduct.product, buildInProductUnit: buildInProductUnit._id})
                 if productUnit
                   optionUnset = {productCode: true, image: true, unit: true, conversionQuality: true}
@@ -453,4 +450,77 @@ Meteor.methods
                     allowDelete       : false
                   Schema.productUnits.insert optionProductUnit
             )
-            console.log '6'
+
+  deleteMerchantProduct: (productId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      product = Schema.products.findOne({_id: productId})
+      merchantProfile = Schema.merchantProfiles.findOne({merchant: profile.parentMerchant})
+      if merchantProfile and product
+        if product.buildInProduct and product.branchList.length is 0
+          Schema.products.remove product._id
+          Schema.productUnits.remove {product: product._id}
+          Schema.branchProductSummaries.remove {product: product._id}
+          Schema.branchProductUnits.remove {product: product._id}
+          Schema.merchantProfiles.update merchantProfile._id, $pull: { geraProduct: product.buildInProduct }
+
+
+
+  deleteBranchProduct: (productId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant})
+      branchProduct = Schema.branchProductSummaries.findOne({product: productId, merchant: profile.currentMerchant})
+      if branchProduct and branchProfile
+        if branchProduct.inStockQuality == branchProduct.availableQuality == branchProduct.totalQuality == 0
+          Schema.branchProductUnits.remove {product: branchProduct.product, merchant: profile.currentMerchant}
+          Schema.branchProductSummaries.remove {product: branchProduct.product, merchant: profile.currentMerchant}
+
+          branchProductListId = branchProfile.productList ? []
+          index = branchProductListId.indexOf(branchProduct.product)
+          branchProductListId.splice(index, 1) if index isnt -1
+          Schema.branchProfiles.update branchProfile._id, $set:{productList: branchProductListId}
+          Schema.products.update productId, $pull: { branchList: profile.currentMerchant }
+
+  addBranchProduct: (productId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant})
+      product = Schema.products.findOne({_id: productId, parentMerchant: profile.parentMerchant})
+      if product and branchProfile
+        branchProductOption =
+          parentMerchant: profile.parentMerchant
+          merchant      : profile.currentMerchant
+          warehouse     : profile.currentWarehouse
+          product       : product._id
+        branchProductId = Schema.branchProductSummaries.insert branchProductOption
+
+        if Schema.branchProductSummaries.findOne(branchProductId)
+          Schema.productUnits.find({product: product._id}).forEach(
+            (productUnit)->
+              Schema.branchProductUnits.insert BranchProductUnit.optionByProfile(product._id, productUnit._id, profile)
+          )
+          Schema.products.update product._id, $addToSet: { branchList: profile.currentMerchant }
+
+          branchProductListId = branchProfile.productList ? []; branchProductListId.push product._id
+          Schema.branchProfiles.update branchProfile._id, $set:{productList: branchProductListId}
+
+  getBuildInProduct: (buildInProductId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      branchProfile   = Schema.branchProfiles.findOne({merchant: profile.currentMerchant})
+      merchantProfile = Schema.merchantProfiles.findOne({merchant: profile.parentMerchant})
+      buildInProduct  = Schema.buildInProducts.findOne({_id: buildInProductId})
+      productFound    = Schema.products.findOne({buildInProduct: buildInProductId, parentMerchant: profile.parentMerchant})
+      if branchProfile and merchantProfile and buildInProduct and !productFound
+        if productId = Schema.products.insert Product.optionByProfile(buildInProductId, profile)
+          branchProductId = Schema.branchProductSummaries.insert BranchProductSummary.optionByProfile(productId, profile)
+          Schema.buildInProductUnits.find({buildInProduct: buildInProduct._id}).forEach(
+            (buildInProductUnit)->
+              productUnitId = Schema.productUnits.insert ProductUnit.optionByProfile(productId, buildInProductUnit, profile)
+              Schema.branchProductUnits.insert BranchProductUnit.optionByProfile(productId, productUnitId, profile) if productUnitId
+          )
+
+          Schema.products.update productId, $addToSet: { branchList: profile.currentMerchant }
+
+          branchProductListId = branchProfile.productList ? []; branchProductListId.push productId
+          Schema.branchProfiles.update branchProfile._id, $set:{productList: branchProductListId}
+
+          geraProductListId = merchantProfile.geraProduct ? []; geraProductListId.push buildInProduct._id
+          Schema.merchantProfiles.update merchantProfile._id, $set:{geraProduct: geraProductListId}

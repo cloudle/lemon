@@ -11,6 +11,9 @@ Apps.Merchant.productManagementReactive.push (scope) ->
       cursorProduct = Schema.products.find({merchant: Session.get("myProfile").currentMerchant})
       Helpers.searchBranchProduct(cursorProduct, branchProductListId, scope.branchProductList, scope.merchantProductList)
 
+    if merchantProfile = Schema.merchantProfiles.findOne(merchant: profile.parentMerchant)
+      scope.geraProductList = Schema.buildInProducts.find({_id: {$nin: merchantProfile.geraProduct}})
+
     if Session.get("productManagementSearchFilter")?.length > 0
       unsignedSearch = Helpers.RemoveVnSigns Session.get("productManagementSearchFilter")
 
@@ -21,6 +24,12 @@ Apps.Merchant.productManagementReactive.push (scope) ->
       for merchantProduct in scope.merchantProductList
         unsignedName = Helpers.RemoveVnSigns merchantProduct.name
         scope.managedMerchantProductList.push merchantProduct if unsignedName.indexOf(unsignedSearch) > -1
+
+      scope.geraProductList.forEach(
+        (geraProduct)->
+          unsignedName = Helpers.RemoveVnSigns geraProduct.name
+          scope.managedGeraProductList.push geraProduct if unsignedName.indexOf(unsignedSearch) > -1
+      ) if scope.geraProductList
 
     else
       groupedProducts = _.groupBy scope.branchProductList, (product) -> product.name.substr(0, 1).toLowerCase() if product.name

@@ -56,5 +56,11 @@ Schema.add 'products', "Product", class Product
     else
       {error:'Không thể xóa được sản phẩm.'}
 
-
-
+  @optionByProfile: (buildInProductId, profile) ->
+    productOption =
+      createMerchant : profile.currentMerchant
+      parentMerchant : profile.parentMerchant
+      merchant       : profile.currentMerchant
+      warehouse      : profile.currentWarehouse
+      buildInProduct : buildInProductId
+    return productOption

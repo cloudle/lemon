@@ -65,3 +65,10 @@ simpleSchema.branchProductSummaries = new SimpleSchema
 
 Schema.add "branchProductSummaries", "BranchProductSummary", class BranchProductSummary
   @name: "Merchant Product Summaries"
+  @optionByProfile: (productId, profile)->
+    branchProductOption =
+      parentMerchant    : profile.parentMerchant
+      merchant          : profile.currentMerchant
+      warehouse         : profile.currentWarehouse
+      product           : productId
+    return branchProductOption

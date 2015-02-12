@@ -158,7 +158,7 @@ Meteor.methods
           )
       )
 
-  addBranchProduct: ->
+  updateBranchProduct: ->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
 #      Schema.productDetails.find({branchProduct: {$exists: false}, merchant: profile.currentMerchant}).forEach(
 #        (productDetail)->

@@ -36,6 +36,10 @@ simpleSchema.products = new SimpleSchema
     type: String
     optional: true
 
+  branchList:
+    type: [String]
+    defaultValue: []
+
   price:
     type: Number
     optional: true

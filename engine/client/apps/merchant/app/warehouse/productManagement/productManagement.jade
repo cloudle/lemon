@@ -27,6 +27,9 @@ template(name="productManagement")
                     |{{name}}
                     if basicUnit
                       |({{basicUnit}})
+                    if showDeleteBranchProduct
+                      .commands
+                        span.icon-cancel-circled-4.deleteBranchProduct
 
               if showMerchantProductList
                 .caption.group công ty
@@ -37,6 +40,10 @@ template(name="productManagement")
                     |{{name}}
                     if basicUnit
                       |({{basicUnit}})
+                    .commands
+                      if showDeleteMerchantProduct
+                        span.icon-cancel-circled-4.deleteMerchantProduct
+                      span.icon-loop-outline.addBranchProduct
 
               if showGeraProductList
                 .caption.group gera
@@ -47,6 +54,8 @@ template(name="productManagement")
                     |{{name}}
                     if basicUnit
                         |({{basicUnit}})
+                    .commands
+                      span.icon-download-outline.addMerchantAndBranchProduct
           else
             each managedBranchProductList
               .group-wrapper

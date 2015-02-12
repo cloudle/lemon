@@ -6,9 +6,17 @@ Meteor.publishComposite 'availablePartners', ->
       branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant}) if profile
       return EmptyQueryResult if !branchProfile
       Schema.partners.find({parentMerchant: profile.currentMerchant})
-  #    children: [
-  #      find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}
-  #    ]
+  }
+
+Meteor.publishComposite 'availableMerchantPartners', ->
+  self = @
+  return {
+    find: ->
+      profile = Schema.userProfiles.findOne({user: self.userId})
+      return EmptyQueryResult if !profile
+      merchantList = []
+      Schema.merchants.find({merchantType: "merchant", parent:{$exists: false}}).forEach((merchant)-> merchantList.push merchant._id)
+      Schema.merchantProfiles.find { merchant: {$in:merchantList}, packageClassActive: true }
   }
 
 Meteor.publishComposite 'partnerManagementData', (id) ->
