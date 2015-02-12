@@ -40,6 +40,14 @@ simpleSchema.productDetails = new SimpleSchema
     type: String
     optional: true
 
+  buildInProduct:
+    type: String
+    optional: true
+
+  buildInProductUnit:
+    type: String
+    optional: true
+
   unitQuality:
     type: Number
     optional: true

@@ -56,9 +56,6 @@ simpleSchema.importDetails = new SimpleSchema
     type: Boolean
     defaultValue: false
 
-
-  version: { type: simpleSchema.Version }
-
   unit:
     type: String
     optional: true
@@ -74,3 +71,13 @@ simpleSchema.importDetails = new SimpleSchema
   conversionQuality:
     type: Number
     optional: true
+
+  buildInProduct:
+    type: String
+    optional: true
+
+  buildInProductUnit:
+    type: String
+    optional: true
+
+  version: { type: simpleSchema.Version }

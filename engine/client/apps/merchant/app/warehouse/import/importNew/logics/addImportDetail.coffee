@@ -23,7 +23,6 @@ Apps.Merchant.importInit.push (scope) ->
           option = {totalPrice: totalPrice, debit: totalPrice - currentImport.deposit}
 #          option = {totalPrice: totalPrice, deposit: totalPrice, debit: 0}
       else option = {totalPrice: 0, deposit: 0, debit: 0}
-      console.log option
       Import.update importId, $set: option
 
   scope.addImportDetail = (currentProduct) ->
@@ -65,10 +64,13 @@ Apps.Merchant.importInit.push (scope) ->
         totalPrice    : product.importPrice ? 0
         conversionQuality: 1
 
+      importDetail.buildInProduct = product.buildInProduct if product.buildInProduct
       if currentProduct.unit
-        importDetail.unit              = productUnit._id
-        importDetail.conversionQuality = productUnit.conversionQuality
-        importDetail.importQuality     = importDetail.unitQuality * importDetail.conversionQuality
+        importDetail.buildInProductUnit = productUnit.buildInProductUnit if productUnit.buildInProductUnit
+        importDetail.unit               = productUnit._id
+        importDetail.conversionQuality  = productUnit.conversionQuality
+        importDetail.importQuality      = importDetail.unitQuality * importDetail.conversionQuality
+
         if productUnit.importPrice > 0
           importDetail.unitPrice     = productUnit.importPrice
           importDetail.importPrice   = productUnit.importPrice/importDetail.conversionQuality

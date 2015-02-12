@@ -1,7 +1,9 @@
 Apps.Merchant.importReactive.push (scope) ->
   if Session.get("myProfile")
-    scope.managedImportProductList = []
-    products = []; cursorProduct = Schema.products.find({merchant: Session.get("myProfile").currentMerchant})
+    scope.managedImportProductList = []; products = []
+    optionCursorProduct = {merchant: Session.get("myProfile").currentMerchant}
+    optionCursorProduct.buildInProduct = { $exists: true } if Session.get('currentImportPartner')
+    cursorProduct = Schema.products.find(optionCursorProduct)
     Helpers.searchProduct(cursorProduct, products)
 
     if Session.get("importManagementSearchFilter")?.length > 0
@@ -16,6 +18,10 @@ Apps.Merchant.importReactive.push (scope) ->
       if Session.get('currentImportDistributor')?.builtIn?.length > 0
         products = []; cursorProduct = Schema.products.find({_id: $in: Session.get('currentImportDistributor').builtIn})
         Helpers.searchProduct(cursorProduct, products)
+
+#      if Session.get('currentImportPartner')?.builtIn?.length > 0
+#        products = []; cursorProduct = Schema.products.find({_id: $in: Session.get('currentImportDistributor').builtIn})
+#        Helpers.searchProduct(cursorProduct, products)
 
       groupedProducts = _.groupBy products, (product) -> product.name.substr(0, 1).toLowerCase() if product.name
       for key, childs of groupedProducts

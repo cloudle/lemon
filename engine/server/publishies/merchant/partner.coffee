@@ -56,3 +56,13 @@ Schema.partners.allow
   insert: -> true
   update: -> true
   remove: -> true
+
+Schema.partnerSales.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
+Schema.partnerSaleDetails.allow
+  insert: -> true
+  update: -> true
+  remove: -> true

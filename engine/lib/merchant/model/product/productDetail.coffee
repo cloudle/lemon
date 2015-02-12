@@ -15,9 +15,11 @@ Schema.add 'productDetails', "ProductDetail", class ProductDetail
       unitQuality      : importDetail.unitQuality
       unitPrice        : importDetail.unitPrice
       conversionQuality: importDetail.conversionQuality
-    option.unit        = importDetail.unit if importDetail.unit
-    option.branchUnit  = importDetail.branchUnit if importDetail.branchUnit
 
+    option.unit                = importDetail.unit if importDetail.unit
+    option.branchUnit          = importDetail.branchUnit if importDetail.branchUnit
+    option.buildInProduct      = importDetail.buildInProduct if importDetail.buildInProduct
+    option.buildInProductUnit  = importDetail.buildInProductUnit if importDetail.buildInProductUnit
 
     option.distributor = imports.distributor if imports.distributor
     option.partner     = imports.partner if imports.partner

@@ -9,7 +9,7 @@ Meteor.methods
           creator       : profile.user
           buildIn       : partnerMerchantProfile.merchant
           name          : partnerMerchantProfile.companyName
-          status        : 'submitPartner'
+          status        : 'submit'
         if submitPartnerId = Schema.partners.insert submitPartner
           unSubmitPartner =
             parentMerchant: partnerMerchantProfile.merchant
@@ -17,7 +17,7 @@ Meteor.methods
             buildIn       : myMerchantProfile.merchant
             name          : myMerchantProfile.companyName
             partner       : submitPartnerId
-            status        : 'unSubmitPartner'
+            status        : 'unSubmit'
           if unSubmitPartnerId = Schema.partners.insert unSubmitPartner
             Schema.partners.update submitPartnerId, $set:{partner: unSubmitPartnerId}
 
@@ -29,12 +29,12 @@ Meteor.methods
       partner = Schema.partners.findOne({_id: partnerId, parentMerchant: profile.parentMerchant})
       switch status
         when 'submit'
-          if partner.status is 'unSubmitPartner'
-            Schema.partners.update partner._id, $set:{status: 'successPartner'}
-            Schema.partners.update partner.partner, $set:{status: 'successPartner'}
+          if partner.status is 'unSubmit'
+            Schema.partners.update partner._id, $set:{status: 'success', creator: profile.user}
+            Schema.partners.update partner.partner, $set:{status: 'success'}
 
         when 'delete'
-          if partner.status isnt 'myMerchant' and partner.status isnt 'successPartner'
+          if partner.status isnt 'myMerchant' and partner.status isnt 'success'
             Schema.partners.remove partner._id
             Schema.partners.remove partner.partner
             Schema.merchantProfiles.update {merchant: partner.parentMerchant}, $pull: { merchantPartnerList: partner.buildIn }

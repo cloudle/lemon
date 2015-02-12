@@ -9,7 +9,7 @@ lemon.defineApp Template.partnerManagement,
   showMyPartnerList: -> @managedMyPartnerList.length > 0
   showUnSubmitPartnerList: -> @managedUnSubmitPartnerList.length > 0
   showMerchantPartnerList: -> @managedMerchantPartnerList.length > 0
-  showSubmitPartner: -> if @status is 'unSubmitPartner' then true else false
+  showSubmitPartner: -> if @status is 'unSubmit' then true else false
 
   created: ->
     if currentPartner = Session.get("mySession").currentPartnerManagementSelection

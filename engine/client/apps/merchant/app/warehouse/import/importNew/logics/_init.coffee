@@ -28,10 +28,15 @@ Apps.Merchant.importReactive.push (scope) ->
   if distributorId = Session.get('currentImport')?.distributor
     if !Session.get('currentImportDistributor') || Session.get('currentImportDistributor')._id != distributorId
       Session.set 'currentImportDistributor', Schema.distributors.findOne(distributorId)
+  else
+    Session.set 'currentImportDistributor'
 
   if partnerId = Session.get('currentImport')?.partner
     if !Session.get('currentImportPartner') || Session.get('currentImportPartner')._id != partnerId
       Session.set 'currentImportPartner', Schema.partners.findOne(partnerId)
+  else
+    Session.set 'currentImportPartner'
+
 
   if Session.get("currentImport")?.submitted is true
     Session.set("importEditingRowId"); Session.set("importEditingRow")

@@ -16,9 +16,9 @@ Apps.Merchant.partnerManagementReactive.push (scope) ->
           if unsignedName.indexOf(unsignedSearch) > -1
             switch myPartner.status
               when 'myMerchant' then scope.managedMyPartnerList.push myPartner
-              when 'successPartner' then scope.managedMyPartnerList.push myPartner
-              when 'submitPartner' then scope.managedUnSubmitPartnerList.push myPartner
-              when 'unSubmitPartner' then scope.managedUnSubmitPartnerList.push myPartner
+              when 'success' then scope.managedMyPartnerList.push myPartner
+              when 'submit' then scope.managedUnSubmitPartnerList.push myPartner
+              when 'unSubmit' then scope.managedUnSubmitPartnerList.push myPartner
       )
 
       scope.merchantPartnerList.forEach(
@@ -37,9 +37,9 @@ Apps.Merchant.partnerManagementReactive.push (scope) ->
         (myPartner)->
           switch myPartner.status
             when 'myMerchant' then scope.managedMyPartnerList.push myPartner
-            when 'successPartner' then scope.managedMyPartnerList.push myPartner
-            when 'submitPartner' then scope.managedUnSubmitPartnerList.push myPartner
-            when 'unSubmitPartner' then scope.managedUnSubmitPartnerList.push myPartner
+            when 'success' then scope.managedMyPartnerList.push myPartner
+            when 'submit' then scope.managedUnSubmitPartnerList.push myPartner
+            when 'unSubmit' then scope.managedUnSubmitPartnerList.push myPartner
       )
       scope.managedMyPartnerList = _.sortBy(scope.managedMyPartnerList, (num)-> num.name)
       scope.managedUnSubmitPartnerList = _.sortBy(scope.managedUnSubmitPartnerList, (num)-> num.name)

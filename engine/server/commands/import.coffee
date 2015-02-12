@@ -118,7 +118,7 @@ Meteor.methods
         if currentImport.distributor
           for importDetail in importDetails
             productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
-            productDetail.status = 'finish'
+            productDetail.status = 'success'
             Schema.productDetails.insert productDetail, (error, result) ->
               if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
 
@@ -152,20 +152,62 @@ Meteor.methods
           MetroSummary.updateMetroSummaryByImport(importId)
           MetroSummary.updateMyMetroSummaryBy(['createdImport'],  importId)
 
-
-        listDataOfPartner =
-          productDetailList: []
-          productList      : []
-          productUnitList  : []
-          branchProductList      : []
-          branchProductUnitList  : []
         if currentImport.partner
-          partner = Schema.partners.findOne(currentImport.partner)
-          if partner.buildIn
-          else
+          if partner = Schema.partners.findOne(currentImport.partner)
+            creatorPartner = Schema.userProfiles.findOne({user: partner.creator})
+            listDataOfPartner =
+              productDetailList: []
+              productList      : []
+              productUnitList  : []
+              branchProductList      : []
+              branchProductUnitList  : []
+
+            if partner.buildIn
+              if partner.status is 'success'
+                partnerSalesOption =
+                  parentMerchant: creatorPartner.parentMerchant
+                  merchant      : creatorPartner.currentMerchant
+                  warehouse     : creatorPartner.currentWarehouse
+                  creator       : creatorPartner.user
+                  partner       : partner.partner
+                  totalPrice    : currentImport.totalPrice
+                  deposit       : currentImport.deposit
+                  debit         : currentImport.debit
+                  status        : 'unSubmit'
+                  beforeDebtBalance: partner.saleDebt
+                  debtBalanceChange: currentImport.debtBalanceChange
+                  latestDebtBalance: partner.saleDebt + currentImport.debtBalanceChange
+                partnerSalesOption._id = Schema.partnerSales.insert partnerSalesOption
+              else
+                throw new Meteor.Error('importError', 'Doi tac chua ket noi'); return
+
             for importDetail in importDetails
               productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
-              productDetail.status = 'finish'
+              if partner.buildIn and partner.status is 'success'
+                productDetail.status = 'unSubmit'
+                partnerSaleDetail =
+                  partnerSales      : partnerSalesOption._id
+                  buildInProduct    : importDetail.buildInProduct
+
+              else
+                productDetail.status = 'success'
+                incOption =
+                  totalQuality    : importDetail.importQuality
+                  availableQuality: importDetail.importQuality
+                  inStockQuality  : importDetail.importQuality
+
+                setOption =
+                  provider    : importDetail.provider
+                  importPrice : Math.ceil(importDetail.importPrice)
+                  allowDelete : false
+                setOption.price = importDetail.salePrice if importDetail.salePrice
+
+                Schema.providers.update(productDetail.provider, $set:{allowDelete: false})
+                Schema.products.update productDetail.product, $inc: incOption, $set: setOption, (error, result) ->
+                  if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+                Schema.branchProductSummaries.update productDetail.branchProduct, $inc: incOption, $set: setOption, (error, result) ->
+                  if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+
               Schema.productDetails.insert productDetail, (error, result) ->
                 if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
                 else
@@ -175,28 +217,12 @@ Meteor.methods
                   listDataOfPartner.productUnitList.push productDetail.unit if productDetail.unit
                   listDataOfPartner.branchProductUnitList.push productDetail.branchUnit if productDetail.branchUnit
 
-              incOption =
-                totalQuality    : importDetail.importQuality
-                availableQuality: importDetail.importQuality
-                inStockQuality  : importDetail.importQuality
-
-              setOption =
-                provider    : importDetail.provider
-                importPrice : Math.ceil(importDetail.importPrice)
-                allowDelete : false
-              setOption.price = importDetail.salePrice if importDetail.salePrice
-
-              Schema.providers.update(productDetail.provider, $set:{allowDelete: false})
-              Schema.products.update productDetail.product, $inc: incOption, $set: setOption, (error, result) ->
-                if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
-              Schema.branchProductSummaries.update productDetail.branchProduct, $inc: incOption, $set: setOption, (error, result) ->
-                if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
-
-
-            navigateNewTab(currentImport._id, profile)
-            updateImportAndPartner(currentImport, partner, profile, listDataOfPartner)
-            MetroSummary.updateMetroSummaryByImport(currentImport._id)
-            MetroSummary.updateMyMetroSummaryBy(['createdImport'],  currentImport._id)
+            if partner.buildIn and partner.status is 'success'
+            else
+              navigateNewTab(currentImport._id, profile)
+              updateImportAndPartner(currentImport, partner, profile, listDataOfPartner)
+              MetroSummary.updateMetroSummaryByImport(currentImport._id)
+              MetroSummary.updateMyMetroSummaryBy(['createdImport'],  currentImport._id)
 
         return ('Phiếu nhập kho đã được duyệt')
     else

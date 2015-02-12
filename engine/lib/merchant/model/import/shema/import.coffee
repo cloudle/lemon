@@ -53,7 +53,7 @@ simpleSchema.imports = new SimpleSchema
 
   status:
     type: String
-    optional: true
+    defaultValue: 'new'
 
   allowDelete:
     type: Boolean
