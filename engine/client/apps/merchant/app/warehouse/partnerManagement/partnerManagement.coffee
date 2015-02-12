@@ -7,12 +7,9 @@ lemon.defineApp Template.partnerManagement,
   activeClass:-> if Session.get("partnerManagementCurrentPartner")?._id is @._id then 'active' else ''
   creationMode: -> Session.get("partnerManagementCreationMode")
   showMyPartnerList: -> @managedMyPartnerList.length > 0
+  showUnSubmitPartnerList: -> @managedUnSubmitPartnerList.length > 0
   showMerchantPartnerList: -> @managedMerchantPartnerList.length > 0
-
-#  showBranchPartnerList   :-> @managedBranchPartnerList.length > 0
-#  showMerchantPartnerList :-> @managedMerchantPartnerList.length > 0
-#  showGeraPartnerList     :-> @managedGeraPartnerList.length > 0
-
+  showSubmitPartner: -> if @status is 'unSubmitPartner' then true else false
 
   created: ->
     if currentPartner = Session.get("mySession").currentPartnerManagementSelection
@@ -37,3 +34,9 @@ lemon.defineApp Template.partnerManagement,
       if Session.get("mySession")
         UserSession.set('currentPartnerManagementSelection', @_id)
         Meteor.subscribe('partnerManagementData', @_id)
+
+    "click .submitMerchantPartner": (event, template) ->
+      Meteor.call('updateMerchantPartner', @_id); event.stopPropagation()
+
+    "click .addMerchantPartner": (event, template) ->
+      Meteor.call('addMerchantPartner', @); event.stopPropagation()

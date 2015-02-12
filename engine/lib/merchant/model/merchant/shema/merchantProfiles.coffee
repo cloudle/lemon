@@ -13,6 +13,10 @@ simpleSchema.merchantProfiles = new SimpleSchema
     type: [String]
     defaultValue: []
 
+  merchantPartnerList:
+    type: [String]
+    defaultValue: []
+
   companyName:
     type: String
     optional: true

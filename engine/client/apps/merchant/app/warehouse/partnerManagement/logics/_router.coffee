@@ -15,6 +15,7 @@ lemon.addRoute
     Apps.setup(scope, Apps.Merchant.partnerManagementReactive)
     return {
       managedMyPartnerList       : scope.managedMyPartnerList
+      managedUnSubmitPartnerList : scope.managedUnSubmitPartnerList
       managedMerchantPartnerList : scope.managedMerchantPartnerList
     }
 , Apps.Merchant.RouterBase

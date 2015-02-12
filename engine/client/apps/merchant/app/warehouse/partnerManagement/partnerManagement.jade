@@ -13,12 +13,21 @@ template(name="partnerManagement")
             .lemon.btn.rounded.tiny.lime.icon-plus-6.create-command.createStockBtn
         .nano: .nano-content
           .group-wrapper
-            if showMyPartnerList
-              .caption.group đã liên kết
             each managedMyPartnerList
               .caption.inner(class="{{activeClass}}")
                 +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                 span.text {{name}}
+
+            if showUnSubmitPartnerList
+              .caption.group chờ xác nhận
+            each managedUnSubmitPartnerList
+              .caption.inner(class="{{activeClass}}")
+                +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                span.text {{name}}
+                  if showSubmitPartner
+                    .commands
+                      span.icon-ok-6.submitMerchantPartner
+
 
             if showFilterSearch
               if showMerchantPartnerList
@@ -27,3 +36,5 @@ template(name="partnerManagement")
                 .caption.inner(class="{{activeClass}}")
                   +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                   span.text {{companyName}}
+                    .commands
+                      span.icon-loop-outline.addMerchantPartner

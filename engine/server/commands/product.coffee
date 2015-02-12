@@ -470,7 +470,7 @@ Meteor.methods
       branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant})
       branchProduct = Schema.branchProductSummaries.findOne({product: productId, merchant: profile.currentMerchant})
       if branchProduct and branchProfile
-        if branchProduct.inStockQuality == branchProduct.availableQuality == branchProduct.totalQuality == 0
+        if branchProduct.inStockQuality == branchProduct.availableQuality == branchProduct.totalQuality == branchProduct.salesQuality == 0
           Schema.branchProductUnits.remove {product: branchProduct.product, merchant: profile.currentMerchant}
           Schema.branchProductSummaries.remove {product: branchProduct.product, merchant: profile.currentMerchant}
 

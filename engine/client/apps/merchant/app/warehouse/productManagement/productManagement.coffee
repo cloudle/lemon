@@ -6,7 +6,7 @@ lemon.defineApp Template.productManagement,
   currentProduct: -> Session.get("productManagementCurrentProduct")
   activeClass:-> if Session.get("productManagementCurrentProduct")?._id is @._id then 'active' else ''
   creationMode: -> Session.get("productManagementCreationMode")
-  showDeleteBranchProduct: -> @inStockQuality == @availableQuality == @totalQuality == 0
+  showDeleteBranchProduct: -> @inStockQuality == @availableQuality == @totalQuality == @salesQuality == 0
   showDeleteMerchantProduct: -> if @buildInProduct and @branchList?.length is 0 then true else false
 
   showBranchProductList   :-> @managedBranchProductList.length > 0

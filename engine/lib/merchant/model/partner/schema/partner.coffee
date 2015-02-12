@@ -7,6 +7,7 @@ simpleSchema.partners = new SimpleSchema
 
   name:
     type: String
+    optional: true
 
   phone:
     type: String
@@ -28,6 +29,10 @@ simpleSchema.partners = new SimpleSchema
     type: String
     optional: true
 
+  partner:
+    type: String
+    optional: true
+
   merchantType:
     type: String
     defaultValue: 'myMerchant'
@@ -38,7 +43,7 @@ simpleSchema.partners = new SimpleSchema
 
   status:
     type: String
-    defaultValue: 'brandNew'
+    defaultValue: 'myMerchant'
 
   allowDelete:
     type: Boolean
