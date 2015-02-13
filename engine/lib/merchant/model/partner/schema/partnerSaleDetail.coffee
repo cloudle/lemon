@@ -34,7 +34,6 @@ simpleSchema.partnerSaleDetails = new SimpleSchema
     type: Number
     optional: true
 #----------------------------------------
-
   partnerSales:
     type: String
 
@@ -53,27 +52,16 @@ simpleSchema.partnerSaleDetails = new SimpleSchema
   discountCash:
     type: Number
     decimal: true
+    defaultValue: 0
 
   discountPercent:
     type: Number
     decimal: true
-
-  totalPrice:
-    type: Number
-
-  finalPrice:
-    type: Number
-    decimal: true
-
-  export:
-    type: Boolean
-
-  exportDate:
-    type: Date
-    optional: true
+    defaultValue: 0
 
   status:
-    type: Boolean
+    type: String
+    defaultValue: 'unSubmit'
 
   styles:
     type: String

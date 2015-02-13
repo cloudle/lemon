@@ -14,7 +14,7 @@ Schema.add 'imports', "Import", class Import
         creator   : creatorId ? myProfile.user
         warehouse : warehouseId ? myProfile.currentWarehouse
         merchant  : merchantId ? myProfile.currentMerchant
-        status    : {$not: 'unSubmit'}
+        status    : {$nin: ['unSubmit']}
         $or : [{ finish : false }, { submitted : false}]
       ]
     })

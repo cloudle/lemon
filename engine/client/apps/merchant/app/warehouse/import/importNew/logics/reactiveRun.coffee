@@ -2,7 +2,10 @@ Apps.Merchant.importReactive.push (scope) ->
   if Session.get("myProfile")
     scope.managedImportProductList = []; products = []
     optionCursorProduct = {merchant: Session.get("myProfile").currentMerchant}
-    optionCursorProduct.buildInProduct = { $exists: true } if Session.get('currentImportPartner')
+    if Session.get('currentImportPartner')
+      merchantProfile = Schema.merchantProfiles.findOne({merchant: Session.get('currentImportPartner').parentMerchant})
+      partnerMerchantProfile = Schema.merchantProfiles.findOne({merchant: Session.get('currentImportPartner').buildIn})
+      optionCursorProduct.buildInProduct = { $in: _.intersection(merchantProfile.geraProduct, partnerMerchantProfile.geraProduct) }
     cursorProduct = Schema.products.find(optionCursorProduct)
     Helpers.searchProduct(cursorProduct, products)
 

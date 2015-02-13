@@ -87,7 +87,7 @@ simpleSchema.transactions = new SimpleSchema
 
   status:
     type: String
-    optional: true
+    defaultValue: 'success'
 
   depositCash:
     type: Number

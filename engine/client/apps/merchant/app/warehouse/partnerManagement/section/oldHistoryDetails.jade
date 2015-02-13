@@ -1,7 +1,7 @@
 template(name="partnerManagementOldHistoryDetails")
   tr.header-row: td(colspan="5")
     | &nbsp;
-    .bill-header <b>{{momentFormat debtDate 'DD/MM/YYYY'}}</b>
+    .bill-header <b>{{momentFormat version.createdAt 'DD/MM/YYYY'}}</b>
     .commands
       if isCustomImportModeEnabled
         .lemon.rounded.red.btn.animated.bounceIn.deleteCustomImport: span.icon-minus-4

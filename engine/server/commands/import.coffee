@@ -26,40 +26,33 @@ updateImportAndDistributor = (currentImport, distributor)->
     latestDebtBalance   : distributor.importDebt + currentImport.totalPrice
     finish              : true
     submitted           : true
+    status              : 'success'
     'version.createdAt' : new Date()
   }
   Schema.imports.update currentImport._id, $set: importOption
 
-updateImportAndPartner = (currentImport, partner, profile, listData)->
-  importOption = {
+updateImportAndPartner = (currentImport, partner, profile, listData, status = 'success')->
+  importOption =
     beforeDebtBalance   : partner.importDebt
     debtBalanceChange   : currentImport.totalPrice
     latestDebtBalance   : partner.importDebt + currentImport.totalPrice
     finish              : true
     submitted           : true
     'version.createdAt' : new Date()
-  }
+  importOption.status = status
   Schema.imports.update currentImport._id, $set: importOption
 
-  partnerIncOption =
-    importDebt      : currentImport.totalPrice
-    importTotalCash : currentImport.totalPrice
   partnerAddToSet =
     importList        : currentImport._id
     productDetailList : { $each: _.uniq(listData.productDetailList) }
     productList       : { $each: _.uniq(listData.productList) }
     branchProductList : { $each: _.uniq(listData.branchProductList) }
-
   if listData.productUnitList.length > 0
     partnerAddToSet.productUnitList = { $each: _.uniq(listData.productUnitList) }
-
   if listData.branchProductUnitList.length > 0
     partnerAddToSet.branchProductUnitList = { $each: _.uniq(listData.branchProductUnitList) }
 
   if currentImport.deposit > 0
-    partnerOption.importDebt = -currentImport.deposit
-    partnerOption.importPaid = currentImport.deposit
-
     transactionOption =
       parentMerchant    : profile.parentMerchant
       merchant          : profile.currentMerchant
@@ -74,10 +67,19 @@ updateImportAndPartner = (currentImport, partner, profile, listData)->
       debtBalanceChange : currentImport.deposit
       beforeDebtBalance : partner.importDebt
       latestDebtBalance : partner.importDebt - currentImport.deposit
+    transactionOption.status = status
     Schema.transactions.insert transactionOption
 
-  Schema.partners.update partner._id, $addToSet: partnerAddToSet , $inc: partnerIncOption, $set: {allowDelete: false}
-
+  partnerOptionUpdate = { $addToSet: partnerAddToSet , $set: {allowDelete: false} }
+  if status is 'success'
+    partnerIncOption =
+      importDebt      : currentImport.totalPrice
+      importTotalCash : currentImport.totalPrice
+    if currentImport.deposit > 0
+      partnerIncOption.importDebt = -currentImport.deposit
+      partnerIncOption.importPaid = currentImport.deposit
+    partnerOptionUpdate.$inc = partnerIncOption
+  Schema.partners.update partner._id, partnerOptionUpdate
 
 updateBuiltInOfDistributor = (distributorId, importDetails)->
   productIds = _.uniq(_.pluck(importDetails, 'product'))
@@ -159,8 +161,8 @@ Meteor.methods
               productDetailList: []
               productList      : []
               productUnitList  : []
-              branchProductList      : []
-              branchProductUnitList  : []
+              branchProductList     : []
+              branchProductUnitList : []
 
             if partner.buildIn
               if partner.status is 'success'
@@ -177,20 +179,48 @@ Meteor.methods
                   beforeDebtBalance: partner.saleDebt
                   debtBalanceChange: currentImport.debtBalanceChange
                   latestDebtBalance: partner.saleDebt + currentImport.debtBalanceChange
-                partnerSalesOption._id = Schema.partnerSales.insert partnerSalesOption
-              else
-                throw new Meteor.Error('importError', 'Doi tac chua ket noi'); return
 
-            for importDetail in importDetails
-              productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
-              if partner.buildIn and partner.status is 'success'
-                productDetail.status = 'unSubmit'
-                partnerSaleDetail =
-                  partnerSales      : partnerSalesOption._id
-                  buildInProduct    : importDetail.buildInProduct
+                if partnerSalesOption._id = Schema.partnerSales.insert partnerSalesOption
+                  for importDetail in importDetails
+                    productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
+                    productDetail.status = 'unSubmit'
+                    Schema.productDetails.insert productDetail, (error, result) ->
+                      if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+                      else
+                        listDataOfPartner.productDetailList.push result
+                        listDataOfPartner.productList.push productDetail.product
+                        listDataOfPartner.branchProductList.push productDetail.branchProduct
+                        listDataOfPartner.productUnitList.push productDetail.unit if productDetail.unit
+                        listDataOfPartner.branchProductUnitList.push productDetail.branchUnit if productDetail.branchUnit
 
-              else
+                        partnerSaleDetail =
+                          partnerSales   : partnerSalesOption._id
+                          buildInProduct : productDetail.buildInProduct
+                          quality        : productDetail.importQuality
+                          price          : productDetail.importPrice
+                        if productDetail.unit
+                          partnerSaleDetail.buildInProductUnit = productDetail.buildInProductUnit
+                          partnerSaleDetail.unitQuality        = productDetail.unitQuality
+                          partnerSaleDetail.unitPrice          = productDetail.unitPrice
+                          partnerSaleDetail.conversionQuality  = productDetail.conversionQuality
+                        Schema.partnerSaleDetails.insert partnerSaleDetail
+
+                  navigateNewTab(currentImport._id, profile)
+                  updateImportAndPartner(currentImport, partner, profile, listDataOfPartner, 'unSubmit')
+              else throw new Meteor.Error('importError', 'Doi tac chua ket noi'); return
+            else
+              for importDetail in importDetails
+                productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
                 productDetail.status = 'success'
+                Schema.productDetails.insert productDetail, (error, result) ->
+                  if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
+                  else
+                    listDataOfPartner.productDetailList.push result
+                    listDataOfPartner.productList.push productDetail.product
+                    listDataOfPartner.branchProductList.push productDetail.branchProduct
+                    listDataOfPartner.productUnitList.push productDetail.unit if productDetail.unit
+                    listDataOfPartner.branchProductUnitList.push productDetail.branchUnit if productDetail.branchUnit
+
                 incOption =
                   totalQuality    : importDetail.importQuality
                   availableQuality: importDetail.importQuality
@@ -208,19 +238,8 @@ Meteor.methods
                 Schema.branchProductSummaries.update productDetail.branchProduct, $inc: incOption, $set: setOption, (error, result) ->
                   if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
 
-              Schema.productDetails.insert productDetail, (error, result) ->
-                if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
-                else
-                  listDataOfPartner.productDetailList.push result
-                  listDataOfPartner.productList.push productDetail.product
-                  listDataOfPartner.branchProductList.push productDetail.branchProduct
-                  listDataOfPartner.productUnitList.push productDetail.unit if productDetail.unit
-                  listDataOfPartner.branchProductUnitList.push productDetail.branchUnit if productDetail.branchUnit
-
-            if partner.buildIn and partner.status is 'success'
-            else
               navigateNewTab(currentImport._id, profile)
-              updateImportAndPartner(currentImport, partner, profile, listDataOfPartner)
+              updateImportAndPartner(currentImport, partner, profile, listDataOfPartner, 'success')
               MetroSummary.updateMetroSummaryByImport(currentImport._id)
               MetroSummary.updateMyMetroSummaryBy(['createdImport'],  currentImport._id)
 
