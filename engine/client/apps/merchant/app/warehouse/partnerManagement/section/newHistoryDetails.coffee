@@ -1,41 +1,18 @@
 lemon.defineWidget Template.partnerManagementNewHistoryDetails,
-  skulls: -> Schema.products.findOne(@product)?.skulls?[0]
   quality: -> if @conversionQuality then @unitQuality else @importQuality
-  totalPrice: -> if @conversionQuality then @unitQuality*@unitPrice else @importQuality*@importPrice
   importPrice: -> if @conversionQuality then @unitPrice else @importPrice
-  totalDebtBalance: -> @latestDebtBalance + Session.get("distributorManagementCurrentDistributor")?.customImportDebt
+  totalPrice: -> if @conversionQuality then @unitQuality*@unitPrice else @importQuality*@importPrice
 
   receivableClass: -> if @debtBalanceChange >= 0 then 'paid' else 'receive'
-  finalReceivableClass: ->
-    latestDebtBalance = @latestDebtBalance + Session.get("distributorManagementCurrentDistributor")?.customImportDebt
-    if latestDebtBalance >= 0 then 'receive' else 'paid'
+  finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
+  showSubmitHistory: -> if @partnerImport then true else false
 
+  newHistoryDetails: ->
+    Id = UI._templateInstance().data._id
+    importList = Schema.productDetails.find({import: Id}).fetch()
+    saleList = Schema.partnerSaleDetails.find({partnerSales: Id}).fetch()
+    importList.concat(saleList)
 
-  showDeleteImport: ->
-    if @creator is Session.get('myProfile').user
-      year = @version.createdAt.getFullYear(); mount = @version.createdAt.getMonth(); date = @version.createdAt.getDate()
-      hour = @version.createdAt.getHours(); minute = @version.createdAt.getMinutes(); second = @version.createdAt.getSeconds()
-      new Date(year, mount, date + 1, hour, minute, second) > new Date() and !Schema.returns.findOne({timeLineImport: @_id})
-
-  showDeleteTransaction: ->
-    year = @debtDate.getFullYear(); mount = @debtDate.getMonth(); date = @debtDate.getDate()
-    hour = @debtDate.getHours(); minute = @debtDate.getMinutes(); second = @debtDate.getSeconds()
-    new Date(year, mount, date + 1, hour, minute, second) > new Date()
-
-  importDetailCount: ->
-    importId = UI._templateInstance().data._id
-    Schema.productDetails.find({import: importId}, {sort: {'version.createdAt': 1}}).count()
-
-  importDetails: ->
-    importId = UI._templateInstance().data._id
-    Schema.productDetails.find {import: importId}, {sort: {'version.createdAt': 1}}
-
-  dependsData: ->
-    transactions = Schema.transactions.find({latestImport: @_id}).fetch()
-    returns = Schema.returns.find({timeLineImport: @_id}).fetch()
-    _.sortBy transactions.concat(returns), (item) -> item.version.createdAt
-
-  returnDetails: -> Schema.returnDetails.find({return: @_id})
 
   events:
     "click .deleteImport": (event, template) ->

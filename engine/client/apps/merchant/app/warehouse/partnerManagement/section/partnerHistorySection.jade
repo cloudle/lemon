@@ -23,14 +23,15 @@ template(name="partnerManagementPartnerHistorySection")
         +partnerManagementImportHistoryHeader
         each newHistoryPartner
           +partnerManagementNewHistoryDetails this
-        tr.group-summary-row
-          td
-            .lemon.btn.lime.customImportModeDisable.icon-money THU
-            .lemon.btn.carrot.customImportModeDisable.icon-money TRẢ
-          td(colspan="3")
-            input.new-transaction-partner-field(name='payImportDescription' type="text" size="10" placeholder="ghi chú trả tiền")
-          td
-            input.new-transaction-partner-field.number(name='payImportAmount' type="text" size="10" placeholder="số tiền")
+
+        //tr.group-summary-row
+        //  td
+        //    .lemon.btn.lime.customImportModeDisable.icon-money THU
+        //    .lemon.btn.carrot.customImportModeDisable.icon-money TRẢ
+        //  td(colspan="3")
+        //    input.new-transaction-partner-field(name='payImportDescription' type="text" size="10" placeholder="ghi chú trả tiền")
+        //  td
+        //    input.new-transaction-partner-field.number(name='payImportAmount' type="text" size="10" placeholder="số tiền")
 
     .panel-footer
       .right-float

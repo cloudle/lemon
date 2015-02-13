@@ -19,6 +19,10 @@ simpleSchema.imports = new SimpleSchema
     type: String
     optional: true
 
+  partnerSale:
+    type: String
+    optional: true
+
   tabDisplay:
     type: String
     defaultValue: 'Nhập kho'

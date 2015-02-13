@@ -15,6 +15,10 @@ simpleSchema.partnerSales = new SimpleSchema
     type: String
     optional: true
 
+  partnerImport:
+    type: String
+    optional: true
+
   description:
     type: String
     optional: true

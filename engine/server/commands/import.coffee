@@ -31,16 +31,19 @@ updateImportAndDistributor = (currentImport, distributor)->
   }
   Schema.imports.update currentImport._id, $set: importOption
 
-updateImportAndPartner = (currentImport, partner, profile, listData, status = 'success')->
+updateImportAndPartner = (currentImport, partnerSales, partner, profile, listData, status = 'success')->
   importOption =
     beforeDebtBalance   : partner.importDebt
     debtBalanceChange   : currentImport.totalPrice
     latestDebtBalance   : partner.importDebt + currentImport.totalPrice
     finish              : true
     submitted           : true
+    partnerSale         : partnerSales._id
     'version.createdAt' : new Date()
   importOption.status = status
   Schema.imports.update currentImport._id, $set: importOption
+
+
 
   partnerAddToSet =
     importList        : currentImport._id
@@ -80,6 +83,7 @@ updateImportAndPartner = (currentImport, partner, profile, listData, status = 's
       partnerIncOption.importPaid = currentImport.deposit
     partnerOptionUpdate.$inc = partnerIncOption
   Schema.partners.update partner._id, partnerOptionUpdate
+  Schema.partners.update partner.partner, $set: {allowDelete: false}
 
 updateBuiltInOfDistributor = (distributorId, importDetails)->
   productIds = _.uniq(_.pluck(importDetails, 'product'))
@@ -166,21 +170,22 @@ Meteor.methods
 
             if partner.buildIn
               if partner.status is 'success'
-                partnerSalesOption =
+                partnerSales =
                   parentMerchant: creatorPartner.parentMerchant
                   merchant      : creatorPartner.currentMerchant
                   warehouse     : creatorPartner.currentWarehouse
                   creator       : creatorPartner.user
                   partner       : partner.partner
+                  partnerImport : currentImport._id
                   totalPrice    : currentImport.totalPrice
                   deposit       : currentImport.deposit
                   debit         : currentImport.debit
                   status        : 'unSubmit'
                   beforeDebtBalance: partner.saleDebt
-                  debtBalanceChange: currentImport.debtBalanceChange
-                  latestDebtBalance: partner.saleDebt + currentImport.debtBalanceChange
+                  debtBalanceChange: currentImport.totalPrice
+                  latestDebtBalance: partner.saleDebt + currentImport.totalPrice
 
-                if partnerSalesOption._id = Schema.partnerSales.insert partnerSalesOption
+                if partnerSales._id = Schema.partnerSales.insert partnerSales
                   for importDetail in importDetails
                     productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
                     productDetail.status = 'unSubmit'
@@ -194,19 +199,18 @@ Meteor.methods
                         listDataOfPartner.branchProductUnitList.push productDetail.branchUnit if productDetail.branchUnit
 
                         partnerSaleDetail =
-                          partnerSales   : partnerSalesOption._id
-                          buildInProduct : productDetail.buildInProduct
-                          quality        : productDetail.importQuality
-                          price          : productDetail.importPrice
-                        if productDetail.unit
-                          partnerSaleDetail.buildInProductUnit = productDetail.buildInProductUnit
-                          partnerSaleDetail.unitQuality        = productDetail.unitQuality
-                          partnerSaleDetail.unitPrice          = productDetail.unitPrice
-                          partnerSaleDetail.conversionQuality  = productDetail.conversionQuality
+                          partnerSales      : partnerSales._id
+                          buildInProduct    : productDetail.buildInProduct
+                          quality           : productDetail.importQuality
+                          price             : productDetail.importPrice
+                          unitQuality       : productDetail.unitQuality
+                          unitPrice         : productDetail.unitPrice
+                          conversionQuality : productDetail.conversionQuality
+                        partnerSaleDetail.buildInProductUnit = productDetail.buildInProductUnit if productDetail.unit
                         Schema.partnerSaleDetails.insert partnerSaleDetail
 
                   navigateNewTab(currentImport._id, profile)
-                  updateImportAndPartner(currentImport, partner, profile, listDataOfPartner, 'unSubmit')
+                  updateImportAndPartner(currentImport, partnerSales, partner, profile, listDataOfPartner, 'unSubmit')
               else throw new Meteor.Error('importError', 'Doi tac chua ket noi'); return
             else
               for importDetail in importDetails
@@ -239,7 +243,7 @@ Meteor.methods
                   if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
 
               navigateNewTab(currentImport._id, profile)
-              updateImportAndPartner(currentImport, partner, profile, listDataOfPartner, 'success')
+              updateImportAndPartner(currentImport, partnerSales, partner, profile, listDataOfPartner, 'success')
               MetroSummary.updateMetroSummaryByImport(currentImport._id)
               MetroSummary.updateMyMetroSummaryBy(['createdImport'],  currentImport._id)
 

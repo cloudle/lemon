@@ -1,5 +1,3 @@
-scope = logics.distributorManagement
-
 lemon.defineWidget Template.partnerManagementOldHistoryDetails,
   quality: -> if @conversionQuality then @unitQuality else @importQuality
   importPrice: -> if @conversionQuality then @unitPrice else @importPrice

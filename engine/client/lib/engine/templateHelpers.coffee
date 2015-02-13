@@ -26,6 +26,24 @@ Template.registerHelper 'skullsNameFromId', (id) -> Schema.products.findOne(id)?
 Template.registerHelper 'userNameFromId', (id) -> Schema.userProfiles.findOne({user: id})?.fullName ? Meteor.users.findOne(id)?.emails[0].address
 Template.registerHelper 'ownerNameFromId', (id) -> Schema.customers.findOne(id)?.name
 
+Template.registerHelper 'buildInProductName', ->
+  if profile = Session.get('myProfile')
+    if buildInProduct = Schema.buildInProducts.findOne(@buildInProduct)
+      product = Schema.products.findOne({buildInProduct: buildInProduct._id, merchant: profile.currentMerchant})
+    product?.name ? buildInProduct?.name
+
+Template.registerHelper 'buildInProductUnitName', ->
+  if profile = Session.get('myProfile')
+    if @buildInProductUnit
+      if buildInProduct = Schema.buildInProductUnits.findOne(@buildInProductUnit)
+        productUnit = Schema.productUnits.findOne({buildInProductUnit: buildInProduct._id, merchant: profile.currentMerchant})
+      productUnit?.unit ? buildInProduct?.unit
+    else
+      if buildInProduct = Schema.buildInProducts.findOne(@buildInProduct)
+        product = Schema.products.findOne({buildInProduct: buildInProduct._id, merchant: profile.currentMerchant})
+      product?.basicUnit ? buildInProduct?.basicUnit
+
+
 Template.registerHelper 'productName', (productId)->
   if product = Schema.products.findOne(productId)
     buildInProduct = Schema.buildInProducts.findOne(product.buildInProduct) if product.buildInProduct
