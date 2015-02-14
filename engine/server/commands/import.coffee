@@ -159,8 +159,7 @@ Meteor.methods
           MetroSummary.updateMyMetroSummaryBy(['createdImport'],  importId)
 
         if currentImport.partner
-          if partner = Schema.partners.findOne(currentImport.partner)
-            creatorPartner = Schema.userProfiles.findOne({user: partner.creator})
+          if myPartner = Schema.partners.findOne(currentImport.partner)
             listDataOfPartner =
               productDetailList: []
               productList      : []
@@ -168,22 +167,19 @@ Meteor.methods
               branchProductList     : []
               branchProductUnitList : []
 
-            if partner.buildIn
-              if partner.status is 'success'
+            if myPartner.buildIn
+              if myPartner.status is 'success'
                 partnerSales =
-                  parentMerchant: creatorPartner.parentMerchant
-                  merchant      : creatorPartner.currentMerchant
-                  warehouse     : creatorPartner.currentWarehouse
-                  creator       : creatorPartner.user
-                  partner       : partner.partner
+                  parentMerchant: myPartner.buildIn
+                  partner       : myPartner.partner
                   partnerImport : currentImport._id
                   totalPrice    : currentImport.totalPrice
                   deposit       : currentImport.deposit
                   debit         : currentImport.debit
                   status        : 'unSubmit'
-                  beforeDebtBalance: partner.saleDebt
+                  beforeDebtBalance: myPartner.saleDebt
                   debtBalanceChange: currentImport.totalPrice
-                  latestDebtBalance: partner.saleDebt + currentImport.totalPrice
+                  latestDebtBalance: myPartner.saleDebt + currentImport.totalPrice
 
                 if partnerSales._id = Schema.partnerSales.insert partnerSales
                   for importDetail in importDetails
@@ -210,8 +206,9 @@ Meteor.methods
                         Schema.partnerSaleDetails.insert partnerSaleDetail
 
                   navigateNewTab(currentImport._id, profile)
-                  updateImportAndPartner(currentImport, partnerSales, partner, profile, listDataOfPartner, 'unSubmit')
+                  updateImportAndPartner(currentImport, partnerSales, myPartner, profile, listDataOfPartner, 'unSubmit')
               else throw new Meteor.Error('importError', 'Doi tac chua ket noi'); return
+
             else
               for importDetail in importDetails
                 productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
@@ -243,7 +240,7 @@ Meteor.methods
                   if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
 
               navigateNewTab(currentImport._id, profile)
-              updateImportAndPartner(currentImport, partnerSales, partner, profile, listDataOfPartner, 'success')
+              updateImportAndPartner(currentImport, partnerSales, myPartner, profile, listDataOfPartner, 'success')
               MetroSummary.updateMetroSummaryByImport(currentImport._id)
               MetroSummary.updateMyMetroSummaryBy(['createdImport'],  currentImport._id)
 

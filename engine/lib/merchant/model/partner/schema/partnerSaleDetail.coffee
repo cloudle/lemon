@@ -42,7 +42,8 @@ simpleSchema.partnerSaleDetails = new SimpleSchema
     optional: true
 
   productDetail:
-    type: String
+    type: [Object]
+    blackbox: true
     optional: true
 
   returnQuality:
