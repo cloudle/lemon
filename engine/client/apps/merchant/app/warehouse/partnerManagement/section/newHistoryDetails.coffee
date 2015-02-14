@@ -3,9 +3,12 @@ lemon.defineWidget Template.partnerManagementNewHistoryDetails,
   importPrice: -> if @conversionQuality then @unitPrice else @importPrice
   totalPrice: -> if @conversionQuality then @unitQuality*@unitPrice else @importQuality*@importPrice
 
-  receivableClass: -> if @debtBalanceChange >= 0 then 'paid' else 'receive'
-  finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
-  showSubmitHistory: -> if @partnerImport then true else false
+  receivableClass: -> if @receivable then 'receive' else 'paid'
+  showSubmitHistory: -> if @first then true else false
+  isTransaction: -> if @group then true else false
+  description: ->
+    if @description then @description else if @partnerSale then 'Phiếu nhập hàng' else 'Phiếu bán hàng'
+
 
   newHistoryDetails: ->
     Id = UI._templateInstance().data._id
@@ -17,4 +20,6 @@ lemon.defineWidget Template.partnerManagementNewHistoryDetails,
   events:
     "click .deleteHistory": (event, template) -> Meteor.call('partnerDeleteHistory', @)
     "click .submitHistory": (event, template) -> Meteor.call('submitPartnerSale', @_id)
+    "click .deleteTransaction": (event, template) -> Meteor.call('deletePartnerTransaction', @_id)
+    "click .submitTransaction": (event, template) -> Meteor.call('deletePartnerTransaction', @_id)
 

@@ -78,7 +78,22 @@ simpleSchema.partners = new SimpleSchema
   importTotalCash:
     type: Number
     defaultValue: 0
+#-------------------------------------------------------------------
+  importCash:
+    type: Number
+    defaultValue: 0
 
+  saleCash:
+    type: Number
+    defaultValue: 0
+
+  loanCash:
+    type: Number
+    defaultValue: 0
+
+  paidCash:
+    type: Number
+    defaultValue: 0
 #-------------------------------------------------------------------
   importList:
     type: [String]

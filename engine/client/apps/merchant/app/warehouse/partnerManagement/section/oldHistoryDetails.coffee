@@ -5,6 +5,7 @@ lemon.defineWidget Template.partnerManagementOldHistoryDetails,
 
   receivableClass: -> if @debtBalanceChange >= 0 then 'paid' else 'receive'
   finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
+  isTransaction: -> if @group then true else false
 
   oldHistoryDetails: ->
     Id = UI._templateInstance().data._id

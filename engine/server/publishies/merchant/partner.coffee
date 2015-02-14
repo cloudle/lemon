@@ -6,6 +6,9 @@ Meteor.publishComposite 'availablePartners', ->
       branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant}) if profile
       return EmptyQueryResult if !branchProfile
       Schema.partners.find({parentMerchant: profile.currentMerchant})
+    children: [
+      find: (partner) -> Schema.merchantProfiles.find {merchant: partner.buildIn}
+    ]
   }
 
 Meteor.publishComposite 'availableMerchantPartners', ->
@@ -68,6 +71,8 @@ Meteor.publishComposite 'partnerManagementData', (id) ->
           ]
         ]
       ]
+    ,
+      find: (partner) -> Schema.transactions.find {group: 'partner', parentMerchant: profile.parentMerchant }
     ]
   }
 

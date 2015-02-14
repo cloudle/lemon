@@ -5,16 +5,23 @@ simpleSchema.transactions = new SimpleSchema
 
   merchant:
     type: String
+    optional: true
 
   warehouse:
     type: String
+    optional: true
 
   parent:
     type: String
     optional: true
 
+  parentTransaction:
+    type: String
+    optional: true
+
   creator:
     type: String
+    optional: true
 
   owner:
     type: String

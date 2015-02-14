@@ -119,7 +119,7 @@ Meteor.methods
             beforeDebtBalance: partner.saleDebt
             latestDebtBalance: partner.saleDebt + partnerSale.totalPrice
           Schema.partnerSales.update partnerSale._id, $set: partnerSaleUpdate
-          Schema.partners.update partner._id, $inc:{saleTotalCash: partnerSale.totalPrice, saleDebt: partnerSale.totalPrice}
+          Schema.partners.update partner._id, $inc:{saleCash: partnerSale.totalPrice}
 
         #Tính toán bên nhập kho (bên nhập kho)
         if partnerImport = Schema.imports.findOne(partnerSale.partnerImport)
@@ -132,4 +132,14 @@ Meteor.methods
             Schema.branchProductSummaries.update productDetail.branchProduct, incOption
             Schema.productDetails.update productDetail._id, $set:{status: 'success'}
           Schema.imports.update partnerImport._id, $set:{status: 'success'}
-          Schema.partners.update partner.partner, $inc:{importTotalCash: partnerImport.totalPrice, importDebt: partnerImport.totalPrice}
+          Schema.partners.update partner.partner, $inc:{importCash: partnerImport.totalPrice}
+
+  deletePartnerTransaction: (partnerTransactionId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if transaction = Schema.transactions.findOne({_id: partnerTransactionId, group: 'partner', status: 'unSubmit', parentMerchant: profile.parentMerchant})
+        Schema.transactions.remove {$or: [{ _id:transaction._id }, { _id:transaction.parentTransaction}]}
+
+  submitPartnerTransaction: (partnerTransactionId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if transaction = Schema.transactions.findOne({_id: partnerTransactionId, group: 'partner', status: 'unSubmit', parentMerchant: profile.parentMerchant})
+        a = 0

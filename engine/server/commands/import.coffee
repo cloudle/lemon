@@ -43,8 +43,6 @@ updateImportAndPartner = (currentImport, partnerSales, partner, profile, listDat
   importOption.status = status
   Schema.imports.update currentImport._id, $set: importOption
 
-
-
   partnerAddToSet =
     importList        : currentImport._id
     productDetailList : { $each: _.uniq(listData.productDetailList) }
@@ -56,31 +54,43 @@ updateImportAndPartner = (currentImport, partnerSales, partner, profile, listDat
     partnerAddToSet.branchProductUnitList = { $each: _.uniq(listData.branchProductUnitList) }
 
   if currentImport.deposit > 0
-    transactionOption =
+    transactionImportOption =
       parentMerchant    : profile.parentMerchant
       merchant          : profile.currentMerchant
       warehouse         : profile.currentWarehouse
       creator           : profile.user
       owner             : partner._id
-      group             : 'import'
+      group             : 'partner'
       description       : 'Trả Tiền'
       receivable        : false
       totalCash         : currentImport.deposit
       debtDate          : new Date()
       debtBalanceChange : currentImport.deposit
-      beforeDebtBalance : partner.importDebt
-      latestDebtBalance : partner.importDebt - currentImport.deposit
-    transactionOption.status = status
-    Schema.transactions.insert transactionOption
+      beforeDebtBalance : partner.importDebt + currentImport.totalPrice
+      latestDebtBalance : partner.importDebt + currentImport.totalPrice - currentImport.deposit
+    transactionImportOption.status = status
+    importTransactionId = Schema.transactions.insert transactionImportOption
+
+    transactionSaleOption =
+      parentMerchant    : partnerSales.parentMerchant
+      owner             : partnerSales._id
+      group             : 'partner'
+      description       : 'Thu Tiền'
+      receivable        : true
+      totalCash         : partnerSales.deposit
+      debtDate          : new Date()
+      debtBalanceChange : partnerSales.deposit
+      beforeDebtBalance : partnerSales.latestDebtBalance
+      latestDebtBalance : partnerSales.latestDebtBalance - partnerSales.deposit
+      parentTransaction : importTransactionId
+    transactionSaleOption.status = status
+    importTransactionId = Schema.transactions.insert transactionSaleOption
+    Schema.transactions.update importTransactionId, $set:{parentTransaction: importTransactionId}
 
   partnerOptionUpdate = { $addToSet: partnerAddToSet , $set: {allowDelete: false} }
   if status is 'success'
-    partnerIncOption =
-      importDebt      : currentImport.totalPrice
-      importTotalCash : currentImport.totalPrice
-    if currentImport.deposit > 0
-      partnerIncOption.importDebt = -currentImport.deposit
-      partnerIncOption.importPaid = currentImport.deposit
+    partnerIncOption = {importCash: currentImport.totalPrice}
+    partnerIncOption.paidCash = currentImport.deposit if currentImport.deposit > 0
     partnerOptionUpdate.$inc = partnerIncOption
   Schema.partners.update partner._id, partnerOptionUpdate
   Schema.partners.update partner.partner, $set: {allowDelete: false}
@@ -183,27 +193,28 @@ Meteor.methods
 
                 if partnerSales._id = Schema.partnerSales.insert partnerSales
                   for importDetail in importDetails
-                    productDetail = ProductDetail.newProductDetail(currentImport, importDetail)
-                    productDetail.status = 'unSubmit'
-                    Schema.productDetails.insert productDetail, (error, result) ->
+                    productDetailOption = ProductDetail.newProductDetail(currentImport, importDetail)
+                    productDetailOption.status = 'unSubmit'
+                    Schema.productDetails.insert productDetailOption, (error, result) ->
                       if error then throw new Meteor.Error('importError', 'Sai thông tin sản phẩm nhập kho'); return
                       else
                         listDataOfPartner.productDetailList.push result
-                        listDataOfPartner.productList.push productDetail.product
-                        listDataOfPartner.branchProductList.push productDetail.branchProduct
-                        listDataOfPartner.productUnitList.push productDetail.unit if productDetail.unit
-                        listDataOfPartner.branchProductUnitList.push productDetail.branchUnit if productDetail.branchUnit
+                        listDataOfPartner.productList.push productDetailOption.product
+                        listDataOfPartner.branchProductList.push productDetailOption.branchProduct
+                        listDataOfPartner.productUnitList.push productDetailOption.unit if productDetailOption.unit
+                        listDataOfPartner.branchProductUnitList.push productDetailOption.branchUnit if productDetailOption.branchUnit
 
-                        partnerSaleDetail =
-                          partnerSales      : partnerSales._id
-                          buildInProduct    : productDetail.buildInProduct
-                          quality           : productDetail.importQuality
-                          price             : productDetail.importPrice
-                          unitQuality       : productDetail.unitQuality
-                          unitPrice         : productDetail.unitPrice
-                          conversionQuality : productDetail.conversionQuality
-                        partnerSaleDetail.buildInProductUnit = productDetail.buildInProductUnit if productDetail.unit
-                        Schema.partnerSaleDetails.insert partnerSaleDetail
+                        if productDetail = Schema.productDetails.findOne(result)
+                          partnerSaleDetail =
+                            partnerSales      : partnerSales._id
+                            buildInProduct    : productDetail.buildInProduct
+                            quality           : productDetail.importQuality
+                            price             : productDetail.importPrice
+                            unitQuality       : productDetail.unitQuality
+                            unitPrice         : productDetail.unitPrice
+                            conversionQuality : productDetail.conversionQuality
+                          partnerSaleDetail.buildInProductUnit = productDetail.buildInProductUnit if productDetail.unit
+                          Schema.partnerSaleDetails.insert partnerSaleDetail
 
                   navigateNewTab(currentImport._id, profile)
                   updateImportAndPartner(currentImport, partnerSales, myPartner, profile, listDataOfPartner, 'unSubmit')
