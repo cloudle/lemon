@@ -15,7 +15,7 @@ Meteor.publishComposite 'availableMerchantPartners', ->
       profile = Schema.userProfiles.findOne({user: self.userId})
       return EmptyQueryResult if !profile
       merchantList = []
-      Schema.merchants.find({merchantType: "merchant", parent:{$exists: false}}).forEach((merchant)-> merchantList.push merchant._id)
+      Schema.merchants.find({merchantType: {$in: ["merchant", 'agency']}, parent:{$exists: false}}).forEach((merchant)-> merchantList.push merchant._id)
       Schema.merchantProfiles.find { merchant: {$in:merchantList}, packageClassActive: true }
   }
 

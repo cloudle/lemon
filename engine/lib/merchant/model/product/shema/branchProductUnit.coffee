@@ -24,8 +24,16 @@ simpleSchema.branchProductUnits = new SimpleSchema
   product:
     type: String
 
+  buildInProduct:
+    type: String
+    optional: true
+
   productUnit:
     type: String
+
+  buildInProductUnit:
+    type: String
+    optional: true
 
   creator:
     type: String

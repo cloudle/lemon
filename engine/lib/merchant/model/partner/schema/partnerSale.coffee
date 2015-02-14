@@ -4,12 +4,15 @@ simpleSchema.partnerSales = new SimpleSchema
 
   merchant:
     type: String
+    optional: true
 
   warehouse:
     type: String
+    optional: true
 
   creator:
     type: String
+    optional: true
 
   partner:
     type: String
