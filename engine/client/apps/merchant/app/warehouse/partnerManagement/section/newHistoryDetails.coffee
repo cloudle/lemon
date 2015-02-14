@@ -16,5 +16,5 @@ lemon.defineWidget Template.partnerManagementNewHistoryDetails,
 
   events:
     "click .deleteHistory": (event, template) -> Meteor.call('partnerDeleteHistory', @)
-    "click .submitHistory": (event, template) -> Meteor.call('submitPartnerSale', @)
+    "click .submitHistory": (event, template) -> Meteor.call('submitPartnerSale', @_id)
 

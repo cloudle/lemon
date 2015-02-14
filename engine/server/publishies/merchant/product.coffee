@@ -101,9 +101,19 @@ Meteor.publishComposite 'productManagementData', (productId = null, currentRecor
     ,
       find: (product) -> Schema.productDetails.find {product: product._id}
       children: [
+        find: (productDetail, product) -> Schema.partnerSaleDetails.find {productDetail: $elemMatch: {productDetail: productDetail._id}}
+        children: [
+          find: (partnerSaleDetail, product) -> Schema.partnerSales.find {_id: partnerSaleDetail.partnerSales}
+          children: [
+            find: (partnerSale, product) -> Schema.partners.find {_id: partnerSale.partner}
+          ]
+        ]
+      ,
         find: (productDetail, product) -> Schema.imports.find {_id: productDetail.import}
         children: [
-          find: (currentImport, product) -> Schema.distributors.find {_id: currentImport.distributor}
+          find: (currentImport, product) ->
+            if currentImport.distributor then Schema.distributors.find {_id: currentImport.distributor}
+            else Schema.partners.find {_id: currentImport.partner}
         ]
       ,
         find: (productDetail, product) -> if product.basicDetailModeEnabled then EmptyQueryResult else Schema.saleDetails.find {productDetail: productDetail._id}

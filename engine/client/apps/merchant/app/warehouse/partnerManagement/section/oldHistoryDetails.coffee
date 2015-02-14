@@ -7,8 +7,10 @@ lemon.defineWidget Template.partnerManagementOldHistoryDetails,
   finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
 
   oldHistoryDetails: ->
-    importId = UI._templateInstance().data._id
-    Schema.productDetails.find({import: importId})
+    Id = UI._templateInstance().data._id
+    importList = Schema.productDetails.find({import: Id}).fetch()
+    saleList = Schema.partnerSaleDetails.find({partnerSales: Id}).fetch()
+    importList.concat(saleList)
 
   events:
     "click .enter-edit": (event, template) -> Session.set("distributorManagementCurrentCustomImport", @)

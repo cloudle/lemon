@@ -5,7 +5,7 @@ lemon.defineHyper Template.partnerManagementPartnerHistorySection,
   oldHistoryPartner: ->
     partnerImportList = Schema.imports.find({partner: @_id, status: 'success'}, {sort: {'version.createdAt': 1}}).fetch()
     partnerSaleList   = Schema.partnerSales.find({partner: @_id, status: 'success'}, {sort: {'version.createdAt': 1}}).fetch()
-    if @merchantType is 'myMerchant' then partnerImportList
+    if @status is 'myMerchant' then partnerImportList
     else  _.sortBy partnerImportList.concat(partnerSaleList), (item) -> item.version.createdAt
 
   newHistoryPartner: ->

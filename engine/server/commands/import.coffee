@@ -177,9 +177,9 @@ Meteor.methods
                   deposit       : currentImport.deposit
                   debit         : currentImport.debit
                   status        : 'unSubmit'
-                  beforeDebtBalance: myPartner.saleDebt
+                  beforeDebtBalance: myPartner.importDebt
                   debtBalanceChange: currentImport.totalPrice
-                  latestDebtBalance: myPartner.saleDebt + currentImport.totalPrice
+                  latestDebtBalance: myPartner.importDebt + currentImport.totalPrice
 
                 if partnerSales._id = Schema.partnerSales.insert partnerSales
                   for importDetail in importDetails

@@ -76,52 +76,60 @@ Meteor.methods
         Schema.importDetails.remove {import: importId}
         Schema.productDetails.remove {import: importId}
 
-  submitPartnerSale: (partnerSale)->
+  submitPartnerSale: (partnerSaleId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      partnerSaleFound = Schema.partnerSales.findOne({_id: partnerSale._id, status: 'unSubmit', parentMerchant: profile.parentMerchant})
-      if partnerSaleFound.partnerImport
+      partnerSale = Schema.partnerSales.findOne({_id: partnerSaleId, status: 'unSubmit', parentMerchant: profile.parentMerchant})
+      if partnerSale.partnerImport
         #tính toán bên bán (bên xác nhận)
-        partnerSaleDetails = Schema.partnerSaleDetails.find({partnerSales: partnerSaleFound._id}).fetch()
-        for saleDetail in partnerSaleDetails
-          saleDetailOptionUpdate = {status: 'success'}
-          if product = Schema.products.findOne({buildInProduct: saleDetail.buildInProduct, parentMerchant: profile.parentMerchant})
-#            if branchProduct = Schema.branchProductSummaries.findOne({buildInProduct: saleDetail.buildInProduct, merchant: profile.currentMerchant})
-            if branchProduct = Schema.branchProductSummaries.findOne({product: product._id, merchant: profile.currentMerchant})
-              if branchProduct.basicDetailModeEnabled is true
-                throw new Meteor.Error('partnerSubmitSale', 'Sản phẩm chưa kết sổ'); return
-              if branchProduct.availableQuality < saleDetail.quality
-                throw new Meteor.Error('partnerSubmitSale', 'Số lượng sản phẩm không đủ'); return
-            else
-              throw new Meteor.Error('partnerSubmitSale', 'Không tìm thấy sản phẩm'); return
+        if partner = Schema.partners.findOne(partnerSale.partner)
+          for saleDetail in Schema.partnerSaleDetails.find({partnerSales: partnerSale._id}).fetch()
+            saleDetailOptionUpdate = {status: 'success'}
+            if product = Schema.products.findOne({buildInProduct: saleDetail.buildInProduct, parentMerchant: profile.parentMerchant})
+  #            if branchProduct = Schema.branchProductSummaries.findOne({buildInProduct: saleDetail.buildInProduct, merchant: profile.currentMerchant})
+              if branchProduct = Schema.branchProductSummaries.findOne({product: product._id, merchant: profile.currentMerchant})
+                if branchProduct.basicDetailModeEnabled is true
+                  throw new Meteor.Error('partnerSubmitSale', 'Sản phẩm chưa kết sổ'); return
+                if branchProduct.availableQuality < saleDetail.quality
+                  throw new Meteor.Error('partnerSubmitSale', 'Số lượng sản phẩm không đủ'); return
+              else
+                throw new Meteor.Error('partnerSubmitSale', 'Không tìm thấy sản phẩm'); return
 
-          saleDetailOptionUpdate.branchProduct = branchProduct._id
-          saleDetailOptionUpdate.product = branchProduct.product
-          if saleDetail.buildInProductUnit
-            if productUnit = Schema.productUnits.findOne({buildInProductUnit: saleDetail.buildInProductUnit, merchant: profile.currentMerchant})
-              saleDetailOptionUpdate.unit = productUnit._id
+            saleDetailOptionUpdate.branchProduct = branchProduct._id
+            saleDetailOptionUpdate.product = branchProduct.product
+            if saleDetail.buildInProductUnit
+              if productUnit = Schema.productUnits.findOne({buildInProductUnit: saleDetail.buildInProductUnit, merchant: profile.currentMerchant})
+                saleDetailOptionUpdate.unit = productUnit._id
 
-          importBasic = Schema.productDetails.find(
-            {import: {$exists: false}, product: branchProduct.product, availableQuality: {$gt: 0}, status: {$nin: ['unSubmit']}}, {sort: {'version.createdAt': 1}}
-          ).fetch()
-          importProductDetails = Schema.productDetails.find(
-            {import: { $exists: true}, product: branchProduct.product, availableQuality: {$gt: 0}, status: {$nin: ['unSubmit']}}, {sort: {'version.createdAt': 1}}
-          ).fetch()
+            importBasic = Schema.productDetails.find(
+              {import: {$exists: false}, product: branchProduct.product, availableQuality: {$gt: 0}, status: {$nin: ['unSubmit']}}, {sort: {'version.createdAt': 1}}
+            ).fetch()
+            importProductDetails = Schema.productDetails.find(
+              {import: { $exists: true}, product: branchProduct.product, availableQuality: {$gt: 0}, status: {$nin: ['unSubmit']}}, {sort: {'version.createdAt': 1}}
+            ).fetch()
 
-          combinedProductDetails = importBasic.concat(importProductDetails)
-          subtractQualityOnSales(combinedProductDetails, saleDetail)
-          Schema.partnerSaleDetails.update saleDetail._id, $set: saleDetailOptionUpdate
+            combinedProductDetails = importBasic.concat(importProductDetails)
+            subtractQualityOnSales(combinedProductDetails, saleDetail)
+            Schema.partnerSaleDetails.update saleDetail._id, $set: saleDetailOptionUpdate
 
-        partnerSaleUpdate = {merchant: profile.currentMerchant, warehouse: profile.currentWarehouse, creator: profile.user, status: 'success'}
-        Schema.partnerSales.update partnerSaleFound._id, $set: partnerSaleUpdate
+          partnerSaleUpdate =
+            merchant  : profile.currentMerchant
+            warehouse : profile.currentWarehouse
+            creator   : profile.user
+            status    : 'success'
+            beforeDebtBalance: partner.saleDebt
+            latestDebtBalance: partner.saleDebt + partnerSale.totalPrice
+          Schema.partnerSales.update partnerSale._id, $set: partnerSaleUpdate
+          Schema.partners.update partner._id, $inc:{saleTotalCash: partnerSale.totalPrice, saleDebt: partnerSale.totalPrice}
 
         #Tính toán bên nhập kho (bên nhập kho)
-        for productDetail in Schema.productDetails.find({import: partnerSaleFound.partnerImport, status: 'unSubmit'}).fetch()
-          quality = productDetail.importQuality
-          incOption =
-            $set: {allowDelete : false}
-            $inc: {totalQuality: quality, availableQuality: quality, inStockQuality: quality}
-          Schema.products.update productDetail.product, incOption
-          Schema.branchProductSummaries.update productDetail.branchProduct, incOption
-          Schema.productDetails.update productDetail._id, $set:{status: 'success'}
-        Schema.imports.update partnerSaleFound.partnerImport, $set:{status: 'success'}
-
+        if partnerImport = Schema.imports.findOne(partnerSale.partnerImport)
+          for productDetail in Schema.productDetails.find({import: partnerSale.partnerImport, status: 'unSubmit'}).fetch()
+            quality = productDetail.importQuality
+            incOption =
+              $set: {allowDelete : false}
+              $inc: {totalQuality: quality, availableQuality: quality, inStockQuality: quality}
+            Schema.products.update productDetail.product, incOption
+            Schema.branchProductSummaries.update productDetail.branchProduct, incOption
+            Schema.productDetails.update productDetail._id, $set:{status: 'success'}
+          Schema.imports.update partnerImport._id, $set:{status: 'success'}
+          Schema.partners.update partner.partner, $inc:{importTotalCash: partnerImport.totalPrice, importDebt: partnerImport.totalPrice}
