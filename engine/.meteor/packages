@@ -10,6 +10,7 @@ accounts-password
 mizzao:user-status
 iron:router
 zimme:iron-router-active
+multiply:iron-router-progress
 
 mrt:nvd3js
 d3
@@ -33,7 +34,6 @@ select2
 reywood:publish-composite
 rajit:bootstrap3-datepicker
 email
-multiply:iron-router-progress
 
 tmeasday:publish-counts
 matteodem:easy-search
