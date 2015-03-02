@@ -14,20 +14,31 @@ template(name="partnerManagement")
         .nano: .nano-content
           .group-wrapper
             each managedMyPartnerList
-              .caption.inner(class="{{activeClass}}")
+              .caption.myPartner.inner(class="{{activeClass}}")
                 +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                 span.text {{name}}
 
             if showUnSubmitPartnerList
-              .caption.group chờ xác nhận
+              .caption.group chờ xác nhận liên kết
             each managedUnSubmitPartnerList
               .caption.inner(class="{{activeClass}}")
                 +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                 span.text {{name}}
-                  if showSubmitPartner
-                    .commands
-                      span.icon-ok-6.submitMerchantPartner
+                  .commands
+                    span.icon-cancel-circled-4.unSubmitPartner
+                    if showSubmitPartner
+                      span.icon-ok-6.submitPartner
 
+            if showUnDeletePartnerList
+              .caption.group chờ xác nhận xóa
+            each managedUnDeletePartnerList
+              .caption.inner(class="{{activeClass}}")
+                +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
+                span.text {{name}}
+                  .commands
+                    span.icon-cancel-circled-4.unDeletePartner
+                    if showUnDeletePartner
+                      span.icon-ok-6.deletePartner
 
             if showFilterSearch
               if showMerchantPartnerList
@@ -37,4 +48,4 @@ template(name="partnerManagement")
                   +avatarImageComponent(avatar=avatarUrl alias=name instance=this)
                   span.text {{companyName}}
                     .commands
-                      span.icon-loop-outline.addMerchantPartner
+                      span.icon-loop-outline.addPartner

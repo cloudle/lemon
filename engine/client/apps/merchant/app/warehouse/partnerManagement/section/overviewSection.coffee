@@ -39,9 +39,11 @@ lemon.defineHyper Template.partnerManagementOverviewSection,
 #          AvatarImages.findOne(Session.get('partnerManagementCurrentPartner').avatar)?.remove()
 
     "click .partnerDelete": ->
-      Schema.partners.remove @_id
-      randomParent = Schema.partners.findOne({parentMerchant: Session.get('myProfile').parentMerchant})
-      UserSession.set('currentPartnerManagementSelection', randomParent._id) if randomParent
+      Meteor.call 'updateMerchantPartner', @_id, 'delete', (error, result) ->
+        if error then console.log error.error
+        else
+          randomParent = Schema.partners.findOne({parentMerchant: Session.get('myProfile').parentMerchant})
+          UserSession.set('currentPartnerManagementSelection', randomParent._id) if randomParent
 
     "click .syncPartnerEdit": (event, template) ->
     "keyup input.editable": (event, template) -> scope.keyupCheckEditPartner(event, template)

@@ -37,7 +37,3 @@ lemon.defineHyper Template.partnerManagementPartnerHistorySection,
 
   events:
     "click .expandImportAndCustomImport": ->
-
-#
-
-

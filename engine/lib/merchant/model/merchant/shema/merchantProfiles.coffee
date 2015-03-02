@@ -1,39 +1,11 @@
 simpleSchema.merchantProfiles = new SimpleSchema
-  merchant:
-    type: String
-    optional: true
-
   merchantRegistered:
     type: Boolean
 
   user:
     type: String
 
-  geraProduct:
-    type: [String]
-    defaultValue: []
-
-  merchantPartnerList:
-    type: [String]
-    defaultValue: []
-
-  companyName:
-    type: String
-    optional: true
-
-  contactPhone:
-    type: String
-    optional: true
-
-  contactAddress:
-    type: String
-    optional: true
-
-  merchantName:
-    type: String
-    optional: true
-
-  warehouseName:
+  merchant:
     type: String
     optional: true
 
@@ -48,6 +20,14 @@ simpleSchema.merchantProfiles = new SimpleSchema
   activeEndDate:
     type: Date
     optional: true
+
+  geraProduct:
+    type: [String]
+    defaultValue: []
+
+  merchantPartnerList:
+    type: [String]
+    defaultValue: []
 
   packageClass:
     type: String
@@ -101,7 +81,27 @@ simpleSchema.merchantProfiles = new SimpleSchema
     type: Number
     defaultValue: 0
 
-
   version: { type: simpleSchema.Version }
+
+#-------------------------------------------------------
+  companyName:
+    type: String
+    optional: true
+
+  contactPhone:
+    type: String
+    optional: true
+
+  contactAddress:
+    type: String
+    optional: true
+
+  merchantName:
+    type: String
+    optional: true
+
+  warehouseName:
+    type: String
+    optional: true
 
 Schema.add 'merchantProfiles'

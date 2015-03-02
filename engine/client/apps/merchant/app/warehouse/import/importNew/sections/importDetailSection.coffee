@@ -15,7 +15,7 @@ lemon.defineHyper Template.importDetailSection,
     partner = Session.get('currentImportPartner')
 
     if @import?.distributor and distributor then distributor.importDebt + distributor.customImportDebt
-    else if @import?.distributor and partner then partner.saleDebt + partner.importDebt
+    else if @import?.partner and partner then partner.saleCash + partner.paidCash - partner.importCash - partner.loanCash
     else 0
 
   finalDebt: ->

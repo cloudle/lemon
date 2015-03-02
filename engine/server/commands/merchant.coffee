@@ -194,6 +194,10 @@ Meteor.methods
 #          )
 #      )
 
+  merchantActive: ->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      Schema.merchantProfiles.update {merchant:profile.parentMerchant}, $set: {packageClassActive: true}
+
 
 
   updateMerchantDataBase: ->

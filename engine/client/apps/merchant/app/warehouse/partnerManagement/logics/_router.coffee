@@ -17,5 +17,6 @@ lemon.addRoute
       managedMyPartnerList       : scope.managedMyPartnerList
       managedUnSubmitPartnerList : scope.managedUnSubmitPartnerList
       managedMerchantPartnerList : scope.managedMerchantPartnerList
+      managedUnDeletePartnerList : scope.managedUnDeletePartnerList
     }
 , Apps.Merchant.RouterBase
