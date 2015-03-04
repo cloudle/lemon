@@ -1,11 +1,13 @@
 lemon.defineWidget Template.partnerManagementOldHistoryDetails,
-  quality: -> if @conversionQuality then @unitQuality else @importQuality
+  quality    : -> if @conversionQuality then @unitQuality else @importQuality
   importPrice: -> if @conversionQuality then @unitPrice else @importPrice
-  totalPrice: -> if @conversionQuality then @unitQuality*@unitPrice else @importQuality*@importPrice
-
-  receivableClass: -> if @debtBalanceChange >= 0 then 'paid' else 'receive'
-  finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
+  totalPrice : -> if @conversionQuality then @unitQuality*@unitPrice else @importQuality*@importPrice
+  bill: -> if @partnerSale then 'Phiếu nhập' else 'Phiếu bán'
   isTransaction: -> if @group then true else false
+
+  receivableClass     : -> if @receivable then 'receive' else 'paid'
+  finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
+  isTransaction       : -> if @group then true else false
 
   oldHistoryDetails: ->
     Id = UI._templateInstance().data._id

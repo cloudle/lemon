@@ -14,24 +14,26 @@ template(name="partnerManagementPartnerHistorySection")
         th.number(style="width:175px") THÀNH TIỀN
 
     .panel-body.debt-details
-      table.lemon-grid.safe
-        +partnerManagementImportHistoryHeader
-        each oldHistoryPartner
+
+      each oldHistoryPartner
+        table.lemon-grid(class="{{safeClass}}")
+          +partnerManagementImportHistoryHeader
           +partnerManagementOldHistoryDetails this
 
-      table.lemon-grid
+      table.lemon-grid.unSafe
         +partnerManagementImportHistoryHeader
         each newHistoryPartner
           +partnerManagementNewHistoryDetails this
 
-        //tr.group-summary-row
-        //  td
-        //    .lemon.btn.lime.customImportModeDisable.icon-money THU
-        //    .lemon.btn.carrot.customImportModeDisable.icon-money TRẢ
-        //  td(colspan="3")
-        //    input.new-transaction-partner-field(name='payImportDescription' type="text" size="10" placeholder="ghi chú trả tiền")
-        //  td
-        //    input.new-transaction-partner-field.number(name='payImportAmount' type="text" size="10" placeholder="số tiền")
+        tr.group-summary-row
+          td(colspan="3")
+            input.new-transaction-partner-field(name='payDescription' type="text" size="10" placeholder="ghi chú")
+          td.number
+            input.new-transaction-partner-field(name='payAmount' type="text" size="10" placeholder="số tiền")
+          td.number
+            .lemon.btn.icon-money.carrot.transactionPaid TRẢ
+            .lemon.btn.icon-money.lime.transactionReceive THU
+
 
     .panel-footer
       .right-float

@@ -78,6 +78,10 @@ simpleSchema.partners = new SimpleSchema
   importTotalCash:
     type: Number
     defaultValue: 0
+
+  loanCash:
+    type: Number
+    defaultValue: 0
 #-------------------------------------------------------------------
   importCash:
     type: Number
@@ -87,11 +91,11 @@ simpleSchema.partners = new SimpleSchema
     type: Number
     defaultValue: 0
 
-  loanCash:
+  paidCash:
     type: Number
     defaultValue: 0
 
-  paidCash:
+  receiveCash:
     type: Number
     defaultValue: 0
 #-------------------------------------------------------------------

@@ -106,7 +106,7 @@ Meteor.methods
       partnerSale = Schema.partnerSales.findOne({_id: partnerSaleId, status: 'unSubmit', parentMerchant: profile.parentMerchant})
       if partnerSale.partnerImport
         #tính toán bên bán (bên xác nhận)
-        if partner = Schema.partners.findOne(partnerSale.partner)
+        if myPartner = Schema.partners.findOne(partnerSale.partner)
           for saleDetail in Schema.partnerSaleDetails.find({partnerSales: partnerSale._id}).fetch()
             saleDetailOptionUpdate = {status: 'success'}
             if product = Schema.products.findOne({buildInProduct: saleDetail.buildInProduct, parentMerchant: profile.parentMerchant})
@@ -141,13 +141,14 @@ Meteor.methods
             warehouse : profile.currentWarehouse
             creator   : profile.user
             status    : 'success'
-            beforeDebtBalance: partner.saleDebt
-            latestDebtBalance: partner.saleDebt + partnerSale.totalPrice
+            beforeDebtBalance: myPartner.importCash + myPartner.loanCash - myPartner.saleCash - myPartner.paidCash
+            latestDebtBalance: myPartner.importCash + myPartner.loanCash - myPartner.saleCash - myPartner.paidCash - partnerSale.totalPrice
           Schema.partnerSales.update partnerSale._id, $set: partnerSaleUpdate
-          Schema.partners.update partner._id, $inc:{saleCash: partnerSale.totalPrice}
+          Schema.partners.update myPartner._id, $inc:{saleCash: partnerSale.totalPrice}
 
         #Tính toán bên nhập kho (bên nhập kho)
         if partnerImport = Schema.imports.findOne(partnerSale.partnerImport)
+          ownerPartner = Schema.partners.findOne(myPartner.partner)
           for productDetail in Schema.productDetails.find({import: partnerSale.partnerImport, status: 'unSubmit'}).fetch()
             quality = productDetail.importQuality
             incOption =
@@ -156,15 +157,57 @@ Meteor.methods
             Schema.products.update productDetail.product, incOption
             Schema.branchProductSummaries.update productDetail.branchProduct, incOption
             Schema.productDetails.update productDetail._id, $set:{status: 'success'}
-          Schema.imports.update partnerImport._id, $set:{status: 'success'}
-          Schema.partners.update partner.partner, $inc:{importCash: partnerImport.totalPrice}
+
+          partnerImportUpdate =
+            status    : 'success'
+            beforeDebtBalance: ownerPartner.importCash + ownerPartner.loanCash - ownerPartner.saleCash - ownerPartner.paidCash
+            latestDebtBalance: ownerPartner.importCash + ownerPartner.loanCash - ownerPartner.saleCash - ownerPartner.paidCash + partnerImport.totalPrice
+          Schema.imports.update partnerImport._id, $set: partnerImportUpdate
+          Schema.partners.update ownerPartner._id, $inc:{importCash: partnerImport.totalPrice}
 
   deletePartnerTransaction: (partnerTransactionId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      if transaction = Schema.transactions.findOne({_id: partnerTransactionId, group: 'partner', status: 'unSubmit', parentMerchant: profile.parentMerchant})
-        Schema.transactions.remove {$or: [{ _id:transaction._id }, { _id:transaction.parentTransaction}]}
+      option =
+        _id   : partnerTransactionId
+        group : 'partner'
+        status: $in:['unSubmit', 'submit']
+        parentMerchant: profile.parentMerchant
+
+      if transaction = Schema.transactions.findOne(option)
+        Schema.transactions.remove transaction._id
+        Schema.transactions.remove transaction.parentTransaction
 
   submitPartnerTransaction: (partnerTransactionId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      if transaction = Schema.transactions.findOne({_id: partnerTransactionId, group: 'partner', status: 'unSubmit', parentMerchant: profile.parentMerchant})
-        a = 0
+      option =
+        _id   : partnerTransactionId
+        group : 'partner'
+        status: 'unSubmit'
+        parentMerchant: profile.parentMerchant
+      myTransaction = Schema.transactions.findOne(option)
+      myPartner = Schema.partners.findOne({_id: myTransaction.owner, parentMerchant: profile.parentMerchant}) if myTransaction
+      if myPartner.buildIn and myTransaction.parentTransaction
+        ownerTransaction = Schema.transactions.findOne(myTransaction.parentTransaction)
+        ownerPartner = Schema.partners.findOne(myPartner.partner)
+
+      if ownerTransaction and ownerPartner and myTransaction.debtBalanceChange is ownerTransaction.debtBalanceChange
+        beforeDebtMy = myPartner.importCash + myPartner.receiveCash - myPartner.saleCash - myPartner.paidCash
+        beforeDebtOwner = ownerPartner.importCash + ownerPartner.receiveCash - ownerPartner.saleCash - ownerPartner.paidCash
+
+        if myTransaction.receivable
+          myPartnerOptionUpdate    = $inc: {receiveCash:myTransaction.debtBalanceChange}
+          ownerPartnerOptionUpdate = $inc: {paidCash:myTransaction.debtBalanceChange}
+          myTransactionUpdate    = $set: {status: 'success', beforeDebtBalance: beforeDebtMy, latestDebtBalance: beforeDebtMy + myTransaction.debtBalanceChange}
+          ownerTransactionUpdate = $set: {status: 'success', beforeDebtBalance: beforeDebtOwner, latestDebtBalance: beforeDebtOwner - myTransaction.debtBalanceChange}
+        else
+          myPartnerOptionUpdate    = $inc: {paidCash: myTransaction.debtBalanceChange}
+          ownerPartnerOptionUpdate = $inc: {receiveCash: myTransaction.debtBalanceChange}
+          myTransactionUpdate    = $set: {status: 'success', beforeDebtBalance: beforeDebtMy, latestDebtBalance: beforeDebtMy - myTransaction.debtBalanceChange}
+          ownerTransactionUpdate = $set: {status: 'success', beforeDebtBalance: beforeDebtOwner, latestDebtBalance: beforeDebtOwner + myTransaction.debtBalanceChange}
+
+        Schema.partners.update myPartner._id, myPartnerOptionUpdate
+        Schema.partners.update ownerPartner._id, ownerPartnerOptionUpdate
+        Schema.transactions.update myTransaction._id, myTransactionUpdate
+        Schema.transactions.update ownerTransaction._id, ownerTransactionUpdate
+
+

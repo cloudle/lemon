@@ -51,14 +51,6 @@ simpleSchema.transactions = new SimpleSchema
     type: Number
     optional: true
 
-  latestSale:
-    type: String
-    optional: true
-
-  latestImport:
-    type: String
-    optional: true
-
   beforeDebtBalance:
     type: Number
     optional: true
@@ -70,6 +62,14 @@ simpleSchema.transactions = new SimpleSchema
   debtDate:
     type: Date
     defaultValue: new Date()
+
+  latestSale:
+    type: String
+    optional: true
+
+  latestImport:
+    type: String
+    optional: true
 
   confirmed:
     type: Boolean

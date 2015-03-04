@@ -15,7 +15,7 @@ lemon.defineHyper Template.importDetailSection,
     partner = Session.get('currentImportPartner')
 
     if @import?.distributor and distributor then distributor.importDebt + distributor.customImportDebt
-    else if @import?.partner and partner then partner.saleCash + partner.paidCash - partner.importCash - partner.loanCash
+    else if @import?.partner and partner then partner.importCash + partner.loanCash - partner.saleCash - partner.paidCash
     else 0
 
   finalDebt: ->
@@ -25,7 +25,7 @@ lemon.defineHyper Template.importDetailSection,
     if @import?.distributor and distributor
       distributor.importDebt + distributor.customImportDebt + @import.totalPrice - @import.deposit
     else if @import?.partner and partner
-      partner.saleDebt + partner.importDebt + @import.totalPrice - @import.deposit
+      partner.importCash + partner.loanCash - partner.saleCash - partner.paidCash + @import.totalPrice - @import.deposit
     else 0
 
   created: -> @timeInterval = Meteor.setInterval(setTime, 1000)
