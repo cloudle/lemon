@@ -5,6 +5,9 @@ simpleSchema.metroSummaries = new SimpleSchema
   merchant:
     type: String
 
+  version: { type: simpleSchema.Version }
+
+#---------Merchant - Staff - Product---------
   merchantCount:
     type: Number
     defaultValue: 1
@@ -17,25 +20,13 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 1
 
-  customerCountAll:
-    type: Number
-    defaultValue: 0
-
-  customerCount:
-    type: Number
-    defaultValue: 0
-
-  distributorCount:
+  staffCount:
     type: Number
     defaultValue: 0
 
   staffCountAll:
     type: Number
     defaultValue: 1
-
-  staffCount:
-    type: Number
-    defaultValue: 0
 
   productCount:
     type: Number
@@ -48,47 +39,122 @@ simpleSchema.metroSummaries = new SimpleSchema
   availableProductCount:
     type: Number
     defaultValue: 0
-
-  importCount:
+#-----------------------------------------------------------------
+#---------Customer - Distributor - Partner------------------------
+  customerCountAll:
     type: Number
     defaultValue: 0
 
-  importProductCount:
+  customerCount:
     type: Number
     defaultValue: 0
+
+  distributorCount:
+    type: Number
+    defaultValue: 0
+
+  partnerCount:
+    type: Number
+    defaultValue: 0
+#-----------------------------------------------------------------
+#--------- Sale - Delivery - Import - Return - Inventory - Transfer ---------
 
   saleCount:
     type: Number
     defaultValue: 0
 
-  saleProductCount:
+  saleCountDay:
     type: Number
     defaultValue: 0
-
+  saleCountMonth:
+    type: Number
+    defaultValue: 0
+#--------------------
   deliveryCount:
     type: Number
     defaultValue: 0
-
-  deliveryProductCount:
+  deliveryWaitingDay:
     type: Number
     defaultValue: 0
 
+  deliveryCountDay:
+    type: Number
+    defaultValue: 0
+  deliveryCountMonth:
+    type: Number
+    defaultValue: 0
+
+#---------------------
+  importCount:
+    type: Number
+    defaultValue: 0
+
+  importCountDay:
+    type: Number
+    defaultValue: 0
+  importCountMonth:
+    type: Number
+    defaultValue: 0
+#--------------------
   returnCount:
     type: Number
     defaultValue: 0
 
-  returnProductCount:
+  returnCustomerCountDay:
     type: Number
     defaultValue: 0
-
+  returnCustomerCountMonth:
+    type: Number
+    defaultValue: 0
+  returnDistributorCountDay:
+    type: Number
+    defaultValue: 0
+  returnDistributorCountMonth:
+    type: Number
+    defaultValue: 0
+#--------------------
   inventoryCount:
     type: Number
     defaultValue: 0
 
-  inventoryProductCount:
+  inventoryUnUpdateDay:
     type: Number
     defaultValue: 0
 
+  inventoryCountDay:
+    type: Number
+    defaultValue: 0
+  inventoryCountMonth:
+    type: Number
+    defaultValue: 0
+#--------------------
+  transferCount:
+    type: Number
+    defaultValue: 0
+  transferCountDay:
+    type: Number
+    defaultValue: 0
+  transferCountMonth:
+    type: Number
+    defaultValue: 0
+#---------------------
+  saleProductCount:
+    type: Number
+    defaultValue: 0
+  deliveryProductCount:
+    type: Number
+    defaultValue: 0
+  importProductCount:
+    type: Number
+    defaultValue: 0
+  returnProductCount:
+    type: Number
+    defaultValue: 0
+  inventoryProductCount:
+    type: Number
+    defaultValue: 0
+#------------------------------------------
+#------------------------------------------
   returnCash:
     type: Number
     defaultValue: 0
@@ -121,11 +187,6 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 
-  partnerCount:
-    type: Number
-    defaultValue: 0
-
-  version: { type: simpleSchema.Version }
 #------------------------------------------
   notifyExpire:
     type: Boolean
@@ -138,6 +199,7 @@ simpleSchema.metroSummaries = new SimpleSchema
   totalPayableCash:
     type: Number
     defaultValue: 0
+
 #------------------------------------------
   #loi nhuan ngay
   profitabilityDay:
@@ -159,6 +221,7 @@ simpleSchema.metroSummaries = new SimpleSchema
   returnMoneyOfCustomerDay:
     type: Number
     defaultValue: 0
+
 #------------------------------------------
   discountDay:
     type: Number

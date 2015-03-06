@@ -23,6 +23,9 @@ Meteor.publish 'myBranchProfiles', ->
   if !parentMerchantProfile?.latestCheckSummaryDate || parentMerchantProfile?.latestCheckSummaryDate.toDateString() != (new Date()).toDateString()
     Apps.Merchant.checkSummaryDate(myProfile)
 
+  if !parentMerchantProfile?.latestCheckSummaryMonth || parentMerchantProfile?.latestCheckSummaryMonth.toDateString() != (new Date()).toDateString()
+    Apps.Merchant.checkSummaryMonth(myProfile)
+
   if !parentMerchantProfile?.latestCheckExpire || parentMerchantProfile?.latestCheckExpire.toDateString() != (new Date()).toDateString()
     Apps.Merchant.checkProductExpireDate(myProfile, parentMerchantProfile?.notifyProductExpireRange ? 90)
 

@@ -17,7 +17,7 @@ lemon.defineHyper Template.partnerManagementPartnerHistorySection,
   newHistoryPartner: ->
     partnerImportList  = Schema.imports.find({partner: @_id, status: 'unSubmit'}, {sort: {'version.createdAt': 1}}).fetch()
     partnerSaleList    = Schema.partnerSales.find({partner: @_id, status: 'unSubmit'}, {sort: {'version.createdAt': 1}}).fetch()
-    partnerTransaction = Schema.transactions.find({group: 'partner', status: $in:['unSubmit', 'submit']}, {sort: {'version.createdAt': 1}}).fetch()
+    partnerTransaction = Schema.transactions.find({owner: @_id, group: 'partner', status: $in:['unSubmit', 'submit']}, {sort: {'version.createdAt': 1}}).fetch()
 
     if partnerSaleList.length > 0 then partnerSaleList[0].isSaleFirst = true
     sorted = _.sortBy partnerImportList.concat(partnerSaleList).concat(partnerTransaction), (item) -> item.version.createdAt
@@ -50,12 +50,12 @@ lemon.defineHyper Template.partnerManagementPartnerHistorySection,
       $payAmount = template.ui.$payAmount
       $payDescription = template.ui.$payDescription
       payAmount = Math.abs $payAmount.inputmask('unmaskedvalue')
-      Meteor.call 'createTransactionOfPartner', @_id, payAmount, null, 'paid', (error, result) ->
+      Meteor.call 'createTransactionOfPartner', @_id, payAmount, $payDescription.val(), null, 'paid', (error, result) ->
         if error then console.log error.error else $payDescription.val(''); $payAmount.val('')
 
     "click .transactionReceive": (event, template) ->
       $payAmount = template.ui.$payAmount
       $payDescription = template.ui.$payDescription
       payAmount = Math.abs $payAmount.inputmask('unmaskedvalue')
-      Meteor.call 'createTransactionOfPartner', @_id, payAmount, null, 'receive', (error, result) ->
+      Meteor.call 'createTransactionOfPartner', @_id, payAmount, $payDescription.val(), null, 'receive', (error, result) ->
         if error then console.log error.error else $payDescription.val(''); $payAmount.val('')

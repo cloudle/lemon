@@ -32,30 +32,32 @@ template(name="merchantHome")
             .tile-group-2
               .tile.double.peter-river(data-app="distributorManagement")
                 .app-icon.icon-shareable
+                .app-count 0
+                .app-count-description phiếu trong ngày
                 span.caption.app-name.bottom.right thu chi
               .tile.amethyst(data-app="sales")
                 .app-icon.icon-basket
-                .app-count 0
+                .app-count {{formatNumber Summary.data.saleCountDay}}
                 .app-count-description phiếu trong ngày
                 span.caption.app-name.bottom.right bán hàng
               .tile.pink(data-app="customerReturn")
                 .app-icon.icon-reply-outline
-                .app-count 0
+                .app-count {{formatNumber Summary.data.returnCustomerCountDay}}
                 .app-count-description lần trong ngày
                 span.caption.app-name.bottom.right trả hàng
               .tile.green-sea(data-app="import")
                 .app-icon.icon-download-outline
-                .app-count 0
+                .app-count {{formatNumber Summary.data.importCountDay}}
                 .app-count-description phiếu trong ngày
                 span.caption.app-name.bottom.right nhập kho
               .tile.pumpkin(data-app="distributorReturn")
                 .app-icon.icon-reply-outline
-                .app-count 0
+                .app-count {{formatNumber Summary.data.returnDistributorCountDay}}
                 .app-count-description lần trong ngày
                 span.caption.app-name.bottom.right trả hàng
               .tile.carrot(data-app="inventoryHistory")
                 .app-icon.icon-edit
-                .app-count 90
+                .app-count {{formatNumber Summary.data.inventoryCountDay}}
                 .app-count-description ngày chưa cập nhật
                 span.caption.app-name.bottom.right kiểm kho
               .tile.blue(data-app="distributorManagement")
@@ -68,7 +70,7 @@ template(name="merchantHome")
                 span.caption.app-name.bottom.right &nbsp;
               .tile.lime(data-app="distributorManagement")
                 .app-icon.icon-truck-1
-                .app-count 0
+                .app-count {{formatNumber Summary.data.deliveryCountDay}}
                 .app-count-description phiếu chờ giao
                 span.caption.app-name.bottom.right giao hàng
               .tile.carrot(data-app="distributorManagement")
@@ -76,7 +78,7 @@ template(name="merchantHome")
                 span.caption.app-name.bottom.right lãi suất
               .tile.double.blue(data-app="partnerManagement")
                 .app-icon.icon-award
-                .app-count 0
+                .app-count {{formatNumber Summary.data.partnerCount}}
                 .app-count-description đã liên kết
                 span.caption.app-name.bottom.right đối tác
               .tile.double.amethyst(data-app="merchantReport")

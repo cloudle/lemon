@@ -19,9 +19,6 @@ Meteor.methods
           totalImportPayableCash += payableCash if payableCash > 0
       Schema.metroSummaries.update(metroSummary._id, $set:{totalPayableCash: totalImportPayableCash}) for metroSummary in metroSummaries
 
-
-
-
   reCalculateMetroSummary: ->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       if metroSummary = Schema.metroSummaries.findOne({merchant: profile.currentMerchant}) 
@@ -145,3 +142,4 @@ Meteor.methods
       )
 
       Schema.metroSummaries.update({merchant: profile.currentMerchant},{$set: option})
+

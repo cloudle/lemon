@@ -150,7 +150,6 @@ Meteor.methods
     Schema.orders.update currentOrder._id, $set:{status: 1}
     if currentOrder = Schema.orders.findOne({_id: orderId, status: 1})
       result = createSaleAndSaleOrder(currentOrder, orderDetails)
-      console.log result
       if result.error
         removeOrderAndOrderDetail(currentOrder, userProfile, 3)
         throw new Meteor.Error('createSaleAndDetail', result.error, result.sale)
