@@ -12,7 +12,7 @@ importRoute =
   data: ->
     Apps.setup(scope, Apps.Merchant.importReactive)
 
-    return{
+    return {
       showCreateDetail: scope.showCreateDetail
       showSubmit      : scope.showSubmit
       showFinish      : scope.showFinish

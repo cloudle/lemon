@@ -43,7 +43,7 @@ lemon.defineHyper Template.customerManagementOverviewSection,
     "click .syncCustomerEdit": (event, template) -> scope.editCustomer(template)
     "click .customerDelete": (event, template) ->
       if @allowDelete
-        Schema.customers.remove @_id
-        MetroSummary.updateMetroSummaryBy(['customer'])
-        UserSession.set('currentCustomerManagementSelection', Schema.customers.findOne()?._id ? '')
+        if Schema.customers.remove @_id
+          UserSession.set('currentCustomerManagementSelection', Schema.customers.findOne()?._id ? '')
+          Meteor.call 'updateMetroSummaryBy', 'deleteCustomer', @
 

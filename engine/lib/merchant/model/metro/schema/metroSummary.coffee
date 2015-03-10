@@ -5,113 +5,91 @@ simpleSchema.metroSummaries = new SimpleSchema
   merchant:
     type: String
 
+  warehouseList:
+    type: [String]
+    defaultValue: []
+
+  staffList:
+    type: [String]
+    defaultValue: []
+
+  productList:
+    type: [String]
+    defaultValue: []
+
+  geraProductList:
+    type: [String]
+    defaultValue: []
+
+  customerList:
+    type: [String]
+    defaultValue: []
+
+  distributorList:
+    type: [String]
+    defaultValue: []
+
+  partnerList:
+    type: [String]
+    defaultValue: []
+
   version: { type: simpleSchema.Version }
 
-#---------Merchant - Staff - Product---------
-  merchantCount:
-    type: Number
-    defaultValue: 1
-
-  warehouseCount:
-    type: Number
-    defaultValue: 1
-
-  warehouseCountAll:
-    type: Number
-    defaultValue: 1
-
-  staffCount:
-    type: Number
-    defaultValue: 0
-
-  staffCountAll:
-    type: Number
-    defaultValue: 1
-
-  productCount:
-    type: Number
-    defaultValue: 0
-
-  stockProductCount:
-    type: Number
-    defaultValue: 0
-
-  availableProductCount:
-    type: Number
-    defaultValue: 0
-#-----------------------------------------------------------------
-#---------Customer - Distributor - Partner------------------------
-  customerCountAll:
-    type: Number
-    defaultValue: 0
-
-  customerCount:
-    type: Number
-    defaultValue: 0
-
-  distributorCount:
-    type: Number
-    defaultValue: 0
-
-  partnerCount:
-    type: Number
-    defaultValue: 0
-#-----------------------------------------------------------------
 #--------- Sale - Delivery - Import - Return - Inventory - Transfer ---------
 
   saleCount:
     type: Number
     defaultValue: 0
 
-  saleCountDay:
-    type: Number
-    defaultValue: 0
-  saleCountMonth:
-    type: Number
-    defaultValue: 0
+  saleDay:
+    type: [String]
+    defaultValue: []
+  saleMonth:
+    type: [String]
+    defaultValue: []
 #--------------------
   deliveryCount:
     type: Number
     defaultValue: 0
-  deliveryWaitingDay:
-    type: Number
-    defaultValue: 0
 
-  deliveryCountDay:
-    type: Number
-    defaultValue: 0
-  deliveryCountMonth:
-    type: Number
-    defaultValue: 0
+  deliveryWaiting:
+    type: [String]
+    defaultValue: []
+  deliveryDay:
+    type: [String]
+    defaultValue: []
+  deliveryMonth:
+    type: [String]
+    defaultValue: []
 
 #---------------------
   importCount:
     type: Number
     defaultValue: 0
 
-  importCountDay:
-    type: Number
-    defaultValue: 0
-  importCountMonth:
-    type: Number
-    defaultValue: 0
+  importDay:
+    type: [String]
+    defaultValue: []
+  importMonth:
+    type: [String]
+    defaultValue: []
 #--------------------
   returnCount:
     type: Number
     defaultValue: 0
 
-  returnCustomerCountDay:
-    type: Number
-    defaultValue: 0
-  returnCustomerCountMonth:
-    type: Number
-    defaultValue: 0
-  returnDistributorCountDay:
-    type: Number
-    defaultValue: 0
-  returnDistributorCountMonth:
-    type: Number
-    defaultValue: 0
+  returnCustomerDay:
+    type: [String]
+    defaultValue: []
+  returnCustomerMonth:
+    type: [String]
+    defaultValue: []
+  returnDistributorDay:
+    type: [String]
+    defaultValue: []
+  returnDistributorMonth:
+    type: [String]
+    defaultValue: []
 #--------------------
   inventoryCount:
     type: Number
@@ -121,22 +99,23 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 
-  inventoryCountDay:
-    type: Number
-    defaultValue: 0
-  inventoryCountMonth:
-    type: Number
-    defaultValue: 0
+  inventoryDay:
+    type: [String]
+    defaultValue: []
+  inventoryMonth:
+    type: [String]
+    defaultValue: []
 #--------------------
   transferCount:
     type: Number
     defaultValue: 0
-  transferCountDay:
-    type: Number
-    defaultValue: 0
-  transferCountMonth:
-    type: Number
-    defaultValue: 0
+  transferDay:
+    type: [String]
+    defaultValue: []
+  transferMonth:
+    type: [String]
+    defaultValue: []
+
 #---------------------
   saleProductCount:
     type: Number
@@ -154,6 +133,39 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 #------------------------------------------
+
+
+#---------Merchant - Staff - Product---------
+  warehouseCount:
+    type: Number
+    defaultValue: 1
+
+  staffCount:
+    type: Number
+    defaultValue: 0
+
+  productCount:
+    type: Number
+    defaultValue: 0
+
+  myProductCount:
+    type: Number
+    defaultValue: 0
+#-----------------------------------------------------------------
+#---------Customer - Distributor - Partner------------------------
+  customerCount:
+    type: Number
+    defaultValue: 0
+
+  distributorCount:
+    type: Number
+    defaultValue: 0
+
+  partnerCount:
+    type: Number
+    defaultValue: 0
+#-----------------------------------------------------------------
+
 #------------------------------------------
   returnCash:
     type: Number
@@ -200,7 +212,6 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 
-#------------------------------------------
   #loi nhuan ngay
   profitabilityDay:
     type: Number
@@ -243,6 +254,27 @@ simpleSchema.metroSummaries = new SimpleSchema
     type: Number
     defaultValue: 0
 
+#------------------------------------------
+  merchantCount:
+    type: Number
+    defaultValue: 1
 
+  warehouseCountAll:
+    type: Number
+    defaultValue: 1
 
+  staffCountAll:
+    type: Number
+    defaultValue: 1
 
+  customerCountAll:
+    type: Number
+    defaultValue: 0
+
+  stockProductCount:
+    type: Number
+    defaultValue: 0
+
+  availableProductCount:
+    type: Number
+    defaultValue: 0

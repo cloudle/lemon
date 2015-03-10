@@ -44,6 +44,7 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     customer =
       currentMerchant : Session.get('myProfile').currentMerchant
       parentMerchant  : Session.get('myProfile').parentMerchant
+      merchant        : Session.get('myProfile').currentMerchant
       creator         : Session.get('myProfile').user
       name            : nameOptions.name
       gender          : true
@@ -56,9 +57,11 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       template.ui.$searchFilter.notify("Khách hàng đã tồn tại.", {position: "bottom"})
     else
       Schema.customers.insert customer, (error, result) ->
-        console.log error if error
-        MetroSummary.updateMetroSummaryBy(['customer'])
-        UserSession.set('currentCustomerManagementSelection', result)
+        if error then console.log error
+        else
+          Meteor.call 'updateMetroSummaryBy', 'createCustomer', result
+          UserSession.set('currentCustomerManagementSelection', result)
+
       template.ui.$searchFilter.val(''); Session.set("customerManagementSearchFilter", "")
 
   scope.editCustomer = (template) ->

@@ -1,4 +1,18 @@
 Meteor.methods
+  checkProductExpireDate: (value)->
+    Apps.Merchant.checkProductExpireDate(Schema.userProfiles.findOne({user: Meteor.userId()}), value)
+
+  checkReceivableExpireDate: (value)->
+    Apps.Merchant.checkReceivableExpireDate(Schema.userProfiles.findOne({user: Meteor.userId()}), value)
+
+  checkPayableExpireDate: (value)->
+    Apps.Merchant.checkPayableExpireDate(Schema.userProfiles.findOne({user: Meteor.userId()}), value)
+
+  checkExpireDateTransaction: (transactionId)->
+    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      if parentMerchantProfile = Schema.branchProfiles.findOne({merchant: profile.parentMerchant})
+        Apps.Merchant.checkExpireDateCreateTransaction(profile, transactionId, parentMerchantProfile.notifyReceivableExpireRange ? 90)
+
   registerMerchant: (email, password, companyName, contactPhone) ->
     userId = Accounts.createUser {email: email, password: password}
     user = Meteor.users.findOne(userId)
@@ -8,7 +22,7 @@ Meteor.methods
       return
 
     merchantId = Schema.merchants.insert({owner: userId, creator: userId, name: companyName})
-    Schema.merchantProfiles.insert
+    merchantProfileId = Schema.merchantProfiles.insert
       merchant          : merchantId
       merchantRegistered: false
       user              : userId
@@ -16,6 +30,7 @@ Meteor.methods
       contactPhone      : contactPhone
       merchantName      : 'Trụ Sở'
       warehouseName     : 'Kho Trụ Sở'
+
     warehouseId = Schema.warehouses.insert Warehouse.newDefault {
       merchantId        : merchantId
       parentMerchantId  : merchantId
@@ -31,9 +46,19 @@ Meteor.methods
       isRoot            : true
       systemVersion     : Schema.systems.findOne().version
 
-    Schema.metroSummaries.insert MetroSummary.newByMerchant(merchantId)
-    Schema.branchProfiles.insert { merchant: merchantId }
+    Schema.metroSummaries.insert
+      parentMerchant: merchantId
+      merchant      : merchantId
+      warehouseList : [warehouseId]
+      staffList     : [userId]
 
+    Schema.merchantProfiles.update merchantProfileId, $addToSet: {
+      merchantList : merchantId
+      warehouseList: warehouseId
+      staffList    : userId
+    }
+
+    Schema.branchProfiles.insert { merchant: merchantId }
     Schema.userSessions.insert { user: userId }
 
     return user
@@ -105,22 +130,6 @@ Meteor.methods
       Schema.merchants.remove(parent: profile.parentMerchant)
 
       Schema.metroSummaries.insert MetroSummary.newByMerchant(profile.parentMerchant)
-
-  checkProductExpireDate: (value)->
-    Apps.Merchant.checkProductExpireDate(Schema.userProfiles.findOne({user: Meteor.userId()}), value)
-
-  checkReceivableExpireDate: (value)->
-    Apps.Merchant.checkReceivableExpireDate(Schema.userProfiles.findOne({user: Meteor.userId()}), value)
-
-  checkPayableExpireDate: (value)->
-    Apps.Merchant.checkPayableExpireDate(Schema.userProfiles.findOne({user: Meteor.userId()}), value)
-
-
-  checkExpireDateTransaction: (transactionId)->
-    if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      if parentMerchantProfile = Schema.branchProfiles.findOne({merchant: profile.parentMerchant})
-        Apps.Merchant.checkExpireDateCreateTransaction(profile, transactionId, parentMerchantProfile.notifyReceivableExpireRange ? 90)
-
 
   createGeraMerchant: (merchantId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
@@ -198,28 +207,58 @@ Meteor.methods
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       Schema.merchantProfiles.update {merchant:profile.parentMerchant}, $set: {packageClassActive: true}
 
-
+  updateMerchant: ->
+      Schema.products.find().forEach(
+        (product) ->
+          Schema.products.update product._id, $set:{branchList: [product.merchant]}
+      )
 
   updateMerchantDataBase: ->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
+      countMerchant = 0
       #thêm merchantType cho merchant
       Schema.merchants.find({merchantType: {$nin:['merchant', 'agency', 'gera']} }).forEach(
-#      Schema.merchants.find().forEach(
+#      Schema.merchants.find({_id: "fd3n2DxNZKbbs5gkE"}).forEach(
         (merchant) ->
-          Schema.merchants.update merchant._id, $set:{merchantType: 'merchant'}
-          Schema.userProfiles.update {currentMerchant: merchant._id}, $set:{userType: 'merchant'}
+          merchantProfileUpdate =
+            merchantList        : []
+            warehouseList       : []
+            staffList           : []
+            customerList        : []
+            distributorList     : []
+            partnerList         : []
+            merchantPartnerList : []
+            productList         : []
+            geraProductList     : []
+          metroSummaryUpdate =
+            warehouseList   : []
+            staffList       : []
+            customerList    : []
+            distributorList : []
+            partnerList     : []
+            productList     : []
+            geraProductList : []
+          merchantProfileUpdate.merchantList.push merchant._id
 
           parentMerchant = if merchant.parent then merchant.parent else merchant._id
+          Schema.merchants.update merchant._id, $set:{merchantType: 'merchant'}
+
           Schema.products.find({merchant: merchant._id}).forEach(
             (product) ->
-              Schema.products.update product._id, $set:{parentMerchant: parentMerchant, createMerchant: parentMerchant}
+              metroSummaryUpdate.productList.push product._id
+              merchantProfileUpdate.productList.push product._id
+
+              Schema.products.update product._id, $set:{parentMerchant: parentMerchant, createMerchant: parentMerchant, branchList: [product.merchant]}
               branchProductSummaries =
                 parentMerchant : parentMerchant
                 merchant       : merchant._id
                 product        : product._id
                 warehouse      : product.warehouse
-              branchProductId = Schema.branchProductSummaries.insert branchProductSummaries
-              if branchProduct = Schema.branchProductSummaries.findOne(branchProductId)
+              if !branchProduct = Schema.branchProductSummaries.findOne(branchProductSummaries)
+                branchProductId = Schema.branchProductSummaries.insert branchProductSummaries
+                branchProduct = Schema.branchProductSummaries.findOne(branchProductId) if branchProductId
+
+              if branchProduct
                 branchProductOption = {availableQuality: 0, inStockQuality: 0, totalQuality: 0, salesQuality: 0}
                 Schema.productDetails.find({product: product._id, merchant: product.merchant}).forEach(
                   (productDetail)->
@@ -236,12 +275,9 @@ Meteor.methods
                 Schema.orderDetails.find({product: product._id}).forEach(
                   (orderDetail) -> Schema.orderDetails.update orderDetail._id, $set:{branchProduct: branchProduct._id}
                 )
-
                 Schema.returnDetails.find({product: product._id}).forEach(
                   (returnDetail) -> Schema.returnDetails.update returnDetail._id, $set:{branchProduct: branchProduct._id}
                 )
-                Schema.branchProductSummaries.update branchProduct._id, $set:branchProductOption
-
                 Schema.productUnits.find({product: product._id}).forEach(
                   (productUnit)->
                     productUnitUpdate =
@@ -255,21 +291,50 @@ Meteor.methods
                       merchant      : merchant._id
                       product       : productUnit.product
                       productUnit   : productUnit._id
-                    Schema.branchProductUnits.insert branchProductUnit
+                    Schema.branchProductUnits.insert branchProductUnit if !Schema.branchProductUnits.findOne(branchProductUnit)
                 )
+                Schema.branchProductSummaries.update branchProduct._id, $set:branchProductOption
           )
+
+          Schema.warehouses.find({merchant: merchant._id}).forEach(
+            (warehouse)->
+              metroSummaryUpdate.warehouseList.push warehouse._id
+              merchantProfileUpdate.warehouseList.push warehouse._id
+          )
+          Schema.userProfiles.find({currentMerchant: merchant._id}).forEach(
+            (userProfile)->
+              metroSummaryUpdate.staffList.push userProfile._id
+              merchantProfileUpdate.staffList.push userProfile._id
+              Schema.userProfiles.update userProfile._id, $set:{userType: 'merchant'}
+          )
+          Schema.customers.find({currentMerchant: merchant._id}).forEach(
+            (customer)->
+              metroSummaryUpdate.customerList.push customer._id
+              merchantProfileUpdate.customerList.push customer._id
+          )
+          Schema.distributors.find({merchant: merchant._id}).forEach(
+            (distributor)->
+              metroSummaryUpdate.distributorList.push distributor._id
+              merchantProfileUpdate.distributorList.push distributor._id
+          )
+          Schema.metroSummaries.update {merchant: merchant._id}, $set: metroSummaryUpdate
+          Schema.merchantProfiles.update {merchant: parentMerchant}, $set: merchantProfileUpdate
+
+          countMerchant = countMerchant + 1
+          console.log countMerchant
       )
 
 
-      #set merchant của vtnamphuong@gera.vn lên làm agency
-      merchantId_VTNamPhuong = "fd3n2DxNZKbbs5gkE"
-      Schema.merchants.update merchantId_VTNamPhuong, $set:{merchantType: 'agency'}
-      Schema.userProfiles.update {merchant: merchantId_VTNamPhuong}, $set:{userType: 'agency'}
+#      #set merchant của vtnamphuong@gera.vn lên làm agency
+#      merchantId_VTNamPhuong = "fd3n2DxNZKbbs5gkE"
+#      Schema.merchants.update merchantId_VTNamPhuong, $set:{merchantType: 'agency'}
+#      Schema.userProfiles.update {merchant: merchantId_VTNamPhuong}, $set:{userType: 'agency'}
 
 
       #lấy dữ liệu sản phẩm của vtnamphuong@gera.vn làm buildInProduct
-#      Schema.products.find({merchant: "fd3n2DxNZKbbs5gkE", buildInProduct:{$exists: false} }).forEach(
-      Schema.products.find({merchant: "fd3n2DxNZKbbs5gkE"}).forEach(
+      geraProductList = []
+      Schema.products.find({merchant: "fd3n2DxNZKbbs5gkE", buildInProduct:{$exists: false} }).forEach(
+#      Schema.products.find({merchant: "fd3n2DxNZKbbs5gkE"}).forEach(
         (product) ->
           if product.name and product.productCode
             buildInProduct = {
@@ -304,4 +369,9 @@ Meteor.methods
                       productUnitUnSet = {buildInProduct: "", productCode: "", image: "", unit: "", conversionQuality: ""}
                       Schema.productUnits.update productUnit._id, $set: productUnitSet, $unset: productUnitUnSet
               )
+              geraProductList.push buildInProduct._id
       )
+      Schema.metroSummaries.update {merchant: "fd3n2DxNZKbbs5gkE"}, $set: {geraProductList: geraProductList}
+      Schema.merchantProfiles.update {merchant: "fd3n2DxNZKbbs5gkE"}, $set: {geraProductList: geraProductList}
+
+      Meteor.call('reUpdateOrderCode')

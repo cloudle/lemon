@@ -35,7 +35,7 @@ lemon.defineHyper Template.partnerManagementPartnerHistorySection,
 
     sorted
 
-  finalDebtBalance: -> @importCash + @receiveCash - @saleCash - @paidCash
+  finalDebtBalance: -> @saleCash + @paidCash - @importCash - @receiveCash
   safeClass: ->
     if @partnerImport then ''
     else if @partnerSale then 'safe'
@@ -50,12 +50,12 @@ lemon.defineHyper Template.partnerManagementPartnerHistorySection,
       $payAmount = template.ui.$payAmount
       $payDescription = template.ui.$payDescription
       payAmount = Math.abs $payAmount.inputmask('unmaskedvalue')
-      Meteor.call 'createTransactionOfPartner', @_id, payAmount, $payDescription.val(), null, 'paid', (error, result) ->
+      Meteor.call 'createTransactionOfPartner', @_id, payAmount, $payDescription.val(), 'paid', (error, result) ->
         if error then console.log error.error else $payDescription.val(''); $payAmount.val('')
 
     "click .transactionReceive": (event, template) ->
       $payAmount = template.ui.$payAmount
       $payDescription = template.ui.$payDescription
       payAmount = Math.abs $payAmount.inputmask('unmaskedvalue')
-      Meteor.call 'createTransactionOfPartner', @_id, payAmount, $payDescription.val(), null, 'receive', (error, result) ->
+      Meteor.call 'createTransactionOfPartner', @_id, payAmount, $payDescription.val(), 'receive', (error, result) ->
         if error then console.log error.error else $payDescription.val(''); $payAmount.val('')

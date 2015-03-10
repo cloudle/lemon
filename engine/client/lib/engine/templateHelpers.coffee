@@ -11,6 +11,7 @@ Template.registerHelper 'timeS', -> moment(Session.get('realtime-now')).format("
 Template.registerHelper 'sessionGet', (name) -> Session.get(name)
 Template.registerHelper 'authenticated', (name) -> Meteor.userId() isnt null
 Template.registerHelper 'metroUnLocker', (context) ->  if context < 1 then ' locked'
+Template.registerHelper 'listToFormatNumber', (context) ->  accounting.formatNumber(context?.length ? 0)
 Template.registerHelper 'formatNumber', (context) ->  accounting.formatNumber(context)
 Template.registerHelper 'formatNumberAbs', (number) -> accounting.formatNumber(Math.abs(number))
 Template.registerHelper 'formatNumberK', (context) ->  accounting.formatNumber(context/1000)

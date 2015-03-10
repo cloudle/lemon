@@ -239,14 +239,14 @@ Meteor.methods
             myTransactionOption.warehouse = profile.currentWarehouse
             myTransactionOption.creator   = profile.user
             myTransactionOption.status    = 'success'
-            myTransactionOption.beforeDebtBalance = myPartner.importCash + myPartner.receiveCash - myPartner.saleCash - myPartner.paidCash
+            myTransactionOption.beforeDebtBalance = myPartner.saleCash + myPartner.paidCash - myPartner.importCash - myPartner.receiveCash
 
             if myTransactionOption.receivable
               myPartnerOptionUpdate = $inc: {receiveCash: myTransactionOption.debtBalanceChange}
-              myTransactionOption.latestDebtBalance = myTransactionOption.beforeDebtBalance + myTransactionOption.debtBalanceChange
+              myTransactionOption.latestDebtBalance = myTransactionOption.beforeDebtBalance - myTransactionOption.debtBalanceChange
             else
               myPartnerOptionUpdate = $inc: {paidCash: myTransactionOption.debtBalanceChange}
-              myTransactionOption.latestDebtBalance = myTransactionOption.beforeDebtBalance - myTransactionOption.debtBalanceChange
+              myTransactionOption.latestDebtBalance = myTransactionOption.beforeDebtBalance + myTransactionOption.debtBalanceChange
 
             Schema.transactions.insert myTransactionOption
             Schema.partners.update myPartner._id, myPartnerOptionUpdate

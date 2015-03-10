@@ -2,6 +2,7 @@ Schema.add 'sales', "Sale", class Sale
   @newByOrder: (order)->
     buyer = Schema.customers.findOne(order.buyer)
     option =
+      parentMerchant    : order.parentMerchant
       merchant          : order.merchant
       warehouse         : order.warehouse
       creator           : order.creator

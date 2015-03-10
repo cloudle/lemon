@@ -6,13 +6,13 @@ Apps.Merchant.productManagementReactive.push (scope) ->
 
     scope.branchProductList = []
     scope.merchantProductList = []
-    if branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant})
-      branchProductListId = branchProfile.productList ? []
+    if metroSummary = Schema.metroSummaries.findOne({merchant: profile.currentMerchant})
+      branchProductListId = metroSummary.productList ? []
       cursorProduct = Schema.products.find({merchant: Session.get("myProfile").currentMerchant})
       Helpers.searchBranchProduct(cursorProduct, branchProductListId, scope.branchProductList, scope.merchantProductList)
 
     if merchantProfile = Schema.merchantProfiles.findOne(merchant: profile.parentMerchant)
-      scope.geraProductList = Schema.buildInProducts.find({_id: {$nin: merchantProfile.geraProduct}})
+      scope.geraProductList = Schema.buildInProducts.find({_id: {$nin: merchantProfile.geraProductList}})
 
     if Session.get("productManagementSearchFilter")?.length > 0
       unsignedSearch = Helpers.RemoveVnSigns Session.get("productManagementSearchFilter")

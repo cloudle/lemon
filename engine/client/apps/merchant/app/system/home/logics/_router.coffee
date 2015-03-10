@@ -10,8 +10,12 @@ lemon.addRoute
       Session.set "currentAppInfo",
         name: "trung tâm"
       @next()
-  data: -> {
-    Summary: MetroSummary.findOne({})
-    appMenus: scope.appMenus
-  }
+  data: ->
+    Apps.setup(scope, Apps.Merchant.homeReactive)
+
+    return {
+      Summary : scope.summary
+      Merchant: scope.merchant
+      appMenus: scope.appMenus
+    }
 , Apps.Merchant.RouterBase

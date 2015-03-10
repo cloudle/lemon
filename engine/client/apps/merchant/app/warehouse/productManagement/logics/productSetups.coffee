@@ -31,13 +31,13 @@ Apps.Merchant.productManagementInit.push (scope) ->
         existedQuery.productCode = randomBarcode
         if !Schema.products.findOne(existedQuery)
           product.productCode = randomBarcode
-          productId = Schema.products.insert  product, (error, result) -> console.log error if error
+          productId = Schema.products.insert product, (error, result) -> console.log error if error
           UserSession.set('currentProductManagementSelection', productId)
           Meteor.subscribe('productManagementData', productId)
           template.ui.$searchFilter.val(''); Session.set("productManagementSearchFilter", "")
           break
       Meteor.call('createBranchProductSummaryBy', productId)
-      MetroSummary.updateMetroSummaryBy(['product'])
+#      MetroSummary.updateMetroSummaryBy(['product'])
 
   scope.editProduct = (template) ->
     product = Session.get("productManagementCurrentProduct")
@@ -108,8 +108,7 @@ Apps.Merchant.productManagementInit.push (scope) ->
 
   scope.deleteProduct = (product)->
     if product.allowDelete and !product.buildInProduct
-      Meteor.call 'deleteBranchProductSummaryBy', product._id, (error, result) ->
+      Meteor.call 'deleteBranchProduct', product._id, (error, result) ->
         if error then console.log error.error
         else
-          UserSession.set('currentProductManagementSelection', Schema.products.findOne()?._id ? '')
-          MetroSummary.updateMetroSummaryBy(['product'])
+          UserSession.set('currentProductManagementSelection', Schema.metroSummaries.findOne({merchant: Session.get('myProfile').currentMerchant})?.productList[0] ? '')

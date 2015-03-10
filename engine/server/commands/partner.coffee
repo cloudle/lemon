@@ -54,6 +54,8 @@ Meteor.methods
           if partner.status is 'unSubmit'
             Schema.partners.update partner._id, $set:{status: 'success', creator: profile.user}
             Schema.partners.update partner.partner, $set:{status: 'success'}
+            Schema.merchantProfiles.update {merchant: partner.parentMerchant}, $addToSet: {partnerList: partner._id}
+            Schema.merchantProfiles.update {merchant: partner.buildIn}, $addToSet: {partnerList: partner.partner}
 
         when 'unSubmit'
           if partner.status isnt 'success'
@@ -65,7 +67,8 @@ Meteor.methods
         when 'delete'
           if partner.status is 'myMerchant' or partner.status is 'success' or partner.status is 'unDelete'
             partnerImportHistory = Schema.imports.findOne({partner: partner._id, submitted: true})
-            partnerImportHistory = Schema.imports.findOne({partner: partner.partner, submitted: true}) if !partnerImportHistory
+            partnerImportHistory = Schema.imports.findOne({partner: partner.partner, submitted: true}) if partner.partner and !partnerImportHistory
+
             if partnerImportHistory
               Schema.partners.update partner._id, $set:{allowDelete: false}
               Schema.partners.update partner.partner, $set:{allowDelete: false}
@@ -74,8 +77,10 @@ Meteor.methods
                 Schema.partners.remove partner._id
                 if partner.partner
                   Schema.partners.remove partner.partner
-                  Schema.merchantProfiles.update {merchant: partner.parentMerchant}, $pull: { merchantPartnerList: partner.buildIn }
-                  Schema.merchantProfiles.update {merchant: partner.buildIn}, $pull: { merchantPartnerList: partner.parentMerchant }
+                  Schema.merchantProfiles.update {merchant: partner.parentMerchant}, $pull: {partnerList: partner._id, merchantPartnerList: partner.buildIn }
+                  Schema.merchantProfiles.update {merchant: partner.buildIn}, $pull: {partnerList: partner.partner, merchantPartnerList: partner.parentMerchant }
+                else
+                  Schema.merchantProfiles.update {merchant: partner.parentMerchant}, $pull: {partnerList: partner._id}
               else
                 Schema.partners.update partner._id, $set:{status: 'delete'}
                 Schema.partners.update partner.partner, $set:{status: 'unDelete'}
@@ -141,8 +146,8 @@ Meteor.methods
             warehouse : profile.currentWarehouse
             creator   : profile.user
             status    : 'success'
-            beforeDebtBalance: myPartner.importCash + myPartner.loanCash - myPartner.saleCash - myPartner.paidCash
-            latestDebtBalance: myPartner.importCash + myPartner.loanCash - myPartner.saleCash - myPartner.paidCash - partnerSale.totalPrice
+            beforeDebtBalance: myPartner.saleCash + myPartner.paidCash - myPartner.importCash - myPartner.receiveCash
+            latestDebtBalance: myPartner.saleCash + myPartner.paidCash - myPartner.importCash - myPartner.receiveCash + partnerSale.totalPrice
           Schema.partnerSales.update partnerSale._id, $set: partnerSaleUpdate
           Schema.partners.update myPartner._id, $inc:{saleCash: partnerSale.totalPrice}
 
@@ -160,8 +165,8 @@ Meteor.methods
 
           partnerImportUpdate =
             status    : 'success'
-            beforeDebtBalance: ownerPartner.importCash + ownerPartner.loanCash - ownerPartner.saleCash - ownerPartner.paidCash
-            latestDebtBalance: ownerPartner.importCash + ownerPartner.loanCash - ownerPartner.saleCash - ownerPartner.paidCash + partnerImport.totalPrice
+            beforeDebtBalance: ownerPartner.saleCash + ownerPartner.paidCash - ownerPartner.importCash - ownerPartner.receiveCash
+            latestDebtBalance: ownerPartner.saleCash + ownerPartner.paidCash - ownerPartner.importCash - ownerPartner.receiveCash - partnerImport.totalPrice
           Schema.imports.update partnerImport._id, $set: partnerImportUpdate
           Schema.partners.update ownerPartner._id, $inc:{importCash: partnerImport.totalPrice}
 

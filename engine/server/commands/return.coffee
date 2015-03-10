@@ -94,6 +94,7 @@ Meteor.methods
 
         Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
         MetroSummary.updateMyMetroSummaryBy(['createReturn'], currentDistributorReturn._id)
+        Meteor.call 'updateMetroSummaryBy', 'createReturnDistributor', currentDistributorReturn._id, currentDistributorReturn.merchant
 
         if distributor = Schema.distributors.findOne(currentDistributorReturn.distributor)
           Meteor.call 'distributorToReturns', distributor
@@ -179,6 +180,7 @@ Meteor.methods
         MetroSummary.updateMyMetroSummaryBy(['createReturn'], currentCustomerReturn._id)
         Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
         Meteor.call 'customerToReturns', customer
+        Meteor.call 'updateMetroSummaryBy', 'createReturnCustomer', currentCustomerReturn._id, currentCustomerReturn.merchant
 
     catch error
       throw new Meteor.Error('submitCustomerReturn', error)

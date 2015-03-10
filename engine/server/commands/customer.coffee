@@ -157,6 +157,7 @@ Meteor.methods
 
       Schema.customers.update currentSales.buyer, $inc: customerIncOption
       MetroSummary.updateMyMetroSummaryByProfitability()
+      Meteor.call 'updateMetroSummaryBy', 'deleteSale', currentSales._id, currentSales.merchant
 
     catch error
       throw new Meteor.Error('deleteTransaction', error)

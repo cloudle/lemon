@@ -25,9 +25,9 @@ Meteor.publishComposite 'availableBranchProducts', ->
   return {
     find: ->
       profile = Schema.userProfiles.findOne({user: self.userId})
-      branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant}) if profile
-      return EmptyQueryResult if !branchProfile
-      Schema.products.find({_id:{$in:branchProfile.productList ? []}, merchant: profile.currentMerchant})
+      metroSummary = Schema.metroSummaries.findOne({merchant: profile.currentMerchant}) if profile
+      return EmptyQueryResult if !metroSummary
+      Schema.products.find({_id:{$in: metroSummary.productList ? []}, merchant: profile.currentMerchant})
     children: [
       find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}
     ]
@@ -38,9 +38,9 @@ Meteor.publishComposite 'availableUnBranchProducts', ->
   return {
     find: ->
       profile = Schema.userProfiles.findOne({user: self.userId})
-      branchProfile = Schema.branchProfiles.findOne({merchant: profile.currentMerchant}) if profile
-      return EmptyQueryResult if !branchProfile
-      Schema.products.find({_id:{$nin:branchProfile.productList ? []}, merchant: profile.currentMerchant})
+      metroSummary = Schema.metroSummaries.findOne({merchant: profile.currentMerchant}) if profile
+      return EmptyQueryResult if !metroSummary
+      Schema.products.find({_id:{$nin: metroSummary.productList ? []}, merchant: profile.currentMerchant})
     children: [
       find: (product) -> Schema.buildInProducts.find {_id: product.buildInProduct}
     ]

@@ -14,18 +14,18 @@ template(name="merchantHome")
                 .canvas-wrapper.double: .canvas
                   .app-icon.icon-group
                   span.caption.app-name.bottom.right khách hàng
-                  .app-count {{formatNumber Summary.data.customerCountAll}}
+                  .app-count {{listToFormatNumber Summary.customerList}}
                   .app-count-description khách hàng
               .tile.double.pumpkin.overlay.distributor-management(data-app="distributorManagement")
                 .canvas-wrapper: .canvas
                   .app-icon.icon-building
-                  .app-count {{formatNumber Summary.data.distributorCount}}
+                  .app-count {{listToFormatNumber Summary.distributorList}}
                   .app-count-description công ty
                   span.caption.app-name.bottom.right nhà cung cấp
               .tile.double.belize-hole.overlay.product-management(data-app="productManagement")
                 .canvas-wrapper: .canvas
                   .app-icon.icon-cubes
-                  .app-count {{formatNumber Summary.data.productCount}}
+                  .app-count {{listToFormatNumber Summary.productList}}/{{listToFormatNumber Merchant.productList}}
                   .app-count-description loại sản phẩm
                   span.caption.app-name.bottom.right sản phẩm
 
@@ -37,40 +37,42 @@ template(name="merchantHome")
                 span.caption.app-name.bottom.right thu chi
               .tile.amethyst(data-app="sales")
                 .app-icon.icon-basket
-                .app-count {{formatNumber Summary.data.saleCountDay}}
+                .app-count {{listToFormatNumber Summary.saleDay}}
                 .app-count-description phiếu trong ngày
                 span.caption.app-name.bottom.right bán hàng
               .tile.pink(data-app="customerReturn")
                 .app-icon.icon-reply-outline
-                .app-count {{formatNumber Summary.data.returnCustomerCountDay}}
-                .app-count-description lần trong ngày
+                .app-count {{listToFormatNumber Summary.returnCustomerDay}}
+                .app-count-description phiếu trong ngày
                 span.caption.app-name.bottom.right trả hàng
               .tile.green-sea(data-app="import")
                 .app-icon.icon-download-outline
-                .app-count {{formatNumber Summary.data.importCountDay}}
+                .app-count {{listToFormatNumber Summary.importDay}}
                 .app-count-description phiếu trong ngày
                 span.caption.app-name.bottom.right nhập kho
               .tile.pumpkin(data-app="distributorReturn")
                 .app-icon.icon-reply-outline
-                .app-count {{formatNumber Summary.data.returnDistributorCountDay}}
-                .app-count-description lần trong ngày
+                .app-count {{listToFormatNumber Summary.returnDistributorDay}}
+                .app-count-description phiếu trong ngày
                 span.caption.app-name.bottom.right trả hàng
               .tile.carrot(data-app="inventoryHistory")
                 .app-icon.icon-edit
-                .app-count {{formatNumber Summary.data.inventoryCountDay}}
+                .app-count {{listToFormatNumber Summary.returnCustomerDay}}
                 .app-count-description ngày chưa cập nhật
                 span.caption.app-name.bottom.right kiểm kho
               .tile.blue(data-app="distributorManagement")
                 .app-icon.icon-loop-outline
+                .app-count 0
+                .app-count-description phiếu trong ngày
                 span.caption.app-name.bottom.right chuyển kho
 
             .tile-group-2
               .tile.double.gray
                 .app-icon.icon-award
                 span.caption.app-name.bottom.right &nbsp;
-              .tile.lime(data-app="distributorManagement")
+              .tile.lime(data-app="deliveryManager")
                 .app-icon.icon-truck-1
-                .app-count {{formatNumber Summary.data.deliveryCountDay}}
+                .app-count {{listToFormatNumber Summary.deliveryWaiting}}
                 .app-count-description phiếu chờ giao
                 span.caption.app-name.bottom.right giao hàng
               .tile.carrot(data-app="distributorManagement")
@@ -78,11 +80,13 @@ template(name="merchantHome")
                 span.caption.app-name.bottom.right lãi suất
               .tile.double.blue(data-app="partnerManagement")
                 .app-icon.icon-award
-                .app-count {{formatNumber Summary.data.partnerCount}}
+                .app-count {{listToFormatNumber Merchant.partnerList}}
                 .app-count-description đã liên kết
                 span.caption.app-name.bottom.right đối tác
               .tile.double.amethyst(data-app="merchantReport")
                 .app-icon.icon-chart-pie-outline
+                .app-count {{formatNumber revenueDay}}
+                .app-count-description doanh thu ngày
                 span.caption.app-name.bottom.right báo cáo
             +metroDecoratorTiles
 

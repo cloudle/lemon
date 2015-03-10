@@ -21,14 +21,6 @@ simpleSchema.merchantProfiles = new SimpleSchema
     type: Date
     optional: true
 
-  geraProduct:
-    type: [String]
-    defaultValue: []
-
-  merchantPartnerList:
-    type: [String]
-    defaultValue: []
-
   packageClass:
     type: String
     defaultValue: 'free'
@@ -84,6 +76,43 @@ simpleSchema.merchantProfiles = new SimpleSchema
   version: { type: simpleSchema.Version }
 
 #-------------------------------------------------------
+  merchantList:
+    type: [String]
+    defaultValue: []
+
+  warehouseList:
+    type: [String]
+    defaultValue: []
+
+  staffList:
+    type: [String]
+    defaultValue: []
+
+  customerList:
+    type: [String]
+    defaultValue: []
+
+  distributorList:
+    type: [String]
+    defaultValue: []
+
+  partnerList:
+    type: [String]
+    defaultValue: []
+
+  merchantPartnerList:
+    type: [String]
+    defaultValue: []
+
+  productList:
+    type: [String]
+    defaultValue: []
+
+  geraProductList:
+    type: [String]
+    defaultValue: []
+#-------------------------------------------------------
+
   companyName:
     type: String
     optional: true

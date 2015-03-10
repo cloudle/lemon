@@ -1,9 +1,11 @@
 simpleSchema.customers = new SimpleSchema
   parentMerchant:
     type: String
-    optional: true
 
   currentMerchant:
+    type: String
+
+  merchant:
     type: String
 
   creator:

@@ -38,9 +38,9 @@ updateImportAndPartner = (currentImport, partnerSales, partner, profile, listDat
     latestDebtBalance   : partner.importDebt + currentImport.totalPrice
     finish              : true
     submitted           : true
-    partnerSale         : partnerSales._id
     'version.createdAt' : new Date()
   importOption.status = status
+  importOption.partnerSale = partnerSales._id if partner.builtIn
   Schema.imports.update currentImport._id, $set: importOption
 
   partnerAddToSet =
@@ -71,21 +71,22 @@ updateImportAndPartner = (currentImport, partnerSales, partner, profile, listDat
     transactionImportOption.status = status
     importTransactionId = Schema.transactions.insert transactionImportOption
 
-    transactionSaleOption =
-      parentMerchant    : partnerSales.parentMerchant
-      owner             : partnerSales._id
-      group             : 'partner'
-      description       : 'Thu Tiền'
-      receivable        : true
-      totalCash         : partnerSales.deposit
-      debtDate          : new Date()
-      debtBalanceChange : partnerSales.deposit
-      beforeDebtBalance : partnerSales.latestDebtBalance
-      latestDebtBalance : partnerSales.latestDebtBalance - partnerSales.deposit
-      parentTransaction : importTransactionId
-    transactionSaleOption.status = status
-    importTransactionId = Schema.transactions.insert transactionSaleOption
-    Schema.transactions.update importTransactionId, $set:{parentTransaction: importTransactionId}
+    if partner.builtIn
+      transactionSaleOption =
+        parentMerchant    : partnerSales.parentMerchant
+        owner             : partnerSales._id
+        group             : 'partner'
+        description       : 'Thu Tiền'
+        receivable        : true
+        totalCash         : partnerSales.deposit
+        debtDate          : new Date()
+        debtBalanceChange : partnerSales.deposit
+        beforeDebtBalance : partnerSales.latestDebtBalance
+        latestDebtBalance : partnerSales.latestDebtBalance - partnerSales.deposit
+        parentTransaction : importTransactionId
+      transactionSaleOption.status = status
+      importTransactionId = Schema.transactions.insert transactionSaleOption
+      Schema.transactions.update importTransactionId, $set:{parentTransaction: importTransactionId}
 
   partnerOptionUpdate = { $addToSet: partnerAddToSet , $set: {allowDelete: false} }
   if status is 'success'
@@ -93,7 +94,7 @@ updateImportAndPartner = (currentImport, partnerSales, partner, profile, listDat
     partnerIncOption.paidCash = currentImport.deposit if currentImport.deposit > 0
     partnerOptionUpdate.$inc = partnerIncOption
   Schema.partners.update partner._id, partnerOptionUpdate
-  Schema.partners.update partner.partner, $set: {allowDelete: false}
+  Schema.partners.update partner.partner, $set: {allowDelete: false} if partner.builtIn
 
 updateBuiltInOfDistributor = (distributorId, importDetails)->
   productIds = _.uniq(_.pluck(importDetails, 'product'))
@@ -167,6 +168,7 @@ Meteor.methods
 #          transactionDetail = TransactionDetail.newByTransaction(transaction)
           MetroSummary.updateMetroSummaryByImport(importId)
           MetroSummary.updateMyMetroSummaryBy(['createdImport'],  importId)
+          Meteor.call 'updateMetroSummaryBy', 'createImport', currentImport._id, currentImport.merchant
 
         if currentImport.partner
           if myPartner = Schema.partners.findOne(currentImport.partner)
@@ -187,9 +189,9 @@ Meteor.methods
                   deposit       : currentImport.deposit
                   debit         : currentImport.debit
                   status        : 'unSubmit'
-                  beforeDebtBalance: myPartner.importDebt
+                  beforeDebtBalance: 0
                   debtBalanceChange: currentImport.totalPrice
-                  latestDebtBalance: myPartner.importDebt + currentImport.totalPrice
+                  latestDebtBalance: 0
 
                 if partnerSales._id = Schema.partnerSales.insert partnerSales
                   for importDetail in importDetails
@@ -254,6 +256,7 @@ Meteor.methods
               updateImportAndPartner(currentImport, partnerSales, myPartner, profile, listDataOfPartner, 'success')
               MetroSummary.updateMetroSummaryByImport(currentImport._id)
               MetroSummary.updateMyMetroSummaryBy(['createdImport'],  currentImport._id)
+              Meteor.call 'updateMetroSummaryBy', 'createImport', currentImport._id, currentImport.merchant
 
         return ('Phiếu nhập kho đã được duyệt')
     else

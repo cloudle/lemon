@@ -173,6 +173,7 @@ Meteor.methods
       Schema.importDetails.find({import: currentImport._id}).forEach((detail)-> Schema.importDetails.remove detail._id)
 
       Schema.distributors.update currentImport.distributor, $inc: distributorIncOption
+      Meteor.call 'updateMetroSummaryBy', 'deleteImport', currentImport._id, currentImport.merchant
     catch error
       throw new Meteor.Error('deleteTransaction', error)
 

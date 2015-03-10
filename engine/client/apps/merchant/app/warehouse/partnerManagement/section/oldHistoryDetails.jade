@@ -5,8 +5,8 @@ template(name="partnerManagementOldHistoryDetails")
         span.note {{momentCalendar debtDate}}, {{description}}
       td.number(colspan="3")
         span.icon-feather-1(class="{{finalReceivableClass}}")
-        span.s4(class="{{finalReceivableClass}}") <b>{{formatNumberAbs latestDebtBalance}}</b>
-      td.number: span(class="{{receivableClass}}") <b>{{formatNumberAbs debtBalanceChange}}</b>
+        span.s4(class="{{finalReceivableClass}}") <b>{{formatNumber latestDebtBalance}}</b>
+      td.number: span(class="{{receivableClass}}") <b>{{formatNumber debtBalanceChange}}</b>
 
   else
     tr.header-row: td(colspan="5")

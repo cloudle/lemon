@@ -132,7 +132,7 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
       console.log result
       if result.error then $name.notify(result.error, {position: "bottom"})
       else
-        MetroSummary.updateMetroSummaryBy(['distributor'])
+        Meteor.call 'updateMetroSummaryBy', 'createDistributor', result
         UserSession.set('currentDistributorManagementSelection', result)
       template.ui.$searchFilter.val(''); Session.set("distributorManagementSearchFilter", "")
 
@@ -163,6 +163,6 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 
   scope.deleteDistributor = (distributor) ->
     if distributor.allowDelete
-      Schema.distributors.remove distributor._id
-      MetroSummary.updateMetroSummaryBy(['distributor'])
-      UserSession.set('currentDistributorManagementSelection', Schema.distributors.findOne()?._id ? '')
+      if Schema.distributors.remove distributor._id
+        UserSession.set('currentDistributorManagementSelection', Schema.distributors.findOne()?._id ? '')
+        Meteor.call 'updateMetroSummaryBy', 'deleteDistributor', distributor

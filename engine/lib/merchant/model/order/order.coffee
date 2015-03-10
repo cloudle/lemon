@@ -21,11 +21,12 @@ Schema.add 'orders', "Order", class Order
   @createdNewBy: (buyer, myProfile = null)->
     if !myProfile then myProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     orderOption =
-      merchant  : myProfile.currentMerchant
-      warehouse : myProfile.currentWarehouse
-      creator   : myProfile.user
-      seller    : myProfile.user
-      tabDisplay: if buyer then Helpers.shortName2(buyer.name) else 'PHIẾU BÁN HÀNG 01'
+      parentMerchant: myProfile.parentMerchant
+      merchant      : myProfile.currentMerchant
+      warehouse     : myProfile.currentWarehouse
+      creator       : myProfile.user
+      seller        : myProfile.user
+      tabDisplay    : if buyer then Helpers.shortName2(buyer.name) else 'PHIẾU BÁN HÀNG 01'
 
     orderOption.buyer = buyer._id if buyer?._id
     orderOption._id   = @schema.insert orderOption

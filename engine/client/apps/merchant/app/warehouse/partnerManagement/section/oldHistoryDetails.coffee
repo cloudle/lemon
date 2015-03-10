@@ -4,15 +4,17 @@ lemon.defineWidget Template.partnerManagementOldHistoryDetails,
   totalPrice : -> if @conversionQuality then @unitQuality*@unitPrice else @importQuality*@importPrice
   bill: -> if @partnerSale then 'Phiếu nhập' else 'Phiếu bán'
   description: ->
-    if @description is 'Trả Tiền' or @description is 'Thu Tiền'
-      @description + ' ' + Session.get("partnerManagementCurrentPartner").name
+    if @description is 'Trả Tiền'
+      @description + ' cho ' + Session.get("partnerManagementCurrentPartner").name
+    else if @description is 'Thu Tiền'
+      @description + ' từ ' + Session.get("partnerManagementCurrentPartner").name
     else
       @description
 
   isTransaction: -> if @group then true else false
 
   receivableClass     : -> if @receivable then 'receive' else 'paid'
-  finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
+  finalReceivableClass: -> if @latestDebtBalance > 0 then 'receive' else 'paid'
   isTransaction       : -> if @group then true else false
 
   oldHistoryDetails: ->
