@@ -63,6 +63,7 @@ Meteor.methods
         latestSale = Schema.sales.findOne({buyer: customer._id},{sort: {'version.createdAt': -1}})
         if latestSale is undefined
           saleOption =
+            parentMerchant    : profile.parentMerchant
             merchant          : profile.currentMerchant
             warehouse         : profile.currentWarehouse
             creator           : profile.user

@@ -17,6 +17,28 @@ subtractQualityOnSales = (stockingItems, sellingItem) ->
 
 
 Meteor.methods
+  partnerToImport : (partner, profile)->
+    try
+      throw 'Chưa đăng nhập.' if !userId = Meteor.userId()
+      profile = Schema.userProfiles.findOne({user: userId}) if !profile || profile.user != userId
+      if partner.parentMerchant != profile.parentMerchant
+        partner = Schema.partners.findOne({_id: partner._id ,parentMerchant: profile.parentMerchant})
+
+      if partner
+        importFound = Schema.imports.findOne({
+          merchant: profile.currentMerchant
+          creator : userId
+          partner : partner._id
+          finish: false
+        }, {sort: {'version.createdAt': -1}})
+        if !importFound then importFound = Import.createdNewBy(null, null, partner, profile)
+        Schema.userSessions.update {user: userId}, {$set:{'currentImport': importFound._id}}
+
+      else throw 'Không tìm thấy đối tác'
+
+    catch error
+      throw new Meteor.Error('partnerToImport', error)
+
   addMerchantPartner: (partnerMerchantProfileId)->
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       myMerchantProfile      = Schema.merchantProfiles.findOne({merchant: profile.parentMerchant})

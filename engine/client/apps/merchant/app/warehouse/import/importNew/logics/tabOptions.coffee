@@ -1,5 +1,5 @@
 logics.import.createImportAndSelected = ->
-  if newImport = Import.createdNewBy(null, null, Session.get('myProfile'))
+  if newImport = Import.createdNewBy(null, null, null, Session.get('myProfile'))
     Session.set('currentImport', newImport)
     UserSession.set('currentImport', newImport._id)
     return newImport

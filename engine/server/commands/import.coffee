@@ -8,7 +8,7 @@ navigateNewTab=(currentImportId, profile)->
     nextIndex = if currentIndex == currentLength - 1 then currentIndex - 1 else currentIndex + 1
     UserSession.set('currentImport', allTabs[nextIndex]._id)
   else
-    if newImport = Import.createdNewBy(null, null, profile)
+    if newImport = Import.createdNewBy(null, null, null, profile)
       UserSession.set('currentImport', newImport._id)
       Schema.imports.findOne(newImport._id)
 
@@ -32,6 +32,7 @@ updateImportAndDistributor = (currentImport, distributor)->
   Schema.imports.update currentImport._id, $set: importOption
 
 updateImportAndPartner = (currentImport, partnerSales, partner, profile, listData, status = 'success')->
+  console.log partner.buildIn
   importOption =
     beforeDebtBalance   : partner.importDebt
     debtBalanceChange   : currentImport.totalPrice
@@ -40,7 +41,7 @@ updateImportAndPartner = (currentImport, partnerSales, partner, profile, listDat
     submitted           : true
     'version.createdAt' : new Date()
   importOption.status = status
-  importOption.partnerSale = partnerSales._id if partner.builtIn
+  importOption.partnerSale = partnerSales._id if partner.buildIn
   Schema.imports.update currentImport._id, $set: importOption
 
   partnerAddToSet =
@@ -71,7 +72,7 @@ updateImportAndPartner = (currentImport, partnerSales, partner, profile, listDat
     transactionImportOption.status = status
     importTransactionId = Schema.transactions.insert transactionImportOption
 
-    if partner.builtIn
+    if partner.buildIn
       transactionSaleOption =
         parentMerchant    : partnerSales.parentMerchant
         owner             : partnerSales._id
@@ -94,7 +95,7 @@ updateImportAndPartner = (currentImport, partnerSales, partner, profile, listDat
     partnerIncOption.paidCash = currentImport.deposit if currentImport.deposit > 0
     partnerOptionUpdate.$inc = partnerIncOption
   Schema.partners.update partner._id, partnerOptionUpdate
-  Schema.partners.update partner.partner, $set: {allowDelete: false} if partner.builtIn
+  Schema.partners.update partner.partner, $set: {allowDelete: false} if partner.buildIn
 
 updateBuiltInOfDistributor = (distributorId, importDetails)->
   productIds = _.uniq(_.pluck(importDetails, 'product'))
@@ -179,6 +180,7 @@ Meteor.methods
               branchProductList     : []
               branchProductUnitList : []
 
+            console.log myPartner
             if myPartner.buildIn
               if myPartner.status is 'success'
                 partnerSales =

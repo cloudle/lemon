@@ -12,6 +12,7 @@ subtractQualityOnSales = (branchProductId, saleDetail, productDetails, salesQual
         newSaleDetail =
           sale              : saleDetail.sale
           product           : saleDetail.product
+          branchProduct     : branchProductId
           productDetail     : productDetail._id
           quality           : takenQuality
           returnQuality     : 0
@@ -130,14 +131,12 @@ Meteor.methods
     if branchProduct = Schema.branchProductSummaries.findOne(branchProductId)
       if branchProduct.basicDetailModeEnabled != mode
         saleDetails = Schema.saleDetails.find({product: branchProduct.product}).fetch()
-
         importBasic = Schema.productDetails.find(
           {import: { $exists: false}, product: branchProduct.product}, {sort: {'version.createdAt': 1}}
         ).fetch()
         importProductDetails = Schema.productDetails.find(
           {import: { $exists: true}, product: branchProduct.product}, {sort: {'version.createdAt': 1}}
         ).fetch()
-
         combinedImportDetails = importBasic.concat(importProductDetails)
 
         #kiem tra so luong

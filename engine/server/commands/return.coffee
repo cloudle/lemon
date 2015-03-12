@@ -75,7 +75,7 @@ Meteor.methods
             Schema.branchProductSummaries.update productDetail.branchProduct, $inc: productOption
 
             transactionQuality += takenQuality
-            Schema.returnDetails.update returnDetail._id, $push: {productDetail: {productDetail: productDetail._id, returnQuality: takenQuality}}
+            Schema.returnDetails.update returnDetail._id, $addToSet: {productDetail: {productDetail: productDetail._id, returnQuality: takenQuality}}
             if transactionQuality == returnDetail.returnQuality then break
 
         distributor = Schema.distributors.findOne(currentDistributorReturn.distributor)

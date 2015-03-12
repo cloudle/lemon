@@ -98,7 +98,7 @@ Meteor.methods
           merchant: profile.currentMerchant
           finish: false
         }, {sort: {'version.createdAt': -1}})
-        if !importFound then importFound = Import.createdNewBy(null, distributor, profile)
+        if !importFound then importFound = Import.createdNewBy(null, distributor, null, profile)
         Schema.userSessions.update {user: userId}, {$set:{'currentImport': importFound._id}}
 
       else throw 'Không tìm thấy nhà cung cấp'

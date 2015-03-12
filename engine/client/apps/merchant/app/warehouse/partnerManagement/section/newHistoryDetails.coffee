@@ -8,8 +8,7 @@ lemon.defineWidget Template.partnerManagementNewHistoryDetails,
   showSubmitHistory: -> if @first then true else false
   showUnSubmit: -> if @status is 'unSubmit' then true else false
   isTransaction: -> if @group then true else false
-  description: ->
-    if @description then @description else if @partnerSale then 'Phiếu nhập' else 'Phiếu bán'
+  description: -> if @description then @description else if @partnerImport then 'Phiếu bán' else 'Phiếu nhập'
 
 
   newHistoryDetails: ->
