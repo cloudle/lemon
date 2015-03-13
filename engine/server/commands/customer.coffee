@@ -95,6 +95,10 @@ Meteor.methods
       throw 'Phiếu bán đã trả hàng không thể xóa.' if Schema.returns.find({timeLineSales: currentSales._id}).count() > 0
       throw 'Không thể xóa khi có phiếu giao hàng.' if currentSales.paymentsDelivery is 1
 
+      saleDetails = Schema.saleDetails.find({sale: currentSales._id}).fetch()
+      if saleDetails.length > 0
+        (throw 'Phiếu bán đã trả hàng không thể xóa.' if saleDetail.returnQuality > 0) for saleDetail in saleDetails
+
       if Schema.saleDetails.find({sale: currentSales._id}).count() > 0
         customerIncOption =
           salePaid: 0

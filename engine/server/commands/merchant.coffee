@@ -375,3 +375,15 @@ Meteor.methods
       Schema.merchantProfiles.update {merchant: "fd3n2DxNZKbbs5gkE"}, $set: {geraProductList: geraProductList}
 
       Meteor.call('reUpdateOrderCode')
+
+  checkProduct: ->
+    Schema.products.find({merchant: "fd3n2DxNZKbbs5gkE"}).forEach(
+      (product)->
+        Schema.branchProductSummaries.find({product: product._id}).forEach(
+          (branchProduct)->
+            if product.totalQuality isnt branchProduct.totalQuality or product.availableQuality isnt branchProduct.availableQuality
+              console.log product
+              console.log branchProduct
+        )
+    )
+    console.log 'checkProduct Ok!'

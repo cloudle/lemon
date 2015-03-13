@@ -35,6 +35,8 @@ Meteor.publish 'myBranchProfiles', ->
   if !parentMerchantProfile?.latestCheckPayable || parentMerchantProfile?.latestCheckPayable.toDateString() != (new Date()).toDateString()
     Apps.Merchant.checkPayableExpireDate(myProfile, parentMerchantProfile?.notifyPayableExpireRange ? 90)
 
+  Schema.merchantProfiles.update {merchant: myProfile.parentMerchant}, $set: {packageClassActive: true}
+
   myMerchantProfileQuery = {merchant: myProfile.currentMerchant}
   parentMerchantProfileQuery = {merchant: myProfile.parentMerchant}
 

@@ -13,8 +13,11 @@ lemon.defineWidget Template.customerManagementSaleDetails,
     new Date(year, mount, date + 1, hour, minute, second) > new Date()
 
   showDeleteSales: ->
+    time = @version.createdAt
     if @creator is Session.get('myProfile').user and @paymentsDelivery is 0 and !Schema.returns.findOne({timeLineSales: @_id})
-      new Date(@version.createdAt.getFullYear(), @version.createdAt.getMonth(), @version.createdAt.getDate() + 1, @version.createdAt.getHours(), @version.createdAt.getMinutes(), @version.createdAt.getSeconds()) > new Date()
+      checkDate   = new Date(time.getFullYear(), time.getMonth(), time.getDate() + 1, time.getHours(), time.getMinutes(), time.getSeconds()) > new Date()
+      checkReturn = if Schema.saleDetails.findOne({sale: @_id, returnQuality: {$gt: 0}}) then false else true
+      checkDate and checkReturn
 
 
   saleDetailCount: ->
@@ -28,7 +31,7 @@ lemon.defineWidget Template.customerManagementSaleDetails,
   dependsData: ->
     transactions = Schema.transactions.find({latestSale: @_id}).fetch()
     returns = Schema.returns.find({timeLineSales: @_id}).fetch()
-    _.sortBy transactions.concat(returns), (item) -> item.version.createdAt
+    _.sortBy transactions.concat(returns), (item) -> item.version.updateAt
 
   returnDetails: -> Schema.returnDetails.find({return: @_id})
 
