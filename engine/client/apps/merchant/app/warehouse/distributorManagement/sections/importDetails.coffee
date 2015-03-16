@@ -15,7 +15,12 @@ lemon.defineWidget Template.distributorManagementImportDetails,
     if @creator is Session.get('myProfile').user
       year = @version.createdAt.getFullYear(); mount = @version.createdAt.getMonth(); date = @version.createdAt.getDate()
       hour = @version.createdAt.getHours(); minute = @version.createdAt.getMinutes(); second = @version.createdAt.getSeconds()
-      new Date(year, mount, date + 1, hour, minute, second) > new Date() and !Schema.returns.findOne({timeLineImport: @_id})
+      if checkDay = new Date(year, mount, date + 1, hour, minute, second) > new Date()
+        checkReturn = if Schema.returns.findOne({timeLineImport: @_id}) then false else true
+        checkSale = true; Schema.productDetails.find({import: @_id}).forEach(
+          (productDetail) -> checkSale = false if productDetail.importQuality isnt productDetail.availableQuality
+        )
+      checkDay and checkReturn and checkSale
 
   showDeleteTransaction: ->
     year = @debtDate.getFullYear(); mount = @debtDate.getMonth(); date = @debtDate.getDate()

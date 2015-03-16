@@ -218,19 +218,19 @@ Meteor.methods
         ownerPartner = Schema.partners.findOne(myPartner.partner)
 
       if ownerTransaction and ownerPartner and myTransaction.debtBalanceChange is ownerTransaction.debtBalanceChange
-        beforeDebtMy = myPartner.importCash + myPartner.receiveCash - myPartner.saleCash - myPartner.paidCash
-        beforeDebtOwner = ownerPartner.importCash + ownerPartner.receiveCash - ownerPartner.saleCash - ownerPartner.paidCash
+        beforeDebtMy = myPartner.saleCash + myPartner.paidCash - myPartner.importCash - myPartner.receiveCash
+        beforeDebtOwner = ownerPartner.saleCash + ownerPartner.paidCash - ownerPartner.importCash - ownerPartner.receiveCash
 
         if myTransaction.receivable
           myPartnerOptionUpdate    = $inc: {receiveCash:myTransaction.debtBalanceChange}
           ownerPartnerOptionUpdate = $inc: {paidCash:myTransaction.debtBalanceChange}
-          myTransactionUpdate    = $set: {status: 'success', beforeDebtBalance: beforeDebtMy, latestDebtBalance: beforeDebtMy + myTransaction.debtBalanceChange}
-          ownerTransactionUpdate = $set: {status: 'success', beforeDebtBalance: beforeDebtOwner, latestDebtBalance: beforeDebtOwner - myTransaction.debtBalanceChange}
+          myTransactionUpdate    = $set: {status: 'success', beforeDebtBalance: beforeDebtMy, latestDebtBalance: beforeDebtMy - myTransaction.debtBalanceChange}
+          ownerTransactionUpdate = $set: {status: 'success', beforeDebtBalance: beforeDebtOwner, latestDebtBalance: beforeDebtOwner + myTransaction.debtBalanceChange}
         else
           myPartnerOptionUpdate    = $inc: {paidCash: myTransaction.debtBalanceChange}
           ownerPartnerOptionUpdate = $inc: {receiveCash: myTransaction.debtBalanceChange}
-          myTransactionUpdate    = $set: {status: 'success', beforeDebtBalance: beforeDebtMy, latestDebtBalance: beforeDebtMy - myTransaction.debtBalanceChange}
-          ownerTransactionUpdate = $set: {status: 'success', beforeDebtBalance: beforeDebtOwner, latestDebtBalance: beforeDebtOwner + myTransaction.debtBalanceChange}
+          myTransactionUpdate    = $set: {status: 'success', beforeDebtBalance: beforeDebtMy, latestDebtBalance: beforeDebtMy + myTransaction.debtBalanceChange}
+          ownerTransactionUpdate = $set: {status: 'success', beforeDebtBalance: beforeDebtOwner, latestDebtBalance: beforeDebtOwner - myTransaction.debtBalanceChange}
 
         Schema.partners.update myPartner._id, myPartnerOptionUpdate
         Schema.partners.update ownerPartner._id, ownerPartnerOptionUpdate

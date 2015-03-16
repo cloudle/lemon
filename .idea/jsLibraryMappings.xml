@@ -3,6 +3,7 @@
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$/engine/client/apps/merchant/app/account/customerManagement/navigationPartial.coffee" libraries="{HTML, HTML5 / EcmaScript 5, Meteor project library}" />
     <file url="file://$PROJECT_DIR$/engine/client/apps/merchant/app/account/customerManagement/sections/saleDetails.coffee" libraries="{HTML, HTML5 / EcmaScript 5, Meteor project library}" />
+    <file url="file://$PROJECT_DIR$/engine/client/apps/merchant/app/warehouse/distributorManagement/sections/importDetails.coffee" libraries="{HTML, HTML5 / EcmaScript 5, Meteor project library}" />
     <file url="file://$PROJECT_DIR$/engine/server/commands/customer.coffee" libraries="{HTML, HTML5 / EcmaScript 5, Meteor project library}" />
     <file url="file://$PROJECT_DIR$/engine/server/commands/merchant.coffee" libraries="{HTML, HTML5 / EcmaScript 5, Meteor project library}" />
     <file url="file://$PROJECT_DIR$/engine/server/commands/sale.coffee" libraries="{HTML, HTML5 / EcmaScript 5, Meteor project library}" />

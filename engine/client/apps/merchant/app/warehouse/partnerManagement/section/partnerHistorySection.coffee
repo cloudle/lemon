@@ -21,12 +21,12 @@ lemon.defineHyper Template.partnerManagementPartnerHistorySection,
 
     if partnerSaleList.length > 0 then partnerSaleList[0].isSaleFirst = true
     sorted = _.sortBy partnerImportList.concat(partnerSaleList).concat(partnerTransaction), (item) -> item.version.createdAt
-    beforeDebtBalance = @importCash + @receiveCash - @saleCash - @paidCash
+    beforeDebtBalance = @saleCash + @paidCash - @importCash - @receiveCash
     for item in sorted
       beforeDebtBalance +=
-        if item.partnerSale then item.debtBalanceChange
-        else if item.partnerImport then -item.debtBalanceChange
-        else if item.receivable is true then item.debtBalanceChange else -item.debtBalanceChange
+        if item.partnerSale then -item.debtBalanceChange
+        else if item.partnerImport then +item.debtBalanceChange
+        else if item.receivable is true then  -item.debtBalanceChange else item.debtBalanceChange
       item.latestDebtBalance = beforeDebtBalance
 
     if sorted[0]
