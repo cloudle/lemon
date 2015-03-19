@@ -1,7 +1,7 @@
 template(name="productManagementOverviewSection")
   .section.top.panel.panel-default
     input.hidden.avatarFile(type="file")
-    .panel-heading
+    .panel-heading(style="height: 105px")
       +avatarImageComponent(avatar=avatarUrl alias=name)
       .caption
         input.editable.dashed(name="productName" value="{{name}}" maxlength="50")
@@ -16,7 +16,8 @@ template(name="productManagementOverviewSection")
       data-toggle="tooltip" data-container="body" data-placement="right" title="giá nhập")
 
       if buildInProduct
-        .sub3: span(style="position:absolute; left: 80px; top: 80px") {{productCode}}
+        .sub3: span(style="position:absolute; left: 80px; top: 80px"
+        placeholder="mã sản phẩm" data-toggle="tooltip" data-container="body" data-placement="right" title="mã sản phẩm") {{productCode}}
       else
         .sub3: input.editable(style="position:absolute; left: 75px; top: 80px" name="productCode" value="{{productCode}}" maxlength="20" size="20"
         placeholder="mã sản phẩm" data-toggle="tooltip" data-container="body" data-placement="right" title="mã sản phẩm")
