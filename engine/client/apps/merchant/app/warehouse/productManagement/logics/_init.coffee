@@ -3,6 +3,7 @@ Apps.Merchant.productManagementInit = []
 Apps.Merchant.productManagementReactive = []
 
 Apps.Merchant.productManagementReactive.push (scope) ->
+  console.log 'reload productManagement ......'
   merchantId = Session.get("myProfile")?.currentMerchant
   productId  = Session.get("mySession")?.currentProductManagementSelection
 

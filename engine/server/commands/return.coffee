@@ -150,13 +150,15 @@ Meteor.methods
           else takenQuality = availableReturnQuality
 
           branchProduct = Schema.branchProductSummaries.findOne(saleDetail.branchProduct)
+          updateOption = {}
           if branchProduct.basicDetailModeEnabled is false
-            updateOption = {availableQuality: takenQuality, inStockQuality: takenQuality}
+            updateOption.availableQuality = takenQuality
+            updateOption.inStockQuality   = takenQuality
             Schema.productDetails.update saleDetail.productDetail, $inc: updateOption
 
-            updateOption.returnQualityByCustomer = takenQuality
-            Schema.products.update branchProduct.product, $inc: updateOption
-            Schema.branchProductSummaries.update branchProduct._id, $inc: updateOption
+          updateOption.returnQualityByCustomer = takenQuality
+          Schema.products.update branchProduct.product, $inc: updateOption
+          Schema.branchProductSummaries.update branchProduct._id, $inc: updateOption
 
           Schema.saleDetails.update saleDetail._id, $inc:{returnQuality: takenQuality}
           Schema.sales.update saleDetail.sale, $set:{allowDelete: false}

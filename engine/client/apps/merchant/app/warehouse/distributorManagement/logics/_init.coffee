@@ -3,6 +3,7 @@ Apps.Merchant.distributorManagementInit = []
 Apps.Merchant.distributorManagementReactive = []
 
 Apps.Merchant.distributorManagementReactive.push (scope) ->
+  console.log 'reload distributorManagement ......'
 #  if Session.get('allowCreateDistributor') then allowCreate = '' else allowCreate = 'disabled'
 #  scope.allowCreateDistributor = allowCreate
 

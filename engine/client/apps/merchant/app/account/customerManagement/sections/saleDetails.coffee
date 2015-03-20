@@ -31,7 +31,8 @@ lemon.defineWidget Template.customerManagementSaleDetails,
   dependsData: ->
     transactions = Schema.transactions.find({latestSale: @_id}).fetch()
     returns = Schema.returns.find({timeLineSales: @_id}).fetch()
-    _.sortBy transactions.concat(returns), (item) -> if item.debtDate then item.version.updateAt = item.debtDate; item.version.updateAt
+    dependsData = _.sortBy transactions.concat(returns), (item) -> if item.debtDate then item.version.updateAt = item.debtDate
+    _.sortBy dependsData, (item) -> item.version.updateAt
 
   returnDetails: -> Schema.returnDetails.find({return: @_id})
 

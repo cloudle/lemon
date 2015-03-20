@@ -28,9 +28,9 @@ Meteor.methods
                 distributorOption.customImportPaid += transaction.debtBalanceChange
                 distributorOption.customImportDebt -= transaction.debtBalanceChange
               else
-                distributorOption.customImportDebt      += transaction.debtBalanceChange
-                distributorOption.customImportLoan      += transaction.debtBalanceChange
-                distributorOption.customImportTotalCash += transaction.debtBalanceChange
+                distributorOption.customImportDebt      -= transaction.debtBalanceChange
+                distributorOption.customImportLoan      -= transaction.debtBalanceChange
+                distributorOption.customImportTotalCash -= transaction.debtBalanceChange
 
               Schema.transactions.update transaction._id, $set:{
                 beforeDebtBalance: tempBeforeDebtBalance

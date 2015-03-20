@@ -3,6 +3,7 @@ Apps.Merchant.customerManagementInit = []
 Apps.Merchant.customerManagementReactive = []
 
 Apps.Merchant.customerManagementReactive.push (scope) ->
+  console.log 'reload distributorManagement ......'
 #  allowCreate = if Session.get('allowCreateNewCustomer') then '' else 'disabled'
 #  scope.allowCreate = allowCreate
 
@@ -18,10 +19,10 @@ Apps.Merchant.customerManagementReactive.push (scope) ->
 
     if latestCustomSale = Schema.customSales.findOne({buyer: customer._id}, {sort: {debtDate: -1}})
       if latestTransaction = Schema.transactions.findOne({latestSale: latestCustomSale._id}, {sort: {debtDate: -1}})
-        $("[name=paidDate]").val(moment(latestTransaction.debtDate).format('DDMMYYY'))
+        $("[name=paidDate]").val(moment(latestTransaction.debtDate).format('DDMMYYYY'))
       else
-        $("[name=paidDate]").val(moment(latestCustomSale.debtDate).format('DDMMYYY'))
-      $("[name=debtDate]").val(moment(latestCustomSale.debtDate).format('DDMMYYY'))
+        $("[name=paidDate]").val(moment(latestCustomSale.debtDate).format('DDMMYYYY'))
+      $("[name=debtDate]").val(moment(latestCustomSale.debtDate).format('DDMMYYYY'))
     else
       $("[name=paidDate]").val('')
       $("[name=debtDate]").val('')
