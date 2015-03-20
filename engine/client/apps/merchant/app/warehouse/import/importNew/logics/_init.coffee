@@ -4,7 +4,6 @@ Apps.Merchant.importReload = []
 Apps.Merchant.importReactive = []
 
 Apps.Merchant.importReactive.push (scope) ->
-  console.log 'reload import ......'
   if Session.get('mySession') and Session.get('myProfile')
     scope.currentImport = Import.findBy(
       Session.get('mySession').currentImport

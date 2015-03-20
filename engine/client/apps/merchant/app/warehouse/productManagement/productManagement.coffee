@@ -17,7 +17,6 @@ lemon.defineApp Template.productManagement,
 #    Apps.Merchant.checkHasPermission("productStaff", "product")
     if currentProduct = Session.get("mySession").currentProductManagementSelection
       Meteor.subscribe('productManagementData', currentProduct)
-      Session.set("productManagementCurrentProduct", Schema.products.findOne(currentProduct))
 
     lemon.dependencies.resolve('productManagements')
     Session.set("productManagementSearchFilter", "")

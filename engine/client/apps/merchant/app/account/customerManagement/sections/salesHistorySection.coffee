@@ -37,6 +37,7 @@ lemon.defineHyper Template.customerManagementSalesHistorySection,
         else
           currentRecords = Schema.customSales.find({buyer: customer._id}).count() + Schema.sales.find({buyer: customer._id}).count()
         Meteor.subscribe('customerManagementData', customer._id, currentRecords, limitExpand)
+        Session.set("customerManagementDataCount", currentRecords)
         Session.set("customerManagementDataMaxCurrentRecords", currentRecords + limitExpand)
 
     "click .customSaleModeDisable":  (event, template) ->

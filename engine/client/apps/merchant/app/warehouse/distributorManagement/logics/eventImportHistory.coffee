@@ -3,6 +3,9 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
     distributor = Schema.distributors.findOne({_id: distributorId, parentMerchant:Session.get('myProfile').parentMerchant})
     if distributor and distributor.customImportModeEnabled is true
       Schema.distributors.update distributor._id, $set:{customImportModeEnabled: false}
+      limitExpand = Session.get("distributorManagementDataMaxCurrentRecords")
+      Meteor.subscribe('distributorManagementData', distributor._id, 0, limitExpand)
+
 
   scope.createCustomImport = (template)->
     if distributor = Session.get("distributorManagementCurrentDistributor")
@@ -94,6 +97,9 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
         Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
         Session.set("allowCreateTransactionOfCustomImport", false)
         $payDescription.val(''); $payAmount.val('')
+        limitExpand    = Session.get("distributorManagementDataMaxCurrentRecords")
+        currentRecords = Session.get("distributorManagementDataRecordCount")
+        Meteor.subscribe('distributorManagementData', distributor._id, currentRecords, limitExpand)
 
 
   scope.createTransactionOfImport = (template, distributor)->
@@ -107,6 +113,9 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
       Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
       Session.set("allowCreateTransactionOfImport", false)
       $payDescription.val(''); $payAmount.val('')
+      limitExpand    = Session.get("distributorManagementDataMaxCurrentRecords")
+      currentRecords = Session.get("distributorManagementDataRecordCount")
+      Meteor.subscribe('distributorManagementData', distributor._id, currentRecords, limitExpand)
 
 
 #    if latestImport = Schema.imports.findOne({distributor: distributor._id, finish: true, submitted: true}, {sort: {'version.createdAt': -1}})

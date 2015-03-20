@@ -34,6 +34,7 @@ lemon.defineHyper Template.distributorManagementImportsHistorySection,
         else
           currentRecords = Schema.customImports.find({seller: distributor._id}).count() + Schema.imports.find({distributor: distributor._id, finish: true, submitted: true}).count()
         Meteor.subscribe('distributorManagementData', distributor._id, currentRecords, limitExpand)
+        Session.set("distributorManagementDataRecordCount", currentRecords)
         Session.set("distributorManagementDataMaxCurrentRecords", currentRecords + limitExpand)
 
     "click .customImportModeDisable":  (event, template) ->

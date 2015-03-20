@@ -67,6 +67,8 @@ Apps.Merchant.customerManagementInit.push (scope) ->
     customer = Schema.customers.findOne({_id: customerId, parentMerchant:Session.get('myProfile').parentMerchant})
     if customer and customer.customSaleModeEnabled is true
       Schema.customers.update customer._id, $set:{customSaleModeEnabled: false}
+      limitExpand    = Session.get("customerManagementDataMaxCurrentRecords")
+      Meteor.subscribe('customerManagementData', customer._id, 0, limitExpand)
 
   scope.createTransactionOfCustomSale = (template) ->
     currentTime     = new Date()
@@ -88,6 +90,10 @@ Apps.Merchant.customerManagementInit.push (scope) ->
           Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
         Session.set "allowCreateTransactionOfCustomSale", false
         $payDescription.val(''); $payAmount.val('');# $paidDate.val('')
+        limitExpand    = Session.get("customerManagementDataMaxCurrentRecords")
+        currentRecords = Session.get("customerManagementDataCount")
+        Meteor.subscribe('customerManagementData', customer._id, currentRecords, limitExpand)
+
 
   scope.createTransactionOfSale = (template) ->
     customer = Session.get("customerManagementCurrentCustomer")
@@ -112,5 +118,8 @@ Apps.Merchant.customerManagementInit.push (scope) ->
         Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
         Session.set("allowCreateTransactionOfSale", false)
         $payDescription.val(''); $payAmount.val('')
+        limitExpand    = Session.get("customerManagementDataMaxCurrentRecords")
+        currentRecords = Session.get("customerManagementDataCount")
+        Meteor.subscribe('customerManagementData', customer._id, currentRecords, limitExpand)
       else
         console.log $payDescription.val() , payAmount != 0 , !isNaN(payAmount), payAmount, Schema.sales.findOne()

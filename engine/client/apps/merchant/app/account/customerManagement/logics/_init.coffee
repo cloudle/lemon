@@ -3,7 +3,6 @@ Apps.Merchant.customerManagementInit = []
 Apps.Merchant.customerManagementReactive = []
 
 Apps.Merchant.customerManagementReactive.push (scope) ->
-  console.log 'reload distributorManagement ......'
 #  allowCreate = if Session.get('allowCreateNewCustomer') then '' else 'disabled'
 #  scope.allowCreate = allowCreate
 

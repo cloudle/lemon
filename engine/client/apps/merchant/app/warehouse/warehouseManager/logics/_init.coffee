@@ -7,7 +7,6 @@ Apps.Merchant.warehouseManagerInit.push (scope) ->
 
 
 logics.warehouseManager.reactiveRun = ->
-  console.log 'reload warehouseManager ......'
   if Session.get('allowCreateNewWarehouse')
     logics.warehouseManager.allowCreate = ''
   else
