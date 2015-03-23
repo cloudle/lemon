@@ -3,12 +3,16 @@ Apps.Merchant.importReactive.push (scope) ->
     scope.managedImportProductList = []; products = []
     optionCursorProduct = {merchant: Session.get("myProfile").currentMerchant}
     if importPartner = Session.get('currentImportPartner')
-      merchantProfile = Schema.merchantProfiles.findOne({merchant: importPartner.parentMerchant})
-      if importPartner.buildIn
-        partnerMerchantProfile = Schema.merchantProfiles.findOne({merchant: importPartner.buildIn})
-        optionCursorProduct.buildInProduct = { $in: _.intersection(merchantProfile.geraProductList, partnerMerchantProfile.geraProductList) }
-      else
-        optionCursorProduct.buildInProduct = { $in: merchantProfile.geraProductList }
+      if merchantProfile = Schema.merchantProfiles.findOne({merchant: importPartner.parentMerchant})
+        if importPartner.buildIn
+          partnerMerchantProfile = Schema.merchantProfiles.findOne({merchant: importPartner.buildIn})
+          optionCursorProduct.buildInProduct = { $in: _.intersection(merchantProfile.geraProductList, partnerMerchantProfile.geraProductList) }
+          Session.set("importManagementCrossProduct", _.intersection(merchantProfile.geraProductList, partnerMerchantProfile.geraProductList))
+        else
+          optionCursorProduct.buildInProduct = { $in: merchantProfile.geraProductList }
+          Session.set("importManagementCrossProduct", merchantProfile.geraProductList)
+    else
+      Session.set("importManagementCrossProduct")
 
     cursorProduct = Schema.products.find(optionCursorProduct)
     Helpers.searchProduct(cursorProduct, products)

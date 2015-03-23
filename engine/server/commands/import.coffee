@@ -117,8 +117,21 @@ Meteor.methods
     if currentImport and (currentImport.distributor or currentImport.partner)
       importDetails = Schema.importDetails.find({import: importId}).fetch()
       if importDetails.length > 0
-        for importDetail in importDetails
-          Schema.importDetails.update importDetail._id, $set: {submitted: true}
+        if currentImport.partner
+          importPartner = Schema.partners.findOne(currentImport.partner)
+          merchantProfile = Schema.merchantProfiles.findOne({merchant: importPartner.parentMerchant}) if importPartner
+          partnerMerchantProfile = Schema.merchantProfiles.findOne({merchant: importPartner.buildIn}) if importPartner?.buildIn
+
+          if partnerMerchantProfile
+            productId = _.intersection(merchantProfile.geraProductList, partnerMerchantProfile.geraProductList)
+          else
+            productId = merchantProfile.geraProductList
+
+          for importDetail in importDetails
+            unless _.contains(productId, importDetail.buildInProduct)
+              throw new Meteor.Error('importError', 'Phiếu chi tiết chưa được xác nhận'); return
+
+        Schema.importDetails.update(importDetail._id, $set: {submitted: true}) for importDetail in importDetails
         Schema.imports.update importId, $set:{submitted: true}
         return 'Duoc Xac Nhan, Cho Duyet Cua Quan Ly'
 
@@ -132,6 +145,8 @@ Meteor.methods
         for importDetail in importDetails
           if !Schema.products.findOne importDetail.product
             throw new Meteor.Error('importError', 'Không tìm thấy sản phẩm id:'+ importDetail.product); return
+          if importDetail.submitted is false
+            throw new Meteor.Error('importError', 'Phiếu chi tiết chưa được xác nhận'); return
 
         if currentImport.distributor
           for importDetail in importDetails
