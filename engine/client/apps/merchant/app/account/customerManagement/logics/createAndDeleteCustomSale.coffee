@@ -52,6 +52,9 @@ Apps.Merchant.customerManagementInit.push (scope) ->
       if customSale._id is latestCustomSale._id
         Meteor.call 'updateCustomSaleByCreateCustomSaleDetail', customSaleDetail, (error, result) ->
           Meteor.call 'reCalculateMetroSummaryTotalReceivableCash'
+
+        limitExpand    = Session.get("customerManagementDataMaxCurrentRecords")
+        Meteor.subscribe('customerManagementData', customSale.buyer, 0, limitExpand)
       $productName.val(''); $price.val(''); $quality.val(''); $skulls.val('')
       $productName.focus()
 

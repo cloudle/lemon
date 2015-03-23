@@ -217,145 +217,145 @@ Meteor.methods
     if profile = Schema.userProfiles.findOne({user: Meteor.userId()})
       countMerchant = 0
       #thêm merchantType cho merchant
-      Schema.merchants.find({merchantType: {$nin:['merchant', 'agency', 'gera']} }).forEach(
+#      Schema.merchants.find({merchantType: {$nin:['merchant', 'agency', 'gera']} }).forEach(
 #      Schema.merchants.find({_id: "fd3n2DxNZKbbs5gkE"}).forEach(
-        (merchant) ->
-          merchantProfileUpdate =
-            merchantList        : []
-            warehouseList       : []
-            staffList           : []
-            customerList        : []
-            distributorList     : []
-            partnerList         : []
-            merchantPartnerList : []
-            productList         : []
-            geraProductList     : []
-          metroSummaryUpdate =
-            warehouseList   : []
-            staffList       : []
-            customerList    : []
-            distributorList : []
-            partnerList     : []
-            productList     : []
-            geraProductList : []
-          merchantProfileUpdate.merchantList.push merchant._id
-
-          parentMerchant = if merchant.parent then merchant.parent else merchant._id
-          Schema.merchants.update merchant._id, $set:{merchantType: 'merchant'}
-
-          Schema.products.find({merchant: merchant._id}).forEach(
-            (product) ->
-              metroSummaryUpdate.productList.push product._id
-              merchantProfileUpdate.productList.push product._id
-
-              Schema.products.update product._id, $set:
-                parentMerchant: parentMerchant
-                createMerchant: parentMerchant
-                branchList    : [product.merchant]
-                availableQuality          : 0
-                inStockQuality            : 0
-                totalQuality              : 0
-                salesQuality              : 0
-                returnQualityByDistributor: 0
-                returnQualityByCustomer   : 0
-
-              branchProductSummaries =
-                parentMerchant        : parentMerchant
-                merchant              : merchant._id
-                product               : product._id
-                warehouse             : product.warehouse
-                basicDetailModeEnabled: product.basicDetailModeEnabled
-              if !branchProduct = Schema.branchProductSummaries.findOne(branchProductSummaries)
-                branchProductId = Schema.branchProductSummaries.insert branchProductSummaries
-                branchProduct = Schema.branchProductSummaries.findOne(branchProductId) if branchProductId
-
-              if branchProduct
-                branchProductOption = {availableQuality: 0, inStockQuality: 0, totalQuality: 0, salesQuality: 0, returnQualityByDistributor: 0, returnQualityByCustomer: 0}
-                Schema.productDetails.find({product: product._id, merchant: product.merchant}).forEach(
-                  (productDetail)->
-                    Schema.productDetails.update productDetail._id, $set:{parentMerchant: parentMerchant, branchProduct: branchProduct._id}
-#                    branchProductOption.availableQuality += productDetail.availableQuality if productDetail.availableQuality
-#                    branchProductOption.inStockQuality   += productDetail.inStockQuality if productDetail.inStockQuality
-                    branchProductOption.totalQuality     += productDetail.importQuality if productDetail.importQuality
-                )
-                Schema.saleDetails.find({product: product._id}).forEach(
-                  (saleDetail)->
-                    Schema.saleDetails.update saleDetail._id, $set:{branchProduct: branchProduct._id}
-                    branchProductOption.salesQuality += saleDetail.quality
-                )
-                Schema.orderDetails.find({product: product._id}).forEach(
-                  (orderDetail) -> Schema.orderDetails.update orderDetail._id, $set:{branchProduct: branchProduct._id}
-                )
-                Schema.returnDetails.find({product: product._id}).forEach(
-                  (returnDetail) ->
-                    currentReturn = Schema.returns.findOne(returnDetail.return)
-                    if currentReturn?.status is 2
-                      branchProductOption.returnQualityByCustomer += returnDetail.returnQuality if currentReturn.customer
-                      branchProductOption.returnQualityByDistributor += returnDetail.returnQuality if currentReturn.distributor
-                    Schema.returnDetails.update returnDetail._id, $set:{branchProduct: branchProduct._id}
-                )
-                Schema.productUnits.find({product: product._id}).forEach(
-                  (productUnit)->
-                    productUnitUpdate =
-                      parentMerchant: parentMerchant
-                      merchant      : merchant._id
-                      createMerchant: parentMerchant
-                    Schema.productUnits.update productUnit._id, $set: productUnitUpdate
-
-                    branchProductUnit =
-                      parentMerchant: parentMerchant
-                      merchant      : merchant._id
-                      product       : productUnit.product
-                      productUnit   : productUnit._id
-                    Schema.branchProductUnits.insert branchProductUnit if !Schema.branchProductUnits.findOne(branchProductUnit)
-                )
-
-                branchProductOption.totalQuality = branchProductOption.totalQuality - branchProductOption.returnQualityByDistributor
-                if branchProduct.basicDetailModeEnabled
-                  branchProductOption.availableQuality = branchProductOption.totalQuality
-                  branchProductOption.inStockQuality   = branchProductOption.totalQuality
-                else
-                  branchProductOption.availableQuality = branchProductOption.totalQuality - branchProductOption.salesQuality + branchProductOption.returnQualityByCustomer
-                  branchProductOption.inStockQuality   = branchProductOption.totalQuality - branchProductOption.salesQuality + branchProductOption.returnQualityByCustomer
-
-                Schema.branchProductSummaries.update branchProduct._id, $set:branchProductOption
-                Schema.products.update product._id, $inc:
-                  availableQuality          : branchProductOption.availableQuality
-                  inStockQuality            : branchProductOption.inStockQuality
-                  totalQuality              : branchProductOption.totalQuality
-                  salesQuality              : branchProductOption.salesQuality
-                  returnQualityByDistributor: branchProductOption.returnQualityByDistributor
-                  returnQualityByCustomer   : branchProductOption.returnQualityByCustomer
-
-          )
-
-          Schema.warehouses.find({merchant: merchant._id}).forEach(
-            (warehouse)->
-              metroSummaryUpdate.warehouseList.push warehouse._id
-              merchantProfileUpdate.warehouseList.push warehouse._id
-          )
-          Schema.userProfiles.find({currentMerchant: merchant._id}).forEach(
-            (userProfile)->
-              metroSummaryUpdate.staffList.push userProfile._id
-              merchantProfileUpdate.staffList.push userProfile._id
-              Schema.userProfiles.update userProfile._id, $set:{userType: 'merchant'}
-          )
-          Schema.customers.find({currentMerchant: merchant._id}).forEach(
-            (customer)->
-              metroSummaryUpdate.customerList.push customer._id
-              merchantProfileUpdate.customerList.push customer._id
-          )
-          Schema.distributors.find({merchant: merchant._id}).forEach(
-            (distributor)->
-              metroSummaryUpdate.distributorList.push distributor._id
-              merchantProfileUpdate.distributorList.push distributor._id
-          )
-          Schema.metroSummaries.update {merchant: merchant._id}, $set: metroSummaryUpdate
-          Schema.merchantProfiles.update {merchant: parentMerchant}, $set: merchantProfileUpdate
-
-          countMerchant = countMerchant + 1
-          console.log countMerchant
-      )
+#        (merchant) ->
+#          merchantProfileUpdate =
+#            merchantList        : []
+#            warehouseList       : []
+#            staffList           : []
+#            customerList        : []
+#            distributorList     : []
+#            partnerList         : []
+#            merchantPartnerList : []
+#            productList         : []
+#            geraProductList     : []
+#          metroSummaryUpdate =
+#            warehouseList   : []
+#            staffList       : []
+#            customerList    : []
+#            distributorList : []
+#            partnerList     : []
+#            productList     : []
+#            geraProductList : []
+#          merchantProfileUpdate.merchantList.push merchant._id
+#
+#          parentMerchant = if merchant.parent then merchant.parent else merchant._id
+#          Schema.merchants.update merchant._id, $set:{merchantType: 'merchant'}
+#
+#          Schema.products.find({merchant: merchant._id}).forEach(
+#            (product) ->
+#              metroSummaryUpdate.productList.push product._id
+#              merchantProfileUpdate.productList.push product._id
+#
+#              Schema.products.update product._id, $set:
+#                parentMerchant: parentMerchant
+#                createMerchant: parentMerchant
+#                branchList    : [product.merchant]
+#                availableQuality          : 0
+#                inStockQuality            : 0
+#                totalQuality              : 0
+#                salesQuality              : 0
+#                returnQualityByDistributor: 0
+#                returnQualityByCustomer   : 0
+#
+#              branchProductSummaries =
+#                parentMerchant        : parentMerchant
+#                merchant              : merchant._id
+#                product               : product._id
+#                warehouse             : product.warehouse
+#                basicDetailModeEnabled: product.basicDetailModeEnabled
+#              if !branchProduct = Schema.branchProductSummaries.findOne(branchProductSummaries)
+#                branchProductId = Schema.branchProductSummaries.insert branchProductSummaries
+#                branchProduct = Schema.branchProductSummaries.findOne(branchProductId) if branchProductId
+#
+#              if branchProduct
+#                branchProductOption = {availableQuality: 0, inStockQuality: 0, totalQuality: 0, salesQuality: 0, returnQualityByDistributor: 0, returnQualityByCustomer: 0}
+#                Schema.productDetails.find({product: product._id, merchant: product.merchant}).forEach(
+#                  (productDetail)->
+#                    Schema.productDetails.update productDetail._id, $set:{parentMerchant: parentMerchant, branchProduct: branchProduct._id}
+##                    branchProductOption.availableQuality += productDetail.availableQuality if productDetail.availableQuality
+##                    branchProductOption.inStockQuality   += productDetail.inStockQuality if productDetail.inStockQuality
+#                    branchProductOption.totalQuality     += productDetail.importQuality if productDetail.importQuality
+#                )
+#                Schema.saleDetails.find({product: product._id}).forEach(
+#                  (saleDetail)->
+#                    Schema.saleDetails.update saleDetail._id, $set:{branchProduct: branchProduct._id}
+#                    branchProductOption.salesQuality += saleDetail.quality
+#                )
+#                Schema.orderDetails.find({product: product._id}).forEach(
+#                  (orderDetail) -> Schema.orderDetails.update orderDetail._id, $set:{branchProduct: branchProduct._id}
+#                )
+#                Schema.returnDetails.find({product: product._id}).forEach(
+#                  (returnDetail) ->
+#                    currentReturn = Schema.returns.findOne(returnDetail.return)
+#                    if currentReturn?.status is 2
+#                      branchProductOption.returnQualityByCustomer += returnDetail.returnQuality if currentReturn.customer
+#                      branchProductOption.returnQualityByDistributor += returnDetail.returnQuality if currentReturn.distributor
+#                    Schema.returnDetails.update returnDetail._id, $set:{branchProduct: branchProduct._id}
+#                )
+#                Schema.productUnits.find({product: product._id}).forEach(
+#                  (productUnit)->
+#                    productUnitUpdate =
+#                      parentMerchant: parentMerchant
+#                      merchant      : merchant._id
+#                      createMerchant: parentMerchant
+#                    Schema.productUnits.update productUnit._id, $set: productUnitUpdate
+#
+#                    branchProductUnit =
+#                      parentMerchant: parentMerchant
+#                      merchant      : merchant._id
+#                      product       : productUnit.product
+#                      productUnit   : productUnit._id
+#                    Schema.branchProductUnits.insert branchProductUnit if !Schema.branchProductUnits.findOne(branchProductUnit)
+#                )
+#
+#                branchProductOption.totalQuality = branchProductOption.totalQuality - branchProductOption.returnQualityByDistributor
+#                if branchProduct.basicDetailModeEnabled
+#                  branchProductOption.availableQuality = branchProductOption.totalQuality
+#                  branchProductOption.inStockQuality   = branchProductOption.totalQuality
+#                else
+#                  branchProductOption.availableQuality = branchProductOption.totalQuality - branchProductOption.salesQuality + branchProductOption.returnQualityByCustomer
+#                  branchProductOption.inStockQuality   = branchProductOption.totalQuality - branchProductOption.salesQuality + branchProductOption.returnQualityByCustomer
+#
+#                Schema.branchProductSummaries.update branchProduct._id, $set:branchProductOption
+#                Schema.products.update product._id, $inc:
+#                  availableQuality          : branchProductOption.availableQuality
+#                  inStockQuality            : branchProductOption.inStockQuality
+#                  totalQuality              : branchProductOption.totalQuality
+#                  salesQuality              : branchProductOption.salesQuality
+#                  returnQualityByDistributor: branchProductOption.returnQualityByDistributor
+#                  returnQualityByCustomer   : branchProductOption.returnQualityByCustomer
+#
+#          )
+#
+#          Schema.warehouses.find({merchant: merchant._id}).forEach(
+#            (warehouse)->
+#              metroSummaryUpdate.warehouseList.push warehouse._id
+#              merchantProfileUpdate.warehouseList.push warehouse._id
+#          )
+#          Schema.userProfiles.find({currentMerchant: merchant._id}).forEach(
+#            (userProfile)->
+#              metroSummaryUpdate.staffList.push userProfile._id
+#              merchantProfileUpdate.staffList.push userProfile._id
+#              Schema.userProfiles.update userProfile._id, $set:{userType: 'merchant'}
+#          )
+#          Schema.customers.find({currentMerchant: merchant._id}).forEach(
+#            (customer)->
+#              metroSummaryUpdate.customerList.push customer._id
+#              merchantProfileUpdate.customerList.push customer._id
+#          )
+#          Schema.distributors.find({merchant: merchant._id}).forEach(
+#            (distributor)->
+#              metroSummaryUpdate.distributorList.push distributor._id
+#              merchantProfileUpdate.distributorList.push distributor._id
+#          )
+#          Schema.metroSummaries.update {merchant: merchant._id}, $set: metroSummaryUpdate
+#          Schema.merchantProfiles.update {merchant: parentMerchant}, $set: merchantProfileUpdate
+#
+#          countMerchant = countMerchant + 1
+#          console.log countMerchant
+#      )
 
 
 #      #set merchant của vtnamphuong@gera.vn lên làm agency

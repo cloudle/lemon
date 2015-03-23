@@ -1,6 +1,7 @@
 scope = logics.distributorManagement
 
 lemon.defineWidget Template.distributorManagementCustomImportDetails,
+  productName: -> @productName
   receivableClass: -> if @debtBalanceChange >= 0 then 'paid' else 'receive'
   finalReceivableClass: -> if @latestDebtBalance >= 0 then 'receive' else 'paid'
   latestPaids: -> Schema.transactions.find {latestImport: @_id}, {sort: {'version.createdAt': 1}}

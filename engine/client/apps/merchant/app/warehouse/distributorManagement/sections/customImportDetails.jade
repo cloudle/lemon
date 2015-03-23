@@ -9,7 +9,7 @@ template(name="distributorManagementCustomImportDetails")
   each customImportDetails
     tr.detail-row
       td.has-commands
-        | {{productName product}}
+        | {{productName}}
         .commands
           if isCustomImportModeEnabled
             .lemon.rounded.tiny.btn.red.deleteCustomImportDetail: span.icon-minus-4

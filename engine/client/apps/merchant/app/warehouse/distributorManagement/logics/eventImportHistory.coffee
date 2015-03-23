@@ -62,10 +62,13 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
         price         : price
         finalPrice    : $quality.val()*price
 
-      latestCustomImport = Schema.customImports.findOne({buyer: customImport.buyer}, {sort: {debtDate: -1, 'version.createdAt': -1}})
+      latestCustomImport = Schema.customImports.findOne({seller: customImport.seller}, {sort: {debtDate: -1, 'version.createdAt': -1}})
       if customImport._id is latestCustomImport._id
         Meteor.call('updateCustomImportByCreateCustomImportDetail', customImportDetail)
         Meteor.call 'reCalculateMetroSummaryTotalPayableCash'
+
+        limitExpand    = Session.get("distributorManagementDataMaxCurrentRecords")
+        Meteor.subscribe('distributorManagementData', customImport.seller, 0, limitExpand)
       else console.log customImport._id, latestCustomImport._id
       $productName.val(''); $price.val(''); $quality.val(''); $skulls.val('')
       $productName.focus()
