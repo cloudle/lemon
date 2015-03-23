@@ -9,12 +9,13 @@ checkProductInStockQuality = (orderDetails, branchProducts)->
     }
   .value()
   try
+
     if branchProducts.length > 0 and orderDetails.length > 0
       for currentDetail in orderDetails
         currentProduct = _.findWhere(branchProducts, {_id: currentDetail.branchProduct})
         throw {message: "lỗi", item: currentDetail} if currentProduct?.availableQuality < currentDetail.quality
     else
-      throw {message: "lỗi"}
+      throw {message: "lỗi", item: 'Sai san pham.....'}
     return {}
   catch e
     return {error: e}
@@ -147,8 +148,9 @@ Meteor.methods
     branchProducts = Schema.branchProductSummaries.find({_id: {$in: branchProduct_ids}}).fetch()
     branchProducts = _.where(branchProducts, {basicDetailModeEnabled: false})
 
-    result = checkProductInStockQuality(orderDetails, branchProducts)
-    if result.error then throw new Meteor.Error(result.error.item)
+    if branchProducts.length > 0
+      result = checkProductInStockQuality(orderDetails, branchProducts)
+      if result.error then throw new Meteor.Error(result.error.item)
 
     Schema.orders.update currentOrder._id, $set:{status: 1}
     if currentOrder = Schema.orders.findOne({_id: orderId, status: 1})
