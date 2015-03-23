@@ -4,7 +4,7 @@ lemon.defineHyper Template.productManagementSalesHistorySection,
   basicDetailModeEnabled: -> Session.get("productManagementBranchProductSummary")?.basicDetailModeEnabled
   isShowDisableMode: ->
     branchProduct = Session.get("productManagementBranchProductSummary")
-    if branchProduct.totalQuality >= branchProduct.salesQuality then true else false
+    if branchProduct.totalQuality >= (branchProduct.salesQuality - branchProduct.returnQualityByCustomer) then true else false
   buyerName: -> Schema.customers.findOne(Schema.sales.findOne(@sale)?.buyer)?.name
   unitSaleQuality: -> Math.round(@quality/@conversionQuality*100)/100
   productSaleQuality: -> @salesQuality - @returnQualityByCustomer

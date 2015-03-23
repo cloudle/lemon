@@ -58,18 +58,19 @@ Apps.Merchant.salesReactiveRun.push (scope) ->
       scope.templateInstance.ui.extras.toggleExtra('delivery', true)
 
   if currentOrder = Session.get('currentOrder')
-    if logics.sales.currentOrderDetails?.count() > 0
+    if scope.currentOrderDetails?.count() > 0
       allowSuccess = true
+      (if detail.inValid then allowSuccess = false; break) for detail in scope.currentOrderDetails.fetch()
       if Session.get('currentOrder').paymentsDelivery is 1
         if !currentOrder.contactName then allowSuccess = false
-        if !currentOrder.contactPhone then allowSuccess = false
-        if !currentOrder.deliveryAddress then allowSuccess = false
-        if !currentOrder.deliveryDate then allowSuccess = false
-        if !currentOrder.comment then allowSuccess = false
+        else if !currentOrder.contactPhone then allowSuccess = false
+        else if !currentOrder.deliveryAddress then allowSuccess = false
+        else if !currentOrder.deliveryDate then allowSuccess = false
+        else if !currentOrder.comment then allowSuccess = false
       else
         if !Schema.customers.findOne(currentOrder.buyer) then allowSuccess = false
-
-    else allowSuccess = false
+    else
+      allowSuccess = false
     Session.set('allowSuccess', allowSuccess)
 
   if Session.get("salesEditingRowId")

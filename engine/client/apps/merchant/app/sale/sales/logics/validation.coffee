@@ -35,8 +35,20 @@ Apps.Merchant.salesInit.push (scope) ->
     catch e
       return {error: e}
 
-  scope.validation.getCrossProductQuality = (productId, orderId) ->
+  scope.validation.getCrossProductQuality = (productId, branchProductId, orderId) ->
     currentProduct = Schema.products.findOne(productId)
+    if branchProduct  = Schema.branchProductSummaries.findOne(branchProductId)
+      currentProduct.price       = branchProduct.price if branchProduct.price
+      currentProduct.importPrice = branchProduct.importPrice if branchProduct.importPrice
+
+      currentProduct.salesQuality     = branchProduct.salesQuality
+      currentProduct.totalQuality     = branchProduct.totalQuality
+      currentProduct.availableQuality = branchProduct.availableQuality
+      currentProduct.inStockQuality   = branchProduct.inStockQuality
+      currentProduct.returnQualityByCustomer    = branchProduct.returnQualityByCustomer
+      currentProduct.returnQualityByDistributor = branchProduct.returnQualityByDistributor
+      currentProduct.basicDetailModeEnabled     = branchProduct.basicDetailModeEnabled
+
     sameProducts = Schema.orderDetails.find({product: productId, order: orderId}).fetch()
     crossProductQuality = 0
     crossProductQuality += item.quality for item in sameProducts

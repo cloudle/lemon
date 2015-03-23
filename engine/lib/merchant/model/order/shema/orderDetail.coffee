@@ -59,3 +59,7 @@ simpleSchema.orderDetails = new SimpleSchema
     type: Number
     optional: true
 
+  inValid:
+    type: Boolean
+    optional: true
+

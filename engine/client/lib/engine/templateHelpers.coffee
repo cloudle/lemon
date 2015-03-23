@@ -62,7 +62,7 @@ Template.registerHelper 'genderString', (gender) -> if gender then 'Nam' else 'N
 Template.registerHelper 'allowAction', (val) -> if val then '' else 'disabled'
 
 Template.registerHelper 'crossBillAvailableQuality', ->
-  cross = logics.sales.validation.getCrossProductQuality(@product, @order)
+  cross = logics.sales.validation.getCrossProductQuality(@product, @branchProduct, @order)
   crossAvailable = if cross.product then (cross.product.availableQuality - cross.quality) else 0
   if crossAvailable < 0
     crossAvailable = Math.ceil(Math.abs(crossAvailable/@conversionQuality))*(-1)
@@ -71,17 +71,24 @@ Template.registerHelper 'crossBillAvailableQuality', ->
 
   if cross.product.basicDetailModeEnabled is true
     return {
-    crossAvailable: 0
-    isValid: true
-    invalid: false
-    errorClass: ''
+      crossAvailable: 0
+      isValid: true
+      invalid: false
+      errorClass: ''
     }
+
+    Schema.orderDetails.update @_id, $set:{inValid: false} if @inValid
   else
+    if crossAvailable >= 0
+      Schema.orderDetails.update @_id, $set:{inValid: false} if @inValid
+    else
+      Schema.orderDetails.update @_id, $set:{inValid: true} if !@inValid
+
     return {
-    crossAvailable: crossAvailable
-    isValid: crossAvailable > 0
-    invalid: crossAvailable < 0
-    errorClass: if crossAvailable >= 0 then '' else 'errors'
+      crossAvailable: crossAvailable
+      isValid: crossAvailable > 0
+      invalid: crossAvailable < 0
+      errorClass: if crossAvailable >= 0 then '' else 'errors'
     }
 
 Template.registerHelper 'aliasLetter', (fullAlias) -> fullAlias?.substring(0,1)

@@ -48,7 +48,6 @@ saleRoute =
       paymentMethodSelectOption    : scope.paymentMethodSelectOptions
 
       allProductInCurrentWarehouse : scope.managedSalesProductList
-      allProduct : scope.salesProductList
     }
 
 lemon.addRoute [saleRoute], Apps.Merchant.RouterBase

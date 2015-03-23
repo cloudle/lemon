@@ -1,17 +1,20 @@
 checkProductInStockQuality = (orderDetails, branchProducts)->
   orderDetails = _.chain(orderDetails)
-  .groupBy("product")
+  .groupBy("branchProduct")
   .map (group, key) ->
     return {
-    product: group.product
-    quality: _.reduce(group, ((res, current) -> res + current.quality), 0)
+      product      : group[0].product
+      branchProduct: group[0].branchProduct
+      quality      : _.reduce(group, ((res, current) -> res + current.quality), 0)
     }
   .value()
   try
-    if branchProducts.length > 0
+    if branchProducts.length > 0 and orderDetails.length > 0
       for currentDetail in orderDetails
-        currentProduct = _.findWhere(branchProducts, {product: currentDetail.product})
+        currentProduct = _.findWhere(branchProducts, {_id: currentDetail.branchProduct})
         throw {message: "lỗi", item: currentDetail} if currentProduct?.availableQuality < currentDetail.quality
+    else
+      throw {message: "lỗi"}
     return {}
   catch e
     return {error: e}
@@ -140,8 +143,8 @@ Meteor.methods
     orderDetails = Schema.orderDetails.find({order: currentOrder._id}).fetch()
     if orderDetails.length < 1 then throw new Meteor.Error("Order rỗng."); return
 
-    product_ids = _.union(_.pluck(orderDetails, 'product'))
-    branchProducts = Schema.branchProductSummaries.find({product: {$in: product_ids}}).fetch()
+    branchProduct_ids = _.union(_.pluck(orderDetails, 'branchProduct'))
+    branchProducts = Schema.branchProductSummaries.find({_id: {$in: branchProduct_ids}}).fetch()
     branchProducts = _.where(branchProducts, {basicDetailModeEnabled: false})
 
     result = checkProductInStockQuality(orderDetails, branchProducts)

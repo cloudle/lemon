@@ -31,6 +31,9 @@ Apps.Merchant.distributorManagementInit.push (scope) ->
 
         Meteor.call('createNewCustomImport', option)
         $(template.find("[name='customImportDebtDate']")).val(''); $description.val('')
+        limitExpand    = Session.get("distributorManagementDataMaxCurrentRecords")
+        currentRecords = Session.get("distributorManagementDataRecordCount")
+        Meteor.subscribe('distributorManagementData', distributor._id, currentRecords, limitExpand)
       else
         console.log isValidDate , latestCustomImport is undefined, debtDate >= latestCustomImport.debtDate
 #      Session.set("allowCreateCustomImport", false)
